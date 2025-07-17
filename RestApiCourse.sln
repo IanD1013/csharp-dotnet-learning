@@ -1,7 +1,5 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.GettingStarted", "1.GettingStarted", "{3C45A315-5175-48D3-8995-72DE0CCC238F}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api", "Movies.Api\Movies.Api.csproj", "{15D37176-2895-4675-B5B9-F21E2A167493}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Application", "Movies.Application\Movies.Application.csproj", "{0D0B86B9-B2F0-4291-AF61-09B87343F752}"
@@ -28,8 +26,5 @@ Global
 		{A40A3A42-5553-4781-8329-4EE695CEF58E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{15D37176-2895-4675-B5B9-F21E2A167493} = {3C45A315-5175-48D3-8995-72DE0CCC238F}
-		{0D0B86B9-B2F0-4291-AF61-09B87343F752} = {3C45A315-5175-48D3-8995-72DE0CCC238F}
-		{A40A3A42-5553-4781-8329-4EE695CEF58E} = {3C45A315-5175-48D3-8995-72DE0CCC238F}
 	EndGlobalSection
 EndGlobal
