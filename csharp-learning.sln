@@ -1,18 +1,20 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api", "Movies.Api\Movies.Api.csproj", "{15D37176-2895-4675-B5B9-F21E2A167493}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Api", "course-rest-api-dotnet\Movies.Api\Movies.Api.csproj", "{15D37176-2895-4675-B5B9-F21E2A167493}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Application", "Movies.Application\Movies.Application.csproj", "{0D0B86B9-B2F0-4291-AF61-09B87343F752}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Application", "course-rest-api-dotnet\Movies.Application\Movies.Application.csproj", "{0D0B86B9-B2F0-4291-AF61-09B87343F752}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Contracts", "Movies.Contracts\Movies.Contracts.csproj", "{A40A3A42-5553-4781-8329-4EE695CEF58E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Movies.Contracts", "course-rest-api-dotnet\Movies.Contracts\Movies.Contracts.csproj", "{A40A3A42-5553-4781-8329-4EE695CEF58E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{329EE441-D190-4A67-A955-9BA0D5DC122F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "course-rest-api-dotnet\Helpers", "{329EE441-D190-4A67-A955-9BA0D5DC122F}"
 	ProjectSection(SolutionItems) = preProject
-		Helpers\Course.postman_collection.json = Helpers\Course.postman_collection.json
-		Helpers\movies.json = Helpers\movies.json
+		course-rest-api-dotnet\Helpers\Course.postman_collection.json = course-rest-api-dotnet\Helpers\Course.postman_collection.json
+		course-rest-api-dotnet\Helpers\movies.json = course-rest-api-dotnet\Helpers\movies.json
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Api", "Helpers\Identity.Api\Identity.Api.csproj", "{0B7F3C25-FD65-496E-809E-6A1391037D34}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity.Api", "course-rest-api-dotnet\Helpers\Identity.Api\Identity.Api.csproj", "{0B7F3C25-FD65-496E-809E-6A1391037D34}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-rest-api-dotnet", "course-rest-api-dotnet", "{117976D2-8B04-4AFC-8C52-A0A90394656B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,5 +41,9 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
+		{329EE441-D190-4A67-A955-9BA0D5DC122F} = {117976D2-8B04-4AFC-8C52-A0A90394656B}
+		{15D37176-2895-4675-B5B9-F21E2A167493} = {117976D2-8B04-4AFC-8C52-A0A90394656B}
+		{0D0B86B9-B2F0-4291-AF61-09B87343F752} = {117976D2-8B04-4AFC-8C52-A0A90394656B}
+		{A40A3A42-5553-4781-8329-4EE695CEF58E} = {117976D2-8B04-4AFC-8C52-A0A90394656B}
 	EndGlobalSection
 EndGlobal
