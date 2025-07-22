@@ -52,7 +52,7 @@ public class MovieRepository : IMovieRepository
         var genres = await connection.QueryAsync<string>(
             new CommandDefinition("""
                                       select name from genres where movieId = @id
-                                  """, new { id }));
+                                  """, new { id }, cancellationToken: token));
 
         foreach (var genre in genres)
         {
@@ -92,7 +92,9 @@ public class MovieRepository : IMovieRepository
         using var connection = await _dbConnectionFactory.CreateConnectionAsync(token);
         var result = await connection.QueryAsync(new CommandDefinition("""
                                                                            select m.*, string_agg(g.name, ', ') as genres
-                                                                           from movies m left join genres g on m.id = g.movieId
+                                                                           from movies m 
+                                                                           left join genres g 
+                                                                               on m.id = g.movieId
                                                                            group by id
                                                                        """, cancellationToken: token));
         return result.Select(x => new Movie
