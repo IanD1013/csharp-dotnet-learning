@@ -58,6 +58,7 @@ public class MovieService : IMovieService
         var ratings = await _ratingRepository.GetRatingAsync(movie.Id, userid.Value, token);
         movie.Rating = ratings.Rating;
         movie.UserRating = ratings.UserRating;
+        
         return movie;
     }
 
