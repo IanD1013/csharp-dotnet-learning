@@ -49,6 +49,8 @@ builder.Services.AddApiVersioning(x =>
 }).AddMvc();
 
 builder.Services.AddControllers();
+
+// Related to openapi and swagger: 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
