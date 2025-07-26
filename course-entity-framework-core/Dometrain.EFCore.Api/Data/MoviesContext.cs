@@ -1,4 +1,5 @@
 using Dometrain.EFCore.Api.Data.EntityMapping;
+using Dometrain.EFCore.API.Data.EntityMapping;
 using Dometrain.EFCore.Api.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,5 +20,6 @@ public class MoviesContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new MovieMapping());
+        modelBuilder.ApplyConfiguration(new GenreMapping());
     }
 }
