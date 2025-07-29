@@ -1,8 +1,10 @@
+using System.Text.Json.Serialization;
 using Dometrain.EFCore.Api.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); // adds a converter so that enums are serialized as strings instead of numbers.
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
