@@ -1,4 +1,4 @@
-using Dometrain.EFCore.API.Data.ValueConverters;
+using Dometrain.EFCore.Api.Data.ValueConverters;
 using Dometrain.EFCore.Api.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
@@ -26,9 +26,16 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .HasColumnType("varchar(max)")
             .HasColumnName("Plot");
 
+        // Be careful when mapping enum to string
         builder.Property(movie => movie.AgeRating)
             .HasColumnType("varchar(32)")
             .HasConversion<string>();
+
+        builder.OwnsOne(movie => movie.Director)
+            .ToTable("Movie_Directors");
+        
+        builder.OwnsMany(movie => movie.Actors)
+            .ToTable("Movie_Actors");
         
         builder
             .HasOne(movie => movie.Genre)
@@ -46,5 +53,14 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             MainGenreId = 1,
             AgeRating = AgeRating.Adolescent
         });
+        
+        builder.OwnsOne(movie => movie.Director)
+            .HasData(new { MovieIdentifier = 1, FirstName = "David", LastName = "Fincher" });
+
+        builder.OwnsMany(movie => movie.Actors)
+            .HasData(
+                new { MovieIdentifier = 1, Id = 1, FirstName = "Edward", LastName = "Norton" },
+                new { MovieIdentifier = 1, Id = 2, FirstName = "Brad", LastName = "Pitt" }
+            );
     }
 }
