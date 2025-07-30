@@ -25,7 +25,7 @@ public class RatingsController : ControllerBase
         CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
-        var result = await _ratingService.RateMovieAsync(id, request.Rating, userId.Value, token);
+        var result = await _ratingService.RateMovieAsync(id, request.Rating, userId!.Value, token);
         return result ? Ok() : NotFound();
     }
 

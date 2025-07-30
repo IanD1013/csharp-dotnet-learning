@@ -20,6 +20,16 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-entity-framework-cor
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.EFCore.Api", "course-entity-framework-core\Dometrain.EFCore.Api\Dometrain.EFCore.Api.csproj", "{8028FB61-BFB3-4123-A45D-2A2CC27FEB7C}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-clean-architecture", "course-clean-architecture", "{D004F8A9-1FED-4187-A68C-9AD584787F6B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Api", "course-clean-architecture\GymManagement.Api\GymManagement.Api.csproj", "{A9F26642-E79B-469A-889B-9803608D6217}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Application", "course-clean-architecture\GymManagement.Application\GymManagement.Application.csproj", "{45556186-B8A1-42AD-88CB-4ECC5971F003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Domain", "course-clean-architecture\GymManagement.Domain\GymManagement.Domain.csproj", "{66F620A8-C35D-4F3D-86E3-4922DFC2F370}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Infrastructure", "course-clean-architecture\GymManagement.Infrastructure\GymManagement.Infrastructure.csproj", "{9DA9A17C-0F8E-465D-AC45-A9CD1DE381C8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -46,6 +56,22 @@ Global
 		{8028FB61-BFB3-4123-A45D-2A2CC27FEB7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8028FB61-BFB3-4123-A45D-2A2CC27FEB7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8028FB61-BFB3-4123-A45D-2A2CC27FEB7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9F26642-E79B-469A-889B-9803608D6217}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9F26642-E79B-469A-889B-9803608D6217}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9F26642-E79B-469A-889B-9803608D6217}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9F26642-E79B-469A-889B-9803608D6217}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45556186-B8A1-42AD-88CB-4ECC5971F003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45556186-B8A1-42AD-88CB-4ECC5971F003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45556186-B8A1-42AD-88CB-4ECC5971F003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45556186-B8A1-42AD-88CB-4ECC5971F003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66F620A8-C35D-4F3D-86E3-4922DFC2F370}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66F620A8-C35D-4F3D-86E3-4922DFC2F370}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66F620A8-C35D-4F3D-86E3-4922DFC2F370}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66F620A8-C35D-4F3D-86E3-4922DFC2F370}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9DA9A17C-0F8E-465D-AC45-A9CD1DE381C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA9A17C-0F8E-465D-AC45-A9CD1DE381C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA9A17C-0F8E-465D-AC45-A9CD1DE381C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA9A17C-0F8E-465D-AC45-A9CD1DE381C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -54,5 +80,9 @@ Global
 		{0D0B86B9-B2F0-4291-AF61-09B87343F752} = {117976D2-8B04-4AFC-8C52-A0A90394656B}
 		{A40A3A42-5553-4781-8329-4EE695CEF58E} = {117976D2-8B04-4AFC-8C52-A0A90394656B}
 		{8028FB61-BFB3-4123-A45D-2A2CC27FEB7C} = {B760A546-5719-4EE2-AB02-E51754312C34}
+		{A9F26642-E79B-469A-889B-9803608D6217} = {D004F8A9-1FED-4187-A68C-9AD584787F6B}
+		{45556186-B8A1-42AD-88CB-4ECC5971F003} = {D004F8A9-1FED-4187-A68C-9AD584787F6B}
+		{66F620A8-C35D-4F3D-86E3-4922DFC2F370} = {D004F8A9-1FED-4187-A68C-9AD584787F6B}
+		{9DA9A17C-0F8E-465D-AC45-A9CD1DE381C8} = {D004F8A9-1FED-4187-A68C-9AD584787F6B}
 	EndGlobalSection
 EndGlobal
