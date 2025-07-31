@@ -11,7 +11,10 @@ public static class DependencyInjection
     public static IServiceCollection AddInfrastructure(this IServiceCollection services)
     {
         services.AddDbContext<GymManagementDbContext>(options => options.UseSqlite("Data Source=GymManagement.db"));
+        
         services.AddScoped<ISubscriptionsRepository, SubscriptionsRepository>();
+        services.AddScoped<IUnitOfWork>(ServiceProvider => ServiceProvider.GetRequiredService<GymManagementDbContext>());
+        
         return services;
     }
 }
