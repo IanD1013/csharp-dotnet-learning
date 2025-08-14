@@ -14,33 +14,39 @@ namespace GymManagement.Application.UnitTests.Common.Behaviors;
 
 public class ValidationBehaviorTests
 {
+    private readonly ValidationBehavior<CreateGymCommand, ErrorOr<Gym>> _validationBehavior;
+    private readonly IValidator<CreateGymCommand> _mockValidator;
+    private readonly RequestHandlerDelegate<ErrorOr<Gym>> _mockNextBehavior;
+
+    public ValidationBehaviorTests()
+    {
+        // Create a next behavior (mock)
+        _mockNextBehavior = Substitute.For<RequestHandlerDelegate<ErrorOr<Gym>>>();
+
+        // Create validator (mock)
+        _mockValidator = Substitute.For<IValidator<CreateGymCommand>>();
+
+        // Create validation behavior (system under test)
+        _validationBehavior = new ValidationBehavior<CreateGymCommand, ErrorOr<Gym>>(_mockValidator);
+    }
+
     [Fact]
     public async Task InvokeBehavior_WhenValidatorResultIsValid_ShouldInvokeNextBehavior()
     {
-        // ARRANGE:
-        // Create a request
+        // Arrange
         var createGymRequest = GymCommandFactory.CreateCreateGymCommand();
-
-        // Create a next behavior (mock)
         var gym = GymFactory.CreateGym();
-        var mockNextBehavior = Substitute.For<RequestHandlerDelegate<ErrorOr<Gym>>>();
-        mockNextBehavior.Invoke().Returns(gym);
-        
-        // Create validator (mock)
-        var mockValidator = Substitute.For<IValidator<CreateGymCommand>>();
-        mockValidator
+
+        _mockValidator
             .ValidateAsync(createGymRequest, Arg.Any<CancellationToken>())
             .Returns(new ValidationResult());
 
-        // Create validation behavior (system under test)
-        var validationBehavior = new ValidationBehavior<CreateGymCommand, ErrorOr<Gym>>(mockValidator);
-        
-        // ACT:
-        // Invoke behavior
-        var result = await validationBehavior.Handle(createGymRequest, mockNextBehavior, CancellationToken.None);
+        _mockNextBehavior.Invoke().Returns(gym);
 
-        // ASSERT:
-        // Result from invoking the behavior was the result returned by the next behavior
+        // Act
+        var result = await _validationBehavior.Handle(createGymRequest, _mockNextBehavior, CancellationToken.None);
+
+        // Assert
         result.IsError.Should().BeFalse();
         result.Value.Should().BeEquivalentTo(gym);
     }
