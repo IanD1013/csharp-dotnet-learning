@@ -50,4 +50,24 @@ public class ValidationBehaviorTests
         result.IsError.Should().BeFalse();
         result.Value.Should().BeEquivalentTo(gym);
     }
+
+    [Fact]
+    public async Task InvokeBehavior_WhenValidatorResultIsNotValid_ShouldReturnListOfErrors()
+    {
+        // Arrange
+        var createGymRequest = GymCommandFactory.CreateCreateGymCommand();
+        var validationFailures = new List<ValidationFailure> { new("foo", "bad foo") };
+
+        _mockValidator
+            .ValidateAsync(createGymRequest, Arg.Any<CancellationToken>())
+            .Returns(new ValidationResult(validationFailures));
+
+        // Act
+        var result = await _validationBehavior.Handle(createGymRequest, _mockNextBehavior, CancellationToken.None);
+
+        // Assert
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be("foo");
+        result.FirstError.Description.Should().Be("bad foo");
+    }
 }
