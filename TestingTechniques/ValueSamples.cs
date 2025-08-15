@@ -38,4 +38,11 @@ public class ValueSamples
     };
 
     public IEnumerable<int> Numbers = new[] { 1, 5, 10, 15 };
+
+    public event EventHandler ExampleEvent;
+
+    public virtual void RaiseExampleEvent()
+    {
+        ExampleEvent(this, EventArgs.Empty);
+    }
 }

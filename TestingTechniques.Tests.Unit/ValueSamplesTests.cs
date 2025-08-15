@@ -77,4 +77,14 @@ public class ValueSamplesTests
         var numbers = _sut.Numbers.As<int[]>();
         numbers.Should().Contain(1);
     }
+
+    [Fact]
+    public void EventRaisedAssertionExample()
+    {
+        var monitorSubject = _sut.Monitor();
+
+        _sut.RaiseExampleEvent();
+
+        monitorSubject.Should().Raise(nameof(_sut.ExampleEvent));
+    }
 }
