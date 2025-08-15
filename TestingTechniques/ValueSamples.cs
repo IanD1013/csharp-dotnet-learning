@@ -45,4 +45,6 @@ public class ValueSamples
     {
         ExampleEvent(this, EventArgs.Empty);
     }
+
+    internal int InternalSecretNumber = 42;
 }
