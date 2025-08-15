@@ -20,4 +20,16 @@ public class CalculatorTests
         // Assert.Equal(expected, result);
         result.Should().Be(expected);
     }
+
+    [Fact]
+    public void ExceptionThrownAssertionExample()
+    {
+        var calculator = new Calculator();
+
+        Action result = () => calculator.Divide(1, 0);
+
+        result.Should()
+            .Throw<DivideByZeroException>()
+            .WithMessage("Attempted to divide by zero.");
+    }
 }
