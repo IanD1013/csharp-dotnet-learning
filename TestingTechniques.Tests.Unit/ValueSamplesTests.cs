@@ -53,4 +53,28 @@ public class ValueSamplesTests
         var user = _sut.AppUser;
         user.Should().BeEquivalentTo(expected);
     }
+
+    [Fact]
+    public void EnumerableObjectsAssertionExample()
+    {
+        var expected = new User
+        {
+            FullName = "Ian Dong",
+            Age = 21,
+            DateOfBirth = new(2000, 6, 9)
+        };
+
+        var users = _sut.Users.As<User[]>();
+
+        users.Should().ContainEquivalentOf(expected);
+        users.Should().HaveCount(3);
+        users.Should().Contain(x => x.FullName.StartsWith("Ian") && x.Age > 5);
+    }
+
+    [Fact]
+    public void EnumerableNumbersAssertionExample()
+    {
+        var numbers = _sut.Numbers.As<int[]>();
+        numbers.Should().Contain(1);
+    }
 }
