@@ -4,16 +4,15 @@ using Xunit.Abstractions;
 
 namespace CalculatorLibraryTests;
 
-public class CalculatorTests
+public class CalculatorTests : IDisposable
 {
     private readonly Calculator _sut = new();
-    private readonly Guid _guid = Guid.NewGuid();
-
     private readonly ITestOutputHelper _outputHelper;
 
     public CalculatorTests(ITestOutputHelper outputHelper)
     {
         _outputHelper = outputHelper;
+        _outputHelper.WriteLine("Hello from the ctor");
     }
 
     [Fact]
@@ -24,19 +23,12 @@ public class CalculatorTests
 
         // Assert
         Assert.Equal(3, result);
+
+        _outputHelper.WriteLine("Hello from the test itself");
     }
 
-    [Fact]
-    public void TestGuid()
+    public void Dispose()
     {
-        _outputHelper.WriteLine(_guid.ToString());
+        _outputHelper.WriteLine("Hello from cleanup");
     }
-
-    [Fact]
-    public void TestGuid2()
-    {
-        _outputHelper.WriteLine(_guid.ToString());
-    }
-
-    // xUnit created a new instance of the test calculator class for each test
 }
