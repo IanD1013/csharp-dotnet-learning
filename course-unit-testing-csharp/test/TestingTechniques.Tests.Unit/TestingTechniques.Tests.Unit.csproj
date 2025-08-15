@@ -24,6 +24,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\..\src\TestingTechniques\TestingTechniques.csproj" />
       <ProjectReference Include="..\TestingTechniques\TestingTechniques.csproj" />
     </ItemGroup>
 
