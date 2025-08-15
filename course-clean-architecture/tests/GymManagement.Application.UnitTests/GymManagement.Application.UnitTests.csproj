@@ -25,8 +25,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\course-clean-architecture\GymManagement.Application\GymManagement.Application.csproj" />
-      <ProjectReference Include="..\course-clean-architecture\tests\TestCommon\TestCommon.csproj" />
+      <ProjectReference Include="..\..\GymManagement.Application\GymManagement.Application.csproj" />
+      <ProjectReference Include="..\TestCommon\TestCommon.csproj" />
     </ItemGroup>
 
 </Project>

@@ -38,7 +38,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestCommon", "course-clean-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Domain.UnitTests", "course-clean-architecture\tests\GymManagement.Domain.UnitTests\GymManagement.Domain.UnitTests.csproj", "{79D12BF0-D417-4FA2-9162-23C0CDC78129}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Application.UnitTests", "GymManagement.Application.UnitTests\GymManagement.Application.UnitTests.csproj", "{6836822D-2A77-4D38-BAB3-A7225DF3B341}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Application.UnitTests", "course-clean-architecture\tests\GymManagement.Application.UnitTests\GymManagement.Application.UnitTests.csproj", "{6836822D-2A77-4D38-BAB3-A7225DF3B341}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
