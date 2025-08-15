@@ -29,4 +29,14 @@ public class ValueSamplesTests
         age.Should().BeLessOrEqualTo(21);
         age.Should().BeInRange(20, 22);
     }
+
+    [Fact]
+    public void DateAssertionExample()
+    {
+        var dateOfBirth = _sut.DateOfBirth;
+
+        dateOfBirth.Should().Be(new(2000, 6, 9));
+        dateOfBirth.Should().BeInRange(new(2000, 6, 8), new(2000, 6, 10));
+        dateOfBirth.Should().BeGreaterThan(new(2000, 6, 8));
+    }
 }
