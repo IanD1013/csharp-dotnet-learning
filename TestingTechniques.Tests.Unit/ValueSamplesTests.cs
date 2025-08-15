@@ -39,4 +39,18 @@ public class ValueSamplesTests
         dateOfBirth.Should().BeInRange(new(2000, 6, 8), new(2000, 6, 10));
         dateOfBirth.Should().BeGreaterThan(new(2000, 6, 8));
     }
+
+    [Fact]
+    public void ObjectAssertionExample()
+    {
+        var expected = new User
+        {
+            FullName = "Ian Dong",
+            Age = 21,
+            DateOfBirth = new(2000, 6, 9)
+        };
+
+        var user = _sut.AppUser;
+        user.Should().BeEquivalentTo(expected);
+    }
 }
