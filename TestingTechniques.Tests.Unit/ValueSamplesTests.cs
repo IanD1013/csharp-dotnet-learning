@@ -17,4 +17,16 @@ public class ValueSamplesTests
         fullName.Should().StartWith("Ian");
         fullName.Should().EndWith("Dong");
     }
+
+    [Fact]
+    public void NumberAssertionExample()
+    {
+        var age = _sut.Age;
+
+        age.Should().Be(21);
+        age.Should().BePositive();
+        age.Should().BeGreaterThan(20);
+        age.Should().BeLessOrEqualTo(21);
+        age.Should().BeInRange(20, 22);
+    }
 }
