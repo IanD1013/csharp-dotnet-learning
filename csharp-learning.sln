@@ -60,6 +60,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Users.Api.Tests.Unit", "cou
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedTechniques.Tests.Unit", "course-unit-testing-csharp\test\AdvancedTechniques.Tests.Unit\AdvancedTechniques.Tests.Unit.csproj", "{FCF8E531-8FF0-47BE-8554-391097430C7C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedTechniques", "course-unit-testing-csharp\src\AdvancedTechniques\AdvancedTechniques.csproj", "{0175D556-94B5-4845-9BD9-165A9037BB8B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -146,6 +148,10 @@ Global
 		{FCF8E531-8FF0-47BE-8554-391097430C7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCF8E531-8FF0-47BE-8554-391097430C7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCF8E531-8FF0-47BE-8554-391097430C7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -172,5 +178,6 @@ Global
 		{01B76E89-EECB-4FE8-892C-74640DFA544C} = {9AFA1132-D568-49E9-9965-F8DAE84F2E06}
 		{FD6696E4-463B-4EDC-BCEA-1F2928A5073D} = {1EAF3640-86E5-407B-A810-327F04B8FDC4}
 		{FCF8E531-8FF0-47BE-8554-391097430C7C} = {1EAF3640-86E5-407B-A810-327F04B8FDC4}
+		{0175D556-94B5-4845-9BD9-165A9037BB8B} = {9AFA1132-D568-49E9-9965-F8DAE84F2E06}
 	EndGlobalSection
 EndGlobal
