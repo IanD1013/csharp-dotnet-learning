@@ -17,14 +17,16 @@ public class DefaultBehaviorTests : IClassFixture<MyClassFixture>
     }
 
     [Fact]
-    public void ExampleTest1()
+    public async Task ExampleTest1()
     {
         _testOutputHelper.WriteLine($"The Guid was: {_fixture.Id}");
+        await Task.Delay(2000);
     }
 
     [Fact]
-    public void ExampleTest2()
+    public async Task ExampleTest2()
     {
         _testOutputHelper.WriteLine($"The Guid was: {_fixture.Id}");
+        await Task.Delay(2000);
     }
 }
