@@ -40,7 +40,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Domain.UnitTe
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Application.UnitTests", "course-clean-architecture\tests\GymManagement.Application.UnitTests\GymManagement.Application.UnitTests.csproj", "{6836822D-2A77-4D38-BAB3-A7225DF3B341}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-unit-testing", "course-unit-testing", "{5B26C18E-A48F-4CB5-B45D-B391780C31BB}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-unit-testing-csharp", "course-unit-testing-csharp", "{5B26C18E-A48F-4CB5-B45D-B391780C31BB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{9AFA1132-D568-49E9-9965-F8DAE84F2E06}"
 EndProject
@@ -61,6 +61,16 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedTechniques.Tests.Unit", "course-unit-testing-csharp\test\AdvancedTechniques.Tests.Unit\AdvancedTechniques.Tests.Unit.csproj", "{FCF8E531-8FF0-47BE-8554-391097430C7C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedTechniques", "course-unit-testing-csharp\src\AdvancedTechniques\AdvancedTechniques.csproj", "{0175D556-94B5-4845-9BD9-165A9037BB8B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-integration-testing-aspdotnetcore", "course-integration-testing-aspdotnetcore", "{C7F30830-681A-4263-8EFC-E454A421DB21}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{191ABC90-85F4-47D5-966D-9642E057A61B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{281560A6-A9E6-4191-9404-83B92F131C7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Api", "course-integration-testing-aspdotnetcore\src\Customers.Api\Customers.Api.csproj", "{C835A966-7F4F-4AFC-BB66-9967398CE5A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Api.Tests.Integration", "course-integration-testing-aspdotnetcore\tests\Customers.Api.Tests.Integration\Customers.Api.Tests.Integration.csproj", "{9921315D-49C7-435F-9732-94DB824A8929}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -152,6 +162,14 @@ Global
 		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0175D556-94B5-4845-9BD9-165A9037BB8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C835A966-7F4F-4AFC-BB66-9967398CE5A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C835A966-7F4F-4AFC-BB66-9967398CE5A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C835A966-7F4F-4AFC-BB66-9967398CE5A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C835A966-7F4F-4AFC-BB66-9967398CE5A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9921315D-49C7-435F-9732-94DB824A8929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9921315D-49C7-435F-9732-94DB824A8929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9921315D-49C7-435F-9732-94DB824A8929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9921315D-49C7-435F-9732-94DB824A8929}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -179,5 +197,9 @@ Global
 		{FD6696E4-463B-4EDC-BCEA-1F2928A5073D} = {1EAF3640-86E5-407B-A810-327F04B8FDC4}
 		{FCF8E531-8FF0-47BE-8554-391097430C7C} = {1EAF3640-86E5-407B-A810-327F04B8FDC4}
 		{0175D556-94B5-4845-9BD9-165A9037BB8B} = {9AFA1132-D568-49E9-9965-F8DAE84F2E06}
+		{191ABC90-85F4-47D5-966D-9642E057A61B} = {C7F30830-681A-4263-8EFC-E454A421DB21}
+		{281560A6-A9E6-4191-9404-83B92F131C7B} = {C7F30830-681A-4263-8EFC-E454A421DB21}
+		{C835A966-7F4F-4AFC-BB66-9967398CE5A7} = {191ABC90-85F4-47D5-966D-9642E057A61B}
+		{9921315D-49C7-435F-9732-94DB824A8929} = {281560A6-A9E6-4191-9404-83B92F131C7B}
 	EndGlobalSection
 EndGlobal
