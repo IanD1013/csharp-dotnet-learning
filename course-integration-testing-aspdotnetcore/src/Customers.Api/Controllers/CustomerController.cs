@@ -19,11 +19,11 @@ public class CustomerController : ControllerBase
     [HttpPost("customers")]
     public async Task<IActionResult> Create([FromBody] CustomerRequest request)
     {
-        var customer = request.ToCustomer();
+        var customer = request.ToCustomer(); // api contract to domain model
 
         await _customerService.CreateAsync(customer);
 
-        var customerResponse = customer.ToCustomerResponse();
+        var customerResponse = customer.ToCustomerResponse(); // domain model to api contract
 
         return CreatedAtAction("Get", new { customerResponse.Id }, customerResponse);
     }
@@ -41,7 +41,7 @@ public class CustomerController : ControllerBase
         var customerResponse = customer.ToCustomerResponse();
         return Ok(customerResponse);
     }
-    
+
     [HttpGet("customers")]
     public async Task<IActionResult> GetAll()
     {
@@ -49,7 +49,7 @@ public class CustomerController : ControllerBase
         var customersResponse = customers.ToCustomersResponse();
         return Ok(customersResponse);
     }
-    
+
     [HttpPut("customers/{id:guid}")]
     public async Task<IActionResult> Update(
         [FromMultiSource] UpdateCustomerRequest request)
@@ -67,7 +67,7 @@ public class CustomerController : ControllerBase
         var customerResponse = customer.ToCustomerResponse();
         return Ok(customerResponse);
     }
-    
+
     [HttpDelete("customers/{id:guid}")]
     public async Task<IActionResult> Delete([FromRoute] Guid id)
     {
