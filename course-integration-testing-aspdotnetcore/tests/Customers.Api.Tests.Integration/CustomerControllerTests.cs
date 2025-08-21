@@ -26,6 +26,8 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
         var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
         problem!.Title.Should().Be("Not Found");
         problem.Status.Should().Be(404);
+        // response.Headers.Location!.ToString().Should().Be("...");
+        // response.Headers.GetValues("...");
     }
 
 }
