@@ -21,6 +21,8 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
         var response = await _httpClient.GetAsync($"customers/{Guid.NewGuid()}");
 
         response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        var text = await response.Content.ReadAsStringAsync();
+        text.Should().Contain("404");
     }
 
 }
