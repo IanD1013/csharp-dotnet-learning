@@ -72,6 +72,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Api", "course-int
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.Api.Tests.Integration", "course-integration-testing-aspdotnetcore\tests\Customers.Api.Tests.Integration\Customers.Api.Tests.Integration.csproj", "{9921315D-49C7-435F-9732-94DB824A8929}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FakeApi", "course-integration-testing-aspdotnetcore\src\FakeApi\FakeApi.csproj", "{D52750A4-9821-433C-B631-02CBF8C07AE5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -170,6 +172,10 @@ Global
 		{9921315D-49C7-435F-9732-94DB824A8929}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9921315D-49C7-435F-9732-94DB824A8929}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9921315D-49C7-435F-9732-94DB824A8929}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D52750A4-9821-433C-B631-02CBF8C07AE5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D52750A4-9821-433C-B631-02CBF8C07AE5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D52750A4-9821-433C-B631-02CBF8C07AE5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D52750A4-9821-433C-B631-02CBF8C07AE5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -201,5 +207,6 @@ Global
 		{281560A6-A9E6-4191-9404-83B92F131C7B} = {C7F30830-681A-4263-8EFC-E454A421DB21}
 		{C835A966-7F4F-4AFC-BB66-9967398CE5A7} = {191ABC90-85F4-47D5-966D-9642E057A61B}
 		{9921315D-49C7-435F-9732-94DB824A8929} = {281560A6-A9E6-4191-9404-83B92F131C7B}
+		{D52750A4-9821-433C-B631-02CBF8C07AE5} = {191ABC90-85F4-47D5-966D-9642E057A61B}
 	EndGlobalSection
 EndGlobal
