@@ -4,13 +4,13 @@ using Bogus;
 using Customers.Api.Contracts.Requests;
 using Customers.Api.Contracts.Responses;
 using FluentAssertions;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Xunit;
 
-namespace Customers.Api.Tests.Integration;
+namespace Customers.Api.Tests.Integration.CustomerController;
 
-public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiMarker>>, IAsyncLifetime
+// [Collection("CustomerApi Collection")]
+public class CreateCustomerControllerTests : IAsyncLifetime, IClassFixture<WebApplicationFactory<IApiMarker>>
 {
     private readonly HttpClient _httpClient;
 
@@ -23,7 +23,7 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
 
     private readonly List<Guid> _createdIds = new();
 
-    public CustomerControllerTests(WebApplicationFactory<IApiMarker> appFactory)
+    public CreateCustomerControllerTests(WebApplicationFactory<IApiMarker> appFactory)
     {
         _httpClient = appFactory.CreateClient();
     }
@@ -45,17 +45,6 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
         _createdIds.Add(customerResponse!.Id);
     }
 
-    [Fact]
-    public async Task Get_ReturnsNotFound_WhenCustomerDoesNotExist()
-    {
-        var response = await _httpClient.GetAsync($"customers/{Guid.NewGuid()}");
-
-        response.StatusCode.Should().Be(HttpStatusCode.NotFound);
-        var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
-        problem!.Title.Should().Be("Not Found");
-        problem.Status.Should().Be(404);
-    }
-
     public Task InitializeAsync() => Task.CompletedTask;
 
     public async Task DisposeAsync()
@@ -66,4 +55,3 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
         }
     }
 }
-
