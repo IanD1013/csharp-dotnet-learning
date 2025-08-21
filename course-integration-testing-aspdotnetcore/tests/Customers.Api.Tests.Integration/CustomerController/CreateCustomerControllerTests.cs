@@ -10,4 +10,10 @@ public class CreateCustomerControllerTests : IClassFixture<CustomerApiFactory>
     {
         _apiFactory = apiFactory;
     }
+
+    [Fact]
+    public async Task Test()
+    {
+        await Task.Delay(5000);
+    }
 }
