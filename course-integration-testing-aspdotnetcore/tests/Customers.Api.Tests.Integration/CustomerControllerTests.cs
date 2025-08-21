@@ -10,15 +10,18 @@ using Xunit;
 
 namespace Customers.Api.Tests.Integration;
 
-public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiMarker>>
+public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiMarker>>, IAsyncLifetime
 {
     private readonly HttpClient _httpClient;
+
     private readonly Faker<CustomerRequest> _customerGenerator =
         new Faker<CustomerRequest>()
             .RuleFor(x => x.FullName, faker => faker.Person.FullName)
             .RuleFor(x => x.Email, faker => faker.Person.Email)
             .RuleFor(x => x.GitHubUsername, "nickchapsas")
             .RuleFor(x => x.DateOfBirth, faker => faker.Person.DateOfBirth.Date);
+
+    private readonly List<Guid> _createdIds = new();
 
     public CustomerControllerTests(WebApplicationFactory<IApiMarker> appFactory)
     {
@@ -38,6 +41,8 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
         var customerResponse = await response.Content.ReadFromJsonAsync<CustomerResponse>();
         customerResponse.Should().BeEquivalentTo(customer);
         response.StatusCode.Should().Be(HttpStatusCode.Created);
+
+        _createdIds.Add(customerResponse!.Id);
     }
 
     [Fact]
@@ -49,6 +54,16 @@ public class CustomerControllerTests : IClassFixture<WebApplicationFactory<IApiM
         var problem = await response.Content.ReadFromJsonAsync<ValidationProblemDetails>();
         problem!.Title.Should().Be("Not Found");
         problem.Status.Should().Be(404);
+    }
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
+        foreach (var createdId in _createdIds)
+        {
+            await _httpClient.DeleteAsync($"customers/{createdId}");
+        }
     }
 }
 
