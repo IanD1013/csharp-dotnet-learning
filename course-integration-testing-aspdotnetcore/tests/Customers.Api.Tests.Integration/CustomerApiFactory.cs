@@ -25,6 +25,8 @@ public class CustomerApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifet
     //         .WithWaitStrategy(Wait.ForUnixContainer().UntilPortIsAvailable(5432))
     //         .Build();
 
+    public const string ValidGithubUser = "validuser";
+
     private readonly TestcontainerDatabase _dbContainer =
         new TestcontainersBuilder<PostgreSqlTestcontainer>()
             .WithDatabase(new PostgreSqlTestcontainerConfiguration
@@ -67,7 +69,7 @@ public class CustomerApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifet
     public async Task InitializeAsync()
     {
         _gitHubApiServer.Start();
-        _gitHubApiServer.SetupUser("nickchapsas");
+        _gitHubApiServer.SetupUser(ValidGithubUser);
         await _dbContainer.StartAsync();
     }
 
