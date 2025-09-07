@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 using Xunit;
@@ -48,6 +49,8 @@ public class CustomerApiFactory : WebApplicationFactory<IApiMarker>, IAsyncLifet
 
         builder.ConfigureTestServices(services =>
         {
+            services.RemoveAll(typeof(IHostedService));
+            
             services.RemoveAll(typeof(IDbConnectionFactory));
 
             // services.AddSingleton<IDbConnectionFactory>(_ =>
