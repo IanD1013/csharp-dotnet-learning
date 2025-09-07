@@ -25,6 +25,17 @@ public class GitHubApiServer : IDisposable
                 .WithHeader("content-type", "application/json; charset=utf-8")
                 .WithStatusCode(200));
     }
+    
+    public void SetupThrottledUser(string username)
+    {
+        _server.Given(Request.Create()
+                .WithPath($"/users/{username}")
+                .UsingGet())
+            .RespondWith(Response.Create()
+                .WithBody("API rate limit exceeded for 172.16.58.3. (But here's the good news: Authenticated requests get a higher rate limit. Check out the documentation for more details.)")
+                .WithHeader("content-type", "application/json; charset=utf-8")
+                .WithStatusCode(403));
+    }
 
     private static string GenerateGitHubUserResponseBody(string username)
     {
