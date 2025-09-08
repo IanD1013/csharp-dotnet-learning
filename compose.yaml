@@ -1,0 +1,13 @@
+﻿services:
+  customers.webapp.tests.integration:
+    image: customers.webapp.tests.integration
+    build:
+      context: .
+      dockerfile: course-integration-testing-aspdotnetcore/tests/Customers.WebApp.Tests.Integration/Dockerfile
+
+  customers.webapp.tests.integration-1:
+    image: customers.webapp.tests.integration-1
+    build:
+      context: .
+      dockerfile: course-integration-testing-aspdotnetcore/tests/Customers.WebApp.Tests.Integration/Dockerfile
+
