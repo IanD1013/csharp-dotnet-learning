@@ -30,4 +30,8 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\src\Customers.WebApp\Customers.WebApp.csproj" />
+    </ItemGroup>
+
 </Project>
