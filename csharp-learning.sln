@@ -63,6 +63,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdvancedTechniques", "course-unit-testing-csharp\src\AdvancedTechniques\AdvancedTechniques.csproj", "{0175D556-94B5-4845-9BD9-165A9037BB8B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-integration-testing-aspdotnetcore", "course-integration-testing-aspdotnetcore", "{C7F30830-681A-4263-8EFC-E454A421DB21}"
+	ProjectSection(SolutionItems) = preProject
+		course-integration-testing-aspdotnetcore\compose.yaml = course-integration-testing-aspdotnetcore\compose.yaml
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{191ABC90-85F4-47D5-966D-9642E057A61B}"
 EndProject
@@ -77,11 +80,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.WebApp", "course-integration-testing-aspdotnetcore\src\Customers.WebApp\Customers.WebApp.csproj", "{506DCD74-F2F4-48D5-9826-436E79877ECA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.WebApp.Tests.Integration", "course-integration-testing-aspdotnetcore\tests\Customers.WebApp.Tests.Integration\Customers.WebApp.Tests.Integration.csproj", "{6171836C-8533-45D8-AFE7-B2DAD534ABF1}"
-EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{77C366F8-BE84-4F6D-BBE1-8044D2079CB2}"
-	ProjectSection(SolutionItems) = preProject
-		compose.yaml = compose.yaml
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
