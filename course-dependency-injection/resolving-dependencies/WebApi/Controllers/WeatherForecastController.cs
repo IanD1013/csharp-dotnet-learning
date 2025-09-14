@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Attributes;
+using WebApi.Filters;
 
 namespace WebApi.Controllers;
 
@@ -12,7 +13,7 @@ public class WeatherForecastController : ControllerBase
     };
 
     [HttpGet("weather")]
-    [DurationLogger]
+    [ServiceFilter(typeof(DurationLoggerFilter))]
     public IEnumerable<WeatherForecast> Get([FromServices] ILogger<WeatherForecastController> logger)
     {
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
