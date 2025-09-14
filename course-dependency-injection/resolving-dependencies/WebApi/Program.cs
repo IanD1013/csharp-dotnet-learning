@@ -1,4 +1,5 @@
 using WebApi.Filters;
+using WebApi.HostedServices;
 using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<DurationLoggerFilter>();
+builder.Services.AddHostedService<BackgroundTicker>();
 
 var app = builder.Build();
 
