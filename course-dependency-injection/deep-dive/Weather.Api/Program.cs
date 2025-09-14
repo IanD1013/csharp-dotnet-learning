@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection.Extensions;
 using Weather.Api.Logging;
-using Weather.Api.Weather;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,12 +8,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddTransient<IWeatherService, OpenWeatherService>();
-builder.Services.AddScoped<IWeatherService, InMemoryWeatherService>();
-
-builder.Services.RemoveAll(typeof(IWeatherService));
-builder.Services.RemoveAt(190);
-
+builder.Services.AddWeatherServices();
 
 builder.Services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
