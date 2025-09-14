@@ -1,4 +1,5 @@
 using Weather.Api.Logging;
+using Weather.Api.Weather;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 
+builder.Services.AddTransient<IWeatherService, OpenWeatherService>();
+builder.Services.AddScoped<IWeatherService, InMemoryWeatherService>();
 
 builder.Services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 

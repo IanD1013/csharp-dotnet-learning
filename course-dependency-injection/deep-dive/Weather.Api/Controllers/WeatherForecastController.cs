@@ -8,19 +8,21 @@ namespace Weather.Api.Controllers;
 [ApiController]
 public class WeatherForecastController : ControllerBase
 {
-    private readonly IWeatherService _weatherService;
+    private readonly IEnumerable<IWeatherService> _weatherServices;
     private readonly ILoggerAdapter<WeatherForecastController> _logger;
 
-    public WeatherForecastController(IWeatherService weatherService, ILoggerAdapter<WeatherForecastController> logger)
+    public WeatherForecastController(IEnumerable<IWeatherService> weatherServices, ILoggerAdapter<WeatherForecastController> logger)
     {
-        _weatherService = weatherService;
+        _weatherServices = weatherServices;
         _logger = logger;
     }
 
     [HttpGet("weather/{city}")]
     public async Task<IActionResult> GetCurrentWeather([FromRoute] string city)
     {
-        var weather = await _weatherService.GetCurrentWeatherAsync(city);
+        var first = _weatherServices.First();
+        
+        var weather = await first.GetCurrentWeatherAsync(city);
         if (weather == null)
         {
             return NotFound();
