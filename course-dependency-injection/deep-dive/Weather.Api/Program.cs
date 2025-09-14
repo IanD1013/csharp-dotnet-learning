@@ -12,6 +12,19 @@ builder.Services.AddHttpClient();
 builder.Services.AddTransient<IWeatherService, OpenWeatherService>();
 builder.Services.AddScoped<IWeatherService, InMemoryWeatherService>();
 
+var openWeatherServiceDescriptor = new ServiceDescriptor(
+    typeof(IWeatherService), 
+    typeof(OpenWeatherService), 
+    ServiceLifetime.Transient);
+
+var weatherServiceDescriptor =
+    new ServiceDescriptor(
+        typeof(IWeatherService), 
+        provider => new OpenWeatherService(provider.GetRequiredService<IHttpClientFactory>()), 
+        ServiceLifetime.Transient);
+
+builder.Services.Add(openWeatherServiceDescriptor);
+
 builder.Services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
 var app = builder.Build();
