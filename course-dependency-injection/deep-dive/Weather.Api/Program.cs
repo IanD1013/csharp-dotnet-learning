@@ -9,21 +9,16 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddHttpClient();
 
-builder.Services.AddTransient<IWeatherService, OpenWeatherService>();
-builder.Services.AddScoped<IWeatherService, InMemoryWeatherService>();
+// builder.Services.AddTransient<IWeatherService, OpenWeatherService>();
+// builder.Services.AddScoped<IWeatherService, InMemoryWeatherService>();
+var openWeatherServiceDescriptor = new ServiceDescriptor(typeof(IWeatherService), typeof(OpenWeatherService), ServiceLifetime.Transient);
+var inMemWeatherServiceDescriptor = new ServiceDescriptor(typeof(IWeatherService), typeof(InMemoryWeatherService), ServiceLifetime.Transient);
 
-var openWeatherServiceDescriptor = new ServiceDescriptor(
-    typeof(IWeatherService), 
-    typeof(OpenWeatherService), 
-    ServiceLifetime.Transient);
+builder.Services.Add(openWeatherServiceDescriptor);  // 190
+builder.Services.Add(inMemWeatherServiceDescriptor); // 191
 
-var weatherServiceDescriptor =
-    new ServiceDescriptor(
-        typeof(IWeatherService), 
-        provider => new OpenWeatherService(provider.GetRequiredService<IHttpClientFactory>()), 
-        ServiceLifetime.Transient);
-
-builder.Services.Add(openWeatherServiceDescriptor);
+// builder.Services.TryAdd(openWeatherServiceDescriptor);  // 190
+// builder.Services.TryAdd(inMemWeatherServiceDescriptor); // 190
 
 builder.Services.AddTransient(typeof(ILoggerAdapter<>), typeof(LoggerAdapter<>));
 
