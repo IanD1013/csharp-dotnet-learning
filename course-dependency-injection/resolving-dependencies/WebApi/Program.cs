@@ -1,4 +1,5 @@
 using WebApi.Filters;
+using WebApi.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<DurationLoggerFilter>();
 
 var app = builder.Build();
+
+app.UseMiddleware<DurationLoggerMiddleware>();
 
 if (app.Environment.IsDevelopment())
 {
