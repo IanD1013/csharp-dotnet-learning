@@ -81,6 +81,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.WebApp", "course-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Customers.WebApp.Tests.Integration", "course-integration-testing-aspdotnetcore\tests\Customers.WebApp.Tests.Integration\Customers.WebApp.Tests.Integration.csproj", "{6171836C-8533-45D8-AFE7-B2DAD534ABF1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-dependency-injection", "course-dependency-injection", "{098908EA-9641-4CD7-A2B4-C7A6C3225E55}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "resolving-dependencies", "resolving-dependencies", "{5A27F017-1AA2-4348-B23D-8D2943AB5A20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApi", "course-dependency-injection\resolving-dependencies\WebApi\WebApi.csproj", "{890A9381-5139-45F6-BFCE-B15D0AFAB636}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -191,6 +197,10 @@ Global
 		{6171836C-8533-45D8-AFE7-B2DAD534ABF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6171836C-8533-45D8-AFE7-B2DAD534ABF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6171836C-8533-45D8-AFE7-B2DAD534ABF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{890A9381-5139-45F6-BFCE-B15D0AFAB636}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{890A9381-5139-45F6-BFCE-B15D0AFAB636}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{890A9381-5139-45F6-BFCE-B15D0AFAB636}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{890A9381-5139-45F6-BFCE-B15D0AFAB636}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -225,5 +235,7 @@ Global
 		{D52750A4-9821-433C-B631-02CBF8C07AE5} = {191ABC90-85F4-47D5-966D-9642E057A61B}
 		{506DCD74-F2F4-48D5-9826-436E79877ECA} = {191ABC90-85F4-47D5-966D-9642E057A61B}
 		{6171836C-8533-45D8-AFE7-B2DAD534ABF1} = {281560A6-A9E6-4191-9404-83B92F131C7B}
+		{5A27F017-1AA2-4348-B23D-8D2943AB5A20} = {098908EA-9641-4CD7-A2B4-C7A6C3225E55}
+		{890A9381-5139-45F6-BFCE-B15D0AFAB636} = {5A27F017-1AA2-4348-B23D-8D2943AB5A20}
 	EndGlobalSection
 EndGlobal
