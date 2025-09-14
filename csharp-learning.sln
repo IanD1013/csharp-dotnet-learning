@@ -91,6 +91,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "deep-dive", "deep-dive", "{
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Api", "course-dependency-injection\deep-dive\Weather.Api\Weather.Api.csproj", "{C2B62B98-7EF8-44B1-9320-1CA6494CD153}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "advanced-techniques", "advanced-techniques", "{DDBB73EE-B437-4B3D-89E0-31B902395C1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomScope.ConsoleApp", "course-dependency-injection\advanced-techniques\CustomScope.ConsoleApp\CustomScope.ConsoleApp.csproj", "{63F108B3-44F8-47C9-9297-DF8CC55B2E7D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -209,6 +213,10 @@ Global
 		{C2B62B98-7EF8-44B1-9320-1CA6494CD153}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2B62B98-7EF8-44B1-9320-1CA6494CD153}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2B62B98-7EF8-44B1-9320-1CA6494CD153}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63F108B3-44F8-47C9-9297-DF8CC55B2E7D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63F108B3-44F8-47C9-9297-DF8CC55B2E7D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63F108B3-44F8-47C9-9297-DF8CC55B2E7D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63F108B3-44F8-47C9-9297-DF8CC55B2E7D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -247,5 +255,7 @@ Global
 		{890A9381-5139-45F6-BFCE-B15D0AFAB636} = {5A27F017-1AA2-4348-B23D-8D2943AB5A20}
 		{5FACABB4-2F11-4E20-8E14-C1BA5A617CF8} = {098908EA-9641-4CD7-A2B4-C7A6C3225E55}
 		{C2B62B98-7EF8-44B1-9320-1CA6494CD153} = {5FACABB4-2F11-4E20-8E14-C1BA5A617CF8}
+		{DDBB73EE-B437-4B3D-89E0-31B902395C1B} = {098908EA-9641-4CD7-A2B4-C7A6C3225E55}
+		{63F108B3-44F8-47C9-9297-DF8CC55B2E7D} = {DDBB73EE-B437-4B3D-89E0-31B902395C1B}
 	EndGlobalSection
 EndGlobal
