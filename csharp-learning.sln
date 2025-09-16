@@ -99,6 +99,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiFunction.ConsoleApp", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Weather.Api", "course-dependency-injection\advanced-techniques\Weather.Api\Weather.Api.csproj", "{6BC92931-3C51-471B-9C24-309E912689E6}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "scrutor", "scrutor", "{D5AFF97D-BDA6-4C90-9003-353FDA352B8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScrutorScanning.ConsoleApp", "course-dependency-injection\scrutor\ScrutorScanning.ConsoleApp\ScrutorScanning.ConsoleApp.csproj", "{2A05C432-7243-48D1-8AC4-5F0484AFE938}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -229,6 +233,10 @@ Global
 		{6BC92931-3C51-471B-9C24-309E912689E6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6BC92931-3C51-471B-9C24-309E912689E6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6BC92931-3C51-471B-9C24-309E912689E6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2A05C432-7243-48D1-8AC4-5F0484AFE938}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2A05C432-7243-48D1-8AC4-5F0484AFE938}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2A05C432-7243-48D1-8AC4-5F0484AFE938}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2A05C432-7243-48D1-8AC4-5F0484AFE938}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -271,5 +279,7 @@ Global
 		{63F108B3-44F8-47C9-9297-DF8CC55B2E7D} = {DDBB73EE-B437-4B3D-89E0-31B902395C1B}
 		{A90BF080-15E8-425B-9352-B28D1F5FC359} = {DDBB73EE-B437-4B3D-89E0-31B902395C1B}
 		{6BC92931-3C51-471B-9C24-309E912689E6} = {DDBB73EE-B437-4B3D-89E0-31B902395C1B}
+		{D5AFF97D-BDA6-4C90-9003-353FDA352B8B} = {098908EA-9641-4CD7-A2B4-C7A6C3225E55}
+		{2A05C432-7243-48D1-8AC4-5F0484AFE938} = {D5AFF97D-BDA6-4C90-9003-353FDA352B8B}
 	EndGlobalSection
 EndGlobal
