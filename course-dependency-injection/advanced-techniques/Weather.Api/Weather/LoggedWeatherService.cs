@@ -1,29 +1,22 @@
 ﻿using System.Diagnostics;
+using Weather.Api.Logging;
 
 namespace Weather.Api.Weather;
 
 public class LoggedWeatherService : IWeatherService
 {
     private readonly IWeatherService _weatherService; //<-- OpenWeatherService
-    private readonly ILogger<IWeatherService> _logger;
+    private readonly ILoggerAdapter<IWeatherService> _logger;
 
-    public LoggedWeatherService(IWeatherService weatherService, ILogger<IWeatherService> logger)
+    public LoggedWeatherService(IWeatherService weatherService, ILoggerAdapter<IWeatherService> logger)
     {
         _weatherService = weatherService;
         _logger = logger;
     }
 
     public async Task<WeatherResponse?> GetCurrentWeatherAsync(string city)
-    {
-        var sw = Stopwatch.StartNew();
-        try
-        {
-            return await _weatherService.GetCurrentWeatherAsync(city);
-        }
-        finally
-        {
-            sw.Stop();
-            _logger.LogInformation("Weather retrieval for city: {0}, took {1}ms", city, sw.ElapsedMilliseconds);
-        }
+    { 
+        using var _ = _logger.TimedOperation("Weather retrieval for city: {city}", city);
+        return await _weatherService.GetCurrentWeatherAsync(city);
     }
 }
