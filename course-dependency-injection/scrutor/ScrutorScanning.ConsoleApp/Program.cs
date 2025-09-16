@@ -7,15 +7,18 @@ services.Scan(selector =>
 {
     selector
         .FromAssemblyOf<Program>()
-        .AddClasses(f => f.InNamespaces("ScrutorScanning.ConsoleApp.Services"))
+        .AddClasses(f => f.AssignableTo<ISingletonService>())
         .AsMatchingInterface()
         .WithSingletonLifetime()
-
-        .AddClasses(f => f.InNamespaces("Services"))
+        
+        .AddClasses(f => f.AssignableTo<IScopedService>())
         .AsMatchingInterface()
-        .WithSingletonLifetime();
-    // .FromAssemblyOf<ExampleAService>()
-    //     .AddClasses()
+        .WithScopedLifetime()
+        
+        .AddClasses(f => f.AssignableTo<ITransientService>())
+        .AsMatchingInterface()
+        .WithTransientLifetime();
+
 });
 
 PrintRegisteredServices(services);

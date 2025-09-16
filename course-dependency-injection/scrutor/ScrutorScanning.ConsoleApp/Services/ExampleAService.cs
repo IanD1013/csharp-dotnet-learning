@@ -1,6 +1,6 @@
 ﻿namespace ScrutorScanning.ConsoleApp.Services;
 
-public class ExampleAService : IExampleAService
+public class ExampleAService : IExampleAService, ISingletonService
 {
 
 }

@@ -1,6 +1,6 @@
 ﻿namespace ScrutorScanning.ConsoleApp.Services;
 
-public class ExampleBService : IExampleBService
+public class ExampleBService : IExampleBService, ITransientService
 {
 
 }

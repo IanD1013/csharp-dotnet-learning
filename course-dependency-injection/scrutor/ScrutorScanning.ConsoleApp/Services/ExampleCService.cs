@@ -1,6 +1,6 @@
 ﻿namespace ScrutorScanning.ConsoleApp.Services;
 
-public class ExampleCService : IExampleCService
+public class ExampleCService : IExampleCService, IScopedService
 {
 
 }
