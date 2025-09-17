@@ -2,6 +2,7 @@
 
 namespace ScrutorScanning.ConsoleApp.Services;
 
+[Singleton]
 [Transient]
 public class ExampleBService : IExampleBService
 {

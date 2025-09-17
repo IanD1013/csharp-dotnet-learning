@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Scrutor;
 using ScrutorScanning.ConsoleApp.Attributes;
 using ScrutorScanning.ConsoleApp.Services;
 
@@ -8,8 +9,14 @@ services.Scan(selector =>
 {
     selector
         .FromAssemblyOf<Program>()
-        .AddClasses()
-        .UsingAttributes();
+        .AddClasses(f => f.WithAttribute<SingletonAttribute>())
+        .AsImplementedInterfaces()
+        .WithSingletonLifetime()
+        
+        .AddClasses(f => f.WithAttribute<TransientAttribute>())
+        .UsingRegistrationStrategy(RegistrationStrategy.Append)
+        .AsImplementedInterfaces()
+        .WithTransientLifetime();
 });
 
 PrintRegisteredServices(services);
