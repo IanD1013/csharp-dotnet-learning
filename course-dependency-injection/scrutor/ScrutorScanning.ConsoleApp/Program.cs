@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using ScrutorScanning.ConsoleApp.Attributes;
 using ScrutorScanning.ConsoleApp.Services;
 
 var services = new ServiceCollection();
@@ -7,15 +8,15 @@ services.Scan(selector =>
 {
     selector
         .FromAssemblyOf<Program>()
-        .AddClasses(f => f.AssignableTo<ISingletonService>())
+        .AddClasses(f => f.WithAttribute<SingletonAttribute>())
         .AsMatchingInterface()
         .WithSingletonLifetime()
         
-        .AddClasses(f => f.AssignableTo<IScopedService>())
+        .AddClasses(f => f.WithAttribute<TransientAttribute>())
         .AsMatchingInterface()
         .WithScopedLifetime()
         
-        .AddClasses(f => f.AssignableTo<ITransientService>())
+        .AddClasses(f => f.WithAttribute<ScopedAttribute>())
         .AsMatchingInterface()
         .WithTransientLifetime();
 
