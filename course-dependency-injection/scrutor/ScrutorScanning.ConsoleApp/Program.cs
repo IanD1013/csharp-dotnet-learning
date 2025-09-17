@@ -8,18 +8,8 @@ services.Scan(selector =>
 {
     selector
         .FromAssemblyOf<Program>()
-        .AddClasses(f => f.WithAttribute<SingletonAttribute>())
-        .AsMatchingInterface()
-        .WithSingletonLifetime()
-        
-        .AddClasses(f => f.WithAttribute<TransientAttribute>())
-        .AsMatchingInterface()
-        .WithScopedLifetime()
-        
-        .AddClasses(f => f.WithAttribute<ScopedAttribute>())
-        .AsMatchingInterface()
-        .WithTransientLifetime();
-
+        .AddClasses()
+        .UsingAttributes();
 });
 
 PrintRegisteredServices(services);
