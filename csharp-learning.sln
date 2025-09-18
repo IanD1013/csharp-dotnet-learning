@@ -107,6 +107,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "new-di-framework", "new-di-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer.ConsoleApp", "course-dependency-injection\new-di-framework\Consumer.ConsoleApp\Consumer.ConsoleApp.csproj", "{51956A26-E64D-46C9-8395-56881545FD0C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vax", "course-dependency-injection\new-di-framework\Vax\Vax.csproj", "{32ECB2D4-6A71-4750-80A7-4E5C3778D025}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -245,6 +247,10 @@ Global
 		{51956A26-E64D-46C9-8395-56881545FD0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51956A26-E64D-46C9-8395-56881545FD0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51956A26-E64D-46C9-8395-56881545FD0C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -291,5 +297,6 @@ Global
 		{2A05C432-7243-48D1-8AC4-5F0484AFE938} = {D5AFF97D-BDA6-4C90-9003-353FDA352B8B}
 		{CC7BB356-966F-4178-A6A3-B97AE8A47B5B} = {098908EA-9641-4CD7-A2B4-C7A6C3225E55}
 		{51956A26-E64D-46C9-8395-56881545FD0C} = {CC7BB356-966F-4178-A6A3-B97AE8A47B5B}
+		{32ECB2D4-6A71-4750-80A7-4E5C3778D025} = {CC7BB356-966F-4178-A6A3-B97AE8A47B5B}
 	EndGlobalSection
 EndGlobal
