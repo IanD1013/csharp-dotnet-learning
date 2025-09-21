@@ -2,11 +2,20 @@
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
-    builder.AddConsole();
+    builder
+        .AddJsonConsole();
+        // .AddConsole();
 });
 
 ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
 
-logger.LogInformation("Hello World!");
+var name = "nick";
+var age = 30;
 
-// logger.Log(LogLevel.Information, 0,"Hello World!");
+logger.LogInformation($"Name: {name}, Age: {age}");
+
+// {"EventId":0,
+//  "LogLevel":"Information",
+//  "Category":"Program",
+//  "Message":"Name: nick, Age: 30",
+//  "State":{"{OriginalFormat}":"Name: nick, Age: 30"}}
