@@ -12,10 +12,5 @@ ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
 var name = "nick";
 var age = 30;
 
-logger.LogInformation($"Name: {name}, Age: {age}");
-
-// {"EventId":0,
-//  "LogLevel":"Information",
-//  "Category":"Program",
-//  "Message":"Name: nick, Age: 30",
-//  "State":{"{OriginalFormat}":"Name: nick, Age: 30"}}
+logger.LogInformation("{Name} just turned: {Age}", name, age);
+// {"EventId":0,"LogLevel":"Information","Category":"Program","Message":"nick just turned: 30","State":{"Name":"nick","Age":30,"{OriginalFormat}":"{Name} just turned: {Age}"}}
