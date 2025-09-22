@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using BasicConsoleApp;
+using Microsoft.Extensions.Logging;
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
@@ -14,3 +15,4 @@ var name = "nick";
 var age = 30;
 
 logger.LogDebug("{Name} just turned: {Age}", name, age);
+logger.LogInformation(LogEvents.UserBirthday,"{Name} just turned: {Age}", name, age);
