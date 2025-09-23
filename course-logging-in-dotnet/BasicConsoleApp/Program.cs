@@ -1,12 +1,11 @@
 ﻿using BasicConsoleApp;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Abstractions;
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
-    builder
-        .SetMinimumLevel(LogLevel.Information)
-        // .SetMinimumLevel(LogLevel.None)
-        .AddJsonConsole();
+    builder.AddProvider(NullLoggerProvider.Instance);
+
 });
 
 ILogger<Program> logger = loggerFactory.CreateLogger<Program>();
