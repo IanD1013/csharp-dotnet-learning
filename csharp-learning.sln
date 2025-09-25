@@ -109,6 +109,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Consumer.ConsoleApp", "cour
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vax", "course-dependency-injection\new-di-framework\Vax\Vax.csproj", "{32ECB2D4-6A71-4750-80A7-4E5C3778D025}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Application.SubcutaneousTests", "course-clean-architecture\tests\GymManagement.Application.SubcutaneousTests\GymManagement.Application.SubcutaneousTests.csproj", "{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -251,6 +253,10 @@ Global
 		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{32ECB2D4-6A71-4750-80A7-4E5C3778D025}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -298,5 +304,6 @@ Global
 		{CC7BB356-966F-4178-A6A3-B97AE8A47B5B} = {098908EA-9641-4CD7-A2B4-C7A6C3225E55}
 		{51956A26-E64D-46C9-8395-56881545FD0C} = {CC7BB356-966F-4178-A6A3-B97AE8A47B5B}
 		{32ECB2D4-6A71-4750-80A7-4E5C3778D025} = {CC7BB356-966F-4178-A6A3-B97AE8A47B5B}
+		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A} = {63217177-51C9-42E2-B490-54BFAAC55F88}
 	EndGlobalSection
 EndGlobal
