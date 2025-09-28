@@ -12,10 +12,6 @@ using var loggerFactory = LoggerFactory.Create(builder =>
             Indented = true
         };
     });
-
-    builder.ClearProviders();
-
-    builder.AddSystemdConsole();
     
     builder.SetMinimumLevel(LogLevel.Debug);
 });
@@ -25,4 +21,12 @@ ILogger logger = loggerFactory.CreateLogger<Program>();
 var name = "nick";
 var age = 30;
 
-logger.LogDebug("{Name} just turned: {Age}", name, age);
+try
+{
+    throw new Exception("Something went wrong.");
+}
+catch (Exception ex)
+{
+    logger.LogError(ex,"Failure during birthday of {Name} who is {Age}", name, age);
+}
+
