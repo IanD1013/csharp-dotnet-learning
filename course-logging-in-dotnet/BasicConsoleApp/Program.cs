@@ -1,5 +1,7 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel;
+using System.Text.Json;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Logging.Console;
 
 using var loggerFactory = LoggerFactory.Create(builder =>
 {
@@ -13,7 +15,18 @@ using var loggerFactory = LoggerFactory.Create(builder =>
         };
     });
     
-    builder.SetMinimumLevel(LogLevel.Debug);
+    // builder.SetMinimumLevel(LogLevel.Debug);
+    builder.AddFilter(x => x >= LogLevel.Debug);
+    builder.AddFilter((provider, category, logLevel) =>
+    {
+        return provider!.Contains("Console") &&
+               category!.Contains("Microsoft.Extensions.Hosting.Internal.Host") &&
+               logLevel >= LogLevel.Debug;
+    });
+
+    builder
+        .AddFilter("System", LogLevel.Debug)
+        .AddFilter<ConsoleLoggerProvider>("Microsoft", LogLevel.Information);
 });
 
 ILogger logger = loggerFactory.CreateLogger<Program>();
