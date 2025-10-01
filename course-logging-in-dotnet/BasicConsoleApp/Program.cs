@@ -1,17 +1,15 @@
-﻿using BasicConsoleApp;
-using Microsoft.Extensions.DependencyInjection;
+﻿
 using Microsoft.Extensions.Logging;
 
-IServiceCollection services = new ServiceCollection();
-
-services.AddLogging(x =>
+using var loggerFactory = LoggerFactory.Create(builder =>
 {
-    x.AddProvider(new IanLoggerProvider()); 
+    builder.AddConsole();
 });
 
-var serviceProvider = services.BuildServiceProvider();
+ILogger logger = loggerFactory.CreateLogger<Program>();
 
-var logger =  serviceProvider.GetRequiredService<ILogger<Program>>();
+var paymentId = 1;
+var amount = 15.99;
+var date = DateTime.Now;
 
-logger.LogInformation("Hello World!");
-
+logger.LogInformation("New Payment with id {paymentId} for ${Total:C} at {Date:F}", paymentId, amount, date);
