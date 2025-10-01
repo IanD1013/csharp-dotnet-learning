@@ -11,23 +11,12 @@ using var loggerFactory = LoggerFactory.Create(builder =>
             Indented = true
         };
     });
+    builder.SetMinimumLevel(LogLevel.Warning);
 });
 
 ILogger logger = loggerFactory.CreateLogger<Program>();
 
-var paymentId = 1;
-var amount = 15.99;
-
-using (logger.BeginScope("{PaymentId}", paymentId))
-using (logger.BeginScope("{TotalAmount}", amount))
-    
-try
+if (logger.IsEnabled(LogLevel.Information))
 {
-    logger.LogInformation("New payment for ${Total}", amount);
-    // processing 
+    logger.LogInformation("Start");
 }
-finally
-{
-    logger.LogInformation("Payment processing completed");
-}
-  
