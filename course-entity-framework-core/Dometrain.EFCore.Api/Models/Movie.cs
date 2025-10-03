@@ -7,6 +7,7 @@ public class Movie
     public DateTime ReleaseDate { get; set; }
     public string? Synopsis { get; set; }
     public AgeRating AgeRating { get; set; }
+    public int ImdbRating { get; set; }
     public Person Director { get; set; }
     public ICollection<Person> Actors { get; set; }
     public Genre Genre { get; set; }
