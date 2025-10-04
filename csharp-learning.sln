@@ -111,6 +111,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Vax", "course-dependency-in
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GymManagement.Application.SubcutaneousTests", "course-clean-architecture\tests\GymManagement.Application.SubcutaneousTests\GymManagement.Application.SubcutaneousTests.csproj", "{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.EFCore.SimpleAPI", "course-entity-framework-core\Dometrain.EFCore.SimpleAPI\Dometrain.EFCore.SimpleAPI.csproj", "{F653F82C-05E6-4D3B-A605-84C57B5F308A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Dometrain.EFCore.Tests", "course-entity-framework-core\Dometrain.EFCore.Tests\Dometrain.EFCore.Tests.csproj", "{6204E240-1832-41AB-8950-BC444085583B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -257,6 +261,14 @@ Global
 		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F653F82C-05E6-4D3B-A605-84C57B5F308A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F653F82C-05E6-4D3B-A605-84C57B5F308A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F653F82C-05E6-4D3B-A605-84C57B5F308A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F653F82C-05E6-4D3B-A605-84C57B5F308A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6204E240-1832-41AB-8950-BC444085583B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6204E240-1832-41AB-8950-BC444085583B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6204E240-1832-41AB-8950-BC444085583B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6204E240-1832-41AB-8950-BC444085583B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -305,5 +317,7 @@ Global
 		{51956A26-E64D-46C9-8395-56881545FD0C} = {CC7BB356-966F-4178-A6A3-B97AE8A47B5B}
 		{32ECB2D4-6A71-4750-80A7-4E5C3778D025} = {CC7BB356-966F-4178-A6A3-B97AE8A47B5B}
 		{DA5DA07D-8DB5-49B4-A333-E6BDF47E382A} = {63217177-51C9-42E2-B490-54BFAAC55F88}
+		{F653F82C-05E6-4D3B-A605-84C57B5F308A} = {B760A546-5719-4EE2-AB02-E51754312C34}
+		{6204E240-1832-41AB-8950-BC444085583B} = {B760A546-5719-4EE2-AB02-E51754312C34}
 	EndGlobalSection
 EndGlobal
