@@ -10,11 +10,20 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MoviesContext>();
+// Add a DbContext here:
+builder.Services.AddDbContext<MoviesContext>(optionsBuilder =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("MoviesContext");
+    optionsBuilder
+        .UseSqlServer(connectionString)
+        .LogTo(Console.WriteLine);
+},
+ServiceLifetime.Scoped, // service lifetime of the db context
+ServiceLifetime.Singleton); // when is our db context options changing
 
 var app = builder.Build();
 
-// DIRTY HACK, WILL COME BACK TO FIX THIS:
+// Check if the DB was migrated: 
 var scope = app.Services.CreateScope();
 var context = scope.ServiceProvider.GetRequiredService<MoviesContext>();
 var pendingMigrations = await context.Database.GetPendingMigrationsAsync();
