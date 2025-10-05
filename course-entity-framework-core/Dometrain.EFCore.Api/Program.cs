@@ -1,9 +1,16 @@
 using System.Text.Json.Serialization;
 using Dometrain.EFCore.Api.Data;
+using Dometrain.EfCore.Api.Repositories;
+using Dometrain.EFCore.Api.Services;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container
+builder.Services.AddTransient<IGenreRepository, GenreRepository>(); 
+builder.Services.AddTransient<IBatchGenreService, BatchGenreService>();
+builder.Services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
 
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); // adds a converter so that enums are serialized as strings instead of numbers.
