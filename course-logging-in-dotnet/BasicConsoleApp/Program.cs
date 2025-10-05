@@ -1,4 +1,5 @@
 ﻿using System.Text.Json;
+using BasicConsoleApp;
 using Microsoft.Extensions.Logging;
 
 using var loggerFactory = LoggerFactory.Create(builder =>
@@ -11,12 +12,13 @@ using var loggerFactory = LoggerFactory.Create(builder =>
             Indented = true
         };
     });
-    builder.SetMinimumLevel(LogLevel.Warning);
+    builder.SetMinimumLevel(LogLevel.Information);
 });
 
 ILogger logger = loggerFactory.CreateLogger<Program>();
 
-if (logger.IsEnabled(LogLevel.Information))
+using (logger.BeginTimedOperation("Handling task {TaskId}", 1))
 {
-    logger.LogInformation("Start");
+    logger.LogInformation("Hello World!");
+    await Task.Delay(10);
 }
