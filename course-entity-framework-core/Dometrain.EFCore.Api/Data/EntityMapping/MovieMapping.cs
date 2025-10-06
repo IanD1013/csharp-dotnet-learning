@@ -28,12 +28,16 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
         builder.Property(movie => movie.AgeRating)
             .HasColumnType("varchar(32)")
             .HasConversion<string>();
+
+        builder.Property(movie => movie.MainGenreName)
+            .HasMaxLength(256)
+            .HasColumnType("varchar");
         
         builder
             .HasOne(movie => movie.Genre)
             .WithMany(genre => genre.Movies)
-            .HasPrincipalKey(genre => genre.Id)
-            .HasForeignKey(movie => movie.MainGenreId);
+            .HasPrincipalKey(genre => genre.Name)
+            .HasForeignKey(movie => movie.MainGenreName);
     }
 }
 

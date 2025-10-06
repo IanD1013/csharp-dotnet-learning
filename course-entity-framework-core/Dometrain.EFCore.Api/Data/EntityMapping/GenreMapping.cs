@@ -12,5 +12,7 @@ public class GenreMapping : IEntityTypeConfiguration<Genre>
         builder.Property<DateTime>("CreatedDate")
             .HasColumnName("CreatedAt")
             .HasValueGenerator<CreatedDateGenerator>();
+
+        builder.HasAlternateKey(g => g.Name);
     }
 }
