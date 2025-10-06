@@ -8,8 +8,10 @@ public abstract class Movie
     public string? Synopsis { get; set; }
     public AgeRating AgeRating { get; set; }
     public int ImdbRating { get; set; }
-    public Genre Genre { get; set; }
+    public required Genre Genre { get; set; }
     public required string MainGenreName { get; set; }
+    
+    public ExternalInformation? ExternalInformation { get; set; }
 }
 
 public class CinemaMovie : Movie
