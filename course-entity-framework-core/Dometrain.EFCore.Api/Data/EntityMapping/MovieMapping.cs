@@ -11,6 +11,8 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
     {
         builder
             .ToTable("Pictures")
+            .UseTptMappingStrategy()
+            // .UseTpcMappingStrategy()
             .HasKey(movie => movie.Identifier);
         
         builder.Property(movie => movie.Title)
@@ -39,6 +41,7 @@ public class CinemaMovieMapping : IEntityTypeConfiguration<CinemaMovie>
 {
     public void Configure(EntityTypeBuilder<CinemaMovie> builder)
     {
+        // builder.ToTable("CinemaMovies");
     }
 }
 
@@ -46,5 +49,6 @@ public class TelevisionMovieMapping : IEntityTypeConfiguration<TelevisionMovie>
 {
     public void Configure(EntityTypeBuilder<TelevisionMovie> builder)
     {
+        // builder.ToTable("TelevisionMovies");
     }
 }
