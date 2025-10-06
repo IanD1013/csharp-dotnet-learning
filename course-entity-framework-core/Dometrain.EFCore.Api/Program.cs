@@ -15,13 +15,6 @@ builder.Services.AddScoped<IUnitOfWorkManager, UnitOfWorkManager>();
 builder.Services.AddControllers()
     .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter())); // adds a converter so that enums are serialized as strings instead of numbers.
 
-// Configure Serilog
-var serilog = new LoggerConfiguration()
-    .ReadFrom.Configuration(builder.Configuration)
-    .CreateLogger();
-
-builder.Services.AddSerilog(serilog);
-
 // Add Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -31,9 +24,8 @@ builder.Services.AddDbContext<MoviesContext>(optionsBuilder =>
 {
     var connectionString = builder.Configuration.GetConnectionString("MoviesContext");
     optionsBuilder
-        .UseSqlServer(connectionString);
-    // .EnableSensitiveDataLogging()
-    // .LogTo(Console.WriteLine);
+        .UseSqlServer(connectionString)
+        .LogTo(Console.WriteLine);
 },
 ServiceLifetime.Scoped, // service lifetime of the db context
 ServiceLifetime.Singleton); // when is our db context options changing
