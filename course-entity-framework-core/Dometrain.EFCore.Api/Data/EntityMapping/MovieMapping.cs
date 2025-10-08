@@ -14,6 +14,9 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .UseTptMappingStrategy()
             // .UseTpcMappingStrategy()
             .HasKey(movie => movie.Identifier);
+
+        builder
+            .HasAlternateKey(movie => new { movie.Title, movie.ReleaseDate });
         
         builder.Property(movie => movie.Title)
             .HasColumnType("varchar")
