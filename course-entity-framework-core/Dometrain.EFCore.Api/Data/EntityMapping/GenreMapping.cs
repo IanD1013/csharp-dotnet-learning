@@ -12,7 +12,13 @@ public class GenreMapping : IEntityTypeConfiguration<Genre>
         builder.Property<DateTime>("CreatedDate")
             .HasColumnName("CreatedAt")
             .HasValueGenerator<CreatedDateGenerator>();
-
-        builder.HasAlternateKey(g => g.Name);
+        
+        builder
+            .Property<bool>("Deleted")
+            .HasDefaultValue(false);
+        
+        builder
+            .HasQueryFilter(g => EF.Property<bool>(g, "Deleted") == false)
+            .HasAlternateKey(g => g.Name);
     }
 }
