@@ -13,10 +13,15 @@ public class MovieMapping : IEntityTypeConfiguration<Movie>
             .ToTable("Pictures")
             .UseTptMappingStrategy()
             // .UseTpcMappingStrategy()
-            .HasKey(movie => movie.Identifier);
+            .HasKey(movie => movie.Identifier)
+            .IsClustered(false);
 
         builder
-            .HasAlternateKey(movie => new { movie.Title, movie.ReleaseDate });
+            .HasAlternateKey(movie => new { movie.Title, movie.ReleaseDate })
+            .IsClustered();
+
+        builder.HasIndex(movie => movie.AgeRating)
+            .IsDescending();
         
         builder.Property(movie => movie.Title)
             .HasColumnType("varchar")
