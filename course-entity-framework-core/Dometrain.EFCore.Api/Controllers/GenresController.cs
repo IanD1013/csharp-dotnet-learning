@@ -50,6 +50,15 @@ public class GenresController(IGenreRepository repository, IBatchGenreService ba
 
         return CreatedAtAction(nameof(GetAll), new{}, response);
     }
+
+    [HttpPut("batch-update")]
+    [ProducesResponseType(typeof(IEnumerable<Genre>), StatusCodes.Status201Created)]
+    public async Task<IActionResult> UpdateAll([FromBody] List<Genre> genres)
+    {
+        var response = await batchService.UpdateGenres(genres);
+        
+        return CreatedAtAction(nameof(GetAll), new{}, response);
+    }
     
     [HttpPut("{id:int}")]
     [ProducesResponseType(typeof(Genre), StatusCodes.Status200OK)]

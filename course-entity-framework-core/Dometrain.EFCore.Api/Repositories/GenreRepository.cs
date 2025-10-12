@@ -45,7 +45,7 @@ public class GenreRepository(MoviesContext context, IUnitOfWorkManager uowManage
 
         existingGenre.Description = genre.Description;
 
-        if(!uowManager.IsUnitOfWorkStarted)
+        if (!uowManager.IsUnitOfWorkStarted)
             await context.SaveChangesAsync();
 
         return existingGenre;
