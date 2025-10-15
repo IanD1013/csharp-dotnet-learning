@@ -7,6 +7,9 @@ public class Genre
     public int Id { get; set; }
     public required string Name { get; set; }
     public string Description { get; set; }
+    
+    [JsonIgnore]
+    public byte[] ConcurrencyToken { get; set; } = [];
 
     [JsonIgnore]
     public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>();

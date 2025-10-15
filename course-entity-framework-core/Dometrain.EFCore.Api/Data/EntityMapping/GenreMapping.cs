@@ -17,6 +17,9 @@ public class GenreMapping : IEntityTypeConfiguration<Genre>
             .Property<bool>("Deleted")
             .HasDefaultValue(false);
         
+        builder.Property(g => g.ConcurrencyToken)
+            .IsRowVersion();
+        
         builder
             .HasQueryFilter(g => EF.Property<bool>(g, "Deleted") == false)
             .HasAlternateKey(g => g.Name);
