@@ -1,13 +1,12 @@
 using Serilog;
-using Serilog.Sinks.SystemConsole.Themes;
 
 var builder = WebApplication.CreateBuilder(args);
 
-Log.Logger = new LoggerConfiguration() // specify how Serilog is configured by setting the static Log.Logger
-    .WriteTo.Console(theme:AnsiConsoleTheme.Code)
+Log.Logger = new LoggerConfiguration() 
+    .ReadFrom.Configuration(builder.Configuration)
     .CreateLogger();
 
-builder.Host.UseSerilog(); // this hijacks everything to use Serilog
+builder.Host.UseSerilog(); 
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
