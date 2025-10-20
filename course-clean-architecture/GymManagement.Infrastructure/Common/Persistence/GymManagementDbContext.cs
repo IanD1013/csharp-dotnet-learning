@@ -4,6 +4,7 @@ using GymManagement.Domain.Admins;
 using GymManagement.Domain.Common;
 using GymManagement.Domain.Gyms;
 using GymManagement.Domain.Subscriptions;
+using GymManagement.Domain.Users;
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +18,7 @@ public class GymManagementDbContext : DbContext, IUnitOfWork
     public DbSet<Admin> Admins { get; set; } = null!;
     public DbSet<Subscription> Subscriptions { get; set; } = null!;
     public DbSet<Gym> Gyms { get; set; } = null!;
+    public DbSet<User> Users { get; set; } = null!;
 
     public GymManagementDbContext(DbContextOptions options, 
         IHttpContextAccessor httpContextAccessor,
