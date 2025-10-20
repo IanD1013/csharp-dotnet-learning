@@ -1,22 +1,18 @@
+using GymManagement.Api;
 using GymManagement.Application;
 using GymManagement.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 { 
-    builder.Services.AddControllers();
-    builder.Services.AddEndpointsApiExplorer();
-    builder.Services.AddSwaggerGen();
-    builder.Services.AddProblemDetails(); // adds the needed services to the IoC container for the exception handler below to be able to use the problems specification that will return an appropriate error to the client 
-    builder.Services.AddHttpContextAccessor();
-    
     builder.Services
+        .AddPresentation()
         .AddApplication()
         .AddInfrastructure(builder.Configuration);
 }
 
 var app = builder.Build();
 {
-    app.UseExceptionHandler(); // it adds to the request pipeline a middleware that wraps everything in a try-catch
+    app.UseExceptionHandler(); 
     app.AddInfrastructureMiddleware();
     
     if (app.Environment.IsDevelopment())

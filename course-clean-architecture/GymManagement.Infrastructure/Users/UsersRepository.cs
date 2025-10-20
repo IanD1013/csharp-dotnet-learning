@@ -34,4 +34,11 @@ public class UsersRepository : IUsersRepository
     {
         return await _dbContext.Users.FirstOrDefaultAsync(user => user.Id == userId);
     }
+
+    public Task UpdateAsync(User user)
+    {
+        _dbContext.Update(user);
+        
+        return Task.CompletedTask;   
+    }
 }
