@@ -11,7 +11,7 @@ public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _cu
     where TRequest : IRequest<TResponse>
     where TResponse : IErrorOr
 {
-    public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {
         var authorizationAttributes = request.GetType()
             .GetCustomAttributes<AuthorizeAttribute>()
@@ -19,20 +19,29 @@ public class AuthorizationBehavior<TRequest, TResponse>(ICurrentUserProvider _cu
 
         if (authorizationAttributes.Count == 0)
         {
-            return next();
+            return await next();
         }
+
+        var currentUser = _currentUserProvider.GetCurrentUser();
 
         var requiredPermissions = authorizationAttributes
             .SelectMany(authorizationAttribute => authorizationAttribute.Permissions?.Split(',') ?? [])
             .ToList();
-
-        var currentUser = _currentUserProvider.GetCurrentUser();
 
         if (requiredPermissions.Except(currentUser.Permissions).Any())
         {
             return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action.");
         }
 
-        return next();
+        var requiredRoles = authorizationAttributes
+            .SelectMany(authorizationAttribute => authorizationAttribute.Roles?.Split(',') ?? [])
+            .ToList();
+
+        if (requiredRoles.Except(currentUser.Roles).Any())
+        {
+            return (dynamic)Error.Unauthorized(description: "User is forbidden from taking this action.");
+        }
+
+        return await next();
     }
 }
