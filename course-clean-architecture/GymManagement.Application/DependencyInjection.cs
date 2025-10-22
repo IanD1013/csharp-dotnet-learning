@@ -19,10 +19,11 @@ public static class DependencyInjection
             options.RegisterServicesFromAssemblyContaining(typeof(DependencyInjection));
             // options.AddBehavior<IPipelineBehavior<CreateGymCommand, ErrorOr<Gym>>, CreateGymCommandBehavior>();
             options.AddOpenBehavior(typeof(ValidationBehavior<,>)); // a ValidationBehavior with two type parameters, but we don’t know what they are yet.
+            options.AddOpenBehavior(typeof(AuthorizationBehavior<,>)); // a ValidationBehavior with two type parameters, but we don’t know what they are yet.
         });
 
         services.AddValidatorsFromAssemblyContaining(typeof(DependencyInjection));
-            
+
         return services;
     }
 }
