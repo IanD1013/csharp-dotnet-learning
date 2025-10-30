@@ -4,6 +4,7 @@ using SerilogConsoleApp;
 
 ILogger logger = new LoggerConfiguration()
     .WriteTo.Console(theme:AnsiConsoleTheme.Code)
+    .Destructure.ByTransforming<Payment>(p => new { p.PaymentId, p.UserId })
     .CreateLogger();
 
 Log.Logger = logger;
@@ -22,8 +23,6 @@ var paymentData = new Dictionary<string, object>
     { "OccuredAt", payment.OccuredAt }
 };
     
-logger.Information("New payment with data: {PaymentData}", payment);
-logger.Information("New payment with data: {$PaymentData}", paymentData);
-logger.Information("New payment with data: {@PaymentData}", paymentData);
+logger.Information("New payment with data: {@PaymentData}", payment);
 
 Log.CloseAndFlush();
