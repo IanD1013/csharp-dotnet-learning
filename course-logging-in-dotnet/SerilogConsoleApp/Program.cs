@@ -1,9 +1,12 @@
 ﻿using Serilog;
+using Serilog.Context;
+using Serilog.Formatting.Json;
 using Serilog.Sinks.SystemConsole.Themes;
 using SerilogConsoleApp;
 
 ILogger logger = new LoggerConfiguration()
-    .WriteTo.Console(theme:AnsiConsoleTheme.Code)
+    .WriteTo.Console(new JsonFormatter())
+    .Enrich.FromLogContext()
     .Destructure.ByTransforming<Payment>(p => new { p.PaymentId, p.UserId })
     .CreateLogger();
 
@@ -16,13 +19,10 @@ var payment = new Payment
     OccuredAt = DateTime.UtcNow
 };
 
-var paymentData = new Dictionary<string, object>
+using (LogContext.PushProperty("PaymentId", payment.PaymentId))
 {
-    { "PaymentId", payment.PaymentId },
-    { "UserId", payment.UserId },
-    { "OccuredAt", payment.OccuredAt }
-};
-    
-logger.Information("New payment with data: {@PaymentData}", payment);
+    logger.Information("Received payment by user with id {UserId}", payment.UserId);
+}
+
 
 Log.CloseAndFlush();
