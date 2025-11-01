@@ -7,7 +7,10 @@ using SerilogConsoleApp;
 using SerilogTimings.Extensions;
 
 ILogger logger = new LoggerConfiguration()
-    .WriteTo.Async(x => x.Console())
+    // .WriteTo.Async(x => x.Console())
+    // .WriteTo.Sink<IanSink>()
+    .WriteTo.Sink(new IanSink())
+    .WriteTo.IanSink()
     .Destructure.UsingAttributes()
     .CreateLogger();
 
