@@ -119,6 +119,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicMinimalApi", "course-l
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicWebApi", "course-logging-in-dotnet\BasicWebApi\BasicWebApi.csproj", "{730D407A-ED4E-45DA-9915-6B74A2FA46AD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighPerformanceLoggingConsoleApp", "course-logging-in-dotnet\HighPerformanceLoggingConsoleApp\HighPerformanceLoggingConsoleApp.csproj", "{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -277,6 +279,10 @@ Global
 		{730D407A-ED4E-45DA-9915-6B74A2FA46AD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{730D407A-ED4E-45DA-9915-6B74A2FA46AD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{730D407A-ED4E-45DA-9915-6B74A2FA46AD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -328,5 +334,6 @@ Global
 		{83DD29D6-9886-4727-9D26-4237C975CEB5} = {4639012E-8816-48DC-A1B6-BE4F38E9E5FB}
 		{FD687FAD-4DF3-46A4-883B-D93AB9008115} = {4639012E-8816-48DC-A1B6-BE4F38E9E5FB}
 		{730D407A-ED4E-45DA-9915-6B74A2FA46AD} = {4639012E-8816-48DC-A1B6-BE4F38E9E5FB}
+		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1} = {4639012E-8816-48DC-A1B6-BE4F38E9E5FB}
 	EndGlobalSection
 EndGlobal
