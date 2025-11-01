@@ -7,7 +7,7 @@ using SerilogConsoleApp;
 using SerilogTimings.Extensions;
 
 ILogger logger = new LoggerConfiguration()
-    .WriteTo.Console()
+    .WriteTo.Async(x => x.Console())
     .Destructure.UsingAttributes()
     .CreateLogger();
 
@@ -23,4 +23,4 @@ var payment = new Payment
 
 logger.Information("Received payment with details {@PaymentData}", payment);
 
-Log.CloseAndFlush();
+// Log.CloseAndFlush();
