@@ -1,11 +1,19 @@
-﻿Console.WriteLine("Before accessing instance");
-Singleton singleton1 = Singleton.Instance;
-Console.WriteLine("After accessing instance");
-Singleton singleton2 = Singleton.Instance;
+﻿ParallelEnumerable.Range(1, 1000)
+    .ForAll(_ =>
+    {
+        Singleton singleton = Singleton.Instance;
+    });
+
+ParallelEnumerable.Range(1, 1000)
+    .ForAll(_ =>
+    {
+        Singleton singleton = Singleton.Instance;
+    });
 
 sealed class Singleton
 {
     private static Singleton _instance = null!;
+    private static object _lock = new();
 
     public static Singleton Instance
     {
@@ -13,7 +21,15 @@ sealed class Singleton
         {
             if (_instance is null)
             {
-                _instance = new Singleton();
+                Console.WriteLine("Locking");
+                
+                lock (_lock)
+                {
+                    if (_instance is null)
+                    {
+                        _instance = new Singleton();
+                    }
+                }
             }
             
             return _instance;
