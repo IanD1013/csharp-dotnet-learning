@@ -3,10 +3,10 @@ using Serilog.Context;
 using Serilog.Formatting.Json;
 using Serilog.Sinks.SystemConsole.Themes;
 using SerilogConsoleApp;
+using SerilogTimings.Extensions;
 
 ILogger logger = new LoggerConfiguration()
-    .WriteTo.Console(new JsonFormatter())
-    .Enrich.FromLogContext()
+    .WriteTo.Console()
     .Destructure.ByTransforming<Payment>(p => new { p.PaymentId, p.UserId })
     .CreateLogger();
 
@@ -19,10 +19,18 @@ var payment = new Payment
     OccuredAt = DateTime.UtcNow
 };
 
-using (LogContext.PushProperty("PaymentId", payment.PaymentId))
-{
-    logger.Information("Received payment by user with id {UserId}", payment.UserId);
-}
+// using (logger.TimeOperation("Processing payment with id {PaymentId}", payment.PaymentId))
+// {
+//     await Task.Delay(50);
+//     logger.Information("Received payment by user with id {UserId}", payment.UserId);
+// }
 
+var op = logger.BeginOperation("Processing payment with id {PaymentId}", payment.PaymentId);
+
+await Task.Delay(50);
+logger.Information("Received payment by user with id {UserId}", payment.UserId);
+
+// op.Complete();
+op.Abandon();
 
 Log.CloseAndFlush();
