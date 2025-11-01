@@ -131,6 +131,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicWebApi", "course-loggi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighPerformanceLoggingConsoleApp", "course-logging-in-dotnet\HighPerformanceLoggingConsoleApp\HighPerformanceLoggingConsoleApp.csproj", "{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-csharp", "course-csharp", "{3E352AC4-DE08-4580-BF86-1BF124B626A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1-BasicValueTypes", "course-csharp\1-BasicValueTypes\1-BasicValueTypes.csproj", "{DCA5B510-52A6-44A7-AF47-215D5ED5645E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -313,6 +317,10 @@ Global
 		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C1BDFF5-B40D-4E3B-A61E-917BD94469D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DCA5B510-52A6-44A7-AF47-215D5ED5645E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DCA5B510-52A6-44A7-AF47-215D5ED5645E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DCA5B510-52A6-44A7-AF47-215D5ED5645E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DCA5B510-52A6-44A7-AF47-215D5ED5645E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -370,5 +378,6 @@ Global
 		{6204E240-1832-41AB-8950-BC444085583B} = {B760A546-5719-4EE2-AB02-E51754312C34}
 		{AE462F18-B042-453E-92E3-94DBF08E5006} = {B760A546-5719-4EE2-AB02-E51754312C34}
 		{8385D107-BDFE-4761-A6BA-A2628FCF512D} = {B760A546-5719-4EE2-AB02-E51754312C34}
+		{DCA5B510-52A6-44A7-AF47-215D5ED5645E} = {3E352AC4-DE08-4580-BF86-1BF124B626A8}
 	EndGlobalSection
 EndGlobal
