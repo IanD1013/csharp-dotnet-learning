@@ -1,6 +1,6 @@
 ﻿namespace Prototype;
 
-public interface IPrototype
+public interface IPrototype<T>
 {
-     IPrototype Clone();
+     T Clone();
 }
