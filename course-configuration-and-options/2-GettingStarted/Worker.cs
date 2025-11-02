@@ -13,7 +13,7 @@ public class Worker(
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
             
-            var delay = TimeSpan.Parse(config["Delay"] ?? "00:00:05");
+            var delay = config.GetValue<TimeSpan>("Delay", TimeSpan.FromSeconds(5));
 
             await Task.Delay(delay, stoppingToken);
         }
