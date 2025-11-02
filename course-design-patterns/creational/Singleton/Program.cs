@@ -3,12 +3,25 @@ var singleton2 = Singleton.Instance;
 
 sealed class Singleton
 {
-    private static readonly Lazy<Singleton> _lazyInstance = new(() => new Singleton());
+    public static string ClassName;
+    public static Singleton Instance => Nested.Instance;
 
-    public static Singleton Instance => _lazyInstance.Value;
+    private class Nested
+    {
+        public static Singleton Instance { get; } = new();
+        
+        static Nested()
+        {
+        }
+    }
 
     private Singleton()
     {
-        Console.WriteLine("Instantiating singleton");
+    }
+
+    static Singleton()
+    {
     }
 }
+
+// static ctor -> init fields or props only when any one of them is used
