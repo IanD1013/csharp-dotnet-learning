@@ -127,6 +127,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prototype", "course-design-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Singleton", "course-design-patterns\creational\Singleton\Singleton.csproj", "{6433E1AD-1BAC-407C-AABB-1B5F6CCEB21D}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-configuration-and-options", "course-configuration-and-options", "{9A083309-1574-4ECA-9C9E-5A7FF3C36604}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1-Intro", "course-configuration-and-options\1-Intro\1-Intro.csproj", "{1A07212A-6198-4273-841E-3B66F37193DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -297,6 +301,10 @@ Global
 		{6433E1AD-1BAC-407C-AABB-1B5F6CCEB21D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6433E1AD-1BAC-407C-AABB-1B5F6CCEB21D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6433E1AD-1BAC-407C-AABB-1B5F6CCEB21D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A07212A-6198-4273-841E-3B66F37193DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A07212A-6198-4273-841E-3B66F37193DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A07212A-6198-4273-841E-3B66F37193DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A07212A-6198-4273-841E-3B66F37193DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -352,5 +360,6 @@ Global
 		{D0F24DF8-D3DD-4444-82A2-3EDD18557B0E} = {854B2A6A-AD95-43EB-9BDF-FA139D0CE24F}
 		{AB9C5178-43D1-4EB1-B6A5-420B201B95A1} = {D0F24DF8-D3DD-4444-82A2-3EDD18557B0E}
 		{6433E1AD-1BAC-407C-AABB-1B5F6CCEB21D} = {D0F24DF8-D3DD-4444-82A2-3EDD18557B0E}
+		{1A07212A-6198-4273-841E-3B66F37193DC} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 	EndGlobalSection
 EndGlobal
