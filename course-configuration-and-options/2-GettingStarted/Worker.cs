@@ -1,6 +1,8 @@
 namespace _2_GettingStarted;
 
-public class Worker(ILogger<Worker> logger) : BackgroundService
+public class Worker(
+    ILogger<Worker> logger,
+    IConfiguration config) : BackgroundService
 {
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
@@ -10,13 +12,10 @@ public class Worker(ILogger<Worker> logger) : BackgroundService
             {
                 logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
             }
+            
+            var delay = TimeSpan.Parse(config["Delay"] ?? "00:00:05");
 
-            if (Random.Shared.Next(100) < 30 && logger.IsEnabled(LogLevel.Warning))
-            {
-                logger.LogWarning("Seeing this roughly 30% off the time...");           
-            }
-
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(delay, stoppingToken);
         }
     }
 }
