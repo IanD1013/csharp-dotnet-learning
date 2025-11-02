@@ -133,6 +133,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "1-Intro", "course-configura
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "2-GettingStarted", "course-configuration-and-options\2-GettingStarted\2-GettingStarted.csproj", "{2FF6230B-942E-4138-B6C5-B694ECD8B284}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "3-ConfigurationProviders", "course-configuration-and-options\3-ConfigurationProviders\3-ConfigurationProviders.csproj", "{5778F799-8DE3-493A-A514-9E548570F879}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -311,6 +313,10 @@ Global
 		{2FF6230B-942E-4138-B6C5-B694ECD8B284}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2FF6230B-942E-4138-B6C5-B694ECD8B284}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2FF6230B-942E-4138-B6C5-B694ECD8B284}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5778F799-8DE3-493A-A514-9E548570F879}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5778F799-8DE3-493A-A514-9E548570F879}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5778F799-8DE3-493A-A514-9E548570F879}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5778F799-8DE3-493A-A514-9E548570F879}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -368,5 +374,6 @@ Global
 		{6433E1AD-1BAC-407C-AABB-1B5F6CCEB21D} = {D0F24DF8-D3DD-4444-82A2-3EDD18557B0E}
 		{1A07212A-6198-4273-841E-3B66F37193DC} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 		{2FF6230B-942E-4138-B6C5-B694ECD8B284} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
+		{5778F799-8DE3-493A-A514-9E548570F879} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 	EndGlobalSection
 EndGlobal
