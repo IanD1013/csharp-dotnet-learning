@@ -5,16 +5,12 @@
  * 3. Abstract Factory Pattern
  */
 
-using FactoryMethod.FactoryMethod.Creators;
-using FactoryMethod.FactoryMethod.Products;
+using FactoryMethod.FactoryMethod.Enemies;
+using FactoryMethod.FactoryMethod.Levels;
 
 // Using the Factory Method Pattern
-Creator creator = new ConcreteCreator();
-Product product = creator.CreateProduct();
+Level level1 = LevelFactory.CreateLevel(levelNumber: 1);
+level1.EncounterEnemy();
 
-// Not using the Factory Method Pattern
-ConcreteProduct concreteProduct = new ConcreteProduct();
-
-// our aim is to give client the product without having to rely on any specific concrete product
-// this also gives us flexibility to use different creators
-// the client can focus on only and solely the behavior that he wants -> invoke some methods on the product 
+Level level2 = LevelFactory.CreateLevel(levelNumber: 2);
+level2.EncounterEnemy();
