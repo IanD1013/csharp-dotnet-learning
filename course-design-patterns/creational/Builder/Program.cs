@@ -1,11 +1,10 @@
-﻿using Builder.Classic;
-using Builder.Classic.Builders;
+﻿using Builder.NestedBuilder;
 
-IBuilder builder = new SimpleProductBuilder();
+Product.Builder builder = new();
 
-builder.BuildName();
-builder.BuildDescription();
+builder.BuildName("Simple product");
+builder.BuildDescription("This is a simple product");
 
-Product product = builder.Build();
+var product = builder.Build();
 
 Console.WriteLine(product);
