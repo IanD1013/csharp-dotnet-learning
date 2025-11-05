@@ -3,9 +3,9 @@ using Builder.Classic.Builders;
 
 IBuilder builder = new SimpleProductBuilder();
 
-ProductDirector director = new ProductDirector(builder);
+builder.BuildName();
+builder.BuildDescription();
 
-director.ConstructProduct();
 Product product = builder.Build();
 
 Console.WriteLine(product);
