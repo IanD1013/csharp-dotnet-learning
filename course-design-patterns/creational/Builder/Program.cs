@@ -1,10 +1,8 @@
-﻿using Builder.NestedBuilder;
+﻿using Builder.FluentBuilder;
 
-Product.Builder builder = new();
-
-builder.BuildName("Simple product");
-builder.BuildDescription("This is a simple product");
-
-var product = builder.Build();
+Product product = new Product.Builder()
+    .SetName("Simple product")
+    .SetDescription("This is a simple product")
+    .Build();
 
 Console.WriteLine(product);
