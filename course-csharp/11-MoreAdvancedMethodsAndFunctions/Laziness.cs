@@ -20,7 +20,6 @@
                 if (number > max)
                 {
                     max = number;
-                    break;
                 }
 
                 // pretend this is an expensive operation
@@ -31,6 +30,7 @@
             return max;
         });
 
+        Console.WriteLine("The value of lazyValue is: " + lazyValue.Value);
         Console.WriteLine("The value of lazyValue is: " + lazyValue.Value);
     }
 }
