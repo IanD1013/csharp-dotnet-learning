@@ -1,4 +1,0 @@
-﻿interface ITarget
-{
-    void Request();
-}
