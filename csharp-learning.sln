@@ -155,6 +155,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "10-BinaryAndStringData", "c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "11-MoreAdvancedMethodsAndFunctions", "course-csharp\11-MoreAdvancedMethodsAndFunctions\11-MoreAdvancedMethodsAndFunctions.csproj", "{A18C0AC7-B3BC-4997-91DC-212EC0CD12D1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "12-AsyncParallelAndMultiThreading", "course-csharp\12-AsyncParallelAndMultiThreading\12-AsyncParallelAndMultiThreading.csproj", "{CA1CD2BE-CAC7-426D-A611-9C89D02C86B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -381,6 +383,10 @@ Global
 		{A18C0AC7-B3BC-4997-91DC-212EC0CD12D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A18C0AC7-B3BC-4997-91DC-212EC0CD12D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A18C0AC7-B3BC-4997-91DC-212EC0CD12D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA1CD2BE-CAC7-426D-A611-9C89D02C86B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA1CD2BE-CAC7-426D-A611-9C89D02C86B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA1CD2BE-CAC7-426D-A611-9C89D02C86B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA1CD2BE-CAC7-426D-A611-9C89D02C86B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -449,5 +455,6 @@ Global
 		{55F54EE8-CC0E-4442-A498-2CCEB1E78EFC} = {3E352AC4-DE08-4580-BF86-1BF124B626A8}
 		{CA3D1AC3-9E91-436E-BC7C-86D318B9E99B} = {3E352AC4-DE08-4580-BF86-1BF124B626A8}
 		{A18C0AC7-B3BC-4997-91DC-212EC0CD12D1} = {3E352AC4-DE08-4580-BF86-1BF124B626A8}
+		{CA1CD2BE-CAC7-426D-A611-9C89D02C86B2} = {3E352AC4-DE08-4580-BF86-1BF124B626A8}
 	EndGlobalSection
 EndGlobal
