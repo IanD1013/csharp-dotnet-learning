@@ -1,6 +1,6 @@
 ﻿using Strategy;
 
-Context context = new();
+ShoppingCart shoppingCart = new();
 
-context.SetStrategy(new ConcreteStrategyA());
-context.ExecuteStrategy();
+shoppingCart.SetStrategy(new CreditCardPaymentStrategy());
+shoppingCart.Checkout(10);
