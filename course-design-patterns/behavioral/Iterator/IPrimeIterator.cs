@@ -1,8 +1,8 @@
 ﻿namespace Iterator;
 
-public interface Iterator<T>
+public interface IPrimeIterator
 {
     bool HasNext();
-    T Next();
+    int Next();
     void Reset();
 }
