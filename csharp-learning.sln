@@ -167,6 +167,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Strategy", "course-design-p
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Iterator", "course-design-patterns\behavioral\Iterator\Iterator.csproj", "{4203DE10-33D1-4328-9B12-234B9F252D62}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template Method", "course-design-patterns\behavioral\Template Method\Template Method.csproj", "{39D3421F-7153-47BB-9B5B-4FD57865D802}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -405,6 +407,10 @@ Global
 		{4203DE10-33D1-4328-9B12-234B9F252D62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4203DE10-33D1-4328-9B12-234B9F252D62}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4203DE10-33D1-4328-9B12-234B9F252D62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39D3421F-7153-47BB-9B5B-4FD57865D802}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39D3421F-7153-47BB-9B5B-4FD57865D802}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39D3421F-7153-47BB-9B5B-4FD57865D802}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39D3421F-7153-47BB-9B5B-4FD57865D802}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -479,5 +485,6 @@ Global
 		{372EFAFB-D505-45F9-941F-9207C82692EC} = {E3E8381B-FBF5-4FBE-8DD0-57FD91375818}
 		{D6D5659B-76CA-47B5-80D1-8E847C692A77} = {E3E8381B-FBF5-4FBE-8DD0-57FD91375818}
 		{4203DE10-33D1-4328-9B12-234B9F252D62} = {E3E8381B-FBF5-4FBE-8DD0-57FD91375818}
+		{39D3421F-7153-47BB-9B5B-4FD57865D802} = {E3E8381B-FBF5-4FBE-8DD0-57FD91375818}
 	EndGlobalSection
 EndGlobal
