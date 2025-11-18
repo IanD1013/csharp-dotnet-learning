@@ -1,4 +1,7 @@
 ﻿using Template_Method;
 
-AbstractClass instance = new ConcreteClass1();
-instance.TemplateMethod();
+FileParser csvParser = new CsvParser();
+FileParser jsonParser = new JsonParser();
+
+var csvData = csvParser.ParseFile("config.csv");
+var jsonData =jsonParser.ParseFile("config.json");
