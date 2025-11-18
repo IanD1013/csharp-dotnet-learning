@@ -6,8 +6,8 @@
 // var turkey = new Turkey();
 // turkey.Cook();
 // #endregion
-//
-//
+
+
 // #region Callbacks
 // turkey.Cook()
 //     .ContinueWith(_ =>
@@ -22,24 +22,36 @@
 //         
 //     });
 // #endregion
-
 // Console.ReadLine();
 
-#region UsingAsync
+// #region UsingAsync
+//
+// Console.WriteLine("Cooking Started");
+// Console.WriteLine("Cooking Turkey");
+//
+// var turkey = new Turkey();
+// await turkey.Cook(); // running on background thread
+//
+// Console.WriteLine("Turkey Completed");
+// Console.WriteLine("Making Gravy");
+//
+// var gravy = new Gravy();
+// await gravy.Cook();  // running on background thread
+//
+// Console.WriteLine("Gravy Completed");
+// Console.WriteLine("Ready to Eat");
+//
+// #endregion
+
+
+#region ParallelVsAsync
 
 Console.WriteLine("Cooking Started");
-Console.WriteLine("Cooking Turkey");
 
 var turkey = new Turkey();
-await turkey.Cook(); // running on background thread
-
-Console.WriteLine("Turkey Completed");
-Console.WriteLine("Making Gravy");
-
 var gravy = new Gravy();
-await gravy.Cook();  // running on background thread
 
-Console.WriteLine("Gravy Completed");
+await Task.WhenAll(turkey.Cook(), gravy.Cook());
+
 Console.WriteLine("Ready to Eat");
-
 #endregion
