@@ -1,4 +1,6 @@
-﻿namespace CreateTaskFromScratch;
+﻿using System.Runtime.ExceptionServices;
+
+namespace CreateTaskFromScratch;
 
 public class DomeTrainTask
 {
@@ -37,6 +39,27 @@ public class DomeTrainTask
         });
         
         return task;
+    }
+    
+    public void Wait()
+    {
+        ManualResetEventSlim? resetEventSlim = null; // a class we can use to manage thread waiting behavior
+
+        lock (_lock)
+        {
+            if (!_completed)
+            {
+                resetEventSlim = new ManualResetEventSlim();
+                ContinueWith(() => resetEventSlim.Set()); // Set() will allow all the threads waiting on it to proceed
+            }
+        }
+        
+        resetEventSlim?.Wait(); // gonna block the current thread until it's allowed to resume
+
+        if (_exception is not null)
+        {
+            ExceptionDispatchInfo.Throw(_exception); // to keep stack trace
+        }
     }
 
     public DomeTrainTask ContinueWith(Action action) // (outer task).ContinueWith(inner task)
