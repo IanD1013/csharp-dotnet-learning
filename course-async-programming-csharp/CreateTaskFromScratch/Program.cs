@@ -1,7 +1,20 @@
 ﻿using CreateTaskFromScratch;
 
-Console.WriteLine($"Current Thread Id: {Thread.CurrentThread.ManagedThreadId}");
+Console.WriteLine($"Starting Thread Id: {Environment.CurrentManagedThreadId}");
 
-DomeTrainTask.Run(() => Console.WriteLine($"Current Thread Id: {Thread.CurrentThread.ManagedThreadId}"));
+DomeTrainTask task = DomeTrainTask.Run(() =>
+{
+    Console.WriteLine($"First DomeTrainTask Id: {Environment.CurrentManagedThreadId}");
+});
+
+task.ContinueWith(() =>
+{
+    DomeTrainTask.Run(() =>
+    {
+        Console.WriteLine($"Third DomeTrainTask Id: {Environment.CurrentManagedThreadId}");
+    });
+
+    Console.WriteLine($"Second DomeTrainTask Id: {Environment.CurrentManagedThreadId}");
+});
 
 Console.ReadLine();
