@@ -1,6 +1,6 @@
 ﻿namespace Observer;
 
-public interface Observer
+public interface IGameObserver
 {
     void Update();
 }
