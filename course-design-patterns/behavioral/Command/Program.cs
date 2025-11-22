@@ -1,15 +1,13 @@
 ﻿using Command;
 
-Receiver receiver = new();
-Command.Command command1 = new ConcreteCommand(receiver, "1");
-Command.Command command2 = new ConcreteCommand(receiver, "2");
-Command.Command command3 = new ConcreteCommand(receiver, "3");
+CLI cli = new();
+FileSystemReceiver fileSystemReceiver = new();
 
-Invoker invoker = new();
-invoker.AddCommand(command1);
-invoker.AddCommand(command2);
-invoker.AddCommand(command3);
+cli.RegisterCommand("ls", new ListCommand(fileSystemReceiver));
+cli.RegisterCommand("cd", new ChangeDirectoryCommand(fileSystemReceiver));
+cli.RegisterCommand("mkdir", new MakeDirectoryCommand(fileSystemReceiver));
 
-invoker.ExecuteCommands();
-invoker.UndoLastCommand();
-invoker.UndoLastCommand();
+cli.ExecuteCommand(commandName: "ls", args: []);
+cli.ExecuteCommand(commandName: "mkdir", args: ["newFolder"]);
+cli.ExecuteCommand(commandName: "cd", args: ["newFolder"]);
+cli.ExecuteCommand(commandName: "123", args: ["newFolder"]);
