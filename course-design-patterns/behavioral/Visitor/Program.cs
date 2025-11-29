@@ -1,13 +1,24 @@
 ﻿using Visitor;
 
-Element element1 = new ConcreteElement1();
-Element element2 = new ConcreteElement2();
+List<IDocumentElement> elements =
+[
+    new TitleElement("The visitor design pattern"),
+    new SubtitleElement("Intent"),
+    new ContentElement("content")
+];
 
-Visitor.Visitor visitor1 = new ConcreteVisitor1();
-Visitor.Visitor visitor2 = new ConcreteVisitor2();
+Console.WriteLine("Text format:");
+TextDocumentVisitor textDocumentVisitor = new();
 
-element1.Accept(visitor1);
-element2.Accept(visitor1);
+foreach (var element in elements)
+{
+    element.Accept(textDocumentVisitor);
+}
 
-element1.Accept(visitor2);
-element2.Accept(visitor2);
+Console.WriteLine("Markdown format:");
+MarkdownDocumentVisitor markdownDocumentVisitor = new();
+
+foreach (var element in elements)
+{
+    element.Accept(markdownDocumentVisitor);
+}
