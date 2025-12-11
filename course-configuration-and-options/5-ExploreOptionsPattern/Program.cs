@@ -20,6 +20,16 @@ builder.Services.AddOptions<FeatureOptions>(
     .Bind(config: builder.Configuration.GetSection(
         key: "Features:WeatherStation"));
 
+builder.Services.Configure<FeatureOptions>(
+    name: "WeatherStation",
+    config: builder.Configuration.GetSection(
+        key: "Features:WeatherStation"),
+    configureBinder: static (BinderOptions opts) =>
+    {
+        opts.BindNonPublicProperties = false;
+        opts.ErrorOnUnknownConfiguration = true;
+    });
+
 // Add services to the container.
 builder.Services.AddOpenApi();
 
