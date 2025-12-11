@@ -30,6 +30,20 @@ builder.Services.Configure<FeatureOptions>(
         opts.ErrorOnUnknownConfiguration = true;
     });
 
+// Overrides (and/or merges) with existing configured bindings
+builder.Services.PostConfigure<FeatureOptions>(
+    name: "WeatherStation",
+    configureOptions: static (FeatureOptions options) =>
+    {
+        options.Version = new Version(1, 0);
+        options.Endpoint = new Uri("https://freetestapi.com/api/v1/weathers");
+        options.Tags =
+        [
+            "fake-weather",
+            "test-api"
+        ];
+    });
+
 // Add services to the container.
 builder.Services.AddOpenApi();
 
