@@ -51,4 +51,13 @@ var switchMappings =
 
 #endregion
 
+#region Key-per File
+// Microsoft.Extensions.Configuration.KeyPerFile
+
+builder.Configuration.AddKeyPerFile(
+    directoryPath: @"D:\ExampleApp",
+    optional: false,
+    reloadOnChange: true);
+#endregion
+
 Console.WriteLine(builder.Configuration.GetDebugView());
