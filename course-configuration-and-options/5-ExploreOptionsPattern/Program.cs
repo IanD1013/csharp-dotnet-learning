@@ -24,7 +24,7 @@ builder.Services.Configure<FeatureOptions>(
     name: "WeatherStation",
     config: builder.Configuration.GetSection(
         key: "Features:WeatherStation"),
-    configureBinder: static (BinderOptions opts) =>
+    configureBinder: static opts =>
     {
         opts.BindNonPublicProperties = false;
         opts.ErrorOnUnknownConfiguration = true;
@@ -33,7 +33,7 @@ builder.Services.Configure<FeatureOptions>(
 // Overrides (and/or merges) with existing configured bindings
 builder.Services.PostConfigure<FeatureOptions>(
     name: "WeatherStation",
-    configureOptions: static (FeatureOptions options) =>
+    configureOptions: static options =>
     {
         options.Version = new Version(1, 0);
         options.Endpoint = new Uri("https://freetestapi.com/api/v1/weathers");
@@ -43,6 +43,10 @@ builder.Services.PostConfigure<FeatureOptions>(
             "test-api"
         ];
     });
+
+// Override all config-bound instances of FeatureOptions
+builder.Services.PostConfigureAll<FeatureOptions>(
+    configureOptions: static options => options.Tags ??= []);
 
 // Add services to the container.
 builder.Services.AddOpenApi();
