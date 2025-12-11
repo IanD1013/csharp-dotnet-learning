@@ -1,4 +1,10 @@
+using _5_ExploreOptionsPattern.Logging;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddOptions<LoggingOptions>()
+    .Bind(config: builder.Configuration.GetSection(
+        key: LoggingOptions.LoggingConfigurationSectionName));
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
