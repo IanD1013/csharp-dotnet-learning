@@ -43,4 +43,20 @@ app.MapGet(pattern: "/logging/options",
     .WithName("GetLoggingOptions")
     .WithOpenApi();
 
+
+app.MapGet(pattern: "/features",
+        handler: static (IOptionsSnapshot<FeatureOptions> options) =>
+        {
+            var todo = options.Get("TodoApi");
+            var weatherStation = options.Get("WeatherStation");
+
+            return Results.Json(data: new
+            {
+                TodoApis = todo,
+                WeatherStation = weatherStation
+            });
+        })
+    .WithName("GetFeatureOptions")
+    .WithOpenApi();
+
 app.Run();
