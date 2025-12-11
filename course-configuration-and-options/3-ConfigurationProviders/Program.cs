@@ -25,11 +25,29 @@ builder.Configuration.AddJsonFile(
 #endregion
 
 #region Environment Variables
-
 // Microsoft.Extensions.Configuration.EnvironmentVariables
 
 builder.Configuration.AddEnvironmentVariables();
 builder.Configuration.AddEnvironmentVariables(prefix: "MY_APP_");
+
+#endregion
+
+#region Command Line Args
+// Microsoft.Extensions.Configuration.CommandLine
+builder.Configuration.AddCommandLine(args);
+
+var switchMappings =
+    new Dictionary<string, string>(comparer: StringComparer.OrdinalIgnoreCase)
+    {
+        // -d="0:0:05" or -d "0:0:05"
+        ["-d"] = "Delay",
+
+        // --apiOn=true /apiOn=true
+        ["--apiOn"] = "TodoApiOptions:Enabled",
+
+        // --todoUri <uri> /todoUri <uri>
+        ["--todoUri"] = "TodoApiOptions:BaseAddress"
+    };
 
 #endregion
 
