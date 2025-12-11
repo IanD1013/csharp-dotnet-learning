@@ -24,4 +24,13 @@ builder.Configuration.AddJsonFile(
 
 #endregion
 
+#region Environment Variables
+
+// Microsoft.Extensions.Configuration.EnvironmentVariables
+
+builder.Configuration.AddEnvironmentVariables();
+builder.Configuration.AddEnvironmentVariables(prefix: "MY_APP_");
+
+#endregion
+
 Console.WriteLine(builder.Configuration.GetDebugView());
