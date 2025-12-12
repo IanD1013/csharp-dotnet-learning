@@ -7,13 +7,12 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddOptions<FeatureOptions>(name: "TodoApi")
     .BindConfiguration(configSectionPath: "Features:TodoApi")
-    .ValidateOnStart();
+    .ValidateOnStart()
+    .ValidateDataAnnotations();
 
 builder.Services.AddOptionsWithValidateOnStart<FeatureOptions>(name: "WeatherStation")
-    .BindConfiguration(configSectionPath: "Features:WeatherStation");
-
-builder.Services.TryAddEnumerable(
-    descriptor: ServiceDescriptor.Singleton<IValidateOptions<FeatureOptions>, FeatureOptions>());
+    .BindConfiguration(configSectionPath: "Features:WeatherStation")
+    .ValidateDataAnnotations();
 
 builder.Services.AddHostedService<Worker>();
 

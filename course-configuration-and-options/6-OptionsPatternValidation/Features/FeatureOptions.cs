@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.Options;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace _6_OptionsPatternValidation.Features;
 
-public sealed class FeatureOptions : IValidateOptions<FeatureOptions>
+public sealed class FeatureOptions
 {
     public bool Enabled { get; set; }
 
+    [MaxLength(length: 100,
+        ErrorMessage = "The name cannot be longer than 100 characters.")]
     public string? Name { get; set; }
 
     public Version? Version { get; set; }
@@ -14,46 +16,6 @@ public sealed class FeatureOptions : IValidateOptions<FeatureOptions>
 
     public string? ApiKey { get; set; }
 
+    [DeniedValues(values: ["out-of-date"])]
     public string[] Tags { get; set; } = [];
-
-    public ValidateOptionsResult Validate(string? name, FeatureOptions options)
-    {
-        if (IsNamed(name, expectedName: "TodoApi"))
-        {
-            if (options.Enabled is false)
-            {
-                return ValidateOptionsResult.Success;
-            }
-
-            List<string> failures = [];
-
-            if (options is { Endpoint: null })
-            {
-                failures.Add("TODO API requires a valid endpoint.");
-            }
-
-            if (options is { Version.Major: 0 })
-            {
-                failures.Add("TODO API running non-production version.");
-            }
-
-            if (failures.Count > 0)
-            {
-                return ValidateOptionsResult.Fail(failures);
-            }
-        }
-
-        if (IsNamed(name, expectedName: "WeatherStation") && options is { Enabled: true })
-        {
-            return ValidateOptionsResult.Fail(
-                "The weather station cannot be enabled. It hasn't been implemented yet...");
-        }
-
-        return ValidateOptionsResult.Skip;
-
-        static bool IsNamed(string? name, string expectedName)
-        {
-            return string.Equals(name, expectedName, StringComparison.OrdinalIgnoreCase);
-        }
-    }
 }
