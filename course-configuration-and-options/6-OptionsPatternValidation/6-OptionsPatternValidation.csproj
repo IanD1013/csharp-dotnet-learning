@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <UserSecretsId>dotnet-_6_OptionsPatternValidation-0b195c26-8ca6-40c6-9b4d-dadc6b29a139</UserSecretsId>
+        <RootNamespace>_6_OptionsPatternValidation</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.11"/>
+    </ItemGroup>
+</Project>
