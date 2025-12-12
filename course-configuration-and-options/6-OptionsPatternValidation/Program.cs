@@ -7,10 +7,9 @@ var builder = Host.CreateApplicationBuilder(args);
 
 builder.Services.AddOptions<FeatureOptions>(name: "TodoApi")
     .BindConfiguration(configSectionPath: "Features:TodoApi")
-    .ValidateOnStart()
     .ValidateDataAnnotations();
 
-builder.Services.AddOptionsWithValidateOnStart<FeatureOptions>(name: "WeatherStation")
+builder.Services.AddOptions<FeatureOptions>(name: "WeatherStation")
     .BindConfiguration(configSectionPath: "Features:WeatherStation")
     .ValidateDataAnnotations();
 

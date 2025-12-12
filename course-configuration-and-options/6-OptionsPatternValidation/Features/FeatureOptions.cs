@@ -2,12 +2,12 @@
 
 namespace _6_OptionsPatternValidation.Features;
 
-public sealed class FeatureOptions
+public sealed record FeatureOptions
 {
     public bool Enabled { get; set; }
 
-    [MaxLength(length: 100,
-        ErrorMessage = "The name cannot be longer than 100 characters.")]
+    [MaxLength(length: 2,
+        ErrorMessage = "The name cannot be longer than 2 characters.")]
     public string? Name { get; set; }
 
     public Version? Version { get; set; }
