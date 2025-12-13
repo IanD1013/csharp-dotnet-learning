@@ -1,7 +1,6 @@
 using _6_OptionsPatternValidation;
 using _6_OptionsPatternValidation.Features;
-using Microsoft.Extensions.DependencyInjection.Extensions;
-using Microsoft.Extensions.Options;
+using static _6_OptionsPatternValidation.Features.FeatureOptionsValidators;
 
 var builder = Host.CreateApplicationBuilder(args);
 
@@ -11,7 +10,8 @@ builder.Services.AddOptions<FeatureOptions>(name: "TodoApi")
 
 builder.Services.AddOptions<FeatureOptions>(name: "WeatherStation")
     .BindConfiguration(configSectionPath: "Features:WeatherStation")
-    .ValidateDataAnnotations();
+    .Validate(validation: EnabledWithMissingEndpoint.Validation,
+        failureMessage: EnabledWithMissingEndpoint.FailureMessage);
 
 builder.Services.AddHostedService<Worker>();
 
