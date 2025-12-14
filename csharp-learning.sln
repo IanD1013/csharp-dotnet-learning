@@ -147,6 +147,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example-library", "course-c
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example-library-consumer", "course-configuration-and-options\8-BestPracticesForLibrary\example-library-consumer\example-library-consumer.csproj", "{09B95B81-7EB9-47EC-BD6C-34E4991364A3}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4-CustomConfigProvider", "4-CustomConfigProvider", "{D78F9697-2E20-4DB4-B72C-E85213A4E84E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yaml-config-provider", "course-configuration-and-options\4-CustomConfigProvider\yaml-config-provider\yaml-config-provider.csproj", "{7B8EEB2B-95B8-4C06-AFA4-FEC5B1CFF9A8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "yaml-worker", "course-configuration-and-options\4-CustomConfigProvider\yaml-worker\yaml-worker.csproj", "{287E6710-E998-4E6B-AC89-784E90BDEB2F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -349,6 +355,14 @@ Global
 		{09B95B81-7EB9-47EC-BD6C-34E4991364A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{09B95B81-7EB9-47EC-BD6C-34E4991364A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09B95B81-7EB9-47EC-BD6C-34E4991364A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B8EEB2B-95B8-4C06-AFA4-FEC5B1CFF9A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B8EEB2B-95B8-4C06-AFA4-FEC5B1CFF9A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B8EEB2B-95B8-4C06-AFA4-FEC5B1CFF9A8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B8EEB2B-95B8-4C06-AFA4-FEC5B1CFF9A8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{287E6710-E998-4E6B-AC89-784E90BDEB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{287E6710-E998-4E6B-AC89-784E90BDEB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{287E6710-E998-4E6B-AC89-784E90BDEB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{287E6710-E998-4E6B-AC89-784E90BDEB2F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -413,5 +427,8 @@ Global
 		{F0D53CE3-3960-4482-AFE6-C0E3C2E2DF16} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 		{170D8571-1D55-4B0F-90F0-74D56528239C} = {F0D53CE3-3960-4482-AFE6-C0E3C2E2DF16}
 		{09B95B81-7EB9-47EC-BD6C-34E4991364A3} = {F0D53CE3-3960-4482-AFE6-C0E3C2E2DF16}
+		{D78F9697-2E20-4DB4-B72C-E85213A4E84E} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
+		{7B8EEB2B-95B8-4C06-AFA4-FEC5B1CFF9A8} = {D78F9697-2E20-4DB4-B72C-E85213A4E84E}
+		{287E6710-E998-4E6B-AC89-784E90BDEB2F} = {D78F9697-2E20-4DB4-B72C-E85213A4E84E}
 	EndGlobalSection
 EndGlobal
