@@ -139,6 +139,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "5-ExploreOptionsPattern", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "6-OptionsPatternValidation", "course-configuration-and-options\6-OptionsPatternValidation\6-OptionsPatternValidation.csproj", "{10D07EEE-6CEE-4F09-AC91-E8342B1A12F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "7-OptionsMonitoring", "course-configuration-and-options\7-OptionsMonitoring\7-OptionsMonitoring.csproj", "{31F900BA-4977-473C-98A6-E31663FB78FC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -329,6 +331,10 @@ Global
 		{10D07EEE-6CEE-4F09-AC91-E8342B1A12F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10D07EEE-6CEE-4F09-AC91-E8342B1A12F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10D07EEE-6CEE-4F09-AC91-E8342B1A12F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{31F900BA-4977-473C-98A6-E31663FB78FC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{31F900BA-4977-473C-98A6-E31663FB78FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{31F900BA-4977-473C-98A6-E31663FB78FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{31F900BA-4977-473C-98A6-E31663FB78FC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -389,5 +395,6 @@ Global
 		{5778F799-8DE3-493A-A514-9E548570F879} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 		{5FE93C5E-32E1-41CD-95FA-F545DB241079} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 		{10D07EEE-6CEE-4F09-AC91-E8342B1A12F3} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
+		{31F900BA-4977-473C-98A6-E31663FB78FC} = {9A083309-1574-4ECA-9C9E-5A7FF3C36604}
 	EndGlobalSection
 EndGlobal
