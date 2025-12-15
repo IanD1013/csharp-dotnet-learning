@@ -1,4 +1,6 @@
-﻿static class Program
+﻿namespace ThreadStatic;
+
+static class Program
 {
 	// Apply ThreadStatic attribute to make this variable thread-local.
 	[ThreadStatic]
