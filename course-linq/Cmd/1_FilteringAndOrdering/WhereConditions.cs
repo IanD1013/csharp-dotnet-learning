@@ -10,9 +10,12 @@ public class WhereConditions : QueryRunner
         SingleCondition_F();
         SingleFunctionCondition_Q();
         SingleFunctionCondition_F();
+        MultipleConditions_Q();
+        MultiplesConditions_F();
     }
 
-    /// USING A SIMPLE WHERE CLAUSE:
+    #region Using A SIMPLE WHERE CLAUSE
+
     // Single condition, query syntax
     private void SingleCondition_Q()
     {
@@ -37,7 +40,10 @@ public class WhereConditions : QueryRunner
         PrintAll(result);
     }
 
-    /// REFACTORING STATEMENTS INTO FUNCTIONS
+    #endregion
+
+    #region REFACTORING STATEMENTS INTO FUNCTIONS
+
     // Single condition from a function, query syntax
     private void SingleFunctionCondition_Q()
     {
@@ -71,19 +77,35 @@ public class WhereConditions : QueryRunner
         return movie.Name.Contains("Iron");
     }
 
-    /// <summary>
-    /// Multiple chained conditions, query syntax
-    /// </summary>
+    #endregion
+
+    #region CHAINING MULTIPLE WHERE CLAUSES
+
+    // Multiple chained conditions, query syntax
     private void MultipleConditions_Q()
     {
         var sourceMovies = Repository.GetAllMovies();
+
+        var result =
+            from movie in sourceMovies
+            where movie.Name.Contains("Spider-Man")
+            where movie.ReleaseDate.Year < 2020
+            select movie;
+
+        PrintAll(result);
     }
 
-    /// <summary>
-    /// Multiple chained conditions, fluent syntax
-    /// </summary>
+    // Multiple chained conditions, fluent syntax
     private void MultiplesConditions_F()
     {
         var sourceMovies = Repository.GetAllMovies();
+
+        var result = sourceMovies
+            .Where(movie => movie.Name.Contains("Iron"))
+            .Where(movie => movie.ReleaseDate.Year < 2020);
+
+        PrintAll(result);
     }
+
+    #endregion
 }
