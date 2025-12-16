@@ -8,13 +8,18 @@ public class WhereConditions : QueryRunner
     {
         SingleCondition_Q();
         SingleCondition_F();
+
         SingleFunctionCondition_Q();
         SingleFunctionCondition_F();
+
         MultipleConditions_Q();
         MultiplesConditions_F();
+
+        SingleOrderByDescending_Q();
+        SingleOrderByDescending_F();
     }
 
-    #region Using A SIMPLE WHERE CLAUSE
+    #region 1. Using A SIMPLE WHERE CLAUSE
 
     // Single condition, query syntax
     private void SingleCondition_Q()
@@ -42,7 +47,7 @@ public class WhereConditions : QueryRunner
 
     #endregion
 
-    #region REFACTORING STATEMENTS INTO FUNCTIONS
+    #region 2. REFACTORING STATEMENTS INTO FUNCTIONS
 
     // Single condition from a function, query syntax
     private void SingleFunctionCondition_Q()
@@ -79,7 +84,7 @@ public class WhereConditions : QueryRunner
 
     #endregion
 
-    #region CHAINING MULTIPLE WHERE CLAUSES
+    #region 3. CHAINING MULTIPLE WHERE CLAUSES
 
     // Multiple chained conditions, query syntax
     private void MultipleConditions_Q()
@@ -103,6 +108,34 @@ public class WhereConditions : QueryRunner
         var result = sourceMovies
             .Where(movie => movie.Name.Contains("Iron"))
             .Where(movie => movie.ReleaseDate.Year < 2020);
+
+        PrintAll(result);
+    }
+
+    #endregion
+
+    #region 4. ORDERING DATA
+
+    // Single order by, query syntax
+    private void SingleOrderByDescending_Q()
+    {
+        var sourceMovies = Repository.GetAllMovies();
+
+        var result =
+            from movie in sourceMovies
+            orderby movie.Name descending
+            select movie;
+
+        PrintAll(result);
+    }
+
+    // Single order by, fluent syntax
+    private void SingleOrderByDescending_F()
+    {
+        var sourceMovies = Repository.GetAllMovies();
+
+        var result = sourceMovies
+            .OrderByDescending(movie => movie.Name);
 
         PrintAll(result);
     }
