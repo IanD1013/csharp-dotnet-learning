@@ -17,6 +17,9 @@ public class WhereConditions : QueryRunner
 
         SingleOrderByDescending_Q();
         SingleOrderByDescending_F();
+        
+        MultipleOrderBy_Q();
+        MultipleOrderBy_F();
     }
 
     #region 1. Using A SIMPLE WHERE CLAUSE
@@ -137,6 +140,35 @@ public class WhereConditions : QueryRunner
         var result = sourceMovies
             .OrderByDescending(movie => movie.Name);
 
+        PrintAll(result);
+    }
+
+    #endregion
+
+    #region 5. MULTI-LEVEL ORDERING
+    
+    // Multiple order by, query syntax
+    private void MultipleOrderBy_Q()
+    {
+        var sourceMovies = Repository.GetAllMovies();
+
+        var result =
+            from movie in sourceMovies
+            orderby movie.ReleaseDate.Year descending, movie.Name 
+            select movie;
+        
+        PrintAll(result);
+    }
+    
+    // Multiple order by, fluent syntax
+    private void MultipleOrderBy_F()
+    {
+        var sourceMovies = Repository.GetAllMovies();
+
+        var result = sourceMovies
+            .OrderByDescending(movie => movie.ReleaseDate.Year)
+            .ThenBy(movie => movie.Name);
+        
         PrintAll(result);
     }
 
