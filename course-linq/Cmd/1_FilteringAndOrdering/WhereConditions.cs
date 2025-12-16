@@ -17,9 +17,11 @@ public class WhereConditions : QueryRunner
 
         SingleOrderByDescending_Q();
         SingleOrderByDescending_F();
-        
+
         MultipleOrderBy_Q();
         MultipleOrderBy_F();
+        
+        OrderByCustomComparer_F();
     }
 
     #region 1. Using A SIMPLE WHERE CLAUSE
@@ -146,7 +148,7 @@ public class WhereConditions : QueryRunner
     #endregion
 
     #region 5. MULTI-LEVEL ORDERING
-    
+
     // Multiple order by, query syntax
     private void MultipleOrderBy_Q()
     {
@@ -154,12 +156,12 @@ public class WhereConditions : QueryRunner
 
         var result =
             from movie in sourceMovies
-            orderby movie.ReleaseDate.Year descending, movie.Name 
+            orderby movie.ReleaseDate.Year descending, movie.Name
             select movie;
-        
+
         PrintAll(result);
     }
-    
+
     // Multiple order by, fluent syntax
     private void MultipleOrderBy_F()
     {
@@ -168,8 +170,46 @@ public class WhereConditions : QueryRunner
         var result = sourceMovies
             .OrderByDescending(movie => movie.ReleaseDate.Year)
             .ThenBy(movie => movie.Name);
-        
+
         PrintAll(result);
+    }
+
+    #endregion
+
+    #region 6. USING A CUSTOM COMPARER TO ORDERING
+
+    private void OrderByCustomComparer_F()
+    {
+        var sourceMovies = Repository.GetAllMovies();
+
+        var result = sourceMovies
+            .OrderBy(movie => movie, new MovieComparer());
+
+        PrintAll(result);
+    }
+
+    private class MovieComparer : IComparer<Movie>
+    {
+        public int Compare(Movie? first, Movie? second)
+        {
+            // Same instance
+            if (ReferenceEquals(first, second)) return 0;
+
+            // Null is smaller than everything
+            if (first is null) return -1;
+
+            if (second is null) return 1;
+
+            // If the years are different, sort by year
+            if (first.ReleaseDate.Year < second.ReleaseDate.Year)
+                return -1;
+
+            if (first.ReleaseDate.Year > second.ReleaseDate.Year)
+                return 1;
+
+            // If the years are equal, sort by name
+            return string.Compare(first.Name, second.Name, StringComparison.Ordinal);
+        }
     }
 
     #endregion
