@@ -1,13 +1,18 @@
+using Data.Models;
+
 namespace Cmd._1_FilteringAndOrdering;
 
 public class WhereConditions : QueryRunner
 {
     public override void Run()
     {
-        // SingleCondition_Q();
+        SingleCondition_Q();
         SingleCondition_F();
+        SingleFunctionCondition_Q();
+        SingleFunctionCondition_F();
     }
-    
+
+    /// USING A SIMPLE WHERE CLAUSE:
     // Single condition, query syntax
     private void SingleCondition_Q()
     {
@@ -17,7 +22,7 @@ public class WhereConditions : QueryRunner
             from movie in sourceMovies
             where movie.Name.Contains("Spider-Man")
             select movie;
-        
+
         PrintAll(result);
     }
 
@@ -25,27 +30,45 @@ public class WhereConditions : QueryRunner
     private void SingleCondition_F()
     {
         var sourceMovies = Repository.GetAllMovies();
-        
+
         var result = sourceMovies
             .Where(movie => movie.Name.Contains("Spider-Man"));
-        
+
         PrintAll(result);
     }
 
-    /// <summary>
-    /// Single condition from a function, query syntax
-    /// </summary>
+    /// REFACTORING STATEMENTS INTO FUNCTIONS
+    // Single condition from a function, query syntax
     private void SingleFunctionCondition_Q()
     {
         var sourceMovies = Repository.GetAllMovies();
+
+        var result =
+            from movie in sourceMovies
+            where IsSpiderManMovie(movie)
+            select movie;
+
+        PrintAll(result);
     }
 
-    /// <summary>
-    /// Single condition from a function, fluent syntax
-    /// </summary>
+    // Single condition from a function, fluent syntax
     private void SingleFunctionCondition_F()
     {
         var sourceMovies = Repository.GetAllMovies();
+
+        var result = sourceMovies.Where(IsIronManMovie);
+
+        PrintAll(result);
+    }
+
+    private static bool IsSpiderManMovie(Movie movie)
+    {
+        return movie.Name.Contains("Spider-Man");
+    }
+
+    private static bool IsIronManMovie(Movie movie)
+    {
+        return movie.Name.Contains("Iron");
     }
 
     /// <summary>
