@@ -22,6 +22,8 @@ public class MoviesController : ControllerBase
 
     [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPost(ApiEndpoints.Movies.Create)]
+    [ProducesResponseType(typeof(MovieResponse), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ValidationFailureResponse), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Create([FromBody] CreateMovieRequest request, CancellationToken token)
     {
         var movie = request.MapToMovie();
