@@ -30,19 +30,21 @@ public class MoviesController : ControllerBase
         await _movieService.CreateAsync(movie, token);
         return CreatedAtAction(nameof(GetV1), new { idOrSlug = movie.Id }, movie);
     }
-    
+
     [HttpGet(ApiEndpoints.Movies.Get)]
-    public async Task<IActionResult> GetV1([FromRoute] string idOrSlug, [FromServices] LinkGenerator linkGenerator, CancellationToken token)
+    [ResponseCache(Duration = 30, VaryByHeader = "Accept, Accept-Encoding", Location = ResponseCacheLocation.Any)]
+    public async Task<IActionResult> GetV1([FromRoute] string idOrSlug, [FromServices] LinkGenerator linkGenerator,
+        CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
-        var movie = Guid.TryParse(idOrSlug, out var id) 
-            ? await _movieService.GetByIdAsync(id, userId, token) 
+        var movie = Guid.TryParse(idOrSlug, out var id)
+            ? await _movieService.GetByIdAsync(id, userId, token)
             : await _movieService.GetBySlugAsync(idOrSlug, userId, token);
         if (movie is null)
         {
             return NotFound();
         }
-        
+
         var response = movie.MapToResponse();
         response.Links.Add(new Link
         {
@@ -50,15 +52,18 @@ public class MoviesController : ControllerBase
             Rel = "self",
             Type = "GET"
         });
-        
+
         return Ok(response);
-    }   
-    
+    }
+
     [HttpGet(ApiEndpoints.Movies.GetAll)]
+    [ResponseCache(Duration = 30, VaryByQueryKeys = new[] { "title", "year", "sortBy", "page", "pageSize" },
+        VaryByHeader = "Accept, Accept-Encoding", Location = ResponseCacheLocation.Any)]
     public async Task<IActionResult> GetAll([FromQuery] GetAllMoviesRequest request, CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
-        var options = request.MapToOptions().WithUser(userId);
+        var options = request.MapToOptions()
+            .WithUser(userId);
         var movies = await _movieService.GetAllAsync(options, token);
         var movieCount = await _movieService.GetCountAsync(options.Title, options.YearOfRelease, token);
         var moviesResponse = movies.MapToResponse(request.Page, request.PageSize, movieCount);
@@ -67,7 +72,8 @@ public class MoviesController : ControllerBase
 
     [Authorize(AuthConstants.TrustedMemberPolicyName)]
     [HttpPut(ApiEndpoints.Movies.Update)]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateMovieRequest request, CancellationToken token)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] UpdateMovieRequest request,
+        CancellationToken token)
     {
         var userId = HttpContext.GetUserId();
         var movie = request.MapToMovie(id);
@@ -76,6 +82,7 @@ public class MoviesController : ControllerBase
         {
             return NotFound();
         }
+
         var response = updatedMovie.MapToResponse();
         return Ok(response);
     }
@@ -89,6 +96,7 @@ public class MoviesController : ControllerBase
         {
             return NotFound();
         }
+
         return Ok();
     }
 }
