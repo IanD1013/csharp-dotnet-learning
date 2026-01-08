@@ -1,3 +1,9 @@
-﻿// See https://aka.ms/new-console-template for more information
+﻿using System.Text.Json;
+using Movies.Api.Sdk;
+using Refit;
 
-Console.WriteLine("Hello, World!");
+var moviesApi = RestService.For<IMoviesApi>("https://localhost:5001");
+
+var movie = await moviesApi.GetMoviesAsync("nick-the-greek-2022");
+
+Console.WriteLine(JsonSerializer.Serialize(movie));
