@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using Minimal.Api;
 
@@ -66,5 +67,25 @@ app.MapGet("mix/{routeParam}", (
 
 // this implies that person was from body
 app.MapPost("people", ([FromBody] Person person) => Results.Ok(person));
+
+/** SPECIAL PARAMETER TYPES **/
+// there are some special parameter types that are automatically bound if so you need them
+app.MapGet("httpcontext-1", async context => { await context.Response.WriteAsync("Hello from HttpContext 1"); });
+
+// can also explicitly define HttpContext, but it is grayed out because the HttpContext
+// has a dedicated overload, and by default is implied to be the de facto way to do it if
+// you only have one parameter, it is going to be the HttpContext
+app.MapGet("httpcontext-2",
+    async (HttpContext context) => { await context.Response.WriteAsync("Hello from HttpContext 2"); });
+
+app.MapGet("http", async (HttpRequest request, HttpResponse response) =>
+{
+    var queries = request.QueryString.Value;
+    await response.WriteAsync($"Hello from HttpResponse. Queries were: {queries}");
+});
+
+app.MapGet("claims", (ClaimsPrincipal user) => { });
+
+app.MapGet("cancel", (CancellationToken token) => { });
 
 app.Run();
