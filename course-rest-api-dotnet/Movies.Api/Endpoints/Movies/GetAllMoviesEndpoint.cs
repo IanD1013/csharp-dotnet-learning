@@ -2,6 +2,7 @@
 using Movies.Api.Mapping;
 using Movies.Application.Services;
 using Movies.Contracts.Requests;
+using Movies.Contracts.Responses;
 
 namespace Movies.Api.Endpoints.Movies;
 
@@ -27,7 +28,8 @@ public static class GetAllMoviesEndpoint
                     request.PageSize.GetValueOrDefault(PagedRequest.DefaultPageSize), movieCount);
                 return TypedResults.Ok(moviesResponse);
             })
-            .WithName(Name);
+            .WithName(Name)
+            .Produces<MoviesResponse>(StatusCodes.Status200OK);
 
         return app;
     }
