@@ -3,10 +3,12 @@ using Microsoft.AspNetCore.Mvc;
 using Minimal.Api;
 
 var builder = WebApplication.CreateBuilder(args);
+// service registration starts here
 
 builder.Services.AddSingleton<PeopleService>();
 builder.Services.AddSingleton<GuidGenerator>();
 
+// service registration stops here
 var app = builder.Build();
 
 app.MapGet("get-example", () => "Hello from GET");
