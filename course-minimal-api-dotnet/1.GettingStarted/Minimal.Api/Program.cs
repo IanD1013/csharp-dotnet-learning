@@ -9,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddSingleton<PeopleService>();
 builder.Services.AddSingleton<GuidGenerator>();
 
+// builder.Logging.Configure()
+
 // service registration stops here
 var app = builder.Build();
 // Middleware registration starts here
@@ -54,7 +56,6 @@ app.MapGet("from-class", Example.SomeMethod);
 
 #region Route Parameters and Rules
 
-/** ROUTE PARAMETERS AND RULES: **/
 app.MapGet("get-params/{age:int}", (int age) => $"Age provided was  {age}");
 app.MapGet("cars/{carId:regex(^[a-z0-9]+$)}", (string carId) => $"Car id provided was {carId}");
 app.MapGet("books/{isbn:length(13)}", (string isbn) => $"ISBN provided was {isbn}");
@@ -142,6 +143,17 @@ app.MapGet("stream-result", () =>
 
 app.MapGet("redirect", () => Results.Redirect("https://google.com"));
 app.MapGet("download", () => Results.File("./my-file.txt"));
+
+#endregion
+
+
+#region Logging
+
+app.MapGet("logging", (ILogger<Program> logger) =>
+{
+    logger.LogInformation("Hello from endpoint");
+    return Results.Ok();
+});
 
 #endregion
 
