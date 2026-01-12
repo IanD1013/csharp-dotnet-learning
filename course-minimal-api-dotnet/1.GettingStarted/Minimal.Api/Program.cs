@@ -5,6 +5,7 @@ using Minimal.Api;
 
 var builder = WebApplication.CreateBuilder(args);
 // service registration starts here
+builder.Services.AddControllers();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -163,5 +164,6 @@ app.MapGet("logging", (ILogger<Program> logger) =>
 
 #endregion
 
+app.MapControllers();
 // Middleware registration stops here
 app.Run();
