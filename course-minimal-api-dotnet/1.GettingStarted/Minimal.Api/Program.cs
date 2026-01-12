@@ -91,5 +91,11 @@ app.MapGet("claims", (ClaimsPrincipal user) => { });
 
 app.MapGet("cancel", (CancellationToken token) => { });
 
+/** CUSTOM PARAMETER BINDING **/
+app.MapGet("map-point", (MapPoint point) => Results.Ok(point));
+
+app.MapPost("map-point", (MapPoint point) => Results.Ok(point));
+
+
 // Middleware registration stops here
 app.Run();
