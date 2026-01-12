@@ -15,12 +15,12 @@ public class BookService : IBookService
 
     public async Task<bool> CreateAsync(Book book)
     {
-        // var existingBook = await GetByIsbnAsync(book.Isbn);
-        //
-        // if (existingBook is not null)
-        // {
-        //     return false;
-        // }
+        var existingBook = await GetByIsbnAsync(book.Isbn);
+
+        if (existingBook is not null)
+        {
+            return false;
+        }
 
         using var connection = await _connectionFactory.CreateConnectionAsync();
         var result = await connection.ExecuteAsync(
@@ -31,15 +31,18 @@ public class BookService : IBookService
         return result > 0;
     }
 
-    public Task<Book?> GetByIsbnAsync(string isbn)
+    public async Task<Book?> GetByIsbnAsync(string isbn)
     {
-        throw new NotImplementedException();
+        using var connection = await _connectionFactory.CreateConnectionAsync();
+
+        return await connection.QueryFirstOrDefaultAsync<Book>("SELECT * FROM Books WHERE Isbn = @Isbn LIMIT 1",
+            new { Isbn = isbn });
     }
 
     public async Task<IEnumerable<Book>> GetAllAsync()
     {
         using var connection = await _connectionFactory.CreateConnectionAsync();
-        
+
         return await connection.QueryAsync<Book>("SELECT * FROM Books");
     }
 
