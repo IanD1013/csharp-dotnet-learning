@@ -5,6 +5,7 @@ using Library.Api.Data;
 using Library.Api.Models;
 using Library.Api.Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(new WebApplicationOptions
 {
@@ -12,6 +13,12 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     WebRootPath = "./wwwroot",
     EnvironmentName = Environment.GetEnvironmentVariable("env"),
     ApplicationName = "Library.Api"
+});
+
+builder.Services.Configure<JsonOptions>(options =>
+{
+    options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
+    options.JsonSerializerOptions.IncludeFields = true;
 });
 
 builder.Configuration.AddJsonFile("appsettings.Local.json", true, true);
