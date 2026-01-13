@@ -1,5 +1,6 @@
 using FluentValidation;
 using FluentValidation.Results;
+using Library.Api;
 using Library.Api.Auth;
 using Library.Api.Data;
 using Library.Api.Models;
@@ -124,6 +125,18 @@ app.MapDelete("books/{isbn}", async (string isbn, IBookService bookService) =>
     .Produces(StatusCodes.Status204NoContent)
     .Produces(StatusCodes.Status404NotFound)
     .WithTags("Books");
+
+app.MapGet("status", () => Results.Extensions.Html("""
+                                                   <!doctype html>
+                                                   <html>
+                                                       <head><title>Status page</title></head>
+                                                       <body>
+                                                           <h1>Status</h1>
+                                                           <p>The server is working fine. Bye bye!</p>
+                                                       </body>
+                                                   </html>
+                                                   """));
+
 
 var databaseInitializer = app.Services.GetRequiredService<DatabaseInitializer>();
 await databaseInitializer.InitializeAsync();
