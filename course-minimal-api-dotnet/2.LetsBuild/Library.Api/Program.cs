@@ -16,6 +16,8 @@ var builder = WebApplication.CreateBuilder(new WebApplicationOptions
     ApplicationName = "Library.Api"
 });
 
+builder.Services.AddCors(options => { options.AddPolicy("AnyOrigin", x => x.AllowAnyOrigin()); });
+
 builder.Services.Configure<JsonOptions>(options =>
 {
     options.JsonSerializerOptions.PropertyNameCaseInsensitive = true;
@@ -39,6 +41,8 @@ builder.Services.AddSingleton<IBookService, BookService>();
 builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 var app = builder.Build();
+
+app.UseCors();
 
 app.UseSwagger();
 app.UseSwaggerUI();
@@ -135,7 +139,9 @@ app.MapGet("status", () => Results.Extensions.Html("""
                                                            <p>The server is working fine. Bye bye!</p>
                                                        </body>
                                                    </html>
-                                                   """));
+                                                   """))
+    .ExcludeFromDescription()
+    .RequireCors("AnyOrigin");
 
 
 var databaseInitializer = app.Services.GetRequiredService<DatabaseInitializer>();
