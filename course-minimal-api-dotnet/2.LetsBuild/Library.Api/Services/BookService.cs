@@ -54,9 +54,25 @@ public class BookService : IBookService
             new { SearchTerm = searchTerm });
     }
 
-    public Task<bool> UpdateAsync(Book book)
+    public async Task<bool> UpdateAsync(Book book)
     {
-        throw new NotImplementedException();
+        var existingBook = await GetByIsbnAsync(book.Isbn);
+        if (existingBook is null)
+        {
+            return false;
+        }
+
+        using var connection = await _connectionFactory.CreateConnectionAsync();
+        var result = await connection.ExecuteAsync("""
+                                                   UPDATE Books SET 
+                                                                    Title = @Title, 
+                                                                    Author = @Author, 
+                                                                    ShortDescription = @ShortDescription,  
+                                                                    PageCount = @PageCount, 
+                                                                    ReleaseDate = @ReleaseDate 
+                                                                WHERE Isbn = @Isbn
+                                                   """, book);
+        return result > 0;
     }
 
     public Task<bool> DeleteAsync(string isbn)
