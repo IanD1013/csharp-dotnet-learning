@@ -5,15 +5,16 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Library.Api.Tests.Integration;
 
-public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMarker>>
+public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMarker>>, IAsyncLifetime
 {
     private readonly WebApplicationFactory<IApiMarker> _factory;
+    private readonly List<string> _createdIsbns = [];
 
     public LibraryEndpointsTests(WebApplicationFactory<IApiMarker> factory)
     {
         _factory = factory;
     }
-    
+
     [Fact]
     public async Task CreateBook_CreatesBook_WhenDataIsCorrect()
     {
@@ -22,13 +23,17 @@ public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMar
         var book = GenerateBook();
 
         // Act
-        var result  = await httpClient.PostAsJsonAsync("/books", book);
+        var result = await httpClient.PostAsJsonAsync("/books", book);
+        _createdIsbns.Add(book.Isbn);
         var createdBook = await result.Content.ReadFromJsonAsync<Book>();
-        
+
         // Assert
-        result.StatusCode.Should().Be(HttpStatusCode.Created);
-        createdBook.Should().BeEquivalentTo(book);
-        result.Headers.Location.Should().Be($"http://localhost/books/{book.Isbn}");
+        result.StatusCode.Should()
+            .Be(HttpStatusCode.Created);
+        createdBook.Should()
+            .BeEquivalentTo(book);
+        result.Headers.Location.Should()
+            .Be($"http://localhost/books/{book.Isbn}");
     }
 
     [Fact]
@@ -40,16 +45,19 @@ public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMar
         book.Isbn = "INVALID";
 
         // Act
-        var result  = await httpClient.PostAsJsonAsync("/books", book);
+        var result = await httpClient.PostAsJsonAsync("/books", book);
         var errors = await result.Content.ReadFromJsonAsync<IEnumerable<ValidationError>>();
         var error = errors.Single();
-        
+
         // Assert
-        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        error.PropertyName.Should().Be("Isbn");
-        error.ErrorMessage.Should().Be("Value was not a valid ISBN-13");
+        result.StatusCode.Should()
+            .Be(HttpStatusCode.BadRequest);
+        error.PropertyName.Should()
+            .Be("Isbn");
+        error.ErrorMessage.Should()
+            .Be("Value was not a valid ISBN-13");
     }
-    
+
     [Fact]
     public async Task CreateBook_Fails_WhenBookExists()
     {
@@ -59,17 +67,21 @@ public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMar
 
         // Act
         await httpClient.PostAsJsonAsync("/books", book);
-        var result  = await httpClient.PostAsJsonAsync("/books", book);
+        _createdIsbns.Add(book.Isbn);
+        var result = await httpClient.PostAsJsonAsync("/books", book);
         var errors = await result.Content.ReadFromJsonAsync<IEnumerable<ValidationError>>();
         var error = errors.Single();
-        
+
         // Assert
-        result.StatusCode.Should().Be(HttpStatusCode.BadRequest);
-        error.PropertyName.Should().Be("Isbn");
-        error.ErrorMessage.Should().Be("A book with this ISBN-13 already exists");
+        result.StatusCode.Should()
+            .Be(HttpStatusCode.BadRequest);
+        error.PropertyName.Should()
+            .Be("Isbn");
+        error.ErrorMessage.Should()
+            .Be("A book with this ISBN-13 already exists");
     }
-    
-    
+
+
     private Book GenerateBook(string title = "The Dirty Coder")
     {
         return new Book
@@ -87,5 +99,17 @@ public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMar
     {
         return $"{Random.Shared.Next(100, 999)}-" +
                $"{Random.Shared.Next(1000000000, 2100999999)}";
+    }
+
+    public Task InitializeAsync() => Task.CompletedTask;
+
+    public async Task DisposeAsync()
+    {
+        var httpClient = _factory.CreateClient();
+        
+        foreach (var createdIsbn in _createdIsbns)
+        {
+            await httpClient.DeleteAsync($"/books/{createdIsbn}");
+        }
     }
 }
