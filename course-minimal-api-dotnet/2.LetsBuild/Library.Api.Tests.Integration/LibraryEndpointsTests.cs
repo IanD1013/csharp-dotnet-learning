@@ -5,12 +5,12 @@ using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Library.Api.Tests.Integration;
 
-public class LibraryEndpointsTests : IClassFixture<WebApplicationFactory<IApiMarker>>, IAsyncLifetime
+public class LibraryEndpointsTests : IClassFixture<LibraryApiFactory>, IAsyncLifetime
 {
-    private readonly WebApplicationFactory<IApiMarker> _factory;
+    private readonly LibraryApiFactory _factory;
     private readonly List<string> _createdIsbns = [];
 
-    public LibraryEndpointsTests(WebApplicationFactory<IApiMarker> factory)
+    public LibraryEndpointsTests(LibraryApiFactory factory)
     {
         _factory = factory;
     }
