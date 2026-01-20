@@ -225,6 +225,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Api", "course-minim
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Api.Tests.Integration", "course-minimal-api-dotnet\2.LetsBuild\Library.Api.Tests.Integration\Library.Api.Tests.Integration.csproj", "{C4B41092-3235-4824-B8DF-17FCF069BF13}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-reflection-in-dotnet", "course-reflection-in-dotnet", "{1DBC4B56-E2FE-4183-84B0-10F66B175E7B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1.FindingTypes", "1.FindingTypes", "{530FC6A8-FABD-49B8-9288-15B18657DB55}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FindingTypes.ConsoleApp", "course-reflection-in-dotnet\1.FindingTypes\FindingTypes.ConsoleApp\FindingTypes.ConsoleApp.csproj", "{0AF67A5D-51F4-4FCD-981C-92333753BE16}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -547,6 +553,10 @@ Global
 		{C4B41092-3235-4824-B8DF-17FCF069BF13}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C4B41092-3235-4824-B8DF-17FCF069BF13}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C4B41092-3235-4824-B8DF-17FCF069BF13}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AF67A5D-51F4-4FCD-981C-92333753BE16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AF67A5D-51F4-4FCD-981C-92333753BE16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AF67A5D-51F4-4FCD-981C-92333753BE16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AF67A5D-51F4-4FCD-981C-92333753BE16}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -645,5 +655,7 @@ Global
 		{91C33D62-E843-4A71-8951-FD9AFBD48CA8} = {8145235C-18D5-4CB3-AD3A-95BF6674EAD7}
 		{37E7A3C4-26C4-4EB6-AB93-7E882E8C7E2A} = {91C33D62-E843-4A71-8951-FD9AFBD48CA8}
 		{C4B41092-3235-4824-B8DF-17FCF069BF13} = {91C33D62-E843-4A71-8951-FD9AFBD48CA8}
+		{530FC6A8-FABD-49B8-9288-15B18657DB55} = {1DBC4B56-E2FE-4183-84B0-10F66B175E7B}
+		{0AF67A5D-51F4-4FCD-981C-92333753BE16} = {530FC6A8-FABD-49B8-9288-15B18657DB55}
 	EndGlobalSection
 EndGlobal
