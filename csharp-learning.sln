@@ -239,6 +239,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3.Attributes", "3.Attribute
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Attributes.ConsoleApp", "course-reflection-in-dotnet\3.Attributes\Attributes.ConsoleApp\Attributes.ConsoleApp.csproj", "{C621EFCA-77CE-490E-A3D6-3EFC86FBEE36}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "4.DifferentWaysToConstruct", "4.DifferentWaysToConstruct", "{9EC8F2F8-2BE9-43C4-938F-6B1C96A9F6C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ObjectConstruction.ConsoleApp", "course-reflection-in-dotnet\4.DifferentWaysToConstruct\ObjectConstruction.ConsoleApp\ObjectConstruction.ConsoleApp.csproj", "{513672A5-A8B6-461F-87F4-A99DC0BC0CCC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -573,6 +577,10 @@ Global
 		{C621EFCA-77CE-490E-A3D6-3EFC86FBEE36}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C621EFCA-77CE-490E-A3D6-3EFC86FBEE36}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C621EFCA-77CE-490E-A3D6-3EFC86FBEE36}.Release|Any CPU.Build.0 = Release|Any CPU
+		{513672A5-A8B6-461F-87F4-A99DC0BC0CCC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{513672A5-A8B6-461F-87F4-A99DC0BC0CCC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{513672A5-A8B6-461F-87F4-A99DC0BC0CCC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{513672A5-A8B6-461F-87F4-A99DC0BC0CCC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -677,5 +685,7 @@ Global
 		{C4833531-C59E-49B6-AC7B-07FDBBF0BC6C} = {0857134B-A2B2-4832-9C72-088750717D4B}
 		{1027C505-AB15-4ADD-8F2B-06CC09DC6D2D} = {1DBC4B56-E2FE-4183-84B0-10F66B175E7B}
 		{C621EFCA-77CE-490E-A3D6-3EFC86FBEE36} = {1027C505-AB15-4ADD-8F2B-06CC09DC6D2D}
+		{9EC8F2F8-2BE9-43C4-938F-6B1C96A9F6C0} = {1DBC4B56-E2FE-4183-84B0-10F66B175E7B}
+		{513672A5-A8B6-461F-87F4-A99DC0BC0CCC} = {9EC8F2F8-2BE9-43C4-938F-6B1C96A9F6C0}
 	EndGlobalSection
 EndGlobal
