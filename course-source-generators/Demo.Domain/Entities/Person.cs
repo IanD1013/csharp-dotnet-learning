@@ -47,14 +47,14 @@ public class Person
         return JsonSerializer.Serialize(this, JsonSerializerOptions);
     }
 
-    // public string ToJsonViaSystemTextGenerated()
-    // {
-    //     return JsonSerializer.Serialize(this, PersonSerializerContext.Default.Person);
-    // }
+    public string ToJsonViaSystemTextGenerated()
+    {
+        return JsonSerializer.Serialize(this, PersonSerializerContext.Default.Person);
+    }
 }
 
-// [JsonSerializable(typeof(Person))]
-// [JsonSourceGenerationOptions(WriteIndented = true)]
-// public partial class PersonSerializerContext : JsonSerializerContext
-// {
-// }
+[JsonSerializable(typeof(Person))]
+[JsonSourceGenerationOptions(WriteIndented = true)]
+public partial class PersonSerializerContext : JsonSerializerContext
+{
+}

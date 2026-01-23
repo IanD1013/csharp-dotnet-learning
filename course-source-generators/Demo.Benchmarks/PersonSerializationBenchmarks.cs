@@ -21,22 +21,22 @@ public class PersonSerializationBenchmarks
     {
         return Person.ToJson();
     }
-    
+
     [Benchmark]
     public string Reflection()
     {
         return Person.ToJsonViaReflection();
     }
-    
+
     [Benchmark]
     public string SystemText()
     {
         return Person.ToJsonViaSystemText();
-    }    
-    
-    // [Benchmark]
-    // public string SystemTextGenerated()
-    // {
-    //     return Person.ToJsonViaSystemTextGenerated();
-    // }    
+    }
+
+    [Benchmark]
+    public string SystemTextGenerated()
+    {
+        return Person.ToJsonViaSystemTextGenerated();
+    }
 }

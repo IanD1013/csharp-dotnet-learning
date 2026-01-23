@@ -43,9 +43,9 @@ public class When_serializing_a_Person
         Assert.Equal(expected, Person.ToJsonViaSystemText());
     }
     
-    // [Fact]
-    // public void Then_ToJsonViaSystemTextGenerated_returns_expected()
-    // {
-    //     Assert.Equal(expected, Person.ToJsonViaSystemTextGenerated());
-    // }
+    [Fact]
+    public void Then_ToJsonViaSystemTextGenerated_returns_expected()
+    {
+        Assert.Equal(expected, Person.ToJsonViaSystemTextGenerated());
+    }
 }
