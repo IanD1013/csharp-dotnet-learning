@@ -85,3 +85,9 @@ want to set this to the path of the new generated folder.
 - Visual Studio Experiences
 - JetBrains Rider Experiences
 - Persisting Generated Files
+
+### Debugging Source Generator
+
+- Basic source generator
+- Ability to debug 
+- Ability to explore models
