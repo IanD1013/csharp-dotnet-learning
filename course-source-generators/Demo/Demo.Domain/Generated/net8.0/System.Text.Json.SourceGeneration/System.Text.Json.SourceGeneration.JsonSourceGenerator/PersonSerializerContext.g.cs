@@ -8,7 +8,7 @@
 
 namespace Demo.Domain.Entities
 {
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.Json.SourceGeneration", "8.0.13.2707")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Text.Json.SourceGeneration", "8.0.13.10607")]
     public partial class PersonSerializerContext
     {
         private readonly static global::System.Text.Json.JsonSerializerOptions s_defaultOptions = new()
