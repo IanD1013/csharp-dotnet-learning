@@ -12,8 +12,8 @@ public class ToJsonGenerator : IIncrementalGenerator
         """
         namespace Demo.Generator;
 
-        public class HelloWorld
-        {
+        public class HelloWorld 
+        { 
         }
         """;
 
