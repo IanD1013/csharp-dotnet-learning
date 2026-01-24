@@ -45,7 +45,9 @@ required to comply with some policy or regulation depending on your industry, or
 generated code to go through a code review like everything else. If your solution includes a source generator, then
 someone may want to check its output, especially when you make changes to the generator itself.
 
-Since the files are generated in the project's obj folder, they currently won 't get picked up by Git. So you could modify your Git ignore file to include these generated files, but a better option is just to change where the files go in the first place.
+Since the files are generated in the project's obj folder, they currently won 't get picked up by Git. So you could
+modify your Git ignore file to include these generated files, but a better option is just to change where the files go
+in the first place.
 
 ```cs
 <Project Sdk="Microsoft.NET.Sdk">
@@ -71,4 +73,15 @@ Since the files are generated in the project's obj folder, they currently won 't
 </Project>
 ```
 
-Since the files in the generated folder are just for reference, we can exclude them from the compilation, so I'll add a new item group to the domain project, and then I 'll add a compile element within that, and a remove attribute, and I want to set this to the path of the new generated folder.
+Since the files in the generated folder are just for reference, we can exclude them from the compilation, so I'll add a
+new item group to the domain project, and then I 'll add a compile element within that, and a remove attribute, and I
+want to set this to the path of the new generated folder.
+
+### Your First Source Generator
+
+- Created Project
+- Generated HelloWorld.g.cs
+- Analyzer Reference Differences
+- Visual Studio Experiences
+- JetBrains Rider Experiences
+- Persisting Generated Files
