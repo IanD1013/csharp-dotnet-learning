@@ -1,9 +1,11 @@
 ﻿using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Demo.Generator;
 
 namespace Demo.Domain.Entities;
 
+[ToJsonSerializer]
 public class Person
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { WriteIndented = true };

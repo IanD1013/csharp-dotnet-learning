@@ -8,18 +8,21 @@ namespace Demo.Generator;
 [Generator]
 public class ToJsonGenerator : IIncrementalGenerator
 {
-    private const string HelloWorld =
+    private const string ToJsonSerializerAttribute =
         """
+        using System;
+
         namespace Demo.Generator;
 
-        public class HelloWorld 
-        { 
+        [AttributeUsage(AttributeTargets.Class)]
+        public class ToJsonSerializerAttribute : Attribute
+        {
         }
         """;
 
     public void Initialize(IncrementalGeneratorInitializationContext context)
     {
         context.RegisterPostInitializationOutput(ctx => ctx
-            .AddSource("HelloWorld.g.cs", SourceText.From(HelloWorld, Encoding.UTF8)));
+            .AddSource("ToJsonSerializerAttribute.g.cs", SourceText.From(ToJsonSerializerAttribute, Encoding.UTF8)));
     }
 }
