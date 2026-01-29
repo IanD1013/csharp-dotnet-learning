@@ -3,7 +3,7 @@
 namespace Demo.Domain.Entities;
 
 [ToJsonSerializer]
-public partial class Address
+internal partial class Address
 {
     public required string AddressLine1 { get; init; }
     public required string AddressLine2 { get; init; }

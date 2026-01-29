@@ -32,7 +32,7 @@ public class ToJsonGenerator : IIncrementalGenerator
 
         namespace {{namespace}};
 
-        public partial class {{className}}
+        {{classAccessibility}} partial class {{className}}
         {
         }
         """;
@@ -65,6 +65,7 @@ public class ToJsonGenerator : IIncrementalGenerator
 
         var output = PartialClassTemplate
             .Replace("{{generatedAt}}", $" at {DateTime.Now:s}")
+            .Replace("{{classAccessibility}}", classInfo.Value.Accessibility.ToString().ToLower())
             .Replace("{{namespace}}", classInfo.Value.Namespace)
             .Replace("{{className}}", classInfo.Value.Name);
 
@@ -111,7 +112,8 @@ public class ToJsonGenerator : IIncrementalGenerator
                 var classInfo = new ClassInfo
                 {
                     Namespace = classSymbol?.ContainingNamespace.ToDisplayString(),
-                    Name = classSymbol?.Name
+                    Name = classSymbol?.Name,
+                    Accessibility = classSymbol?.DeclaredAccessibility,
                 };
 
                 return classInfo;
@@ -134,4 +136,5 @@ public record struct ClassInfo
 {
     public string? Namespace { get; set; }
     public string? Name { get; set; }
+    public Accessibility? Accessibility { get; set; }
 }
