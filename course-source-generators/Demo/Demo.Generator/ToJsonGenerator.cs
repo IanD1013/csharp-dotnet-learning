@@ -64,9 +64,12 @@ public class ToJsonGenerator : IIncrementalGenerator
         context.RegisterPostInitializationOutput(ctx => ctx
             .AddSource("ToJsonSerializerAttribute.g.cs", SourceText.From(ToJsonSerializerAttribute, Encoding.UTF8)));
 
+        // var provider = context.SyntaxProvider
+        //     .CreateSyntaxProvider(Predicate, Transform)
+        //     .Where(x => x is not null);
+
         var provider = context.SyntaxProvider
-            .CreateSyntaxProvider(Predicate, Transform)
-            .Where(x => x is not null);
+            .ForAttributeWithMetadataName("Demo.Generator.ToJsonSerializerAttribute", Predicate, Transform);
 
         // for files that will generate dynamically, we need to call a different method called register source output
         context.RegisterSourceOutput(provider, Generate);
@@ -77,15 +80,10 @@ public class ToJsonGenerator : IIncrementalGenerator
      * to the SourceProductionContext. And this is where that caching mechanism comes into play. If we visit the same
      * node in the future, and it hasn't changed in any meaningful way, then its class info will be the same.
      */
-    private void Generate(SourceProductionContext context, ClassInfo? classInfo)
+    private void Generate(SourceProductionContext context, ClassInfo classInfo)
     {
-        if (classInfo is null)
-        {
-            return;
-        }
-
         var builder = new StringBuilder();
-        foreach (var property in classInfo.Value.Properties)
+        foreach (var property in classInfo.Properties)
         {
             builder.AppendLine(PropertyTemplate.Replace("{{name}}", property.Name));
         }
@@ -98,65 +96,28 @@ public class ToJsonGenerator : IIncrementalGenerator
 #else
             .Replace("{{generatedAt}}", string.Empty)
 #endif
-            .Replace("{{classAccessibility}}", classInfo.Value.Accessibility.ToString()
+            .Replace("{{classAccessibility}}", classInfo.Accessibility.ToString()
                 .ToLower())
-            .Replace("{{namespace}}", classInfo.Value.Namespace)
-            .Replace("{{className}}", classInfo.Value.Name)
+            .Replace("{{namespace}}", classInfo.Namespace)
+            .Replace("{{className}}", classInfo.Name)
             .Replace("{{properties}}", properties);
 
-        context.AddSource($"{classInfo.Value.Name}.g.cs", output);
+        context.AddSource($"{classInfo.Name}.g.cs", output);
     }
 
-    private static ClassInfo? Transform(GeneratorSyntaxContext syntaxContext, CancellationToken cancellationToken)
+    private static ClassInfo Transform(GeneratorAttributeSyntaxContext syntaxContext,
+        CancellationToken cancellationToken)
     {
-        var classDeclarationSyntax = (ClassDeclarationSyntax)syntaxContext.Node;
-
-        foreach (var attributeList in classDeclarationSyntax.AttributeLists)
+        var classSymbol = syntaxContext.SemanticModel.GetDeclaredSymbol(syntaxContext.TargetNode);
+        var classInfo = new ClassInfo
         {
-            foreach (var attributeSyntax in attributeList.Attributes)
-            {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    return null;
-                }
+            Namespace = classSymbol?.ContainingNamespace.ToDisplayString(),
+            Name = classSymbol?.Name,
+            Accessibility = classSymbol?.DeclaredAccessibility,
+            Properties = GetPropertyInfos(classSymbol)
+        };
 
-                var attributeName = attributeSyntax.Name.ToString();
-                if (attributeName != "ToJsonSerializerAttribute" && attributeName != "ToJsonSerializer")
-                {
-                    continue;
-                }
-
-                // Now that we've done some initial filtering, we can transform our class declaration syntax node into its equivalent semantic model for a more in-depth analysis.
-                var attributeSymbolInfo = syntaxContext.SemanticModel.GetSymbolInfo(attributeSyntax);
-
-                if (attributeSymbolInfo.Symbol is not IMethodSymbol methodSymbol)
-                {
-                    continue;
-                }
-
-                var attributeSymbol = methodSymbol.ContainingType;
-
-                if (attributeSymbol.ToDisplayString() != "Demo.Generator.ToJsonSerializerAttribute" &&
-                    attributeSymbol.ToDisplayString() != "Demo.Generator.ToJsonSerializer")
-                {
-                    continue;
-                }
-
-                var classSymbol = syntaxContext.SemanticModel.GetDeclaredSymbol(classDeclarationSyntax);
-
-                var classInfo = new ClassInfo
-                {
-                    Namespace = classSymbol?.ContainingNamespace.ToDisplayString(),
-                    Name = classSymbol?.Name,
-                    Accessibility = classSymbol?.DeclaredAccessibility,
-                    Properties = GetPropertyInfos(classSymbol)
-                };
-
-                return classInfo;
-            }
-        }
-
-        return null;
+        return classInfo;
     }
 
     private static IEnumerable<PropertyInfo> GetPropertyInfos(ISymbol? classSymbol)
@@ -180,10 +141,7 @@ public class ToJsonGenerator : IIncrementalGenerator
 
     private static bool Predicate(SyntaxNode node, CancellationToken token)
     {
-        return node is ClassDeclarationSyntax
-        {
-            AttributeLists.Count: > 0
-        };
+        return true;
     }
 }
 
