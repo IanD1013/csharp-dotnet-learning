@@ -91,7 +91,11 @@ public class ToJsonGenerator : IIncrementalGenerator
         var properties = builder.ToString(0, builder.Length - 6) + "\");";
 
         var output = PartialClassTemplate
+#if DEBUG
             .Replace("{{generatedAt}}", $" at {DateTime.Now:T}")
+#else
+            .Replace("{{generatedAt}}", string.Empty)
+#endif
             .Replace("{{classAccessibility}}", classInfo.Value.Accessibility.ToString()
                 .ToLower())
             .Replace("{{namespace}}", classInfo.Value.Namespace)
