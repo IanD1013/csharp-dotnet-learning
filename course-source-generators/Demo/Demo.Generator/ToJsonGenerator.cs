@@ -32,6 +32,8 @@ public class ToJsonGenerator : IIncrementalGenerator
         // </auto-generated>
         //------------------------------------------------------------------------------
         using System.Text;
+        using System.Text.Json;
+        using System.Text.Encodings.Web;
 
         namespace {{namespace}};
 
@@ -52,7 +54,7 @@ public class ToJsonGenerator : IIncrementalGenerator
 
     private const string PropertyTemplate =
         """
-                builder.AppendLine($"  \"{{name}}\": \"{{{name}}}\",");
+                builder.AppendLine($"  \"{{name}}\": \"{JsonEncodedText.Encode({{name}}, JavaScriptEncoder.Default)}\",");
         """;
 
 

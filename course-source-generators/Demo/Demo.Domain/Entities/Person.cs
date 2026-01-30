@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Demo.Generator;
@@ -38,7 +39,8 @@ public partial class Person
                      .GetProperties()
                      .OrderBy(x => x.Name))
         {
-            builder.AppendLine($"  \"{property.Name}\": \"{property.GetValue(this)}\",");
+            builder.AppendLine(
+                $"  \"{property.Name}\": \"{JsonEncodedText.Encode(property.GetValue(this)?.ToString() ?? string.Empty)}\",");
         }
 
         return builder.ToString()[..^3] + "\r\n}";

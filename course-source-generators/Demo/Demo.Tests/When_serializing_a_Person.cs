@@ -11,7 +11,7 @@ public class When_serializing_a_Person
         """
         {
           "EmailAddress": "john.smith@mailinator.com",
-          "FirstName": "John",
+          "FirstName": "Joh\u0022n",
           "LastName": "Smith",
           "PhoneNumber": "1234567890"
         }
@@ -20,7 +20,7 @@ public class When_serializing_a_Person
     private static readonly Person Person = new()
     {
         EmailAddress = "john.smith@mailinator.com",
-        FirstName = "John",
+        FirstName = "Joh\"n",
         LastName = "Smith",
         PhoneNumber = "1234567890"
     };
