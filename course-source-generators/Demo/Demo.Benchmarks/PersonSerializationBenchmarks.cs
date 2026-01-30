@@ -17,26 +17,26 @@ public class PersonSerializationBenchmarks
     };
 
     [Benchmark]
-    public string HandWritten()
+    public string Generated()
     {
         return Person.ToJson();
     }
-
+    
     [Benchmark]
     public string Reflection()
     {
         return Person.ToJsonViaReflection();
     }
-
+    
     [Benchmark]
     public string SystemText()
     {
         return Person.ToJsonViaSystemText();
-    }
-
+    }    
+    
     [Benchmark]
     public string SystemTextGenerated()
     {
         return Person.ToJsonViaSystemTextGenerated();
-    }
+    }    
 }

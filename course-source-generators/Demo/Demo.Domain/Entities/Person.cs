@@ -15,19 +15,19 @@ public partial class Person
     public string LastName { get; set; } = null!;
     public string PhoneNumber { get; set; } = null!;
 
-    public string ToJson()
-    {
-        var builder = new StringBuilder();
-
-        builder.AppendLine("{");
-        builder.AppendLine($"  \"EmailAddress\": \"{EmailAddress}\",");
-        builder.AppendLine($"  \"FirstName\": \"{FirstName}\",");
-        builder.AppendLine($"  \"LastName\": \"{LastName}\",");
-        builder.AppendLine($"  \"PhoneNumber\": \"{PhoneNumber}\"");
-        builder.Append('}');
-
-        return builder.ToString();
-    }
+    // public string ToJson()
+    // {
+    //     var builder = new StringBuilder();
+    //
+    //     builder.AppendLine("{");
+    //     builder.AppendLine($"  \"EmailAddress\": \"{EmailAddress}\",");
+    //     builder.AppendLine($"  \"FirstName\": \"{FirstName}\",");
+    //     builder.AppendLine($"  \"LastName\": \"{LastName}\",");
+    //     builder.AppendLine($"  \"PhoneNumber\": \"{PhoneNumber}\"");
+    //     builder.Append('}');
+    //
+    //     return builder.ToString();
+    // }
 
     public string ToJsonViaReflection()
     {
