@@ -1,4 +1,5 @@
 ﻿using BenchmarkDotNet.Running;
 using Demo.Benchmarks;
 
-BenchmarkRunner.Run<PersonSerializationBenchmarks>();
+// BenchmarkRunner.Run<PersonSerializationBenchmarks>();
+BenchmarkRunner.Run<ToJsonGeneratorBenchmarks>();
