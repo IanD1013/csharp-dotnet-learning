@@ -6,7 +6,7 @@ using Demo.Generator;
 
 namespace Demo.Domain.Entities;
 
-[ToJsonSerializer]
+[ToJsonSerializer(minified: true)]
 public partial class Person
 {
     private static readonly JsonSerializerOptions JsonSerializerOptions = new() { WriteIndented = true };

@@ -21,6 +21,12 @@ public class ToJsonGenerator : IIncrementalGenerator
         [AttributeUsage(AttributeTargets.Class)]
         public class ToJsonSerializerAttribute : Attribute
         {
+            public bool Minified { get; }
+            
+            public ToJsonSerializerAttribute(bool minified = false) 
+            {
+                Minified = minified;
+            }
         }
         """;
 
@@ -43,7 +49,7 @@ public class ToJsonGenerator : IIncrementalGenerator
             {
                 var builder = new StringBuilder();
             
-                builder.AppendLine("{");
+                builder.{{appendLine}}("{");
         {{properties}}
                 builder.Append('}');
             
@@ -54,7 +60,7 @@ public class ToJsonGenerator : IIncrementalGenerator
 
     private const string PropertyTemplate =
         """
-                builder.AppendLine($"  \"{{name}}\": \"{JsonEncodedText.Encode({{name}}, JavaScriptEncoder.Default)}\",");
+                builder.{{appendLine}}($"{{space}}{{space}}\"{{name}}\":{{space}}\"{JsonEncodedText.Encode({{name}}, JavaScriptEncoder.Default)}\",");
         """;
 
 
@@ -85,7 +91,10 @@ public class ToJsonGenerator : IIncrementalGenerator
         var builder = new StringBuilder();
         foreach (var property in classInfo.Properties)
         {
-            builder.AppendLine(PropertyTemplate.Replace("{{name}}", property.Name));
+            builder.AppendLine(PropertyTemplate
+                .Replace("{{space}}", classInfo.Minified ? string.Empty : " ")
+                .Replace("{{appendLine}}", classInfo.Minified ? "Append" : "AppendLine")
+                .Replace("{{name}}", property.Name));
         }
 
         var properties = builder.ToString(0, builder.Length - 6) + "\");";
@@ -96,11 +105,13 @@ public class ToJsonGenerator : IIncrementalGenerator
 #else
             .Replace("{{generatedAt}}", string.Empty)
 #endif
+            .Replace("{{appendLine}}", classInfo.Minified ? "Append" : "AppendLine")
             .Replace("{{classAccessibility}}", classInfo.Accessibility.ToString()
                 .ToLower())
             .Replace("{{namespace}}", classInfo.Namespace)
             .Replace("{{className}}", classInfo.Name)
-            .Replace("{{properties}}", properties);
+            .Replace("{{properties}}", properties)
+            .Replace("{{space}}", classInfo.Minified ? string.Empty : " ");
 
         context.AddSource($"{classInfo.Name}.g.cs", output);
     }
@@ -108,13 +119,16 @@ public class ToJsonGenerator : IIncrementalGenerator
     private static ClassInfo Transform(GeneratorAttributeSyntaxContext syntaxContext,
         CancellationToken cancellationToken)
     {
+        var attribute = syntaxContext.Attributes.Single();
+        var minified = attribute.ConstructorArguments[0].Value as bool? == true;
         var classSymbol = syntaxContext.SemanticModel.GetDeclaredSymbol(syntaxContext.TargetNode);
         var classInfo = new ClassInfo
         {
             Namespace = classSymbol?.ContainingNamespace.ToDisplayString(),
             Name = classSymbol?.Name,
             Accessibility = classSymbol?.DeclaredAccessibility,
-            Properties = GetPropertyInfos(classSymbol)
+            Properties = GetPropertyInfos(classSymbol),
+            Minified = minified
         };
 
         return classInfo;
@@ -151,10 +165,12 @@ public record struct ClassInfo
     public string? Name { get; set; }
     public Accessibility? Accessibility { get; set; }
     public IEnumerable<PropertyInfo> Properties { get; set; }
+    public bool Minified { get; set; }
 
     public readonly bool Equals(ClassInfo other)
     {
         return Namespace == other.Namespace
+               && Minified == other.Minified
                && Name == other.Name
                && Accessibility == other.Accessibility
                && Properties.SequenceEqual(other.Properties);
@@ -167,6 +183,7 @@ public record struct ClassInfo
             var hashCode = (Namespace != null ? Namespace.GetHashCode() : 0);
             hashCode = (hashCode * 397) ^ (Name != null ? Name.GetHashCode() : 0);
             hashCode = (hashCode * 397) ^ Accessibility.GetHashCode();
+            hashCode = (hashCode * 397) ^ Minified.GetHashCode();
             hashCode = (hashCode * 397) ^
                        Properties.Aggregate(hashCode, (current, property) => current ^ property.GetHashCode());
             return hashCode;
