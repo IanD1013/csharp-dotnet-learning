@@ -22,3 +22,10 @@ Content-Type: application/json
   "author": "Steve Smith",
   "price": 29.99
 }
+
+###
+
+DELETE {{RiverBooks_Web_HostAddress}}/books/00000000-0000-0000-0000-000000000004
+Accept: application/json
+
+###
