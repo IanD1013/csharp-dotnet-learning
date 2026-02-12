@@ -5,3 +5,8 @@ Accept: application/json
 
 ###
 
+@BookID = 00000000-0000-0000-0000-000000000001
+GET {{RiverBooks_Web_HostAddress}}/books/{{BookID}}
+Accept: application/json
+
+###
