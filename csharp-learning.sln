@@ -310,6 +310,9 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "example-library-consumer", "course-configuration-and-options\8-BestPracticesForLibrary\example-library-consumer\example-library-consumer.csproj", "{A3F15BA2-03C5-4D2E-8791-9D49371D4AF1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "course-modular-monoliths", "course-modular-monoliths", "{FCB2EB50-6DD5-40EA-B45D-2717E9415208}"
+	ProjectSection(SolutionItems) = preProject
+		course-modular-monoliths\Note.md = course-modular-monoliths\Note.md
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.Web", "course-modular-monoliths\RiverBooks.Web\RiverBooks.Web.csproj", "{9A8A32DF-9FFC-4ED3-953B-44152061325A}"
 EndProject
