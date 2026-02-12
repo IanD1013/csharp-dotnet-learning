@@ -21,7 +21,7 @@ internal class GetBookByIdEndpoint(IBookService bookService) : Endpoint<GetBookB
             await SendNotFoundAsync();
             return;
         }
-        
+
         await SendAsync(book);
     }
 }

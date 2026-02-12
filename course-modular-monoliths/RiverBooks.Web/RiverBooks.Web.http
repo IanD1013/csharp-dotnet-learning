@@ -10,3 +10,15 @@ GET {{RiverBooks_Web_HostAddress}}/books/{{BookID}}
 Accept: application/json
 
 ###
+
+POST {{RiverBooks_Web_HostAddress}}/books
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "id": "00000000-0000-0000-0000-000000000004",
+  "title": "Modular Monoliths - Getting Started",
+  "author": "Steve Smith",
+  "price": 29.99
+}
