@@ -5,7 +5,7 @@ Accept: application/json
 
 ###
 
-@BookID = 00000000-0000-0000-0000-000000000001
+@BookID = 00000000-0000-0000-0000-000000000004
 GET {{RiverBooks_Web_HostAddress}}/books/{{BookID}}
 Accept: application/json
 
@@ -29,3 +29,13 @@ DELETE {{RiverBooks_Web_HostAddress}}/books/00000000-0000-0000-0000-000000000004
 Accept: application/json
 
 ###
+
+POST {{RiverBooks_Web_HostAddress}}/books/00000000-0000-0000-0000-000000000004/pricehistory
+Accept: application/json
+Content-Type: application/json
+
+
+{
+  "id": "00000000-0000-0000-0000-000000000004",
+  "newPrice": 9.99
+}
