@@ -15,3 +15,12 @@ dotnet ef migrations add Initial
 ```
 dotnet ef database update
 ```
+
+```
+dotnet ef database update -- --environment Testing
+```
+"--" means: Stop parsing arguments for dotnet-ef, and pass everything after this to the application.
+
+"-- --environment Testing" means:
+- First -- → stop EF parsing
+- Second part → send --environment Testing to your app
