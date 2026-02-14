@@ -37,5 +37,5 @@ Content-Type: application/json
 
 {
   "id": "00000000-0000-0000-0000-000000000004",
-  "newPrice": 9.99
+  "newPrice": -9.99
 }

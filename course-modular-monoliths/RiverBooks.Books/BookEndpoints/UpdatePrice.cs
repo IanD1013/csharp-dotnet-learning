@@ -15,7 +15,7 @@ internal class UpdatePrice(IBookService bookService) : Endpoint<UpdateBookPriceR
     public override async Task HandleAsync(UpdateBookPriceRequest req, CancellationToken ct)
     {
         // TODO: Handle not found
-        await _bookService.UpdateBookPriceAsync(req.Id, req.newPrice);
+        await _bookService.UpdateBookPriceAsync(req.Id, req.NewPrice);
 
         var updatedBook = await _bookService.GetBookByIdAsync(req.Id);
 
