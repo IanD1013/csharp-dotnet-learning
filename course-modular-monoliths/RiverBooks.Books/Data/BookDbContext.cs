@@ -7,7 +7,7 @@ public class BookDbContext : DbContext
 {
     internal DbSet<Book> Books { get; set; }
 
-    public BookDbContext(DbContextOptions<BookDbContext> options) : base(options)
+    public BookDbContext(DbContextOptions options) : base(options)
     {
     }
 
