@@ -52,3 +52,16 @@ Content-Type: application/json
 }
 
 ###
+
+POST {{RiverBooks_Web_HostAddress}}/users/login
+Accept: application/json
+Content-Type: application/json
+
+{
+  "email": "steve@test.com",
+  "password": "Pass@word1"
+}
+
+###
+
+@token=eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbEFkZHJlc3MiOiJzdGV2ZUB0ZXN0LmNvbSIsImlhdCI6MTc3MTQwNDk0MCwiZXhwIjoxNzcxNDA4NTQwLCJuYmYiOjE3NzE0MDQ5NDB9.PA-XM1M0cUtsEd7vE6JSE2WIFcuMhZUofw7Rkpyrrg4
