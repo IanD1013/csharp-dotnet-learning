@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using System.Reflection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -7,10 +8,9 @@ namespace RiverBooks.Users;
 
 public static class UsersModuleExtensions
 {
-    public static IServiceCollection AddUserModuleServices(
-        this IServiceCollection services,
+    public static IServiceCollection AddUserModuleServices(this IServiceCollection services,
         ConfigurationManager config,
-        ILogger logger)
+        ILogger logger, List<Assembly> mediatRAssemblies)
     {
         string? connectionString = config.GetConnectionString("UsersConnectionString");
         services.AddDbContext<UsersDbContext>(options =>
@@ -18,6 +18,9 @@ public static class UsersModuleExtensions
 
         services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<UsersDbContext>();
+        
+        // if using MediatR in this module, add any assemblies that contain handlers to the list
+        mediatRAssemblies.Add(typeof(UsersModuleExtensions).Assembly);
 
         logger.Information("{Module} module services registered", "Users");
 
