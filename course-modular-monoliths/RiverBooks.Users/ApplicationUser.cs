@@ -40,6 +40,11 @@ public class CartItem
         UnitPrice = Guard.Against.Negative(unitPrice);
     }
 
+    public CartItem()
+    {
+        // EF Core requires a parameterless constructor
+    }
+
     internal void UpdateQuantity(int quantity)
     {
         Quantity = Guard.Against.Negative(quantity);
