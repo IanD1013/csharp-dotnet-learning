@@ -9,9 +9,11 @@ namespace RiverBooks.Users;
 
 public static class UsersModuleExtensions
 {
-    public static IServiceCollection AddUserModuleServices(this IServiceCollection services,
+    public static IServiceCollection AddUserModuleServices(
+        this IServiceCollection services,
         ConfigurationManager config,
-        ILogger logger, List<Assembly> mediatRAssemblies)
+        ILogger logger,
+        List<Assembly> mediatRAssemblies)
     {
         string? connectionString = config.GetConnectionString("UsersConnectionString");
         services.AddDbContext<UsersDbContext>(options =>
@@ -19,10 +21,10 @@ public static class UsersModuleExtensions
 
         services.AddIdentityCore<ApplicationUser>()
             .AddEntityFrameworkStores<UsersDbContext>();
-        
+
         // Add User Services
         services.AddScoped<IApplicationUserRepository, EfApplicationUserRepository>();
-        
+
         // if using MediatR in this module, add any assemblies that contain handlers to the list
         mediatRAssemblies.Add(typeof(UsersModuleExtensions).Assembly);
 

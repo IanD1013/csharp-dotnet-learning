@@ -3,8 +3,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RiverBooks.Users.UserEndpoints;
 
-public record CreateUserRequest(string Email, string Password);
-
 internal class Create : Endpoint<CreateUserRequest>
 {
     private readonly UserManager<ApplicationUser> _userManager;

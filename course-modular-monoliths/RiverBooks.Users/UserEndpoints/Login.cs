@@ -4,8 +4,6 @@ using Microsoft.AspNetCore.Identity;
 
 namespace RiverBooks.Users.UserEndpoints;
 
-public record UserLoginRequest(string Email, string Password);
-
 internal class Login : Endpoint<UserLoginRequest>
 {
     private readonly UserManager<ApplicationUser> _userManager;
@@ -39,7 +37,7 @@ internal class Login : Endpoint<UserLoginRequest>
 
         var jwtSecret = Config["Auth:JwtSecret"]!;
         var token = JWTBearer.CreateToken(jwtSecret, p => p["EmailAddress"] = user.Email!);
-        
+
         await SendAsync(token);
     }
 }
