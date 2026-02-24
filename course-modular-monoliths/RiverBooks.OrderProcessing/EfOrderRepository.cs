@@ -13,7 +13,9 @@ internal class EfOrderRepository : IOrderRepository
 
     public async Task<List<Order>> ListAsync()
     {
-        return await _dbContext.Orders.ToListAsync();
+        return await _dbContext.Orders
+            .Include(o => o.OrderItems)
+            .ToListAsync();
     }
 
     public async Task AddAsync(Order order)

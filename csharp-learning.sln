@@ -332,6 +332,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrderProcessing Module", "O
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.OrderProcessing", "course-modular-monoliths\RiverBooks.OrderProcessing\RiverBooks.OrderProcessing.csproj", "{5D3D210E-70DA-4918-8473-3DC196E3539E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.OrderProcessing.Contracts", "course-modular-monoliths\RiverBooks.OrderProcessing.Contracts\RiverBooks.OrderProcessing.Contracts.csproj", "{0299FE03-1B6D-4575-971E-9AFDD85ACB2C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -802,6 +804,10 @@ Global
 		{5D3D210E-70DA-4918-8473-3DC196E3539E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D3D210E-70DA-4918-8473-3DC196E3539E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5D3D210E-70DA-4918-8473-3DC196E3539E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0299FE03-1B6D-4575-971E-9AFDD85ACB2C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0299FE03-1B6D-4575-971E-9AFDD85ACB2C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0299FE03-1B6D-4575-971E-9AFDD85ACB2C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0299FE03-1B6D-4575-971E-9AFDD85ACB2C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -949,5 +955,6 @@ Global
 		{3E7FF5F6-FD3D-4724-AD03-F655D5479007} = {522DE3B5-AEC3-472B-8AA0-6352E3658D33}
 		{D78EDFD7-EE2A-41C4-8FDB-4B10A96432B0} = {FCB2EB50-6DD5-40EA-B45D-2717E9415208}
 		{5D3D210E-70DA-4918-8473-3DC196E3539E} = {D78EDFD7-EE2A-41C4-8FDB-4B10A96432B0}
+		{0299FE03-1B6D-4575-971E-9AFDD85ACB2C} = {D78EDFD7-EE2A-41C4-8FDB-4B10A96432B0}
 	EndGlobalSection
 EndGlobal
