@@ -13,7 +13,15 @@ internal class EfApplicationUserRepository : IApplicationUserRepository
 
     public Task<ApplicationUser> GetUserWithCartByEmailAsync(string email)
     {
-        return _dbContext.ApplicationUsers.Include(user => user.CartItems)
+        return _dbContext.ApplicationUsers
+            .Include(user => user.CartItems)
+            .SingleAsync(user => user.Email == email);
+    }
+
+    public Task<ApplicationUser> GetUserWithAddressesByEmailAsync(string email)
+    {
+        return _dbContext.ApplicationUsers
+            .Include(user => user.Addresses)
             .SingleAsync(user => user.Email == email);
     }
 
