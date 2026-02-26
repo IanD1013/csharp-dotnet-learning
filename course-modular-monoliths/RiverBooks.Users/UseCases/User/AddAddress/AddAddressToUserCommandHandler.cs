@@ -2,7 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 
-namespace RiverBooks.Users.UseCases.User;
+namespace RiverBooks.Users.UseCases.User.AddAddress;
 
 internal class AddAddressToUserCommandHandler : IRequestHandler<AddAddressToUserCommand, Result>
 {
