@@ -9,11 +9,15 @@ internal class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, R
 {
     private readonly IOrderRepository _orderRepository;
     private readonly ILogger<CreateOrderCommandHandler> _logger;
+    private readonly IOrderAddressCache _addressCache;
 
-    public CreateOrderCommandHandler(IOrderRepository orderRepository, ILogger<CreateOrderCommandHandler> logger)
+    public CreateOrderCommandHandler(IOrderRepository orderRepository, 
+        ILogger<CreateOrderCommandHandler> logger,
+        IOrderAddressCache addressCache)
     {
         _orderRepository = orderRepository;
         _logger = logger;
+        _addressCache = addressCache;
     }
 
     public async Task<Result<OrderDetailsResponse>> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
@@ -21,8 +25,12 @@ internal class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, R
         var items = request.OrderItems.Select(oi =>
             new OrderItem(oi.BookId, oi.Quantity, oi.UnitPrice, oi.Description));
 
-        var shippingAddress = new Address("123 Main St", "","Anytown", "NY", "12345", "USA");
-        var billingAddress = shippingAddress;
+        // var shippingAddress = new Address("123 Main St", "","Anytown", "NY", "12345", "USA");
+        // var billingAddress = shippingAddress;
+        
+        var shippingAddress = await _addressCache.GetByIdAsync(request.ShippingAddressId);
+        var billingAddress = await _addressCache.GetByIdAsync(request.BillingAddressId);
+        
         var newOrder = Order.Factory.Create(request.UserId, shippingAddress, billingAddress, items);
         
         await _orderRepository.AddAsync(newOrder);
