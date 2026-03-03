@@ -10,7 +10,7 @@ internal class LogNewAddressesHandler : INotificationHandler<AddressAddedEvent>
     public LogNewAddressesHandler(ILogger<LogNewAddressesHandler> logger)
     {
         _logger = logger;
-    }
+    }  
 
     public Task Handle(AddressAddedEvent notification, CancellationToken ct)
     {

@@ -109,7 +109,7 @@ Content-Type: application/json
 # List Addresses
 GET {{RiverBooks_Web_HostAddress}}/users/addresses
 Accept: application/json
-Authorization: Bearer {{token}}###
+Authorization: Bearer {{token}}
 
 ###
 

@@ -26,9 +26,6 @@ internal class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, R
         var items = request.OrderItems.Select(oi =>
             new OrderItem(oi.BookId, oi.Quantity, oi.UnitPrice, oi.Description));
 
-        // var shippingAddress = new Address("123 Main St", "","Anytown", "NY", "12345", "USA");
-        // var billingAddress = shippingAddress;
-
         var shippingAddress = await _addressCache.GetByIdAsync(request.ShippingAddressId);
         var billingAddress = await _addressCache.GetByIdAsync(request.BillingAddressId);
 

@@ -84,3 +84,8 @@ dotnet ef database update -- --environment Testing
 ```
 dotnet ef database update -c UsersDbContext
 ```
+
+### Run Redis
+```
+docker run --name my-redis -p 6379:6379 -d redis 
+```
