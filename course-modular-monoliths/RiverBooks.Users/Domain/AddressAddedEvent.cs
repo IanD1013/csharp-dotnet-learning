@@ -1,4 +1,6 @@
-﻿namespace RiverBooks.Users.Domain;
+﻿using RiverBooks.ShardKernel;
+
+namespace RiverBooks.Users.Domain;
 
 internal sealed class AddressAddedEvent : DomainEventBase
 {

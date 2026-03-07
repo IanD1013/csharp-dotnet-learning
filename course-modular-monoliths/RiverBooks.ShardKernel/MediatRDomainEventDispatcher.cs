@@ -1,7 +1,6 @@
 ﻿using MediatR;
-using RiverBooks.Users.Interfaces;
 
-namespace RiverBooks.Users;
+namespace RiverBooks.ShardKernel;
 
 public class MediatRDomainEventDispatcher : IDomainEventDispatcher
 {

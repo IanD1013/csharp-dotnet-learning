@@ -1,3 +1,5 @@
-﻿namespace RiverBooks.Users.Contracts;
+﻿using RiverBooks.ShardKernel;
+
+namespace RiverBooks.Users.Contracts;
 
 public record NewUserAddressAddedIntegrationEvent(UserAddressDetails Details) : IntegrationEventBase;
