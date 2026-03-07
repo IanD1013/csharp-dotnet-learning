@@ -1,6 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using RiverBooks.Users.Data;
+using RiverBooks.Users.Domain;
+using RiverBooks.Users.Interfaces;
 
-namespace RiverBooks.Users.Data;
+namespace RiverBooks.Users.Infrastructure.Data;
 
 internal class EfApplicationUserRepository : IApplicationUserRepository
 {

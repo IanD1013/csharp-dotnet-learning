@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using RiverBooks.Users.Interfaces;
 
 namespace RiverBooks.Users;
 
