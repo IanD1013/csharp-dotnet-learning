@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RiverBooks.OrderProcessing;
+using RiverBooks.OrderProcessing.Infrastructure.Data;
 
 #nullable disable
 

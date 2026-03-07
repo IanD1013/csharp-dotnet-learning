@@ -2,6 +2,9 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.EntityFrameworkCore;
+using RiverBooks.OrderProcessing.Infrastructure;
+using RiverBooks.OrderProcessing.Infrastructure.Data;
+using RiverBooks.OrderProcessing.Interfaces;
 using Serilog;
 
 namespace RiverBooks.OrderProcessing;

@@ -1,8 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Serilog.Core;
+using RiverBooks.OrderProcessing.Domain;
 
-namespace RiverBooks.OrderProcessing;
+namespace RiverBooks.OrderProcessing.Infrastructure.Data;
 
 public class OrderConfiguration : IEntityTypeConfiguration<Order>
 {

@@ -1,7 +1,8 @@
 ﻿using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using RiverBooks.OrderProcessing.Domain;
 
-namespace RiverBooks.OrderProcessing;
+namespace RiverBooks.OrderProcessing.Infrastructure.Data;
 
 internal class OrderProcessingDbContext : DbContext
 {
