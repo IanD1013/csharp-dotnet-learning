@@ -12,7 +12,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RiverBooks.ShardKernel\RiverBooks.ShardKernel.csproj" />
+      <ProjectReference Include="..\RiverBooks.SharedKernel\RiverBooks.SharedKernel.csproj" />
     </ItemGroup>
 
 </Project>

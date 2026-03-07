@@ -4,7 +4,7 @@ using FastEndpoints.Security;
 using FastEndpoints.Swagger;
 using RiverBooks.Books;
 using RiverBooks.OrderProcessing;
-using RiverBooks.ShardKernel;
+using RiverBooks.SharedKernel;
 using RiverBooks.Users;
 using Serilog;
 

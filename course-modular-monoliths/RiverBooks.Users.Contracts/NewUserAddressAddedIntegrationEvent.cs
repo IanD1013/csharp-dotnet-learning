@@ -1,4 +1,4 @@
-﻿using RiverBooks.ShardKernel;
+﻿using RiverBooks.SharedKernel;
 
 namespace RiverBooks.Users.Contracts;
 

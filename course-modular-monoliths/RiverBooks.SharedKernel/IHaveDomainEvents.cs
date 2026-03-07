@@ -1,4 +1,4 @@
-﻿namespace RiverBooks.ShardKernel;
+﻿namespace RiverBooks.SharedKernel;
 
 public interface IHaveDomainEvents
 {
