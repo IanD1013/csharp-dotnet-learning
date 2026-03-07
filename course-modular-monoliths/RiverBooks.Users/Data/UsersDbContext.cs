@@ -8,6 +8,7 @@ public class UsersDbContext : IdentityDbContext
 {
     private readonly IDomainEventDispatcher? _dispatcher;
     public DbSet<ApplicationUser> ApplicationUsers { get; set; }
+    public DbSet<UserStreetAddress> UserStreetAddresses { get; set; }   
 
     public UsersDbContext(DbContextOptions<UsersDbContext> options,
         IDomainEventDispatcher? dispatcher)
