@@ -340,6 +340,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.SharedKernel", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.OrderProcessing.Tests", "course-modular-monoliths\RiverBooks.OrderProcessing.Tests\RiverBooks.OrderProcessing.Tests.csproj", "{FEC5EEBA-FDE8-411B-BB0D-D7161874D236}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EmailSending Module", "EmailSending Module", "{CDE69ABD-8468-4436-8B18-FB397CE137B2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.EmailSending", "course-modular-monoliths\RiverBooks.EmailSending\RiverBooks.EmailSending.csproj", "{9288BB22-A963-42D4-A63A-A59FAF43C3C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RiverBooks.EmailSending.Contracts", "course-modular-monoliths\RiverBooks.EmailSending.Contracts\RiverBooks.EmailSending.Contracts.csproj", "{A12AE1BD-89BA-4F1D-86D2-9AB2D972414F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -826,6 +832,14 @@ Global
 		{FEC5EEBA-FDE8-411B-BB0D-D7161874D236}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FEC5EEBA-FDE8-411B-BB0D-D7161874D236}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FEC5EEBA-FDE8-411B-BB0D-D7161874D236}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9288BB22-A963-42D4-A63A-A59FAF43C3C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9288BB22-A963-42D4-A63A-A59FAF43C3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9288BB22-A963-42D4-A63A-A59FAF43C3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9288BB22-A963-42D4-A63A-A59FAF43C3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A12AE1BD-89BA-4F1D-86D2-9AB2D972414F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A12AE1BD-89BA-4F1D-86D2-9AB2D972414F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A12AE1BD-89BA-4F1D-86D2-9AB2D972414F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A12AE1BD-89BA-4F1D-86D2-9AB2D972414F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{0B7F3C25-FD65-496E-809E-6A1391037D34} = {329EE441-D190-4A67-A955-9BA0D5DC122F}
@@ -977,5 +991,8 @@ Global
 		{1E1D4138-1089-4831-ABDB-859DBCF933B5} = {522DE3B5-AEC3-472B-8AA0-6352E3658D33}
 		{C58470C4-6207-46CB-8023-C775AEB6D6DB} = {FCB2EB50-6DD5-40EA-B45D-2717E9415208}
 		{FEC5EEBA-FDE8-411B-BB0D-D7161874D236} = {D78EDFD7-EE2A-41C4-8FDB-4B10A96432B0}
+		{CDE69ABD-8468-4436-8B18-FB397CE137B2} = {FCB2EB50-6DD5-40EA-B45D-2717E9415208}
+		{9288BB22-A963-42D4-A63A-A59FAF43C3C3} = {CDE69ABD-8468-4436-8B18-FB397CE137B2}
+		{A12AE1BD-89BA-4F1D-86D2-9AB2D972414F} = {CDE69ABD-8468-4436-8B18-FB397CE137B2}
 	EndGlobalSection
 EndGlobal
