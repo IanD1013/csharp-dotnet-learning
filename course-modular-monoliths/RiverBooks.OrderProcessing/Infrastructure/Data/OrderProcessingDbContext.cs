@@ -1,16 +1,22 @@
-﻿using System.Reflection;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 using RiverBooks.OrderProcessing.Domain;
+using RiverBooks.SharedKernel;
 
 namespace RiverBooks.OrderProcessing.Infrastructure.Data;
 
 internal class OrderProcessingDbContext : DbContext
 {
-    public DbSet<Order> Orders { get; set; }
+    private readonly IDomainEventDispatcher? _dispatcher;
 
-    public OrderProcessingDbContext(DbContextOptions<OrderProcessingDbContext> options) : base(options)
+    public OrderProcessingDbContext(DbContextOptions<OrderProcessingDbContext> options,
+        IDomainEventDispatcher? dispatcher)
+        : base(options)
     {
+        _dispatcher = dispatcher;
     }
+
+    public DbSet<Order> Orders { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -24,5 +30,29 @@ internal class OrderProcessingDbContext : DbContext
     {
         configurationBuilder.Properties<decimal>()
             .HavePrecision(18, 6);
+    }
+
+    /// <summary>
+    /// This is needed for domain events to work
+    /// </summary>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken())
+    {
+        var result = await base.SaveChangesAsync(cancellationToken)
+            .ConfigureAwait(false);
+
+        // ignore events if no dispatcher provided
+        if (_dispatcher == null) return result;
+
+        // dispatch events only if save was successful
+        var entitiesWithEvents = ChangeTracker.Entries<IHaveDomainEvents>()
+            .Select(e => e.Entity)
+            .Where(e => e.DomainEvents.Any())
+            .ToArray();
+
+        await _dispatcher.DispatchAndClearEvents(entitiesWithEvents);
+
+        return result;
     }
 }
