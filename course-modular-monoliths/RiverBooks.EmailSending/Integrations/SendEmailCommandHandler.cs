@@ -4,7 +4,7 @@ using RiverBooks.EmailSending.Contracts;
 
 namespace RiverBooks.EmailSending.Integrations;
 
-internal class SendEmailCommandHandler : IRequestHandler<SendEmailCommand, Result<Guid>>
+internal class SendEmailCommandHandler //: IRequestHandler<SendEmailCommand, Result<Guid>>
 {
     private readonly ISendEmail _emailSender;
 
