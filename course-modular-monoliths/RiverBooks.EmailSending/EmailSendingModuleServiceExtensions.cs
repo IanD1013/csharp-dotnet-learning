@@ -20,9 +20,14 @@ public static class EmailSendingModuleServiceExtensions
         // Add module services
         services.AddTransient<ISendEmail, MimeKitEmailSender>();
         services.AddTransient<IQueueEmailsInOutboxService, MongoDbQueueEmailOutboxService>();
+        services.AddTransient<IGetEmailsFromOutboxService, MongoDbGetEmailsFromOutboxService>();
+        services.AddTransient<ISendEmailsFromOutboxService, DefaultSendEmailsFromOutboxService>();
 
         // if using MediatR in this module, add any assemblies that contain handlers to the list
         mediatRAssemblies.Add(typeof(EmailSendingModuleServiceExtensions).Assembly);
+        
+        // add background worker
+        services.AddHostedService<EmailSendingBackgroundService>();
 
         logger.Information("{Module} module services registered", "Email Sending");
         return services;
