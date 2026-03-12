@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
+using RiverBooks.EmailSending.EmailBackgroundService;
+using RiverBooks.EmailSending.Integrations;
 using Serilog;
 
 namespace RiverBooks.EmailSending;
