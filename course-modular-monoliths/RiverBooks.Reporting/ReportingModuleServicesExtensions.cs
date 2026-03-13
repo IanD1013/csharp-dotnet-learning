@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
+using RiverBooks.Reporting.ReportEndpoints;
 using Serilog;
 
 namespace RiverBooks.Reporting;
@@ -16,6 +17,8 @@ public static class ReportingModuleServicesExtensions
         //services.AddDbContext<OrderProcessingDbContext>(config =>
         //  config.UseSqlServer(connectionString));
 
+        // configure module services
+        services.AddScoped<ITopSellingBooksReportService, TopSellingBooksReportService>();
 
         // if using MediatR in this module, add any assemblies that contain handlers to the list
         mediatRAssemblies.Add(typeof(ReportingModuleServicesExtensions).Assembly);
