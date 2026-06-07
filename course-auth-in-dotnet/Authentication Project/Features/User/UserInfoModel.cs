@@ -16,7 +16,7 @@ public class UserInfoModel
 
     public bool IsAdmin { get; set; }
 
-    public string DefaultNameClaimType { get; set; }
+    public string? DefaultNameClaimType { get; set; }
 
-    public string DefaultRoleClaimType { get; set; }
+    public string? DefaultRoleClaimType { get; set; }
 }
