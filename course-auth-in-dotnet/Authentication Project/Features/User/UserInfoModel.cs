@@ -6,11 +6,11 @@ public class UserInfoModel
 {
     public bool? IsAuthenticated { get; set; }
 
-    public string AuthenticationType { get; set; }
+    public string? AuthenticationType { get; set; }
 
     public List<Claim> Claims { get; set; }
 
-    public string Name { get; set; }
+    public string? Name { get; set; }
 
     public bool IsDeveloper { get; set; }
 
