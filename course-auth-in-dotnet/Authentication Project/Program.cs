@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +16,31 @@ builder.Services.AddControllersWithViews();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.Use(async (context, next) =>
+{
+    // Create ClaimsPrincipal User
+    var myClaims = new List<Claim>
+    {
+        new("sub", "12345"), // sub = subject = UserId
+        new("name", "Bob"),
+        new("email", "test@email.com"),
+        new("role", "developer")
+    };
+
+    var myIdentity = new ClaimsIdentity(claims: myClaims,
+        authenticationType: "pwd", // need to set this for isAuthenticated to be true
+        nameType: "name",
+        roleType: "role");
+
+    var myPrincipal = new ClaimsPrincipal(myIdentity);
+
+    context.User = myPrincipal;
+
+    // call the next middleware
+    await next.Invoke();
+});
+
+
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");

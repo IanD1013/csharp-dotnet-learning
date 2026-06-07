@@ -7,6 +7,13 @@ public class SecureController : Controller
 {
     public IActionResult Index()
     {
-        return View();
+        if (User.Identity?.IsAuthenticated == true)
+        {
+            return View();
+        }
+        else
+        {
+            return Redirect("/user/AccessDenied");
+        }
     }
 }

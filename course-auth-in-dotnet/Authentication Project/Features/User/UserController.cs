@@ -42,23 +42,7 @@ public class UserController : Controller
     public IActionResult Info()
     {
         //***************************************************************************
-        // Create ClaimsPrincipal User
-        var myClaims = new List<Claim>
-        {
-            new("sub", "12345"), // sub = subject = UserId
-            new("name", "Bob"),
-            new("email", "test@email.com"),
-            new("role", "developer")
-        };
 
-        var myIdentity = new ClaimsIdentity(claims: myClaims,
-            authenticationType: "pwd", // need to set this for isAuthenticated to be true
-            nameType: "name",
-            roleType: "role");
-
-        var myPrincipal = new ClaimsPrincipal(myIdentity);
-
-        HttpContext.User = myPrincipal;
 
         //***************************************************************************
 
