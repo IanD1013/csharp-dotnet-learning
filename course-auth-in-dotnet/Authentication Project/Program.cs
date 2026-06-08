@@ -1,4 +1,4 @@
-using System.Security.Claims;
+using Authentication_Project.CustomAuthHandler;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,32 +13,15 @@ builder.Services.Configure<RazorViewEngineOptions>(rvo =>
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddAuthentication(o => // add authentication middleware
+    {
+        // Customize the middleware
+    })
+    .AddCustomAuth(authenticationScheme: "myAuth", displayName: "myAuth", configureOption: o => { });
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-app.Use(async (context, next) =>
-{
-    // Create ClaimsPrincipal User
-    var myClaims = new List<Claim>
-    {
-        new("sub", "12345"), // sub = subject = UserId
-        new("name", "Bob"),
-        new("email", "test@email.com"),
-        new("role", "developer")
-    };
-
-    var myIdentity = new ClaimsIdentity(claims: myClaims,
-        authenticationType: "pwd", // need to set this for isAuthenticated to be true
-        nameType: "name",
-        roleType: "role");
-
-    var myPrincipal = new ClaimsPrincipal(myIdentity);
-
-    context.User = myPrincipal;
-
-    // call the next middleware
-    await next.Invoke();
-});
 
 
 if (!app.Environment.IsDevelopment())
@@ -55,6 +38,7 @@ app.UseStaticFiles();
 
 app.UseRouting();
 
+app.UseAuthentication(); // add authentication middleware to the pipeline
 app.UseAuthorization();
 
 app.MapControllerRoute(
