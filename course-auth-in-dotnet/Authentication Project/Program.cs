@@ -17,7 +17,8 @@ builder.Services.AddAuthentication(o => // add authentication middleware
     {
         // Customize the middleware
     })
-    .AddCustomAuth(authenticationScheme: "myAuth", displayName: "myAuth", configureOption: o => { });
+    .AddCustomAuth(authenticationScheme: "myAuth", displayName: "myAuth",
+        configureOption: o => { o.LoginPath = "/test"; });
 
 var app = builder.Build();
 

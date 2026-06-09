@@ -35,4 +35,14 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
     {
         throw new NotImplementedException();
     }
+
+    // Handle challenge (user not authenticated) - redirect to the login page
+    protected override Task HandleChallengeAsync(AuthenticationProperties? properties)
+    {
+        WriteToLog($"HandleChallengeAsync: User needs to authenticate, redirecting to '{Options.LoginPath}'");
+
+        Response.Redirect(Options.LoginPath);
+
+        return Task.CompletedTask;
+    }
 }

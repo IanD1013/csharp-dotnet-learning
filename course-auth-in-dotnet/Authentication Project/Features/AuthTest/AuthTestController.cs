@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication_Project.Features.AuthTest;
 
@@ -41,7 +42,7 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.ChallengeAsync()");
 
-        // TODO: 
+        await HttpContext.ChallengeAsync();
 
         return Empty;
     }
