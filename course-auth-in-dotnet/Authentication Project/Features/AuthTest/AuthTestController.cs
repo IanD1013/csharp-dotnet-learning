@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Authentication_Project.Features.AuthTest;
@@ -55,7 +56,24 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.SignInAsync(principal)");
 
-        // TODO: 
+        var myClaims = new List<Claim>
+        {
+            new("sub", "12345"), // sub = subject = UserId
+            new("name", "Bob"),
+            new("email", "test@email.com"),
+            new("role", "developer"),
+            new("role", "admin"),
+            new("role", "sales"),
+        };
+
+        var myIdentity = new ClaimsIdentity(claims: myClaims,
+            authenticationType: "pwd",
+            nameType: "name",
+            roleType: "role");
+
+        var myPrincipal = new ClaimsPrincipal(myIdentity);
+        
+        await HttpContext.SignInAsync(myPrincipal);
 
         return Empty;
     }

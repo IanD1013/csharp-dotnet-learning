@@ -33,7 +33,24 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
 
     protected override Task HandleSignInAsync(ClaimsPrincipal user, AuthenticationProperties? properties)
     {
-        throw new NotImplementedException();
+        var username = user.Identity?.Name ?? "Unknown";
+        WriteToLog($"HandleSignInAsync: Signing in user '{username}'");
+
+        Response.Cookies.Append(
+            key: Options.CookieName,
+            value: username,
+            new CookieOptions
+            {
+                HttpOnly = true,
+                SameSite = SameSiteMode.Lax
+            });
+
+        var redirectUrl = Options.DefaultRedirectPath;
+        Response.Redirect(redirectUrl);
+
+        WriteToLog($"HandleSignInAsync: Cookie '{Options.CookieName}' set, redirecting to '{redirectUrl}'");
+
+        return Task.CompletedTask;
     }
 
     // Handle challenge (user not authenticated) - redirect to the login page
