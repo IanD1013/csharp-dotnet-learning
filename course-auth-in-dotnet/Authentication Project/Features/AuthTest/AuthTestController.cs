@@ -28,9 +28,9 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.AuthenticateAsync()");
 
-        // TODO: 
+        var result = await HttpContext.AuthenticateAsync();
 
-        // TempData["Message"] = $"Authentication result: {(result.Succeeded ? "Success" : "Failed")}";
+        TempData["Message"] = $"Authentication result: {(result.Succeeded ? "Success" : "Failed")}";
 
         return RedirectToAction("Index");
     }
