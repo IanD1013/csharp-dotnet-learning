@@ -48,6 +48,7 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
         return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 
+    
     protected override Task HandleSignOutAsync(AuthenticationProperties? properties)
     {
         WriteToLog($"HandleSignOutAsync: Signing out the user, deleting cookie '{Options.CookieName}'");
@@ -63,6 +64,7 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
         return Task.CompletedTask;
     }
 
+    
     // Handle sign in (user authenticated) - set a cookie and redirect to the default page
     protected override Task HandleSignInAsync(ClaimsPrincipal user, AuthenticationProperties? properties)
     {
@@ -94,6 +96,17 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
 
         Response.Redirect(Options.LoginPath);
 
+        return Task.CompletedTask;
+    }
+
+
+    // Handle forbidden (user authenticated but not authorized) 
+    protected override Task HandleForbiddenAsync(AuthenticationProperties? properties)
+    {
+        WriteToLog($"HandleForbiddenAsync: Access denied, redirecting to '{Options.AccessDeniedPath}'");
+        
+        Response.Redirect(Options.AccessDeniedPath);
+        
         return Task.CompletedTask;
     }
 }

@@ -15,4 +15,7 @@ public class CustomAuthHandlerOptions : AuthenticationSchemeOptions
     
     // Default redirect path after sign in/out
     public string DefaultRedirectPath { get; set; } = "/AuthTest";
+    
+    // Path to redirect when access is denied
+    public string AccessDeniedPath { get; set; } = "/User/AccessDenied";
 }

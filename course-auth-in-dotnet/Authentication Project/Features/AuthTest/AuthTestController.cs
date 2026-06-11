@@ -99,7 +99,7 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.ForbidAsync();");
 
-        // TODO:
+        await HttpContext.ForbidAsync();
 
         return Empty;
     }
