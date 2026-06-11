@@ -25,7 +25,7 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
     {
         // read the cookie
         var username = Request.Cookies[Options.CookieName];
-        
+
         if (string.IsNullOrEmpty(username))
         {
             // No cookie found - user not authenticated
@@ -50,7 +50,17 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
 
     protected override Task HandleSignOutAsync(AuthenticationProperties? properties)
     {
-        throw new NotImplementedException();
+        WriteToLog($"HandleSignOutAsync: Signing out the user, deleting cookie '{Options.CookieName}'");
+
+        // Delete the cookie
+        Response.Cookies.Delete(Options.CookieName);
+
+        // Redirect
+        Response.Redirect(Options.DefaultRedirectPath);
+
+        WriteToLog($"HandleSignOutAsync: Cookie deleted, redirecting to '{Options.DefaultRedirectPath}'");
+
+        return Task.CompletedTask;
     }
 
     // Handle sign in (user authenticated) - set a cookie and redirect to the default page

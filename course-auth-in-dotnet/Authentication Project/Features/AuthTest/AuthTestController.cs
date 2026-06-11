@@ -86,7 +86,7 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.SignOutAsync();");
 
-        // TODO: 
+        await HttpContext.SignOutAsync();
 
         return Empty;
     }
