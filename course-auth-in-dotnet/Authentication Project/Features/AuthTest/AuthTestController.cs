@@ -43,7 +43,7 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.ChallengeAsync()");
 
-        await HttpContext.ChallengeAsync();
+        await HttpContext.ChallengeAsync("handler2");
 
         return Empty;
     }
@@ -73,7 +73,7 @@ public class AuthTestController : Controller
 
         var myPrincipal = new ClaimsPrincipal(myIdentity);
         
-        await HttpContext.SignInAsync(myPrincipal);
+        await HttpContext.SignInAsync("handler1", myPrincipal);
 
         return Empty;
     }

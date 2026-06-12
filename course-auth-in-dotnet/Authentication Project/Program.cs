@@ -16,9 +16,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAuthentication(o => // add authentication middleware
     {
         // Customize the middleware
+        o.DefaultScheme = "handler1";
     })
-    .AddCustomAuth(authenticationScheme: "myAuth", displayName: "myAuth",
-        configureOption: o => { o.LoginPath = "/test"; });
+    .AddCustomAuth(authenticationScheme: "handler1", displayName: "Google SignIn",
+        configureOption: o =>
+        {
+            o.LoginPath = "/user/login";
+            o.CookieName = "AuthCookie1";
+        })
+    .AddCustomAuth(authenticationScheme: "handler2", displayName: "Facebook SignIn",
+        configureOption: o =>
+        {
+            o.LoginPath = "/user/login";
+            o.CookieName = "AuthCookie2";
+        });
 
 var app = builder.Build();
 
