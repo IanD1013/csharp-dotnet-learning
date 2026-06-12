@@ -72,8 +72,20 @@ public class AuthTestController : Controller
             roleType: "role");
 
         var myPrincipal = new ClaimsPrincipal(myIdentity);
-        
-        await HttpContext.SignInAsync("handler1", myPrincipal);
+
+        var items = new Dictionary<string, string>
+        {
+            { "Item1", "Value1" },
+            { "Item2", "Value2" },
+            { "Item3", "Value3" }
+        };
+
+        var properties = new AuthenticationProperties(items)
+        {
+            RedirectUri = "/users/bob"
+        };
+
+        await HttpContext.SignInAsync("handler1", myPrincipal, properties);
 
         return Empty;
     }

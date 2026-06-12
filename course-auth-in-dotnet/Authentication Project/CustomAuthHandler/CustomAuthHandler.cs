@@ -81,6 +81,11 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
             });
 
         var redirectUrl = Options.DefaultRedirectPath;
+        
+        if (properties?.RedirectUri != null)
+        {
+            redirectUrl = properties.RedirectUri;
+        }
         Response.Redirect(redirectUrl);
 
         WriteToLog($"HandleSignInAsync: Cookie '{Options.CookieName}' set, redirecting to '{redirectUrl}'");
