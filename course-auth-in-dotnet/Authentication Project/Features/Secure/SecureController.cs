@@ -11,9 +11,7 @@ public class SecureController : Controller
         {
             return View();
         }
-        else
-        {
-            return Redirect("/user/AccessDenied");
-        }
+
+        return Challenge();
     }
 }

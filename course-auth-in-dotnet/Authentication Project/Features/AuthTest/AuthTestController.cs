@@ -43,9 +43,12 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.ChallengeAsync()");
 
-        await HttpContext.ChallengeAsync();
+        var properties = new AuthenticationProperties
+        {
+            RedirectUri = "/user/info"
+        };
 
-        return Empty;
+        return new ChallengeResult(properties);
     }
 
     /// <summary>

@@ -18,7 +18,10 @@ builder.Services.AddAuthentication(o => // add authentication middleware
     {
         o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
-    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o => { });
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
+    {
+        o.LoginPath = "/user/login";
+    });
 
 
 var app = builder.Build();
