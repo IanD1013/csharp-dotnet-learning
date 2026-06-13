@@ -43,7 +43,7 @@ public class AuthTestController : Controller
     {
         Console.WriteLine("\r\nCalling HttpContext.ChallengeAsync()");
 
-        await HttpContext.ChallengeAsync("handler2");
+        await HttpContext.ChallengeAsync();
 
         return Empty;
     }
@@ -85,7 +85,7 @@ public class AuthTestController : Controller
             RedirectUri = "/AuthTest"
         };
 
-        await HttpContext.SignInAsync("handler1", myPrincipal, properties);
+        await HttpContext.SignInAsync(myPrincipal, properties);
 
         return Empty;
     }

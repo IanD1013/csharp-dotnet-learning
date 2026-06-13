@@ -1,4 +1,5 @@
 using Authentication_Project.CustomAuthHandler;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc.Razor;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,21 +16,10 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddAuthentication(o => // add authentication middleware
     {
-        // Customize the middleware
-        o.DefaultScheme = "handler1";
+        o.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
     })
-    .AddCustomAuth(authenticationScheme: "handler1", displayName: "Google SignIn",
-        configureOption: o =>
-        {
-            o.LoginPath = "/user/login";
-            o.CookieName = "AuthCookie1";
-        })
-    .AddCustomAuth(authenticationScheme: "handler2", displayName: "Facebook SignIn",
-        configureOption: o =>
-        {
-            o.LoginPath = "/user/login";
-            o.CookieName = "AuthCookie2";
-        });
+    .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o => { });
+
 
 var app = builder.Build();
 
