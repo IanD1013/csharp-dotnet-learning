@@ -1,6 +1,7 @@
 ﻿using System.Security.Claims;
 using System.Text.Encodings.Web;
 using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.Extensions.Options;
 
 namespace Authentication_Project.CustomAuthHandler;
@@ -37,8 +38,13 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
         try
         {
             var serializedTicket = Convert.FromBase64String(authCookie);
+            
+            var provider = DataProtectionProvider.Create("MyApp");
+            var protector = provider.CreateProtector("AuthTicket");
+            
+            var unprotectedBytes = protector.Unprotect(serializedTicket);
 
-            var ticket = TicketSerializer.Default.Deserialize(serializedTicket)!;
+            var ticket = TicketSerializer.Default.Deserialize(unprotectedBytes)!;
             
             return Task.FromResult(AuthenticateResult.Success(ticket));
 
@@ -77,8 +83,13 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
         var ticket = new AuthenticationTicket(user, properties, Scheme.Name);
         
         var serializedTicket = TicketSerializer.Default.Serialize(ticket);
+
+        var provider = DataProtectionProvider.Create("MyApp");
+        var protector = provider.CreateProtector("AuthTicket");
         
-        var cookieValue = Convert.ToBase64String(serializedTicket);
+        var protectedBytes = protector.Protect(serializedTicket);
+        
+        var cookieValue = Convert.ToBase64String(protectedBytes);
 
         Response.Cookies.Append(
             key: Options.CookieName,
