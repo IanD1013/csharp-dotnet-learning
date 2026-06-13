@@ -24,9 +24,9 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
     protected override Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         // read the cookie
-        var username = Request.Cookies[Options.CookieName];
+        var authCookie = Request.Cookies[Options.CookieName];
 
-        if (string.IsNullOrEmpty(username))
+        if (string.IsNullOrEmpty(authCookie))
         {
             // No cookie found - user not authenticated
             WriteToLog($"No cookie {Options.CookieName} found - user not authenticated");
@@ -34,18 +34,21 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
         }
 
         // Cookie found - user authenticated
-        var claims = new List<Claim> { new("name", username) };
+        try
+        {
+            var serializedTicket = Convert.FromBase64String(authCookie);
 
-        var myIdentity = new ClaimsIdentity(claims: claims, authenticationType: "test", nameType: "name",
-            roleType: "role");
+            var ticket = TicketSerializer.Default.Deserialize(serializedTicket)!;
+            
+            return Task.FromResult(AuthenticateResult.Success(ticket));
 
-        var myPrincipal = new ClaimsPrincipal(myIdentity);
+        }
+        catch (Exception ex)
+        {
+            // Handle bad cookie
+            return Task.FromResult(AuthenticateResult.Fail(ex));
+        }
 
-        var ticket = new AuthenticationTicket(myPrincipal, "CustomAuthHandler");
-
-        WriteToLog($"HandleAuthenticateAsync: User '{username}' authenticated");
-
-        return Task.FromResult(AuthenticateResult.Success(ticket));
     }
 
     
@@ -70,10 +73,16 @@ public class CustomAuthHandler : SignInAuthenticationHandler<CustomAuthHandlerOp
     {
         var username = user.Identity?.Name ?? "Unknown";
         WriteToLog($"HandleSignInAsync: Signing in user '{username}'");
+        
+        var ticket = new AuthenticationTicket(user, properties, Scheme.Name);
+        
+        var serializedTicket = TicketSerializer.Default.Serialize(ticket);
+        
+        var cookieValue = Convert.ToBase64String(serializedTicket);
 
         Response.Cookies.Append(
             key: Options.CookieName,
-            value: username,
+            value: cookieValue,
             new CookieOptions
             {
                 HttpOnly = true,
