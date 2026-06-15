@@ -43,9 +43,16 @@ public class UserController : Controller
             { "Item1", "Value1" },
             { "Item2", "Value2" },
             { "Item3", "Value3" }
+        };        
+        
+        var parameters = new Dictionary<string, object>
+        {
+            { "Param1", "Value1" },
+            { "Param2", "Value2" },
+            { "Param3", "Value3" }
         };
 
-        var properties = new AuthenticationProperties(items)
+        var properties = new AuthenticationProperties(items, parameters)
         {
             // RedirectUri = "/AuthTest"
         };
