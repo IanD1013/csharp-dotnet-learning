@@ -63,9 +63,13 @@ public class UserController : Controller
     }
 
 
+    [ValidateAntiForgeryToken]
     [HttpPost]
-    public async Task Logout()
+    public async Task<IActionResult> Logout()
     {
+        await HttpContext.SignOutAsync();
+
+        return LocalRedirect("/user/LoggedOut");
     }
 
 
