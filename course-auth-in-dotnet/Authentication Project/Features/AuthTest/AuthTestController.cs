@@ -85,7 +85,7 @@ public class AuthTestController : Controller
 
         var properties = new AuthenticationProperties(items)
         {
-            RedirectUri = "/AuthTest"
+            // RedirectUri = "/AuthTest"
         };
 
         await HttpContext.SignInAsync(myPrincipal, properties);

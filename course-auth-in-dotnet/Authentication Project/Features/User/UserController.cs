@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Authentication_Project.Features.User;
 
@@ -17,7 +18,41 @@ public class UserController : Controller
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Login(LoginModel loginCredentials)
     {
-        return Redirect(loginCredentials.ReturnUrl ?? "/");
+        var username = loginCredentials.UserName;
+
+        // validation
+        var myClaims = new List<Claim>
+        {
+            new("sub", "12345"), // sub = subject = UserId
+            new("name", username),
+            new("email", "test@email.com"),
+            new("role", "developer"),
+            new("role", "admin"),
+            new("role", "sales"),
+        };
+
+        var myIdentity = new ClaimsIdentity(claims: myClaims,
+            authenticationType: "pwd",
+            nameType: "name",
+            roleType: "role");
+
+        var myPrincipal = new ClaimsPrincipal(myIdentity);
+
+        var items = new Dictionary<string, string>
+        {
+            { "Item1", "Value1" },
+            { "Item2", "Value2" },
+            { "Item3", "Value3" }
+        };
+
+        var properties = new AuthenticationProperties(items)
+        {
+            // RedirectUri = "/AuthTest"
+        };
+
+        await HttpContext.SignInAsync(myPrincipal, properties);
+
+        return LocalRedirect(Url.IsLocalUrl(loginCredentials.ReturnUrl) ? loginCredentials.ReturnUrl : "/");
     }
 
 
