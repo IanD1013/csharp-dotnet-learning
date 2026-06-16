@@ -20,7 +20,8 @@ builder.Services.AddAuthentication(o => // add authentication middleware
     })
     .AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, o =>
     {
-        o.LoginPath = "/user/login";
+        o.LoginPath = "/User/Login";
+        o.AccessDeniedPath = "/User/AccessDenied";
     });
 
 

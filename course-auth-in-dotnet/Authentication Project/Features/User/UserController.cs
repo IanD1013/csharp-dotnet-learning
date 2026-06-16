@@ -7,6 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 
 public class UserController : Controller
 {
+    private readonly ILogger<UserController> logger;
+
+    public UserController(ILogger<UserController> logger)
+    {
+        this.logger = logger;
+    }
+
     [HttpGet]
     public IActionResult Login(string ReturnUrl)
     {
@@ -43,8 +50,8 @@ public class UserController : Controller
             { "Item1", "Value1" },
             { "Item2", "Value2" },
             { "Item3", "Value3" }
-        };        
-        
+        };
+
         var parameters = new Dictionary<string, object>
         {
             { "Param1", "Value1" },
@@ -79,8 +86,10 @@ public class UserController : Controller
     }
 
 
-    public IActionResult AccessDenied()
+    public IActionResult AccessDenied(string returnUrl = null)
     {
+        var userName = User?.Identity?.Name ?? "Unknown";
+        logger.LogWarning($"Access denied for user {userName}, attempting to access resource: '{returnUrl}'");
         return View();
     }
 

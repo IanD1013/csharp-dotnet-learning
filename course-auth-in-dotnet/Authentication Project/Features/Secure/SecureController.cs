@@ -7,6 +7,8 @@ public class SecureController : Controller
 {
     public IActionResult Index()
     {
+        // return Forbid();
+        
         if (User.Identity?.IsAuthenticated == true)
         {
             return View();
