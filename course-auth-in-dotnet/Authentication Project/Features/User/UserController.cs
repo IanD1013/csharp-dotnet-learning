@@ -62,7 +62,7 @@ public class UserController : Controller
         var properties = new AuthenticationProperties(items, parameters)
         {
             // RedirectUri = "/AuthTest"
-            IsPersistent = true,
+            IsPersistent = false,
             ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
         };
 
