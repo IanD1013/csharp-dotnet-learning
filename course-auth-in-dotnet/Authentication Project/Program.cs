@@ -23,7 +23,7 @@ builder.Services.AddAuthentication(o => // add authentication middleware
         o.LoginPath = "/User/Login";
         o.AccessDeniedPath = "/User/AccessDenied";
         o.ExpireTimeSpan = TimeSpan.FromDays(7);
-        o.Cookie.MaxAge = TimeSpan.FromHours(1);
+        o.Cookie.MaxAge = TimeSpan.FromDays(365);
     });
 
 
