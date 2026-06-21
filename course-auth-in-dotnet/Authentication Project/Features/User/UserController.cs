@@ -62,8 +62,9 @@ public class UserController : Controller
         var properties = new AuthenticationProperties(items, parameters)
         {
             // RedirectUri = "/AuthTest"
-            IsPersistent = false,
-            ExpiresUtc = DateTimeOffset.UtcNow.AddDays(30)
+            IsPersistent = true,
+            ExpiresUtc = DateTimeOffset.UtcNow.AddSeconds(15),
+            AllowRefresh = true
         };
 
         await HttpContext.SignInAsync(myPrincipal, properties);
