@@ -25,6 +25,18 @@ builder.Services.AddAuthentication(o => // add authentication middleware
         // o.ExpireTimeSpan = TimeSpan.FromDays(7);
         // o.Cookie.MaxAge = TimeSpan.FromDays(365);
         o.SlidingExpiration = true;
+
+        o.Events.OnRedirectToLogin = context =>
+        {
+            if (context.Request.Path.StartsWithSegments("/api"))
+            {
+                context.Response.StatusCode = 401;
+            }
+
+            context.Response.Redirect(context.RedirectUri);
+
+            return Task.CompletedTask;
+        };
     });
 
 
