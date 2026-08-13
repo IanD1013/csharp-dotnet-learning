@@ -1,0 +1,19 @@
+<Project>
+
+  <!--
+    Central Package Management for everything under src/.
+    Projects reference packages without a version:
+
+      <PackageReference Include="Serilog.AspNetCore" />
+
+    and the version comes from the PackageVersion entries in this file.
+    `dotnet add package <name>` writes both halves and maintains the ItemGroup
+    below on its own, so there is no need to edit it by hand.
+  -->
+
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+
+</Project>

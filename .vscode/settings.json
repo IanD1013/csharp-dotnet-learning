@@ -1,0 +1,15 @@
+{
+  // Format on save is what actually applies the .editorconfig formatting rules.
+  "editor.formatOnSave": true,
+
+  // Applies the analyzer fixes on save: removing unused usings,
+  // converting to file-scoped namespaces, sorting System usings first.
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit",
+    "source.organizeImports": "explicit"
+  },
+
+  "[csharp]": {
+    "editor.defaultFormatter": "ms-dotnettools.csharp"
+  }
+}
