@@ -5,4 +5,10 @@
     <File Path="src/Directory.Build.props" />
     <File Path="src/Directory.Packages.props" />
   </Folder>
+  <Folder Name="/src/" />
+  <Folder Name="/src/mastering-csharp/" />
+  <Folder Name="/src/mastering-csharp/03-value-types-vs-reference-types/">
+    <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Benchmarks/MasteringCSharp.ValueVsReference.Benchmarks.csproj" />
+    <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Demos/MasteringCSharp.ValueVsReference.Demos.csproj" />
+  </Folder>
 </Solution>
