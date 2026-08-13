@@ -1,0 +1,22 @@
+# Every text file is stored as LF and checked out as LF, on every machine,
+# regardless of that machine's core.autocrlf setting. The repository is already
+# LF throughout, so this pins the current state rather than changing it.
+* text=auto eol=lf
+
+# Shells that genuinely mis-parse the wrong ending.
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+*.sh  text eol=lf
+
+# Use Git's built-in C# hunk headers, so diffs show the enclosing member.
+*.cs text diff=csharp
+
+# Binary assets: never inspect or convert the bytes.
+*.png  binary
+*.ico  binary
+*.pfx  binary
+*.ttf  binary
+*.otf  binary
+*.eot  binary
+*.woff binary
