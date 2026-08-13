@@ -10,3 +10,10 @@ riderModule.iml
 
 # Verify
 *.received.*
+
+# Local secrets
+.env
+.claude/settings.local.json
+
+# BenchmarkDotNet run output
+BenchmarkDotNet.Artifacts/
