@@ -11,4 +11,8 @@
     <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Benchmarks/MasteringCSharp.ValueVsReference.Benchmarks.csproj" />
     <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Demos/MasteringCSharp.ValueVsReference.Demos.csproj" />
   </Folder>
+  <Folder Name="/src/mastering-csharp/06-mastering-records/">
+    <Project Path="src/mastering-csharp/06-mastering-records/MasteringCSharp.Records.Benchmarks/MasteringCSharp.Records.Benchmarks.csproj" />
+    <Project Path="src/mastering-csharp/06-mastering-records/MasteringCSharp.Records.Demos/MasteringCSharp.Records.Demos.csproj" />
+  </Folder>
 </Solution>
