@@ -8,6 +8,11 @@ video, and the document is organized for the fifth reading rather than the first
 Examples throughout are drawn from `src/mastering-csharp/notes/03-value-types-vs-reference-types.md`,
 which is the reference implementation of this template.
 
+Follow it for **structure**: section shapes, the lesson index, how every claim is traced
+back to a deep link. Do not copy its **voice**. The notes written before the Style
+section below existed run considerably denser than that section now asks for, so where
+the two disagree, Style wins.
+
 ---
 
 ## Header
@@ -137,8 +142,95 @@ turns a set of chapter notes into a course-wide index as more chapters get writt
 
 ## Style
 
-- English prose, technical terms unchanged.
+### Who you are writing for
+
+Someone with a solid general computer-science background who writes C#, but who is not
+a runtime or compiler specialist. They know what a class, a heap, a hash table and a
+stack frame are. They do not necessarily know what boxing costs, what "blittable"
+means, why a JIT would elide an allocation, or what "nominal" and "structural" typing
+are called.
+
+That cuts both ways. Do not explain what a `for` loop is. Equally, do not drop a term
+like "non-blittable", "escape analysis", "defensive copy" or "sum type" as though it
+needs no introduction. Gloss it the first time it appears, in a clause or a short
+sentence, then use it freely for the rest of the document.
+
+### Write it the way you would explain it out loud
+
+The most common failure of these notes is a register that is too compressed: every
+sentence correct, dense, and quietly exhausting to read. Aim for a colleague
+explaining the chapter at a whiteboard, not for a specification.
+
+Concrete habits, in rough order of how much they help:
+
+**Prefer a plain sentence to an aphorism.** Compressed one-liners feel authoritative
+while writing and are much harder to decode on a reread.
+
+> Closedness is the feature.
+
+becomes
+
+> The useful part is that the set of cases is closed. The compiler knows every case the
+> union can hold, so it can tell you when a `switch` has missed one.
+
+**Name the thing rather than gesturing at it.** Figures like "coming back to collect",
+"load-bearing", "the pivot", "earns its place" read as clever on the first pass and as
+vague on the fifth.
+
+> This is [1.2](#12-the-names-are-not-real) coming back to collect.
+
+becomes
+
+> This is the name-erasure rule from [1.2](#12-the-names-are-not-real) showing its cost.
+
+**Break a long sentence at its joint.** Two clauses joined by "which", "and exactly",
+or a semicolon are usually two sentences.
+
+> Structural identity is exactly what makes a tuple cheap, and exactly what makes it
+> unable to carry meaning.
+
+becomes
+
+> A tuple is identified only by its shape. That is what makes it cheap to use, and it
+> is also why it cannot carry any meaning of its own.
+
+**Use concrete subjects and active verbs.** "The compiler boxes the `int`" beats
+"boxing occurs". "This costs 24 bytes" beats "a 24-byte allocation is incurred".
+
+**Introduce jargon with a gloss instead of assuming it.**
+
+> The `int` case boxes.
+
+becomes
+
+> The `int` case gets boxed: the runtime wraps the value in a small heap object so it
+> fits in a field typed `object`. That is 24 bytes per instance.
+
+**Keep paragraphs to two or three sentences.** Let a blank line do the work a
+subordinate clause was doing.
+
+**Say the plain version first, then the precise one.** A section can open with the
+one-sentence summary a reader could repeat from memory, and follow with the exact
+mechanism. Leading with the precise version makes readers work before they know why
+they are working.
+
+### What must not change
+
+Reader-friendly refers to the wording, never the substance. Do not soften a claim to
+make it flow better, do not drop a caveat because it interrupts a paragraph, and do not
+round a measured number. Where a passage is hard to read because the idea is genuinely
+subtle, keep the idea and spend *more* words on it, not fewer.
+
+Also unchanged by any of the above:
+
+- Course code stays verbatim, comments and dated style included.
+- Deep links, `?t=` timestamps, and the lesson index table stay exactly as specified above.
+- Measured output is pasted as produced, never tidied or abbreviated.
+- Asides that mark your own additions or corrections stay clearly marked as asides.
+
+### Mechanics
+
+- English prose. Technical terms and identifiers keep their original form.
 - One full sentence per line, so revisions produce readable diffs.
 - Hyphens rather than em dashes, matching the repo's writing conventions.
 - Explain why something is true, not only that it is. The reason is what survives.
-- Trust the reader; he is a working .NET developer, not a beginner.

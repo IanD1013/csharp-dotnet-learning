@@ -85,6 +85,14 @@ often in the summary lesson - so look there before inventing one.
 Write in English. Keep every full sentence on its own line: it keeps diffs readable
 when a chapter gets revised.
 
+Write for someone with a general CS background who works in C# but is not a runtime or
+compiler specialist, and aim for the tone of a colleague explaining the chapter at a
+whiteboard rather than a specification. Plain sentences over compressed aphorisms, a
+short gloss the first time a term like "boxing" or "blittable" appears, concrete
+subjects and active verbs. This is about wording only: never soften a claim, drop a
+caveat, or round a measured number to make a sentence read better. The Style section of
+`references/note-template.md` has the before-and-after examples worth following.
+
 ### 4. Decide whether a demo project is warranted
 
 Build one when the chapter shows code Ian could step through, benchmark, or break on
@@ -125,6 +133,7 @@ recordings - and seeing both numbers teaches more than either alone.
 
 Before you call it done:
 
+- Reread the prose once as a reader, not as the author. Any sentence you had to parse twice gets rewritten longer and plainer, and every term a non-specialist would stumble on is glossed where it first appears.
 - Every section traces to a lesson deep link, and code blocks carry `?t=` timestamps where the lesson provided them.
 - The lesson index table lists every lesson in the chapter, including any with no document.
 - The notes' claims match the lesson documents, with your own additions clearly marked as asides.
