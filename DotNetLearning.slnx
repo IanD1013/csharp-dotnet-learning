@@ -15,4 +15,8 @@
     <Project Path="src/mastering-csharp/06-mastering-records/MasteringCSharp.Records.Benchmarks/MasteringCSharp.Records.Benchmarks.csproj" />
     <Project Path="src/mastering-csharp/06-mastering-records/MasteringCSharp.Records.Demos/MasteringCSharp.Records.Demos.csproj" />
   </Folder>
+  <Folder Name="/src/mastering-csharp/07-mastering-tuples-and-union-types/">
+    <Project Path="src/mastering-csharp/07-mastering-tuples-and-union-types/MasteringCSharp.TuplesAndUnions.Benchmarks/MasteringCSharp.TuplesAndUnions.Benchmarks.csproj" />
+    <Project Path="src/mastering-csharp/07-mastering-tuples-and-union-types/MasteringCSharp.TuplesAndUnions.Demos/MasteringCSharp.TuplesAndUnions.Demos.csproj" />
+  </Folder>
 </Solution>
