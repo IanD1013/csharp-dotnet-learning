@@ -774,7 +774,7 @@ The `structs` section runs the 10,000-item `HashSet` build twice and takes a few
 
 | Deferred here | Picked up in |
 | --- | --- |
-| `readonly record struct` as a cheap wrapper type | Mastering Tuples and Union Types |
+| `readonly record struct` as a cheap wrapper type | [Mastering Tuples and Union Types](07-mastering-tuples-and-union-types.md#22-the-fix-give-the-shape-a-name) |
 | Records as the payload of closed hierarchies | Mastering Pattern Matching (exhaustiveness over records and unions) |
 | `Deconstruct` as the hook positional patterns use | Mastering Pattern Matching (recursive patterns) |
 | Boxing as a systematic allocation source | Mastering LINQ (the cost of boxed iterators) |
