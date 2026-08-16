@@ -1,67 +1,150 @@
 # Mastering Structs
 
 > Course: [Mastering: C#](https://dometrain.com/course/mastering-csharp/) · Chapter 5
-> 8 lessons · ~8.8 minutes
-> Source: Dometrain. Every section links back to the lesson it came from.
-> No companion project for this chapter, by request. See [No companion project](#no-companion-project).
-> Picks up the defensive-copy thread deferred in [Value Types vs. Reference Types](03-value-types-vs-reference-types.md).
-
----
-
-## The mental model
-
-Chapter 3 established that assignment copies the value, and for a struct the value is the data.
-This chapter is the consequence of that rule meeting real code, and it has exactly one failure mode:
-
-> **You think you are mutating the instance. You are mutating a copy, and the copy is discarded.**
-
-The chapter's own framing is that **immutable structs are easy and mutable structs are where the bodies are buried**.
-Everything difficult here traces back to a struct that can change its own state.
-
-Copies arrive from three directions, and they get progressively harder to see:
-
-| Source of the copy | Visible in the source? | Example |
-| --- | --- | --- |
-| **Boxing** | yes, if you know a cast to an interface is a copy | `((IIncrementable)counter).Increment()` |
-| **Return by value** | no, looks like member access | `list[0].Increment()` |
-| **Compiler defensive copy** | no, nothing in the source at all | `_readonlyField.TryAdvance()` |
-
-The third is the chapter's real subject, and it inverts the usual expectation: **`readonly` is what causes the bug**.
-Removing `readonly` makes the code work.
-
-The fix, for all of it, is also one word.
-Mark the struct `readonly struct`, or mark the individual members `readonly`, and the compiler stops needing to defend itself.
+> 8 lessons · ~8:48
+> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
 
 ---
 
 ## Lesson index
 
-| # | Lesson | Length | Covered in |
+| # | Lesson | Length | Section |
 | --- | --- | --- | --- |
-| 1 | [Overview](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958855/) | 1:06 | [The mental model](#the-mental-model) |
-| 2 | [Boxing and Indexers](https://dometrain.com/take/course/mastering-csharp-3256129/boxing-and-indexers-69958856/) | 0:27 | [1.1](#11-boxing-a-cast-is-an-allocation) · [1.2](#12-indexers-why-list-and-array-disagree) |
-| 3 | [Exploring Different Kind of Copies](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-different-kind-of-copies-69958857/) | 1:42 | [1.1](#11-boxing-a-cast-is-an-allocation) · [1.2](#12-indexers-why-list-and-array-disagree) |
-| 4 | [The Readonly Field Trap](https://dometrain.com/take/course/mastering-csharp-3256129/the-readonly-field-trap-69958858/) | 0:24 | [2.1](#21-the-trap-a-reader-that-never-advances) |
-| 5 | [Why the Compiler Makes a Copy?](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/) | 1:25 | [2.2](#22-why-mutable-this) |
-| 6 | [How to Avoid Defensive Copies for Structs?](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/) | 1:54 | [2.4](#24-the-fix-readonly-as-a-promise-to-the-compiler) |
-| 7 | [Defensive Copy Overview](https://dometrain.com/take/course/mastering-csharp-3256129/defensive-copy-overview-69958861/) | 1:09 | [2.3](#23-the-four-readonly-contexts) |
-| 8 | [Conclusion](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958862/) | 0:41 | [Common misconceptions](#common-misconceptions) |
-
-Every lesson in this chapter has a document; nothing was skipped.
-
-Note the course order is slightly out of sequence: lesson 7, "Defensive Copy Overview", is the systematic treatment and lands *after* the hands-on lesson 6 that uses it.
-These notes put the overview first, as [2.3](#23-the-four-readonly-contexts) before [2.4](#24-the-fix-readonly-as-a-promise-to-the-compiler), which reads better on a reread.
+| 1 | [Overview](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958855/) | 1:06 | [↓](#1-overview) |
+| 2 | [Boxing and Indexers](https://dometrain.com/take/course/mastering-csharp-3256129/boxing-and-indexers-69958856/) | 0:27 | [↓](#2-boxing-and-indexers) |
+| 3 | [Exploring Different Kind of Copies](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-different-kind-of-copies-69958857/) | 1:42 | [↓](#3-exploring-different-kind-of-copies) |
+| 4 | [The Readonly Field Trap](https://dometrain.com/take/course/mastering-csharp-3256129/the-readonly-field-trap-69958858/) | 0:24 | [↓](#4-the-readonly-field-trap) |
+| 5 | [Why the Compiler Makes a Copy?](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/) | 1:25 | [↓](#5-why-the-compiler-makes-a-copy) |
+| 6 | [How to Avoid Defensive Copies for Structs?](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/) | 1:54 | [↓](#6-how-to-avoid-defensive-copies-for-structs) |
+| 7 | [Defensive Copy Overview](https://dometrain.com/take/course/mastering-csharp-3256129/defensive-copy-overview-69958861/) | 1:09 | [↓](#7-defensive-copy-overview) |
+| 8 | [Conclusion](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958862/) | 0:41 | [↓](#8-conclusion) |
 
 ---
 
-## Part 1 · Copies you could have seen coming
+## 1. Overview
 
-### 1.1 Boxing: a cast is an allocation
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958855/) · 1:06
 
-> [Boxing and Indexers](https://dometrain.com/take/course/mastering-csharp-3256129/boxing-and-indexers-69958856/) · [Exploring Different Kind of Copies](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-different-kind-of-copies-69958857/)
+### Summary
 
-A struct that implements an interface is still a value type.
-Casting it to that interface **boxes** it: the runtime allocates a heap object and copies the struct's content into it.
+Structs serve as the primary mechanism for defining value types in C#, emphasizing value-based equality where two instances are considered identical if their contents match.
+While immutable structs are technically straightforward, mutable structs introduce significant complexity due to non-obvious copying behaviors.
+These include boxing allocations when casting to interfaces, accidental mutations of copies returned by properties or indexers, and compiler-generated defensive copies inserted to preserve the state of readonly fields when calling non-readonly members.
+
+### Key concepts
+
+*   **Value Type Semantics**: Structs model values where identity is irrelevant; equality is determined by content.
+*   **Boxing Allocations**: Casting a struct to an interface causes the runtime to copy the struct into a heap-allocated object.
+*   **Mutation Traps**: Accessing structs through properties or indexers (like `List<T>`) often returns a copy, meaning mutations are applied to the copy rather than the original storage.
+*   **Defensive Copies**: The compiler automatically creates temporary copies of structs in `readonly` contexts to prevent non-readonly members from potentially modifying the original state.
+
+### Lesson notes
+
+Structs are the canonical way of creating value types in C#.
+They are specifically designed to model values where the identity of the instance is not relevant.
+This leads to distinct equality semantics: two struct instances are equal when their content is exactly the same.
+
+While immutable structs are simple to manage, mutable structs introduce complexities because copies can occur in multiple ways.
+One of the most common is a boxing allocation.
+When a struct instance is cast to an interface, the runtime copies the content of the struct into a heap-allocated object.
+Any subsequent mutations performed through that interface affect the boxed copy, not the original value type.
+
+```csharp
+// === Boxing: mutation on a copy ===
+
+// Explicit boxing
+var counter = new Counter();
+((IIncrementable)counter).Increment();
+((IIncrementable)counter).Increment();
+Console.WriteLine(counter.Value);
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958855/?t=40)
+
+Other cases of copying are less obvious, such as when dealing with properties or indexers.
+For instance, accessing a struct through a standard `List<T>` indexer returns a copy of the value.
+Attempting to mutate that return value results in a "mutation trap" where only the temporary copy is modified.
+
+```csharp
+// List and Array
+var list = new List<Counter> { new() };
+list[0].Increment();
+Console.WriteLine($"List element after Increment: {list[0].Value}");
+
+var array = new Counter[1];
+array[0].Increment();
+Console.WriteLine($"Array element after Increment: {array[0].Value}");
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958855/?t=49)
+
+The most complex scenario involves defensive copies.
+To preserve invariance, the compiler emits defensive copies when a struct is stored in a `readonly` context (such as a `readonly` field) and a member is called that is not explicitly marked as `readonly`.
+Because the compiler cannot guarantee that a non-readonly member won't mutate the state, it creates a temporary copy to perform the operation on, leaving the original field untouched.
+This behavior can lead to silent bugs where code appears to execute correctly but the state never updates.
+
+```csharp
+struct SequenceReader
+{
+    private int _position;
+
+    public int Position => _position;
+
+    public bool TryAdvance()
+    {
+        if (_position >= 5) return false;
+        _position++;
+        return true;
+    }
+}
+
+class Parser
+{
+    private readonly SequenceReader _reader;
+
+    public void Parse()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            bool advanced = _reader.TryAdvance();
+            Console.WriteLine(_reader.Position);
+        }
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958855/?t=55)
+
+---
+
+## 2. Boxing and Indexers
+
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/boxing-and-indexers-69958856/) · 0:27
+
+### Summary
+
+This lesson explores the unintended consequences of boxing and indexer behavior when working with mutable structs in C#.
+It demonstrates that casting a struct to an interface results in boxing, where mutations are applied to a heap-allocated copy rather than the original instance.
+Furthermore, the lesson highlights a critical difference between collection types: while `List<T>` indexers return a copy of a struct (preventing in-place mutation), array indexers provide direct access to the memory location, allowing the struct to be modified as expected.
+
+### Key concepts
+
+- **Interface Boxing**: Casting a struct to an interface boxes the value, creating a separate object on the heap.
+- **Mutation on Copies**: Methods called on a boxed interface reference mutate the boxed copy, leaving the original local struct unchanged.
+- **List Indexer Behavior**: The `List<T>` indexer is a property that returns a value by copy for structs.
+- **Array Indexer Behavior**: Arrays have special runtime support allowing indexers to return a reference to the element's storage location.
+- **Ref Indexers**: Custom collections can use the `ref` return type on indexers to allow in-place mutation of struct elements.
+
+### Lesson notes
+
+When a struct implements an interface, it remains a value type.
+However, casting that struct to the interface type triggers a boxing operation.
+This creates a copy of the struct on the heap.
+If the interface defines methods that mutate the state of the struct, calling those methods on the interface reference will only affect the boxed copy.
+
+In the following example, the `Counter` struct implements `IIncrementable`.
+When `counter` is cast to `IIncrementable`, the `Increment` method is called on a boxed instance.
+Consequently, the `Value` of the original `counter` remains 0.
 
 ```csharp
 interface IIncrementable { void Increment(); }
@@ -77,19 +160,7 @@ var counter = new Counter();
 ((IIncrementable)counter).Increment();
 ((IIncrementable)counter).Increment();
 Console.WriteLine(counter.Value); // Output: 0
-```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/boxing-and-indexers-69958856/?t=10)
-
-Two increments, and the answer is `0`.
-Worse than it first looks: each cast boxes **separately**, so the two calls did not even mutate the same copy.
-Two heap objects were allocated, each incremented once, and both were discarded.
-
-### 1.2 Indexers: why `List<T>` and array disagree
-
-Same struct, two collections that look interchangeable, opposite results.
-
-```csharp
 // List indexer: returns a copy of the struct
 List<Counter> list = [new()];
 list[0].Increment();
@@ -103,22 +174,22 @@ Console.WriteLine(array[0].Value); // Output: 1
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/boxing-and-indexers-69958856/?t=10)
 
-The distinction is what the indexer *is*:
+#### Indexer Differences
 
-- **`List<T>`**: the indexer is an ordinary **property** returning `T`. For a struct that means a copy. `list[0]` produces a temporary, `Increment()` mutates the temporary, and the temporary is discarded at the end of the statement.
-- **Arrays**: array element access has special CLR support and yields a **reference to the element's storage**. `array[0].Increment()` mutates the data in the array itself.
+The behavior of indexers depends on the implementation of the collection.
+For `List<T>`, the indexer is a standard property.
+When `T` is a struct, the indexer returns the element by value (a copy).
+Calling a mutating method like `Increment()` on `list[0]` modifies that temporary copy, which is immediately discarded.
+This is why the value in the list remains unchanged.
 
-The syntax is identical and the semantics are not, which is what makes this a genuine trap rather than a curiosity.
+Arrays are handled differently by the CLR.
+An array indexer provides a reference to the actual memory location of the element.
+This allows `array[0].Increment()` to mutate the struct instance stored directly within the array.
 
-> **Aside, verified on this machine.**
-> The language is not entirely silent here, but its warning arrives only for assignment, not for method calls.
-> `list[0].Value = 5;` is a compile error, **CS1612: "Cannot modify the return value of `List<Counter>.this[int]` because it is not a variable"**.
-> `list[0].Increment();` compiles with no diagnostic at all, even though it does the same thing less obviously.
-> C# blocks the version you would notice and permits the version you would not.
+#### Implementing Ref Indexers
 
-#### Getting array-like behaviour back: `ref` returns
-
-A custom collection can return a reference from its indexer, which restores in-place mutation.
+To achieve array-like behavior in custom collections, you can define an indexer that returns a reference using the `ref` keyword.
+This allows callers to mutate struct elements inside the collection without copying them.
 
 ```csharp
 class RefList<T> : IEnumerable<T>
@@ -152,21 +223,101 @@ class RefList<T> : IEnumerable<T>
 }
 ```
 
-`ref T this[int index]` is the whole trick: the caller receives an alias to the slot rather than its contents.
-This is also why the same problem does not exist for `Span<T>`, whose indexer is `ref`-returning by design.
+---
 
-The generalization the chapter draws: **.NET passes structs by value nearly everywhere**, including arguments, return values, properties, and most indexers.
-Arrays and `ref` returns are the exceptions, not the rule.
+## 3. Exploring Different Kind of Copies
+
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-different-kind-of-copies-69958857/) · 1:42
+
+### Summary
+
+This lesson explores how struct copying behavior varies depending on how the struct is accessed and manipulated.
+It demonstrates that casting a struct to an interface results in boxing, creating a heap-allocated copy that isolates mutations from the original instance.
+Furthermore, it contrasts the behavior of collection indexers, showing that while List<T> indexers return a copy of a struct, array indexers provide a direct reference to the underlying memory location, allowing for in-place mutation.
+
+### Key concepts
+
+*   **Boxing Mutation**: Casting a struct to an interface creates a heap-allocated copy (boxing). Mutations performed on the interface reference affect the boxed copy, not the original struct.
+*   **Pass-by-Value**: By default, .NET passes structs by value. This applies to method arguments, return values, properties, and most indexers.
+*   **List<T> Indexer**: The indexer for `List<T>` returns the type `T`. For structs, this means a temporary copy is created upon access.
+*   **Array Indexer**: Unlike standard collections, array indexers return a reference to the actual memory location of the element, enabling direct mutation of the struct within the array.
+
+### Lesson notes
+
+When working with structs, it is critical to understand when the runtime creates a copy versus when it allows access to the original instance.
+A common source of confusion occurs when a struct implements an interface and is subsequently cast to that interface type.
+
+#### Boxing and Interface Casting
+
+When a struct is cast to an interface, the runtime performs a boxing operation.
+This creates a temporary instance on the heap and copies the content of the struct into that heap-allocated object.
+If a mutating method is called on the interface reference, it modifies the state of the boxed object.
+The original stack-allocated struct remains unchanged.
+
+#### Collection Indexer Behavior
+
+There is a significant difference in how `List<T>` and arrays handle struct elements.
+Although they may appear similar, their indexers have different signatures and behaviors:
+
+1.  **List<T>**: The indexer returns `T`. When `T` is a struct, accessing `list[0]` creates a temporary copy. Calling a mutating method like `Increment()` on `list[0]` modifies this temporary copy, which is immediately discarded. Consequently, the value stored inside the list remains unchanged.
+2.  **Arrays**: The array indexer returns a reference to the underlying location within the array. When you call a mutating method on an array element, you are changing the actual data stored in that memory slot.
+
+The following code demonstrates these behaviors using a `Counter` struct that implements an `IIncrementable` interface:
+
+```csharp
+// === Boxing: mutation on a copy ===
+
+// Explicit boxing
+var counter = new Counter();
+((IIncrementable)counter).Increment();
+((IIncrementable)counter).Increment();
+Console.WriteLine(counter.Value);
+
+Console.WriteLine();
+
+// List and Array
+var list = new List<Counter> { new() };
+list[0].Increment();
+Console.WriteLine($"List element after Increment: {list[0].Value}");
+
+var array = new Counter[1];
+array[0].Increment();
+Console.WriteLine($"Array element after Increment: {array[0].Value}");
+
+Console.WriteLine();
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-different-kind-of-copies-69958857/?t=10)
+
+In the boxing example, `counter.Value` remains `0` because the `Increment()` calls were executed on separate boxed copies.
+In the collection example, the list element remains `0` because the indexer returned a copy, whereas the array element is successfully incremented to `1` because the array indexer provided a reference to the original storage location.
 
 ---
 
-## Part 2 · Copies the compiler inserts
+## 4. The Readonly Field Trap
 
-### 2.1 The trap: a reader that never advances
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/the-readonly-field-trap-69958858/) · 0:24
 
-> [The Readonly Field Trap](https://dometrain.com/take/course/mastering-csharp-3256129/the-readonly-field-trap-69958858/)
+The 'Readonly Field Trap' is a common pitfall in C# when using mutable structs within readonly fields.
+When a method or property is accessed on a struct stored in a readonly field, the compiler creates a defensive copy of the struct to ensure the original field remains immutable.
+This results in any state changes (mutations) being applied only to the temporary copy and then discarded, leaving the original struct's state unchanged.
+This behavior can lead to logical errors, such as infinite loops or incorrect data processing, and introduces performance penalties due to repeated memory copying.
 
-This is the best example in the chapter, because there is nothing in the source to point at.
+### Key concepts
+
+- **Defensive Copying**: The mechanism where the C# compiler copies a struct to a temporary variable before calling a member on a readonly field to preserve the field's immutability.
+- **Mutable Structs**: Structs that contain methods or properties that modify their internal state, which are particularly susceptible to this trap.
+- **Readonly Invariant**: The language guarantee that a readonly field cannot be modified after the constructor completes.
+- **State Loss**: The phenomenon where mutations appear to fail because they were executed on a discarded temporary copy rather than the intended field.
+
+### Lesson notes
+
+In C#, marking a struct field as `readonly` does not simply make the struct's members immutable; instead, it changes how the compiler interacts with that field.
+If a struct is mutable—meaning it has methods that change its internal fields—using it within a `readonly` field leads to the "Readonly Field Trap."
+
+Consider a `SequenceReader` struct designed to track a position within a data source.
+It has a `TryAdvance` method that increments an internal `_position` field.
+This reader is then used as a `readonly` field within a `Parser` class.
 
 ```csharp
 var parser = new Parser();
@@ -203,22 +354,84 @@ class Parser
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/the-readonly-field-trap-69958858/?t=10)
 
-`TryAdvance` returns `true` every time, and `Position` stays `0` every time.
+In the `Parser` class, the `_reader` field is marked as `readonly`.
+When the `Parse` method calls `_reader.TryAdvance()`, the compiler must ensure that `_reader` itself is not modified, as that would violate the `readonly` constraint.
+Because `SequenceReader` is a struct (a value type), the compiler handles this by creating a hidden defensive copy of `_reader` on the stack.
+It then calls `TryAdvance()` on this temporary copy.
 
-The reason: `_reader` is a `readonly` field, so on each call the compiler copies `_reader` into a hidden local and calls `TryAdvance()` on the copy.
-The copy's `_position` reaches 1, then the copy is thrown away.
-The next iteration copies the untouched original again, so the loop is stuck at zero forever while cheerfully reporting success.
+As a result, the `_position` field inside the copy is incremented, but the `_position` field in the actual `_reader` field remains `0`.
+In the next iteration of the loop, the process repeats: a new copy of the original (unmodified) `_reader` is made, `TryAdvance()` is called on it, and the original remains unchanged.
+This leads to a situation where the reader never actually advances, and the output will consistently show a position of `0` despite the method returning `true`.
 
-Note how bad the failure mode is.
-There is no exception, no warning, and the return value actively lies.
-Bump the loop to a `while (_reader.TryAdvance())` and it never terminates.
+---
 
-### 2.2 Why: mutable `this`
+## 5. Why the Compiler Makes a Copy?
 
-> [Why the Compiler Makes a Copy?](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/)
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/) · 1:25
 
-The compiler is not being paranoid without cause.
-Think of an instance member as a static method whose first parameter is `this`, and for a struct that parameter is passed **by mutable reference**.
+### Summary
+
+When a struct is stored in a readonly field, the C# compiler enforces immutability by creating a defensive copy whenever a non-readonly member is accessed.
+Because struct instance members conceptually receive the current instance as a mutable reference, the compiler cannot guarantee that a method or property getter won't modify the struct's state.
+To protect the readonly field from mutation, the compiler copies the struct to a temporary local variable and executes the member on that copy, which can lead to unexpected behavior where state changes are lost and performance is degraded.
+
+### Key concepts
+
+- **Defensive Copying**: The process where the compiler creates a temporary copy of a struct to prevent mutation of a `readonly` field.
+- **Readonly Field Guarantees**: For structs, `readonly` guarantees that the actual data within the struct cannot be changed, unlike reference types where only the reference itself is immutable.
+- **Mutable `this`**: In a standard struct, the `this` parameter passed to instance members is a mutable reference (`ref`), allowing any member to reassign the entire instance.
+- **Compiler Analysis**: The compiler automatically injects copying logic when it detects a potential mutation path through a non-readonly member access on a readonly field.
+
+### Lesson notes
+
+Consider a `SequenceReader` struct designed to track a position within a data source.
+It contains a `TryAdvance` method that increments a private `_position` field.
+
+```csharp
+// A light-weight reader for processing
+// data from a data source.
+struct SequenceReader
+{
+    private int _position;
+
+    public int Position => _position;
+
+    public bool TryAdvance()
+    {
+        if (_position >= 5) return false;
+        _position++;
+        return true;
+    }
+}
+
+class Parser
+{
+    private readonly SequenceReader _reader;
+
+    public void Parse()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            bool advanced = _reader.TryAdvance();
+            Console.WriteLine(_reader.Position);
+        }
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/?t=5)
+
+In the `Parser` class, the `_reader` is marked as `readonly`.
+When executing the `Parse` method, the `Position` remains unchanged despite calls to `TryAdvance`.
+This happens because the compiler identifies that `TryAdvance` is a member of a struct stored in a `readonly` field.
+To ensure the `readonly` constraint is not violated, the compiler generates Intermediate Language (IL) that copies `_reader` into a temporary variable and calls `TryAdvance` on that temporary instance.
+The original `_reader` field remains untouched.
+
+#### The Mechanics of Struct Mutation
+
+To understand why the compiler is so conservative, it is helpful to view instance members conceptually.
+An instance member in a struct is essentially a static member where the first parameter is `this`.
+For structs, this parameter is passed by reference and is mutable.
 
 ```csharp
 // This is what a Distance property conceptually is
@@ -231,7 +444,12 @@ public static double get_Distance(ref Point @this)
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/?t=45)
 
-Any member of a non-`readonly` struct can legally reassign `this` wholesale, **including a property getter**.
+Because every member of a struct can potentially reassign `this` (and thus change the current instance), it conflicts with the `readonly` modifier on a field.
+While a `readonly` field of a reference type only prevents changing the reference (the pointer), a `readonly` field of a struct type attempts to prevent any change to the instance's data.
+
+#### Example: Mutation in a Property
+
+Even property getters, which are typically expected to be side-effect free, can legally mutate a struct if the struct or the member is not explicitly marked `readonly`.
 
 ```csharp
 struct Point
@@ -267,35 +485,204 @@ class Holder
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/why-the-compiler-makes-a-copy-69958859/?t=45)
 
-Reading `_point.Distance` would destroy a `readonly` field if the call went through directly.
-The defensive copy is what keeps `_point` at `(3, 4)`, so the compiler is buying a real guarantee, not an imaginary one.
+In this example, accessing `_point.Distance` triggers a defensive copy.
+If the compiler did not do this, the `readonly` field `_point` would be overwritten by `new Point(1, 2)` inside the getter.
+By creating a copy, the compiler ensures `_point` remains `(3, 4)` while allowing the code to execute.
 
-The other half of the explanation is that `readonly` means something **stronger** for a struct field than for a class field.
+---
 
-| Field type | What `readonly` protects |
-| --- | --- |
-| class | the **reference** only; the object it points at is freely mutable |
-| struct | the **data itself**, so no member call may alter it |
+## 6. How to Avoid Defensive Copies for Structs?
 
-That stronger promise is the entire source of the problem.
-The compiler has to keep a promise it cannot verify any other way, and copying is the only tool available.
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/) · 1:54
 
-### 2.3 The four `readonly` contexts
+Defensive copies are hidden performance costs incurred when the C# compiler copies a struct to protect its state from potential mutation during member access.
+This occurs in readonly contexts, such as when a struct is passed as an in parameter or stored in a readonly field, and a non-readonly member is invoked.
+By explicitly marking members or the entire struct as readonly, developers provide the compiler with the necessary guarantees to access the struct directly by reference, bypassing the need for a temporary copy.
 
-> [Defensive Copy Overview](https://dometrain.com/take/course/mastering-csharp-3256129/defensive-copy-overview-69958861/)
+### Key concepts
 
-A defensive copy can appear in exactly four places:
+- Defensive copies in `readonly` contexts (`in` parameters, `readonly` fields).
+- The `readonly` modifier on struct members (methods and properties).
+- `readonly struct` declarations for global immutability.
+- Compiler behavior regarding field vs. property access.
+- Identifying copies via IL (Intermediate Language) inspection.
 
-1. `readonly` fields
-2. `in` parameters
-3. `ref readonly` parameters
-4. `ref readonly` locals
+### Lesson notes
 
-The unifying idea is worth stating as a rule, because it also tells you when copies do *not* happen:
+When working with structs in C#, the compiler often creates "defensive copies" to ensure that a struct marked as `readonly` is not inadvertently mutated.
+This typically happens in two contexts: when a struct is passed via an `in` parameter or when it is stored in a `readonly` field.
 
-> The compiler emits a defensive copy **unless it can prove** the access cannot mutate.
+#### Defensive Copies with `in` Parameters
 
-What counts as proof:
+When a struct is passed using the `in` modifier, it is passed by reference for performance, but the compiler must guarantee it remains immutable.
+If you call a property or method that is not explicitly marked `readonly`, the compiler creates a copy of the struct and calls the member on that copy instead.
+This ensures the original struct cannot be changed by the method call.
+
+```csharp
+using System;
+public struct Point
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Point(int x, int y) { X = x; Y = y; }
+
+    public double Distance => Math.Sqrt(X * X + Y * Y);
+}
+
+public class C {
+
+    public void M( Point p) {
+
+        Console.WriteLine(p.Distance);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=40)
+
+In the example above, if the method signature is changed to `public void M(in Point p)`, the access to `p.Distance` triggers a defensive copy because the `Distance` property is not marked `readonly`.
+
+#### Marking Members as `readonly`
+
+To prevent the compiler from creating these copies, you can apply the `readonly` modifier directly to the member.
+This informs the compiler that the member does not mutate the struct's state, allowing it to call the member directly on the reference.
+
+```csharp
+using System;
+public struct Point
+{
+    public int X { get; }
+    public int Y { get; }
+
+    public Point(int x, int y) { X = x; Y = y; }
+
+    public readonly double Distance => Math.Sqrt(X * X + Y * Y);
+}
+
+public class C {
+
+    public void M(in Point p) {
+
+        Console.WriteLine(p.X);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=55)
+
+The compiler does not create defensive copies when accessing fields or auto-properties directly, as these are known to be safe.
+However, if a property has a custom getter that is not marked `readonly`, the defensive copy returns.
+
+```csharp
+using System;
+public struct Point
+{
+    public int X => 42;
+    public int Y { get; }
+
+    public Point(int x, int y) { X = x; Y = y; }
+
+    public readonly double Distance => Math.Sqrt(X * X + Y * Y);
+}
+
+public class C {
+
+    public void M(in Point p) {
+
+        Console.WriteLine(p.X);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=65)
+
+#### Using `readonly struct`
+
+A more comprehensive approach is to mark the entire struct as `readonly`.
+This makes all members (including properties) implicitly `readonly`.
+Once the struct itself is `readonly`, the compiler no longer needs to generate defensive copies for any member access.
+
+```csharp
+using System;
+public readonly struct Point
+{
+    public int X => 42;
+    public int Y { get; }
+
+    public Point(int x, int y) { Y = y; }
+
+    public readonly double Distance => Math.Sqrt(X * X + Y * Y);
+}
+
+public class C {
+
+    public void M(in Point p) {
+
+        Console.WriteLine(p.X);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=80)
+
+#### Defensive Copies in `readonly` Fields
+
+Defensive copies also occur when accessing members of a struct stored in a `readonly` field.
+While these copies might not be visible in lowered C# code in some tools, they are clearly visible in the Intermediate Language (IL).
+In IL, the compiler emits a local variable to store the copy before the method call.
+
+```csharp
+using System;
+public struct Point
+{
+    public int X => 42;
+    public int Y { get; }
+
+    public Point(int x, int y) { Y = y; }
+
+    public double Distance => Math.Sqrt(X * X + Y * Y);
+}
+
+public class C {
+    private  Point _p;
+    public void M(in Point p) {
+
+        Console.WriteLine(_p.Distance);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=105)
+
+If the `readonly` modifier is removed from the field, or if the member being accessed is marked `readonly`, the local variable in the IL disappears, indicating that the defensive copy has been eliminated and the field is being accessed directly.
+
+---
+
+## 7. Defensive Copy Overview
+
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/defensive-copy-overview-69958861/) · 1:09
+
+### Summary
+
+Defensive copies are a mechanism used by the C# compiler to preserve the immutability of structs within read-only contexts.
+When a struct is stored in a readonly field or passed via in or ref readonly modifiers, the compiler ensures that any access to its members does not mutate the original instance.
+If the compiler cannot verify that a member is non-mutating—such as a standard property or method in a non-readonly struct—it creates a temporary defensive copy of the struct to perform the operation on.
+While this ensures correctness, it can introduce performance overhead, particularly with large structs or within tight loops.
+
+### Key concepts
+
+- **Read-only contexts**: Defensive copies are triggered in contexts where the struct is considered immutable, including `readonly` fields, `in` parameters, `ref readonly` parameters, and `ref readonly` locals.
+- **Compiler Proof**: If the compiler can prove that accessing a member cannot mutate the instance, it will not emit a defensive copy.
+- **Safe Accessors**: Accessing fields, auto-properties, and members explicitly marked with the `readonly` modifier does not trigger copies.
+- **Readonly Structs**: Declaring a struct as a `readonly struct` guarantees all members are non-mutating, allowing the compiler to avoid defensive copies for all member accesses.
+- **Performance**: Unnecessary copies of large structs can lead to performance degradation, making `readonly struct` the preferred design choice for immutable data.
+
+### Lesson notes
+
+The C# compiler prioritizes correctness when handling structs in read-only contexts.
+If the compiler can prove that a member access is non-mutating, it accesses the member directly.
+This is why accessing fields, auto-properties, or members specifically marked with the `readonly` modifier is efficient.
 
 ```csharp
 // Accessing X won't cause a copy
@@ -318,10 +705,18 @@ readonly struct Point
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/defensive-copy-overview-69958861/?t=10)
 
-Fields and auto-properties are safe because the compiler generated their access itself and knows it does nothing.
-Anything hand-written needs the `readonly` keyword to say so.
+When a struct is not marked `readonly`, the compiler must assume that any property or method call could potentially mutate the state of the struct (by modifying `this`).
+To prevent this mutation in a read-only context, the compiler creates a defensive copy and calls the member on that copy instead of the original instance.
 
-`in` and `ref readonly` are the same mechanism underneath, which the lowered form makes obvious:
+There are four primary contexts where these defensive copies occur:
+1. `readonly` fields.
+2. `in` parameters.
+3. `ref readonly` parameters.
+4. `ref readonly` locals.
+
+Under the hood, `in` and `ref readonly` parameters are implemented as `ref` parameters with additional metadata (`[In][IsReadOnly]`).
+The compiler uses this metadata to enforce safety.
+If it sees an access to a member that is not explicitly marked `readonly`, it injects the defensive copy.
 
 ```csharp
 private static void ByIn(in Point point)
@@ -352,208 +747,90 @@ Console.WriteLine(first.Distance);
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/defensive-copy-overview-69958861/?t=40)
 
-`in` is literally `ref` plus `[In][IsReadOnly]` metadata.
-`Point point2 = point;` is the injected copy, and that one line is the entire phenomenon.
+To avoid the performance implications of these copies, especially when working with large structs or in high-frequency loops, it is best practice to make structs `readonly` whenever possible.
+This makes the design intent explicit and ensures the compiler can optimize member access.
 
-This connects directly back to [chapter 3](03-value-types-vs-reference-types.md#read-only-aliases-in-and-ref-readonly), where `in` was introduced as the way to avoid copying a large struct.
-Here is the sting: **`in` on a mutable struct can reintroduce the very copy it was meant to avoid**, once per member access rather than once per call.
-For a large struct in a loop, `in` can end up slower than passing by value.
+---
 
-### 2.4 The fix: `readonly` as a promise to the compiler
+## 8. Conclusion
 
-> [How to Avoid Defensive Copies for Structs?](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/)
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958862/) · 0:41
 
-The lesson walks a single example through progressively stronger guarantees.
-The snippets are scratch code from a decompiler playground rather than production shapes, so read them for the modifier that changes rather than for the constructors.
+### Summary
 
-**Start**: pass by value, no copy issue, no `in` benefit either.
+This lesson concludes the exploration of value semantics in C# structs, highlighting the complexities that arise when dealing with mutable types.
+While immutable structs (especially those defined as readonly struct or with readonly members) are straightforward, mutable structs are prone to accidental "copy-mutation" bugs.
+These occur when a developer attempts to modify a struct instance that has been copied—either through boxing, property accessors, indexers, or compiler-generated defensive copies designed to protect readonly fields and contexts.
+
+### Key concepts
+
+- Value vs. reference semantics in mutation.
+- Boxing as a source of hidden copies.
+- Defensive copies in `readonly` contexts.
+- The impact of property getters and indexers on struct copies.
+- `readonly struct` and `readonly` members as tools for performance and correctness.
+
+### Lesson notes
+
+Value semantics in C# can be more complex than they initially appear.
+While immutable structs—particularly those defined as `readonly struct` or containing `readonly` members—behave predictably, mutable structs introduce significant risks.
+The primary danger is accidentally mutating a copy of a struct rather than the intended instance.
+
+Copies occur in several common scenarios, including boxing allocations, getting a struct instance from a property getter or an indexer, or because the compiler injects a defensive copy to preserve immutability invariants.
+
+#### Boxing and Indexer Copies
+
+Converting a struct to an interface type creates a boxed copy on the heap.
+Any mutations performed through the interface reference affect the boxed copy, not the original value.
+Similarly, accessing a struct through a standard property getter or a `List<T>` indexer returns a copy of the struct by value.
+In contrast, arrays and `ref`-returning indexers allow direct mutation of the stored instance.
 
 ```csharp
-public struct Point
+// Boxing: mutation on a copy
+var counter = new Counter();
+((IIncrementable)counter).Increment(); // Mutates a boxed copy
+Console.WriteLine(counter.Value); // Original remains 0
+
+// List indexer returns by value
+var list = new List<Counter> { new() };
+list[0].Increment(); // Mutates a temporary copy returned by the indexer
+Console.WriteLine(list[0].Value); // Original in list remains 0
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958862/?t=21)
+
+#### Defensive Copies
+
+When a mutable struct is stored in a `readonly` field or accessed in a `readonly` context (such as an `in` parameter or a `ref readonly` local), the compiler may inject a defensive copy.
+This ensures that calling a non-readonly member does not violate the `readonly` constraint of the container.
+However, this results in mutations being applied to a hidden local copy, leaving the original field unchanged.
+
+```csharp
+struct SequenceReader
 {
-    public int X { get; }
-    public int Y { get; }
-
-    public Point(int x, int y) { X = x; Y = y; }
-
-    public double Distance => Math.Sqrt(X * X + Y * Y);
+    private int _position;
+    public bool TryAdvance()
+    {
+        if (_position >= 5) return false;
+        _position++;
+        return true;
+    }
 }
 
-public class C {
+class Parser
+{
+    private readonly SequenceReader _reader; // Readonly field
 
-    public void M( Point p) {
-
-        Console.WriteLine(p.Distance);
+    public void Parse()
+    {
+        // TryAdvance is called on a defensive copy of _reader
+        bool advanced = _reader.TryAdvance();
+        // _reader.Position remains 0 because the mutation happened on a copy
     }
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=40)
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958862/?t=21)
 
-Change the signature to `M(in Point p)` and `p.Distance` starts making a defensive copy, because `Distance` is not marked `readonly`.
-
-**Step 1**: mark the member.
-
-```csharp
-public readonly double Distance => Math.Sqrt(X * X + Y * Y);
-```
-
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=55)
-
-The copy disappears for that member.
-The chapter then shows how narrow that fix is: turn `X` from an auto-property into a hand-written getter (`public int X => 42;`) and reading `p.X` brings the copy back, because a custom getter is no longer provably safe.
-
-**Step 2**: mark the type, which makes every member implicitly `readonly`.
-
-```csharp
-public readonly struct Point
-{
-    public int X => 42;
-    public int Y { get; }
-
-    public Point(int x, int y) { Y = y; }
-
-    public readonly double Distance => Math.Sqrt(X * X + Y * Y);
-}
-```
-
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/how-to-avoid-defensive-copies-for-structs-69958860/?t=80)
-
-`readonly struct` is the one that scales, since it cannot be defeated by someone later adding a member and forgetting a keyword.
-
-**How to confirm it worked**: the chapter is explicit that lowered C# in some tools does not show these copies, and that you have to look at **IL**.
-The tell is a local variable appearing before the call.
-Remove `readonly` from the field, or add `readonly` to the member, and the local vanishes.
-
-The chapter's recommendation, which is also just good design: prefer `readonly struct` by default, and treat a mutable struct as a deliberate choice you can justify.
-
----
-
-## Verified on this machine
-
-Every claim in this chapter is observable, so all of them were run on **.NET 10.0.11, Windows 11 x64**.
-Nothing was added to the repo; this was a throwaway console app.
-
-```
-Runtime: .NET 10.0.11
-=== 1. Boxing ===
-counter.Value = 0
-=== 2. Indexers ===
-List element after Increment: 0
-Array element after Increment: 1
-=== 3. Readonly field trap ===
-  Advanced: True, Position: 0
-  Advanced: True, Position: 0
-  Advanced: True, Position: 0
-=== 4. Non-readonly field, same struct ===
-  Advanced: True, Position: 1
-  Advanced: True, Position: 2
-  Advanced: True, Position: 3
-=== 5. Property getter that reassigns this ===
-  X: 3
-  Y: 4
-  Distance: 0
-  after reading Distance -> X: 3, Y: 4
-=== 6. in parameter ===
-  Distance seen inside: 0
-after ByIn, p = (3, 4)
-```
-
-Every course claim reproduced exactly.
-Three observations are worth keeping:
-
-**Section 4 is a control the chapter does not show, and it is the clearest proof available.**
-It is the identical `Parser` class with one character changed: `readonly` removed from the field.
-The reader then advances 1, 2, 3 as anyone would expect.
-Same struct, same loop, same call, and the only variable is the `readonly` keyword, which pins the cause precisely.
-
-**Section 5 shows the defensive copy doing its job rather than causing a bug.**
-`Distance` reassigns `this` to `(1, 2)` and returns 0, yet `_point` is still `(3, 4)` afterwards.
-Without the copy, a property getter would have silently overwritten a `readonly` field.
-
-**None of this produces a single compiler warning.**
-The probe built with `0 Warning(s)` while containing all six traps.
-
-> **Aside: there is an analyzer, and it is not on by default.**
-> **IDE0251, "Member can be made `readonly`"**, flags exactly the members whose omission causes defensive copies, and **IDE0250** does the same for whole structs.
-> Enabling `dotnet_diagnostic.IDE0251.severity = warning` in the probe immediately flagged `public int Position => _position;` in `SequenceReader`.
-> This repo already sets `EnforceCodeStyleInBuild=true` in `src/Directory.Build.props` and enables IDE0005 and IDE0161 in `src/.editorconfig`, so adding these two rules would cost one line each and would catch the whole category at build time.
-> That is the same move the previous chapter made with [CA2214](04-mastering-classes.md#14-letting-the-analyzer-catch-it): stop relying on remembering, and let the build fail.
-
----
-
-## Common misconceptions
-
-**"`readonly` on a struct field just stops me reassigning it."**
-That is what it means for a class field.
-For a struct field it protects the **data**, which is why the compiler has to copy defensively to keep the promise.
-
-**"`readonly` makes the code safer."**
-Here it is what makes the code wrong.
-The reader in [2.1](#21-the-trap-a-reader-that-never-advances) works fine until someone adds `readonly` to the field, and deleting the keyword fixes it.
-The real fix is `readonly` on the struct instead, but the immediate lesson is that the modifier is not free.
-
-**"`in` is a free optimization for large structs."**
-Only for `readonly struct` or members marked `readonly`.
-On a mutable struct, `in` triggers a defensive copy **per member access**, which can be worse than passing by value.
-
-**"`list[0]` and `array[0]` are the same thing."**
-One is a property returning a copy, the other is a reference to storage.
-For structs they behave oppositely, and only the assignment form is caught at compile time.
-
-**"A property getter can't change anything."**
-On a non-`readonly` struct member, `this = new Point(1, 2);` inside a getter compiles.
-This is precisely why the compiler cannot assume getters are safe.
-
----
-
-## Self-test
-
-1. `((IIncrementable)counter).Increment()` runs twice and `counter.Value` is still 0. How many heap allocations happened, and how many distinct objects were incremented?
-2. `list[0].Increment()` compiles but `list[0].Value = 5` does not. Explain the asymmetry, and name the error.
-3. Why does `array[0].Increment()` work when the `List<T>` version does not?
-4. `TryAdvance()` returns `true` three times while `Position` stays 0. Where did the increments go?
-5. Give the one-character change to `Parser` that makes the reader advance correctly, and say why that is still not the fix you should ship.
-6. Name the four contexts where a defensive copy can be emitted.
-7. State the compiler's rule for when it does *not* emit a copy, and list the three kinds of member access that satisfy it.
-8. You have a 64-byte mutable struct and pass it with `in` to a method that reads three of its properties. How many copies, and how does that compare to passing by value?
-9. Where do you have to look to confirm a defensive copy is gone, and what exactly disappears?
-
-<details>
-<summary>Answer key</summary>
-
-1. Two allocations. Each cast to the interface boxes independently, so two separate heap objects were each incremented once and then discarded. The original was never touched.
-2. `list[0]` returns a value, not a variable. Assigning to it is caught as **CS1612, "Cannot modify the return value ... because it is not a variable"**. Calling a mutating method on the same temporary is legal C# and produces no diagnostic, so the compiler blocks the obvious form and permits the subtle one.
-3. Array element access has special CLR support and yields a reference to the element's storage location, while `List<T>`'s indexer is an ordinary property returning `T` by value.
-4. Into three separate defensive copies. `_reader` is a `readonly` field, so each call copied it into a hidden local, incremented the copy, and discarded it.
-5. Delete `readonly` from the `_reader` field. Not shippable as the real fix, because it gives up the immutability guarantee to work around a symptom; making `SequenceReader` a `readonly struct` is not possible here since it genuinely mutates, so the honest options are a mutable field or a redesign that returns a new reader.
-6. `readonly` fields, `in` parameters, `ref readonly` parameters, `ref readonly` locals.
-7. The compiler emits a copy unless it can prove the access cannot mutate. Proof comes from: fields, auto-properties, and any member explicitly marked `readonly` (including everything in a `readonly struct`).
-8. Three copies of 64 bytes each, one per property access, versus a single 64-byte copy for pass-by-value. `in` is the slower option here, which is the opposite of why you would have reached for it.
-9. In the IL, not the lowered C#, which some tools do not show it in. What disappears is the local variable holding the copy, emitted just before the call.
-
-</details>
-
----
-
-## No companion project
-
-Skipped by request.
-
-This chapter would ordinarily earn one, since every claim is a short program with observable output and the `readonly` / non-`readonly` pair is a real experiment rather than a demo.
-The verification above was run as a throwaway console app outside the repo, so nothing was added under `src/`.
-
-If it gets built later, the pieces worth having are the six probes reproduced in [Verified on this machine](#verified-on-this-machine), plus an IL view (`ildasm`, ILSpy, or sharplab.io) of `Parse` with and without `readonly` on the field, since the injected local is the thing the notes can only describe.
-
----
-
-## Threads into later chapters
-
-| Deferred here | Picked up in |
-| --- | --- |
-| Default struct equality and its performance cost | Mastering Records |
-| `record struct` as the readable way to get an immutable value type | Mastering Records |
-| Boxing as an allocation source in iteration | Mastering LINQ (the cost of boxed iterators) |
-| Mutable structs used deliberately, as enumerators do | Mastering LINQ (iterator as a mutable struct) |
-
-The conclusion lesson hands off explicitly: next is the default equality behaviour of structs and what it costs.
+To avoid these issues, developers should prefer immutable structs or explicitly mark members as `readonly` to signal to the compiler that no defensive copy is required.
+The next section will cover the default equality behavior of structs and the associated performance implications.
