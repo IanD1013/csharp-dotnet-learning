@@ -19,4 +19,8 @@
     <Project Path="src/mastering-csharp/07-mastering-tuples-and-union-types/MasteringCSharp.TuplesAndUnions.Benchmarks/MasteringCSharp.TuplesAndUnions.Benchmarks.csproj" />
     <Project Path="src/mastering-csharp/07-mastering-tuples-and-union-types/MasteringCSharp.TuplesAndUnions.Demos/MasteringCSharp.TuplesAndUnions.Demos.csproj" />
   </Folder>
+  <Folder Name="/src/mastering-csharp/08-mastering-argument-validation/">
+    <Project Path="src/mastering-csharp/08-mastering-argument-validation/MasteringCSharp.ArgumentValidation.Benchmarks/MasteringCSharp.ArgumentValidation.Benchmarks.csproj" />
+    <Project Path="src/mastering-csharp/08-mastering-argument-validation/MasteringCSharp.ArgumentValidation.Demos/MasteringCSharp.ArgumentValidation.Demos.csproj" />
+  </Folder>
 </Solution>

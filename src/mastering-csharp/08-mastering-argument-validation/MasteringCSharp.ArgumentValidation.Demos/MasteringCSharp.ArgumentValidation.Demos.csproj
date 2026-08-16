@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Nullable, ImplicitUsings, LangVersion and the analyzer settings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <!--
+    This is the one chapter where multi-targeting IS the lesson: half of it is about
+    validation code that has to behave the same on a BCL that predates nullable
+    reference types. Directory.Build.props sets the singular <TargetFramework>, and the
+    SDK only cross-targets when that property is empty, so it has to be cleared here.
+  -->
+  <PropertyGroup>
+    <TargetFramework></TargetFramework>
+    <TargetFrameworks>net10.0;net48</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      PolySharp source-generates [NotNull], [DoesNotReturn] and [CallerArgumentExpression]
+      for net48, whose BCL has none of them. Lesson: "Issues With Nullable Strings in
+      .NET Framework". PrivateAssets="all" keeps it out of anything referencing this project.
+    -->
+    <PackageReference Include="PolySharp" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>

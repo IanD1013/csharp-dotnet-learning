@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- Nullable, ImplicitUsings, LangVersion and the analyzer settings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+  </PropertyGroup>
+
+  <!--
+    The chapter's boxing benchmark compares the JIT on two runtimes, so both have to be
+    built. Directory.Build.props sets the singular <TargetFramework>; the SDK only
+    cross-targets when that property is empty, so it has to be cleared here.
+    The lesson recommends listing the modern TFM first.
+  -->
+  <PropertyGroup>
+    <TargetFramework></TargetFramework>
+    <TargetFrameworks>net10.0;net48</TargetFrameworks>
+  </PropertyGroup>
+
+  <!--
+    BenchmarkDotNet rebuilds this csproj with its own /p:OutDir, /p:OutputPath and
+    /p:ArtifactsPath to produce the per-job boilerplate. Combined with the repo-wide
+    UseArtifactsOutput that makes the net48 leg look for
+    App.exe.withSupportedRuntime.config in a directory nothing wrote it to, and the
+    build dies with MSB3030 before a single .NET Framework result is produced.
+    That config file only pins a supportedRuntime version the app already runs on,
+    so skipping it costs nothing here.
+    Not in the course - found while getting the chapter's benchmark to run here.
+  -->
+  <PropertyGroup Condition="'$(TargetFramework)' == 'net48'">
+    <GenerateSupportedRuntime>false</GenerateSupportedRuntime>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+    <!-- [NotNull], [DoesNotReturn] and [CallerArgumentExpression] polyfills for net48. -->
+    <PackageReference Include="PolySharp" PrivateAssets="all" />
+  </ItemGroup>
+
+</Project>
