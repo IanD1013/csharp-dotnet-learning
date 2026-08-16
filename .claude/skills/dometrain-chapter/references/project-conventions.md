@@ -97,8 +97,9 @@ Give a demo project a dispatcher so sections can be run alone:
 dotnet run -c Release -- copy
 ```
 
-Sections are static classes, one per concept, mirroring the notes' section names so the
-two can be read side by side. Print explanatory lines, not bare values: output like
+Sections are static classes, one per lesson, named after the lesson they demonstrate so
+the demo and the notes can be read side by side. Print explanatory lines, not bare
+values: output like
 
 ```
 struct: v1 = (3,4)  v2 = (4,5)  <- v1 never moved
@@ -126,5 +127,6 @@ dotnet build -c Release          # expect zero warnings
 dotnet run -c Release            # every entry point, not just one
 ```
 
-Paste the real output into the notes. Output you did not actually see is the one thing
+Paste the real output into the notes' `Running the demo` section, which is the only part
+of the file that is not course content. Output you did not actually see is the one thing
 in this workflow that is worse than no output at all.
