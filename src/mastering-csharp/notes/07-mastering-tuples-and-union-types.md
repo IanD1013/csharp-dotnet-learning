@@ -1,113 +1,100 @@
 # Mastering Tuples and Union Types
 
 > Course: [Mastering: C#](https://dometrain.com/course/mastering-csharp/) · Chapter 7
-> 10 lessons · ~17 minutes
-> Source: Dometrain. Every section links back to the lesson it came from.
-> Companion project: [`src/mastering-csharp/07-mastering-tuples-and-union-types`](../07-mastering-tuples-and-union-types). See [Running the demo](#running-the-demo).
-> Picks up the `readonly record struct` thread deferred at the end of [Mastering Records](06-mastering-records.md#threads-into-later-chapters).
-
----
-
-## The mental model
-
-This chapter looks like two unrelated topics stapled together, and it is not.
-Both halves are about **how you combine types**, and the chapter's own framing comes from the [Why Do We Need Them?](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/) lesson:
-
-> In C#, standard types such as classes, structs, records, and tuples are considered "product types". This means they combine multiple properties together.
-> However, many programming scenarios require an exclusive set of properties where a value can be one thing or another, but not both.
-
-A `Point` has an `X` **and** a `Y`.
-A `Result` is a success **or** an error.
-C# has always had a rich vocabulary for the first kind and no vocabulary at all for the second.
-
-The other axis is the one the [Knowing the Limits](https://dometrain.com/take/course/mastering-csharp-3256129/knowing-the-limits-when-to-move-to-actual-types-69958873/) lesson is built on: whether a type has a **name** the compiler treats as meaningful, or only a **shape**.
-
-Putting both axes together gives the map the chapter is filling in:
-
-| | product type ("and") | sum type ("or") |
-| --- | --- | --- |
-| **structural** - identity is the shape | tuple: `(string, int)` | C# has none |
-| **nominal** - identity is the name | `class` / `struct` / `record` | `union` (C# 15) |
-
-Read that way the chapter has one argument, made twice.
-
-**Lessons 2-3 sell the top-left box.** A tuple gives you grouping, value equality, hashing, deconstruction and pattern matching for the cost of a pair of parentheses, because its identity is purely its shape.
-
-**Lesson 4 is the pivot**, and it is the most reusable idea in the chapter: structural identity is exactly what makes a tuple cheap, and exactly what makes it unable to carry meaning.
-An extension method written for `(string host, int port)` lands on every `(string, int)` in the assembly, because as far as the compiler is concerned there is only one such type.
-The moment a shape needs behaviour, it needs a name.
-
-**Lessons 5-9 fill in the bottom-right box**, and the same rule holds there: unions are nominal only.
-There is no anonymous `int | string`, because a union that could not be named could not be given a `Describe` method either.
-
-If one thing survives from this chapter, make it the pivot: **a tuple is a shape, and the moment you want to attach meaning to that shape, you need a type.**
-
-> **Aside.** The table above is reconstructed, not quoted. The chapter states the product/sum axis (lesson 5) and the structural/nominal axis (lesson 4) separately and never crosses them.
+> 10 lessons · ~16:58
+> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
 
 ---
 
 ## Lesson index
 
-| # | Lesson | Length | Covered in |
+| # | Lesson | Length | Section |
 | --- | --- | --- | --- |
-| 1 | [Overview](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/) | 0:39 | [The mental model](#the-mental-model) |
-| 2 | [System.Tuple vs. System.ValueTuple](https://dometrain.com/take/course/mastering-csharp-3256129/system-tuple-vs-system-valuetuple-69958871/) | 1:15 | [1.1](#11-two-tuples-and-only-one-of-them-is-the-language-feature) |
-| 3 | [Tuples in C#](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/) | 3:01 | [1.2](#12-the-names-are-not-real) · [1.3](#13-what-comes-for-free) · [1.4](#14-where-tuples-earn-their-place) |
-| 4 | [Knowing the Limits: When to Move to Actual Types](https://dometrain.com/take/course/mastering-csharp-3256129/knowing-the-limits-when-to-move-to-actual-types-69958873/) | 0:48 | [2.1](#21-the-extension-method-that-goes-everywhere) · [2.2](#22-the-fix-give-the-shape-a-name) |
-| 5 | [Union Types: Why Do We Need Them?](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/) | 1:20 | [3.1](#31-product-types-and-sum-types) |
-| 6 | [Union Types: the Basics](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/) | 1:31 | [4.1](#41-the-syntax) · [4.2](#42-exhaustiveness-and-the-third-case) |
-| 7 | [Union Types Under the Hood](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/) | 1:21 | [4.3](#43-one-object-field-and-what-it-costs) |
-| 8 | [Union Types: the Deep Dive](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/) | 4:12 | [5.1](#51-no-runtime-support-required) · [5.2](#52-the-manual-union-that-does-not-box) · [5.3](#53-separating-zero-from-empty) · [5.4](#54-class-based-unions) |
-| 9 | [UnionTypes - Recap](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/) | 1:23 | [4.4](#44-what-you-do-not-get) |
-| 10 | [Conclusion](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958879/) | 1:28 | [Module wrap-up](#module-wrap-up) |
-
-Every lesson in this chapter has a document; nothing was skipped.
-
-Note that lesson 10 is the **module** conclusion, not the chapter's.
-It reaches back over classes, structs, records, tuples and unions together, which is why it is summarised separately at the end rather than folded into a section.
+| 1 | [Overview](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/) | 0:39 | [↓](#1-overview) |
+| 2 | [System.Tuple vs. System.ValueTuple](https://dometrain.com/take/course/mastering-csharp-3256129/system-tuple-vs-system-valuetuple-69958871/) | 1:15 | [↓](#2-systemtuple-vs-systemvaluetuple) |
+| 3 | [Tuples in C#](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/) | 3:01 | [↓](#3-tuples-in-c) |
+| 4 | [Knowing the Limits: When to Move to Actual Types](https://dometrain.com/take/course/mastering-csharp-3256129/knowing-the-limits-when-to-move-to-actual-types-69958873/) | 0:48 | [↓](#4-knowing-the-limits-when-to-move-to-actual-types) |
+| 5 | [Union Types: Why Do We Need Them?](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/) | 1:20 | [↓](#5-union-types-why-do-we-need-them) |
+| 6 | [Union Types: the Basics](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/) | 1:31 | [↓](#6-union-types-the-basics) |
+| 7 | [Union Types Under the Hood](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/) | 1:21 | [↓](#7-union-types-under-the-hood) |
+| 8 | [Union Types: the Deep Dive](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/) | 4:12 | [↓](#8-union-types-the-deep-dive) |
+| 9 | [UnionTypes - Recap](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/) | 1:23 | [↓](#9-uniontypes---recap) |
+| 10 | [Conclusion](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958879/) | 1:28 | [↓](#10-conclusion) |
 
 ---
 
-## Part 1 · Tuples
+## 1. Overview
 
-### 1.1 Two tuples, and only one of them is the language feature
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/) · 0:39
 
-> [System.Tuple vs. System.ValueTuple](https://dometrain.com/take/course/mastering-csharp-3256129/system-tuple-vs-system-valuetuple-69958871/)
+### Summary
 
-C# ships two unrelated implementations of the same idea, separated by seven years and a storage model.
+This lesson provides an overview of advanced type modeling in C#, focusing on the evolution of tuples and the introduction of union types.
+It contrasts the heap-allocated System.Tuple with the stack-allocated System.ValueTuple, demonstrating how tuple syntax enables structural equality, deconstruction, and pattern matching.
+The lesson also addresses the limitations of tuples, suggesting when to transition to record types for better domain modeling, and previews the upcoming C# 15 union types, including their syntax and underlying implementation as object-backed structs.
+
+### Key concepts
+
+*   **System.Tuple vs. System.ValueTuple**: Understanding the difference between reference-type tuples and value-type tuples.
+*   **Tuple Semantics**: Leveraging name inference, mutability, and structural equality.
+*   **Deconstruction and Patterns**: Using tuples for expressive code through deconstruction and switch expressions.
+*   **Record Transition**: Identifying when tuples become too complex and should be replaced by record types.
+*   **Union Types (C# 15)**: A preview of native union types for modeling mutually exclusive data states.
+*   **Union Implementation**: How the compiler handles union types using the `[Union]` attribute and object-backed storage.
+
+### Lesson notes
+
+#### Tuples and ValueTuples
+
+C# supports two primary tuple implementations.
+`System.Tuple` is a reference type that is heap-allocated and lacks the modern syntax features found in newer versions of the language.
+In contrast, `System.ValueTuple` is a value type that supports named elements and is the target for modern C# tuple syntax.
 
 ```csharp
+// === System.Tuple vs System.ValueTuple ===
+
+Console.WriteLine("=== Tuple vs ValueTuple ===");
+
 // System.Tuple: heap allocated. No extra semantics
 Tuple<string, int> refTuple = Tuple.Create("api.example.com", 443);
 // System.ValueTuple: value type. Named elements for extra clarity
 (string host, int port) valTuple = ("api.example.com", 443);
+
+Console.WriteLine($"Tuple<string,int>:  {refTuple}         (reference type)");
+Console.WriteLine($"ValueTuple:         {valTuple}         (value type)");
+Console.WriteLine($"ValueTuple type:    {valTuple.GetType().Name}");
+
+Console.WriteLine();
+Console.WriteLine("=== Named tuples ===");
+var endpoint = (host: "api.example.com", port: 443);
+Console.WriteLine($"endpoint.host = {endpoint.host}");
+Console.WriteLine($"endpoint.port = {endpoint.port}");
+
+Console.WriteLine();
+Console.WriteLine("=== Names are compile-time only ===");
+(string host, int port) parsed = endpoint;
+(string server, int number) renamed = parsed;
+
+
+Console.WriteLine($"renamed.server = {renamed.server}");
+Console.WriteLine($"renamed.number = {renamed.number}");
+Console.WriteLine($"Runtime type:    {renamed.GetType().Name}");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/system-tuple-vs-system-valuetuple-69958871/?t=10)
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/?t=4)
 
-| | `System.Tuple` | `System.ValueTuple` |
-| --- | --- | --- |
-| Introduced | .NET Framework 4.0 | C# 7.0 |
-| Kind | class | struct |
-| Storage | heap | inline, no allocation |
-| Element access | `Item1`, `Item2` only | named elements |
-| Language syntax | none | literals, deconstruction, patterns |
+#### Tuple Features and Deconstruction
 
-The lesson's verdict is unambiguous: `System.Tuple` "should generally be avoided in modern applications".
-
-The important part is **why the second one exists at all**.
-Everything in the rest of this chapter - named elements, deconstruction, tuple patterns, `==` - is language support layered on `ValueTuple`, and none of it works on `System.Tuple`.
-The old type is not a slower version of the new one; it is a library type that the language never learned to speak.
-
-The storage claim is measured in [Measured on this machine](#tuple-storage-and-what-it-costs), including one place where it no longer holds literally on .NET 10.
-
-### 1.2 The names are not real
-
-> [Tuples in C#](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/)
-
-This is the lesson's central point and the one most likely to bite.
+Tuples provide several features to make code more readable, including name inference from variables and support for deconstruction.
+While tuples allow for naming elements, these names are erased at compile time and do not affect the runtime type identity.
+Tuples also provide structural equality and member-based hashing out of the box.
 
 ```csharp
+using System;
+using EndpointAlias = (string host, int port);
+
+#nullable disable
+
 #region Name inference and mutability
 
 var host = "api.example.com";
@@ -131,58 +118,6 @@ Console.WriteLine(endpoint.GetType());
 var parsedEndpoint = TupleMetadataDemo.ParseEndpoint("api.example.com:444");
 Console.WriteLine($"{parsedEndpoint.host}:{parsedEndpoint.port}");
 #endregion
-```
-
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=10)
-
-Three separate facts are packed into that block.
-
-**Names can be inferred.** `(name: host, port)` names the first element explicitly and lets the second take the variable's name.
-
-**Tuples are mutable.** A `ValueTuple` is a struct of public fields, so `endpoint.port++` compiles.
-There is no `readonly` tuple, which is one of the quieter reasons to move to a `readonly record struct`.
-
-**Names are erased.** The runtime type is `ValueTuple<string, int>` and nothing else.
-That is why the assignment across different element names compiles, and why `Item1` is always available.
-
-The names are not thrown away entirely, though, and the distinction matters at assembly boundaries:
-
-```csharp
-internal static class TupleMetadataDemo
-{
-    public static (string host, int port) ParseEndpoint(string endpoint)
-    {
-        var separatorIndex = endpoint.LastIndexOf(':');
-
-        return (
-            endpoint.Substring(0, separatorIndex),
-            int.Parse(endpoint.Substring(separatorIndex + 1)));
-    }
-
-    public static GlobalEndpoint ParseGlobalEndpoint(string endpoint)
-    {
-        var separatorIndex = endpoint.LastIndexOf(':');
-        return (
-            endpoint.Substring(0, separatorIndex),
-            int.Parse(endpoint.Substring(separatorIndex + 1)));
-    }
-}
-```
-
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=100)
-
-The compiler emits a `TupleElementNamesAttribute` on the signature, which is how a consumer in another assembly still sees `host` and `port`.
-So the names live in **metadata**, not in the type.
-The demo reads that attribute back with reflection, because the difference between "erased" and "erased from the type but kept in metadata" is the kind of thing that is much easier to believe once you have seen the string come out:
-
-```
-TupleElementNamesAttribute   = [host, port]
-```
-
-Aliases are the other way to make a shape readable:
-
-```csharp
-using EndpointAlias = (string host, int port);
 
 #region Aliases
 
@@ -191,22 +126,7 @@ EndpointAlias e = ("host", port);
 // GlobalEndpoint is visible in the entire assembly.
 GlobalEndpoint e2 = ("host", port);
 #endregion
-```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=70)
-
-A plain `using` alias is file-scoped; `global using` covers the assembly.
-The lesson adds the limit that makes aliases a readability tool rather than a modelling one: **the alias name is not preserved in metadata**.
-Element names survive to a consumer, the alias does not.
-An alias renames a shape for you; it does not create a type, and the demo confirms both methods above have the identical signature at runtime.
-
-### 1.3 What comes for free
-
-> [Tuples in C#](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/)
-
-Because a tuple's identity is its shape, the compiler can generate everything that follows from the shape.
-
-```csharp
 #region Tuple equality, GetHashCode, and ToString
 
 var p1 = (x: 1, y: 2);
@@ -242,41 +162,277 @@ Console.WriteLine(description);
 #endregion
 ```
 
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/?t=8)
+
+#### Transitioning to Records
+
+While tuples are useful for local data structures, they have limitations as domain types.
+For instance, extension methods defined for a specific tuple shape (e.g., `(string, int)`) will appear on all tuples with that same signature, regardless of their semantic meaning.
+In such cases, using a `record struct` or `record` provides better encapsulation and clearer `ToString` behavior.
+
+```csharp
+using System;
+
+var endpoint = (host: "api.example.com", port: 443);
+Console.WriteLine($"Tuple ToString: {endpoint}");
+Console.WriteLine($"Extension method: {endpoint.ToEndpointString()}");
+
+var retryPolicy = (name: "attempts", count: 3);
+Console.WriteLine($"Same extension on another tuple: {retryPolicy.ToEndpointString()}");
+
+var typedEndpoint = new Endpoint("api.example.com", 443);
+Console.WriteLine($"Record struct ToString: {typedEndpoint}");
+
+internal static class EndpointTupleExtensions
+{
+    // Extending every tuple with string and int
+    public static string ToEndpointString(this (string host, int port) endpoint) =>
+        $"{endpoint.host}:{endpoint.port}";
+}
+
+// Defining a lightweight type
+internal readonly record struct Endpoint(string Host, int Port)
+{
+    public override string ToString() =>
+        $"{Host}:{Port}";
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/?t=13)
+
+#### Union Types (C# 15 Preview)
+
+Union types allow a single variable to hold one of several different types.
+This is particularly useful for modeling results or lookup keys that could be an ID (integer) or a name (string).
+The syntax uses the `union` keyword, and the compiler handles the logic for switching between the possible types.
+
+```csharp
+// LookupKey = int Id | string Name
+public readonly union LookupKey(int Id, string Name)
+{
+    public string Describe() => this switch
+    {
+        int id => $"id {id}",
+        string name => $"name {name}",
+        null => "uninitialized",
+    };
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/?t=17)
+
+#### Compilation and Under the Hood
+
+Under the hood, the `union` declaration generates a struct decorated with a `[Union]` attribute.
+It typically uses an `object? Value` field to store the active case, which means value types like `int` may be boxed when stored in the union.
+Pattern matching is used to recover the active case safely.
+
+```csharp
+using System.Runtime.CompilerServices;
+
+// Readable version of the shape generated for:
+// public union LookupKey(int Id, string Name)
+[Union]
+public readonly struct UnionDecompiled
+{
+    public object? Value { get; }
+
+    // Case constructors for creating an instance from 'int'
+    public UnionDecompiled(int value) => Value = value;
+
+    // Case constructors for creating an instance from 'string'
+    public UnionDecompiled(string value) => Value = value;
+
+    public string Describe()
+    {
+        object? value = Value;
+
+        if (value is int id)
+        {
+            return $"id {id}";
+        }
+
+        if (value is string name)
+        {
+            return $"name {name}";
+        }
+
+        if (value is null)
+        {
+            return "uninitialized";
+        }
+
+        throw new SwitchExpressionException(this);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958870/?t=34)
+
+---
+
+## 2. System.Tuple vs. System.ValueTuple
+
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/system-tuple-vs-system-valuetuple-69958871/) · 1:15
+
+### Summary
+
+C# provides two distinct ways to group related data without defining a named type: the legacy System.Tuple and the modern System.ValueTuple.
+System.Tuple is a heap-allocated reference type introduced in .NET 4.0 that lacks language-level syntax and forces the use of generic element names like Item1, which can hinder code readability.
+In contrast, System.ValueTuple, introduced in C# 7.0, is a stack-allocated struct that supports concise syntax, named elements, and deconstruction.
+Because it avoids heap allocations and offers superior language integration, System.ValueTuple is the preferred choice for modern C# development.
+
+### Key concepts
+
+- `System.Tuple` is a reference type (class) introduced in .NET 4.0.
+- `System.ValueTuple` is a value type (struct) introduced in C# 7.0.
+- `System.Tuple` requires heap allocation and uses fixed element names (`Item1`, `Item2`).
+- `System.ValueTuple` provides direct language support, including concise syntax and named elements.
+- `System.ValueTuple` is the preferred choice for modern C# development due to performance and readability.
+
+### Lesson notes
+
+Tuples are a fundamental concept in many programming languages, used to group related data elements without the overhead of defining a formal named type.
+A typical example is grouping a host string and a port integer for network operations.
+
+C# offers two implementations for tuples.
+The first is `System.Tuple`, introduced in .NET Framework 4.0.
+The second is `System.ValueTuple`, which became available in C# 7.0.
+
+#### System.Tuple
+
+`System.Tuple` is a reference type (a class).
+Consequently, creating a tuple instance results in a heap allocation, which can be a performance consideration in high-throughput applications.
+Furthermore, `System.Tuple` lacks integrated language support.
+Elements are not nameable and must be accessed via the properties `Item1`, `Item2`, and so on.
+This limitation often makes code harder to read and maintain.
+For these reasons, `System.Tuple` should generally be avoided in modern applications.
+
+#### System.ValueTuple
+
+`System.ValueTuple` is a value type (a struct), meaning it is typically stack-allocated and does not incur the garbage collection overhead of heap allocations.
+It is the modern standard for tuples in C# and features extensive language support.
+This support allows for a concise syntax, the ability to name elements for better clarity, and the use of deconstruction and pattern matching.
+
+```csharp
+// System.Tuple: heap allocated. No extra semantics
+Tuple<string, int> refTuple = Tuple.Create("api.example.com", 443);
+// System.ValueTuple: value type. Named elements for extra clarity
+(string host, int port) valTuple = ("api.example.com", 443);
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/system-tuple-vs-system-valuetuple-69958871/?t=10)
+
+When used locally, `System.ValueTuple` significantly improves code readability and maintainability.
+It allows developers to group data on the fly while maintaining the expressiveness of named properties, which can then be deconstructed or used within pattern matching expressions.
+
+---
+
+## 3. Tuples in C#
+
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/) · 3:01
+
+### Summary
+
+C# tuples provide a lightweight way to group multiple data elements into a single structure.
+They support name inference, are mutable by default, and their identity is defined by the types and order of elements rather than their names.
+While names are erased at runtime, the compiler uses metadata attributes to preserve them for development and public APIs.
+Tuples are particularly useful for composite dictionary keys, variable swapping, and simplifying boilerplate in equality and hash code implementations.
+
+### Key concepts
+
+- **Name Inference**: The compiler can automatically assign tuple element names based on the variable names used to initialize them.
+- **Mutability**: Tuples in C# (ValueTuple) are mutable, allowing elements to be modified after initialization.
+- **Type Identity**: A tuple's type is determined by the types and order of its elements; element names are not part of the formal type signature.
+- **Metadata Preservation**: The `TupleElementNamesAttribute` allows the compiler to persist element names in assembly metadata for use across assembly boundaries.
+- **Aliasing**: Tuples can be aliased locally with `using` or globally with `global using` to improve code readability.
+- **Value-based Equality**: Tuples implement value-based equality, making them ideal for composite keys in collections.
+
+### Lesson notes
+
+Tuples allow you to combine multiple variables into a single unit.
+You can optionally provide names for these elements; otherwise, the compiler can infer names automatically from the variable names used during construction.
+Because tuples are just combinations of variables, they are mutable, allowing you to use increment operators or assign new values to individual elements.
+
+```csharp
+#region Name inference and mutability
+
+var host = "api.example.com";
+var port = 443;
+// Names could be inferred from variables
+var endpoint = (name: host, port);
+
+// Tuples are mutable
+endpoint.port++;
+endpoint.name = string.Empty;
+
+// Names are not part of the type
+(string addr, int portNum) = endpoint;
+// The names are erased at compile time
+string server = endpoint.Item1;
+
+// System.ValueTuple`2[System.String,System.Int32]
+Console.WriteLine(endpoint.GetType());
+
+// The compiler emits metadata to track the names of tuple elements
+var parsedEndpoint = TupleMetadataDemo.ParseEndpoint("api.example.com:444");
+Console.WriteLine($"{parsedEndpoint.host}:{parsedEndpoint.port}");
+#endregion
+```
+
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=10)
 
-Equality is element-wise and, consistently with everything else, **ignores names**: `(x: 1, y: 2) == (a: 1, b: 2)` is `true`.
-`ToString` prints positions, not names.
+An important distinction in C# is that tuple element names are not part of the underlying type.
+You can assign a tuple to another tuple with different element names as long as the types and order match.
+At runtime, names are erased, and elements are accessed via built-in names like `Item1` or `Item2`.
+However, to maintain readability, you should use descriptive element names.
 
-This is worth contrasting with [chapter 6's struct-equality disaster](06-mastering-records.md#42-the-cause-blittable-vs-non-blittable).
-A hand-written `readonly struct` holding a `string` gets a default `GetHashCode` that uses the first field only, which quietly destroys `HashSet` performance.
-A `ValueTuple` of exactly the same fields hashes **all** of them, because `ValueTuple<T1, T2>` overrides `GetHashCode` itself rather than inheriting the runtime fallback.
+When a tuple is defined in another assembly, the compiler knows the element names because it emits a `TupleElementNamesAttribute`.
+This attribute persists in the assembly metadata, allowing the consumer to see the names used in the return value.
 
-The chapter does not make this comparison, and it is load-bearing for [1.4](#14-where-tuples-earn-their-place), so the demo runs it as a control:
+```csharp
+internal static class TupleMetadataDemo
+{
+    public static (string host, int port) ParseEndpoint(string endpoint)
+    {
+        var separatorIndex = endpoint.LastIndexOf(':');
 
+        return (
+            endpoint.Substring(0, separatorIndex),
+            int.Parse(endpoint.Substring(separatorIndex + 1)));
+    }
+
+    public static GlobalEndpoint ParseGlobalEndpoint(string endpoint)
+    {
+        var separatorIndex = endpoint.LastIndexOf(':');
+        return (
+            endpoint.Substring(0, separatorIndex),
+            int.Parse(endpoint.Substring(separatorIndex + 1)));
+    }
+}
 ```
-  ValueTuple<string, int>, first field held constant:
-    ("", 0).GetHashCode() = 1205130051
-    ("", 1).GetHashCode() = 861861700
-    ("", 2).GetHashCode() = 792527867
-  The same two fields as a plain struct with no GetHashCode of its own:
-    new NaiveEndpointStruct("", 0).GetHashCode() = -782061113
-    new NaiveEndpointStruct("", 1).GetHashCode() = -782061113
-    new NaiveEndpointStruct("", 2).GetHashCode() = -782061113
-  ValueTuple<string,int>.GetHashCode is declared by System.ValueTuple`2[System.String,System.Int32]
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=100)
+
+To avoid duplicating tuple definitions, you can use aliases.
+A local alias is visible only within the current source file, while a global alias is available throughout the entire project.
+Note that while element names are preserved across assembly boundaries via attributes, the name of the global alias itself is not preserved in the metadata of public APIs.
+
+```csharp
+using EndpointAlias = (string host, int port);
+
+#region Aliases
+
+// Local endpoint is only visible in the current file
+EndpointAlias e = ("host", port);
+// GlobalEndpoint is visible in the entire assembly.
+GlobalEndpoint e2 = ("host", port);
+#endregion
 ```
 
-Same two fields, same order, same constant first element.
-The struct collapses to one hash and the tuple does not, and the last line says why: `GetHashCode` is declared **on `ValueTuple`**, so it never reaches the runtime fallback that the struct inherits.
-The tuple was never subject to that trap, which is what makes the next section's use case safe.
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=70)
 
-As in [chapter 6](06-mastering-records.md#the-demo-output), the specific hash values are randomised per process and differ on every run.
-What is reproducible is the pattern: the tuple's five values differ from each other, the struct's five do not.
-
-### 1.4 Where tuples earn their place
-
-> [Tuples in C#](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/)
-
-**Composite keys.** The headline use, and it follows directly from all-field structural equality.
+Tuples are highly effective when used as composite keys in dictionaries or hash sets because they implement value-based equality out of the box.
 
 ```csharp
 #region Composite keys
@@ -300,7 +456,8 @@ var allowedEndpoints = new HashSet<(string Host, int Port)>
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=120)
 
-**Swapping.** The idiom, with the note that it costs nothing:
+Another common use case is swapping two variables without an explicit temporary variable.
+The compiler generates the same optimized code (using a hidden temporary variable) as the manual approach.
 
 ```csharp
 void Swap(int left, int right)
@@ -313,9 +470,9 @@ void Swap(int left, int right)
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=145)
 
-The compiler emits the same hidden temporary you would have written by hand.
-
-**As an implementation detail.** The subtlest use, and the one that generalises furthest:
+Finally, tuples can be used as an implementation detail to simplify constructors and equality logic.
+You can assign multiple properties in a single expression or implement `GetHashCode` and `Equals` by delegating to a tuple.
+This is particularly useful in environments like the full .NET Framework where `HashCode.Combine` might not be available, as tuple syntax provides a similar benefit across all versions of .NET that support tuples.
 
 ```csharp
 internal readonly struct Location : IEquatable<Location>
@@ -340,21 +497,35 @@ internal readonly struct Location : IEquatable<Location>
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/tuples-in-csharp-69958872/?t=175)
 
-Three members collapse into one tuple expression each, and the tuple never appears in the public API.
-The `GetHashCode` trick is the interesting one: it is `HashCode.Combine` for codebases that cannot use `HashCode.Combine`, which is to say .NET Framework.
-That framing recurs throughout this course, and it is the same argument that returns in [5.1](#51-no-runtime-support-required) for unions.
-
 ---
 
-## Part 2 · Where a tuple stops being enough
+## 4. Knowing the Limits: When to Move to Actual Types
 
-> [Knowing the Limits: When to Move to Actual Types](https://dometrain.com/take/course/mastering-csharp-3256129/knowing-the-limits-when-to-move-to-actual-types-69958873/)
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/knowing-the-limits-when-to-move-to-actual-types-69958873/) · 0:48
 
-### 2.1 The extension method that goes everywhere
+### Summary
 
-The lesson gives a clean rule for when to stop: use tuples for local grouping, composite keys, pattern matching and equality plumbing; replace them when they model a domain concept in a public API, when they grow large, or when they are used very frequently.
+Tuples are effective for local data grouping and tactical operations like pattern matching, but they lack the type identity required for robust public APIs or domain modeling.
+When logic like extension methods is needed for a specific data shape, or when the same tuple structure is reused frequently, transitioning to a nominal type like a record struct ensures type safety and prevents logic from leaking to unrelated tuples with the same underlying types.
 
-Then it gives a single concrete symptom that beats all three heuristics.
+### Key concepts
+
+- Tactical usage of tuples for local grouping and composite keys.
+- Limitations of tuples in public APIs and domain modeling.
+- Type identity vs. structural identity: tuple element names are not part of the type.
+- Extension method leakage across structurally identical tuples.
+- Transitioning to nominal types like `record struct` for encapsulation.
+
+### Lesson notes
+
+Tuples serve as excellent tactical tools for local implementation details.
+They are frequently used to combine multiple variables, create composite keys, or group items within a single collection.
+Additionally, they are useful for pattern matching, expression-based constructor initialization, and implementing hash code or equality logic.
+
+However, tuples should be replaced with nominal types (such as classes or records) when they are used to model core domain concepts in public APIs, when they become excessively large, or when they are used very frequently throughout the application. 
+
+A primary indicator that a tuple has reached its limit is the need for an extension method.
+Because tuple element names are not part of the underlying type, an extension method defined for a specific tuple shape—such as `(string host, int port)`—will be available to every tuple with the same sequence of types, regardless of the element names or the intended domain concept.
 
 ```csharp
 using System;
@@ -387,50 +558,41 @@ internal readonly record struct Endpoint(string Host, int Port)
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/knowing-the-limits-when-to-move-to-actual-types-69958873/?t=10)
 
-`retryPolicy` is a name and a count.
-It is not an endpoint, it has nothing to do with endpoints, and IntelliSense offers it `.ToEndpointString()` anyway:
-
-```
-retryPolicy.ToEndpointString() = attempts:3   <- offered on an unrelated tuple
-```
-
-This is [1.2](#12-the-names-are-not-real) coming back to collect.
-Element names are not part of the type, so `this (string host, int port)` really means `this ValueTuple<string, int>`, and every tuple of that shape in the assembly qualifies.
-
-**The needing of an extension method is the signal.**
-That is a sharper rule than "when it gets big", because it fires at the exact moment the shape acquired meaning, which is the moment structural identity became the wrong model.
-
-### 2.2 The fix: give the shape a name
-
-```csharp
-internal readonly record struct Endpoint(string Host, int Port)
-{
-    public override string ToString() =>
-        $"{Host}:{Port}";
-}
-```
-
-`readonly record struct` is the right landing spot because it gives up nothing that made the tuple attractive:
-
-- **No allocation.** Still a struct, still inline.
-- **Value equality and hashing over all fields.** Generated, and generated correctly - this is the [chapter 6](06-mastering-records.md#44-the-fix) result.
-- **Deconstruction.** Generated, so the positional style survives.
-- **A real `ToString`.** `api.example.com:443` instead of `(api.example.com, 443)`.
-- **Immutability**, which the mutable tuple never offered.
-
-What it adds is the thing that was missing: an identity.
-`ToEndpointString` cannot reach an `Endpoint`, and `Endpoint.ToString` cannot leak onto a retry policy.
+In the example above, the `ToEndpointString` method is intended for host/port pairs.
+However, because it targets the underlying `ValueTuple<string, int>`, it also appears on the `retryPolicy` tuple, which represents attempts and counts.
+To resolve this and provide proper encapsulation, a `readonly record struct` should be used.
+This creates a distinct nominal type where logic can be safely contained without leaking to unrelated data structures.
 
 ---
 
-## Part 3 · Unions: the missing half
+## 5. Union Types: Why Do We Need Them?
 
-### 3.1 Product types and sum types
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/) · 1:20
 
-> [Union Types: Why Do We Need Them?](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/)
+### Summary
 
-Everything up to here has been product types: a value with an `X` **and** a `Y`.
-The lesson's motivating example for the other kind is the one everybody has hand-rolled at least once:
+Union types (or sum types) represent a value that can be one of several distinct types, providing an "exclusive OR" relationship between properties.
+Unlike traditional classes or structs that combine multiple properties into a single instance, unions allow for modeling variant types like a Result (Success or Error) or a LookupKey (ID or Name).
+This feature, introduced in C# 15, enables exhaustive pattern matching and supports functional programming patterns where data and behavior are separate, making error handling and data modeling more robust and expressive.
+
+### Key concepts
+
+*   **Product Types vs. Sum Types**: Classes, structs, and tuples are "AND" types (product types) where all properties coexist; Unions are "OR" types (sum types) where only one case is valid at a time.
+*   **Variant Modeling**: Unions are ideal for modeling types that have mutually exclusive states, such as a operation result that is either a success or an error.
+*   **Exhaustive Pattern Matching**: Union types allow the compiler to verify that all possible cases of a type are handled in a switch expression or statement.
+*   **Functional Programming Influence**: Unions facilitate a functional style where data structures are separated from the logic that operates on them.
+*   **C# 15 Implementation**: Native union support allows for a closed set of types that the compiler can trust for exhaustiveness checks.
+
+### Lesson notes
+
+In C#, standard types such as classes, structs, records, and tuples are considered "product types."
+This means they combine multiple properties together.
+For example, a `Point` type with `X` and `Y` properties will always have both values present in every instance.
+However, many programming scenarios require an exclusive set of properties where a value can be one thing or another, but not both. 
+
+Union types (or sum types) provide a pattern to model these variant types.
+They are commonly used in functional programming where data and behavior are kept separate.
+One of the most practical examples is a `Result` type, which represents either a successful operation with a value or a failure with an error message or exception.
 
 ```csharp
 public record class Result<T> : Result<T>.IUnionMembers
@@ -451,19 +613,13 @@ public record class Result<T> : Result<T>.IUnionMembers
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/?t=55)
 
-A `Result<T>` is a value **or** an exception, never both and never neither.
-The `object? _value` field and the manual `Create` overloads are what modelling that costs today.
+While C# has traditionally relied on exceptions for error handling, result-based error handling is gaining popularity.
+Union types make this adoption easier by providing a formal way to define these results.
+In C# 15, union types allow developers to express values from a closed set of types.
+This ensures that pattern matching is exhaustive, meaning the compiler can guarantee that every possible case of the union has been handled.
 
-The lesson is careful about what the language feature adds over the hand-rolled version, and it is not the storage:
-
-> In C# 15, union types allow developers to express values from a closed set of types.
-> This ensures that pattern matching is exhaustive, meaning the compiler can guarantee that every possible case of the union has been handled.
-
-**Closedness is the feature.**
-The hand-rolled `Result` above stores the same bytes, but no compiler will tell you that you forgot the exception branch.
-An `abstract class` hierarchy with two subclasses has the same gap, because anybody can add a third subclass.
-
-The chapter's running example for the rest of the material:
+For example, a `LookupKey` can be defined as either an `int` ID or a `string` Name.
+Using the C# 15 preview syntax, this is expressed as a `union` type:
 
 ```csharp
 // LookupKey = int Id | string Name
@@ -480,18 +636,78 @@ public readonly union LookupKey(int Id, string Name)
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/?t=43)
 
-Two things to notice before the mechanics.
-The declaration **looks like a constructor and is not**: `(int Id, string Name)` is the list of types convertible to `LookupKey`, not a parameter list, and an instance holds exactly one of them.
-And there is a `null` arm for a union whose declared cases are `int` and `string`, neither of which is nullable.
-[4.2](#42-exhaustiveness-and-the-third-case) is about where that came from.
+Under the hood, the compiler generates a structure to manage these variants.
+This generated code typically includes a `Value` property and implicit conversions to allow seamless assignment from the underlying types (e.g., assigning an `int` directly to a `LookupKey`).
+
+```csharp
+[Union]
+public readonly struct UnionDecompiled
+{
+    public object? Value { get; }
+
+    // Case constructors for creating an instance from 'int'
+    public UnionDecompiled(int value) => Value = value;
+
+    // Case constructors for creating an instance from 'string'
+    public UnionDecompiled(string value) => Value = value;
+
+    public string Describe()
+    {
+        object? value = Value;
+
+        if (value is int id)
+        {
+            return $"id {id}";
+        }
+
+        if (value is string name)
+        {
+            return $"name {name}";
+        }
+
+        if (value is null)
+        {
+            return "uninitialized";
+        }
+
+        throw new SwitchExpressionException(this);
+    }
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-why-do-we-need-them-69958874/?t=61)
+
+By using union types, developers can create more expressive APIs where the possible return types or input types are explicitly defined and enforced by the compiler, reducing the reliance on runtime checks and exceptions.
 
 ---
 
-## Part 4 · The feature
+## 6. Union Types: the Basics
 
-### 4.1 The syntax
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/) · 1:31
 
-> [Union Types: the Basics](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/)
+### Summary
+
+Union types, introduced as a preview feature in C# 15 and .NET 11, allow developers to define a closed set of types that a single variable can represent.
+Implemented as a readonly struct by the compiler, union types do not require specific runtime support, making them compatible with older target frameworks.
+They facilitate type-safe programming by providing implicit conversions from their constituent types and enforcing exhaustive pattern matching within switch expressions, including handling for the uninitialized default state.
+
+### Key concepts
+
+* **Union Keyword**: A new keyword used to define a type that can hold one of several specified types.
+* **Closed Set**: The compiler knows all possible types in a union, allowing for exhaustiveness checks.
+* **Implicit Conversions**: The compiler generates constructors that allow constituent types (e.g., int or string) to be implicitly converted to the union type.
+* **Struct Implementation**: Unions are compiled into structs, which means they can be created using default and may contain a null value internally.
+* **Exhaustive Pattern Matching**: Switch expressions must handle every case defined in the union, as well as the null case, to avoid compiler warnings.
+
+### Lesson notes
+
+Union types are a feature of C# 15, released alongside .NET 11.
+Although they are currently in preview, the core implementation is stable.
+Notably, union types do not require specific runtime support, allowing them to be used with older target frameworks, including the full .NET Framework.
+
+To define a union type, use the union keyword followed by the type name and a list of cases.
+For example, a LookupKey can be defined as either an int Id or a string Name.
+While this syntax resembles a constructor, it actually defines the list of types that are convertible to the union.
 
 ```csharp
 var entries = new Entries();
@@ -501,15 +717,18 @@ LookupKey key = 42;
 
 Console.WriteLine(key.Describe());
 var result = entries.Lookup(key);
-```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/?t=40)
+// LookupKey = int Id | string Name
+public readonly union LookupKey(int Id, string Name)
+{
+    public string Describe() => this switch
+    {
+        int id => $"id {id}",
+        string name => $"name {name}",
+        null => "uninitialized",
+    };
+}
 
-The compiler generates a constructor per case and an implicit conversion to match, so `LookupKey key = 42;` and `LookupKey key = "foo";` both compile with no ceremony.
-
-The payoff is on the receiving side:
-
-```csharp
 public sealed class Entries
 {
     public Entry Lookup(LookupKey key) => key switch
@@ -518,18 +737,43 @@ public sealed class Entries
         string name => byName[name],
         null => throw new InvalidOperationException("Lookup key must be initialized before it is processed."),
     };
-    ...
+
+    private readonly Dictionary<int, Entry> byId = new()
+    {
+        [42] = new Entry(42, "Launch Plan"),
+        [1001] = new Entry(1001, "Archive Policy"),
+    };
+
+    private readonly Dictionary<string, Entry> byName;
+
+    public Entries()
+    {
+        byName = new Dictionary<string, Entry>
+        {
+            ["Launch Plan"] = byId[42],
+            ["Archive Policy"] = byId[1001],
+        };
+    }
 }
+
+public sealed record Entry(int Id, string Name);
 ```
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/?t=40)
 
-One method, two key kinds, and nothing else can be passed.
-The alternative today is two overloads that drift apart, or one `object` parameter that accepts anything.
+The compiler generates constructors for each case, enabling implicit conversions from the constituent types to the union type.
+This allows a string to be assigned directly to a LookupKey variable.
 
-### 4.2 Exhaustiveness and the third case
+```csharp
+// An implicit conversion from string to LookupKey
+LookupKey key = "foo";
+```
 
-Because the set of cases is closed, the compiler can check that a switch covers it:
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/?t=55)
+
+The primary way to interact with union types is through pattern matching, specifically using switch expressions.
+Because union types represent a closed set of types, the compiler can enforce exhaustiveness.
+If a case is omitted from a switch expression, the compiler issues a warning indicating that the pattern is not exhaustive.
 
 ```csharp
 public readonly union LookupKey(int Id, string Name)
@@ -546,8 +790,10 @@ public readonly union LookupKey(int Id, string Name)
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/?t=70)
 
-Now the `null` arm.
-The `union` keyword always produces a **struct**, and every struct has a `default`:
+Under the hood, the compiler implements a union as a struct.
+Because structs can be instantiated using the default keyword or a default constructor, a union instance can exist in an uninitialized state where its internal value is null.
+To ensure safety, the compiler requires the null case to be handled in switch expressions.
+If the null case is omitted, the compiler will emit a warning, and failing to handle it at runtime could lead to errors.
 
 ```csharp
 // A union can be created with a default expression
@@ -567,17 +813,31 @@ public readonly union LookupKey(int Id, string Name)
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-basics-69958875/?t=85)
 
-So a union declared with two cases has three states at runtime, and the third one was never declared.
-`default(LookupKey)` is not `Id`, is not `Name`, and is reachable from any array, any uninitialized field, and any generic `default(T)`.
+---
 
-This is the same structural problem as [chapter 5's mutable struct traps](05-mastering-structs.md): C# lets you declare invariants that `default` walks straight through.
-[5.4](#54-class-based-unions) is the escape hatch.
+## 7. Union Types Under the Hood
 
-### 4.3 One object field, and what it costs
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/) · 1:21
 
-> [Union Types Under the Hood](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/)
+### Summary
 
-The generated type, decompiled:
+Union types in C# are implemented by the compiler as readonly struct types that store their state in a single object? Value property.
+This implementation strategy allows for flexible storage of different types within the same structure but introduces boxing allocations when a value type, such as an int, is used as a union case.
+By examining the decompiled code and running memory benchmarks, the performance characteristics of union types reveal that while they provide type safety and expressive pattern matching, developers must be aware of the 24-byte allocation overhead associated with boxing value types.
+
+### Key concepts
+
+*   **Compiler Generation**: Union types are transformed into `readonly struct` types marked with a `[Union]` attribute.
+*   **State Management**: The underlying value is stored in an `object? Value` property, which acts as a container for any of the union's cases.
+*   **Boxing**: Because the internal storage is an `object`, assigning a value type (like `int`) to a union results in a boxing allocation.
+*   **Pattern Matching**: Methods like `Describe` or custom switch expressions are compiled into type checks against the internal `Value` property.
+*   **Implicit Conversions**: The compiler generates constructors and implicit conversion operators to allow seamless assignment from case types to the union type.
+
+### Lesson notes
+
+Under the hood, the C# compiler generates a `readonly struct` for union types.
+This struct is decorated with a `[Union]` attribute and implements the `IUnion` interface.
+It contains a constructor for each case and stores the state in a `Value` property. 
 
 ```csharp
 // SimpleUnionTypes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
@@ -610,7 +870,9 @@ public readonly struct LookupKey : IUnion
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/?t=5)
 
-And in readable form, with the switch expression lowered to its type tests:
+A more readable version of the decompiled code shows how the `Describe` method and constructors function.
+The `Value` property is an `object?`, which means any value type assigned to it will be boxed.
+The `Describe` method essentially checks the type of the value and throws an exception if no matches are found.
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -661,14 +923,7 @@ public readonly struct UnionDecompiled
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/?t=30)
 
-**The whole implementation is one `object?` field.**
-That single decision explains everything else in the chapter.
-
-- `default` produces `Value == null`, hence the extra case in [4.2](#42-exhaustiveness-and-the-third-case).
-- The type needs no runtime support, hence [5.1](#51-no-runtime-support-required).
-- **Storing an `int` in an `object` field boxes it.**
-
-The lesson benchmarks the last point:
+To assess the performance impact of this implementation, particularly the boxing of value types, benchmarks can be used to compare direct lookups against lookups using union types. 
 
 ```csharp
 [MemoryDiagnoser]
@@ -694,53 +949,75 @@ public class LookupBenchmarks
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/?t=40)
 
-> Running these benchmarks with a memory diagnoser reveals that `LookupKeyById` incurs a 24-byte allocation.
-> This is the exact size of a boxed `int` on a 64-bit system.
-> In contrast, `LookupKeyByName` does not incur additional transient allocations because `string` is already a reference type.
-
-Reproduced exactly in [Measured on this machine](#union-lookup-the-chapters-benchmark), 24 bytes and all.
-
-### 4.4 What you do not get
-
-> [UnionTypes - Recap](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/)
-
-The recap lists what the compiler does **not** write for you, and the list is longer than you would guess from how much it does write:
-
-- **No `ToString()`.** You get the type name.
-- **No equality members.** The union falls back to `ValueType.Equals`, which is the [chapter 6](06-mastering-records.md#43-the-second-cost-boxing) problem: it boxes, and it can behave badly as a hash key.
-
-> Equality members are also not automatically generated, meaning the runtime uses default struct equality.
-> This can lead to further boxing allocations whenever `GetHashCode()` or `Equals()` is called.
-
-So a union used as a dictionary key today inherits every pathology the previous chapter was about.
-The fix is the same fix: declare it as a `record struct` with `[Union]` rather than with the `union` keyword, which is exactly what [5.2](#52-the-manual-union-that-does-not-box) does.
-
-The recap also names the second way to declare a union, which the deep dive then uses throughout:
+The `Entries` class handles the logic for looking up values using either primitive types or the `LookupKey` union.
+When looking up by `LookupKey`, the implementation switches on the internal value.
 
 ```csharp
-[Union]
-public sealed class ClassLookupKey
+public sealed class Entries
 {
-    private readonly int id;
-    private readonly string? name;
+    private readonly Dictionary<int, Entry> byId = new()
+    {
+        [42] = new Entry(42, "Launch Plan"),
+        [1001] = new Entry(1001, "Archive Policy"),
+    };
+
+    private readonly Dictionary<string, Entry> byName;
+
+    public Entries()
+    {
+        byName = new Dictionary<string, Entry>
+        {
+            ["Launch Plan"] = byId[42],
+            ["Archive Policy"] = byId[1001],
+        };
+    }
+
+    public Entry Lookup(int id) => byId[id];
+
+    public Entry Lookup(string name) => byName[name];
+
+    public Entry Lookup(LookupKey key) => key switch
+    {
+        int id => Lookup(id),
+        string name => Lookup(name),
+        null => throw new InvalidOperationException("Lookup key must be initialized before it is processed."),
+    };
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/?t=58)
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-under-the-hood-69958876/?t=55)
 
-`union` is the shorthand; `[Union]` on a type you wrote yourself is the general form, and it works on classes, structs and records.
+Running these benchmarks with a memory diagnoser reveals that `LookupKeyById` incurs a 24-byte allocation.
+This is the exact size of a boxed `int` on a 64-bit system.
+In contrast, `LookupKeyByName` does not incur additional transient allocations because `string` is already a reference type and does not require boxing when stored in the `object? Value` field.
 
 ---
 
-## Part 5 · The deep dive
+## 8. Union Types: the Deep Dive
 
-> [Union Types: the Deep Dive](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/)
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/) · 4:12
 
-At 4:12 this is the longest lesson in the chapter and it carries most of the practical content.
+### Summary
 
-### 5.1 No runtime support required
+This lesson explores advanced implementation details of union types in C#, focusing on manual definitions to avoid boxing, targeting older frameworks via polyfills, and managing the default state of struct-based unions.
+It demonstrates how to implement custom equality and string representations using pattern matching, and highlights the differences between struct-based and class-based union implementations, particularly regarding nullability and exhaustiveness checks.
 
-Union recognition is **duck-typed by the compiler**, so the two types it looks for can simply be declared in your own project:
+### Key concepts
+
+* **Framework Polyfilling**: Enabling union types on older .NET versions by manually defining `UnionAttribute` and `IUnion` and using the preview language version.
+* **Manual Union Definition**: Creating custom structs or classes with the `[Union]` attribute to control internal storage and behavior.
+* **Boxing Avoidance**: Implementing the `TryGetValue` pattern to allow the compiler to access union cases without boxing value types into an `object`.
+* **Default State Management**: Using nullable backing fields (e.g., `int?`) in struct-based unions to distinguish between a valid zero-value case and an uninitialized `default` state.
+* **Custom Equality**: Implementing `IEquatable<T>` and overriding equality members using pattern matching to provide robust comparison logic.
+* **Class-based Unions**: Utilizing classes for unions to eliminate the uninitialized state inherent to structs, thereby simplifying exhaustiveness checks in switch expressions.
+
+### Lesson notes
+
+#### Targeting Older Frameworks
+
+Union types can be used even when targeting older frameworks.
+The C# compiler relies on duck typing for union support, expecting specific types to be available during compilation regardless of their source.
+To enable this, you must manually define the `UnionAttribute` and the `IUnion` interface.
 
 ```csharp
 namespace System.Runtime.CompilerServices;
@@ -756,10 +1033,7 @@ public interface IUnion
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/?t=25)
 
-That is the entire contract, and it is why unions work on old target frameworks including .NET Framework.
-Compare [chapter 2's PolySharp material](02-mastering-the-modern-csharp-stack.md): the same trick, at a language-feature scale.
-
-What you cannot polyfill is the **compiler**:
+Additionally, the project file must be configured to use the `preview` language version and a compatible SDK (version 11 or higher), even if the target framework is older (e.g., .NET 10).
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -777,14 +1051,12 @@ What you cannot polyfill is the **compiler**:
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/?t=10)
 
-Note what that csproj is and is not saying.
-`TargetFramework` stays `net10.0`; only `LangVersion` moves to `preview`, and the **SDK** has to be 11 or higher.
-The target framework is where your code runs; the SDK is which compiler compiles it.
-This is precisely the distinction [chapter 2](02-mastering-the-modern-csharp-stack.md) spends four lessons on, and it is the reason the demo in this repo cannot use the keyword - see [What does not compile here](#what-does-not-compile-here-and-why).
+#### Manual Union Implementation and Boxing
 
-### 5.2 The manual union that does not box
+While the compiler can generate union types automatically, manual implementation allows for greater control, specifically regarding performance.
+The standard compiler-generated union stores state in an `object Value` property, which causes boxing when the union is created from a value type. 
 
-The reason to hand-write a union rather than use the keyword:
+By manually defining a struct with the `[Union]` attribute and providing `TryGetValue` methods for each case, the compiler can use these members for pattern matching, avoiding the boxing penalty associated with the `Value` property.
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -843,18 +1115,11 @@ public readonly record struct LookupKey
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/?t=175)
 
-Three separate wins in one type, and they are worth separating because each has its own reason.
+#### Handling the Default State
 
-**Storage is two typed fields, not one `object`.** The `int` lives in an `int?`, so nothing is boxed on the way in.
-
-**`TryGetValue` is the access pattern the compiler prefers.** Given both `Value` and a `TryGetValue` overload per case, pattern matching compiles to `TryGetValue`.
-That is what makes the storage change actually pay off: without it, every `is int` test would go back through the boxed `Value`.
-
-**`record struct` supplies the missing members.** The `Equals`, `GetHashCode` and `==` that [4.4](#44-what-you-do-not-get) says the keyword does not generate come free, over the private fields.
-
-### 5.3 Separating zero from empty
-
-The `int?` is doing more work than avoiding boxing.
+Because every struct can be created using a `default` expression, struct-based unions have an uninitialized state.
+If a union case uses a value type like `int`, the default value (0) might be indistinguishable from a valid instance created with 0.
+Using a nullable field (e.g., `int? id`) internally allows the union to separate the "zero" case from the "uninitialized" case in switch expressions.
 
 ```csharp
 LookupKey idKey = 0;
@@ -868,18 +1133,12 @@ Console.WriteLine($"default: {defaultKey}");
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/?t=145)
 
-With a plain `int` field, `default(LookupKey)` and `LookupKey(0)` are the same bytes and therefore indistinguishable.
-Every id-zero would read as uninitialized, or every uninitialized would read as id zero, depending on which way the `Describe` chain is written.
-`int?` adds the one bit that separates them.
+#### Custom Equality and Records
 
-The comment in the lesson's own source is worth reading twice, because it says the opposite of the code around it:
-
-> With this storage convention, `default(LookupKey)` is treated as the id case with value 0.
-
-That describes the `int` version, not the `int?` version shown.
-Measured on this machine, the `int?` version reports `default` as `<uninitialized>` and `zero.Equals(default)` as `False`, which is the behaviour the surrounding lesson argues for.
-
-**Equality is also not free**, and the lesson shows the hand-written form for unions declared with the keyword:
+Compiler-generated unions do not include `ToString` or equality members by default.
+However, unions are regular types and can implement interfaces like `IEquatable<T>`.
+By using a `record struct` for a manual union, you can leverage record equality.
+Alternatively, you can implement custom equality logic using pattern matching.
 
 ```csharp
 public union MyLookup(int Id, string Name) : IEquatable<MyLookup>
@@ -895,7 +1154,7 @@ public union MyLookup(int Id, string Name) : IEquatable<MyLookup>
     {
         return Describe();
     }
-    public bool Equals(MyLookup other)
+    public bool Equals(MyLookup other) 
         => (this, other) switch
         {            (int a, int b) => a == b,
             (string a, string b) => string.Equals(a, b, StringComparison.Ordinal),
@@ -918,17 +1177,11 @@ public union MyLookup(int Id, string Name) : IEquatable<MyLookup>
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/?t=160)
 
-Note `HashCode.Combine(typeof(int), id)`: the **case** goes into the hash alongside the value, so an id and a name that happen to hash alike stay in different buckets.
-That is the same job `EqualityContract` does for records in [chapter 6](06-mastering-records.md#22-equalitycontract).
+#### Class-Based Unions
 
-> **Aside.** The `_ => true` arm in that `Equals` is worth pausing on.
-> It is reached whenever the two operands are in different cases, and it reports them **equal**.
-> That makes `LookupKey(42).Equals(LookupKey("x"))` return `true`, which is almost certainly not intended.
-> The `record struct` in [5.2](#52-the-manual-union-that-does-not-box) does not have this problem, which is one more argument for that form.
-
-### 5.4 Class-based unions
-
-The `union` keyword always generates a struct, but `[Union]` does not have to:
+While the shorthand `union` keyword generates a struct, manually authored unions can be classes.
+Classes do not support the `default` expression in the same way structs do, meaning they cannot exist in an uninitialized state.
+If the `Value` property is non-nullable, the compiler can verify that all cases are handled without requiring a discard (`_`) or "uninitialized" branch in switch expressions.
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -977,317 +1230,165 @@ public sealed class ClassLookupKey
 
 [▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/union-types-the-deep-dive-69958877/?t=235)
 
-Look at `Describe`: **two arms, no `null`, no discard.**
-That is the whole point of the class version.
-A class has no `default` that is a usable instance, so `Value` can be declared non-nullable, and the compiler can then prove that a two-arm switch is exhaustive.
-The uninitialized case from [4.2](#42-exhaustiveness-and-the-third-case) does not exist.
+---
 
-The cost is the obvious one, and the chapter does not hide it: every key is now a heap allocation.
+## 9. UnionTypes - Recap
 
-| | struct union | class union |
-| --- | --- | --- |
-| Uninitialized state | yes, `default` | no |
-| Switch arms needed | cases + `null` | cases |
-| `int` case | boxed, unless `TryGetValue` | boxed, unless `TryGetValue` |
-| Cost per instance | none | one allocation |
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/) · 1:23
+
+Union types in C# provide a mechanism to model a closed set of alternative types, allowing a single type to hold one of several specified types, such as an integer or a string.
+They can be implemented using the native union keyword or by applying the [Union] attribute to existing types like classes, records, or structs.
+While the compiler handles much of the generation, developers should be aware of boxing allocations when using value types and the current lack of generated equality and string formatting members.
+Notably, this feature does not require specific runtime support, making it compatible with older .NET frameworks including the full .NET Framework.
+
+### Key concepts
+
+* Union types as closed sets of alternatives.
+* Implementation via the native `union` keyword.
+* Implementation via the `[Union]` attribute on classes, records, or structs.
+* Internal storage using an `object? Value` property, leading to boxing for value types.
+* Current limitations: No automatic `ToString()` or equality member generation.
+* Performance implications of default struct equality and `GetHashCode()`.
+* Broad compatibility across .NET versions, including .NET Framework.
+
+### Lesson notes
+
+C# union types allow for the modeling of a type that can represent one of several distinct alternatives.
+This is useful for scenarios where a value might be, for example, either an `int` or a `string`.
+
+There are two primary ways to define union types.
+The first is by using the `union` keyword followed by the type name and its cases.
+
+```csharp
+public readonly union LookupKey(int Id, string Name)
+{
+    public string Describe() => this switch
+    {
+        int id => $"id {id}",
+        string name => $"name {name}",
+        null => "uninitialized",
+    };
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/?t=10)
+
+When using this syntax, the compiler generates a backing struct.
+Internally, the state is stored in a `Value` property of type `object?`.
+
+```csharp
+[Union]
+public readonly struct UnionDecompiled
+{
+    public object? Value { get; }
+
+    // Case constructors for creating an instance from 'int'
+    // Compile adds an implicit conversion
+    // to allow LookupKey key = 42;
+    public UnionDecompiled(int value) => Value = value;
+
+    // Case constructors for creating an instance from 'string'
+    // Compile adds an implicit conversion
+    // to allow LookupKey key = "foo";
+    public UnionDecompiled(string value) => Value = value;
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/?t=16)
+
+Because the underlying storage is an `object`, creating a union instance from a struct (a value type) results in a boxing allocation.
+Additionally, the generated struct does not currently implement a custom `ToString()` method; it defaults to returning the type name.
+Equality members are also not automatically generated, meaning the runtime uses default struct equality.
+This can lead to further boxing allocations whenever `GetHashCode()` or `Equals()` is called.
+To mitigate these performance issues, developers can manually implement equality.
+
+The second approach to creating union types is to use standard types—such as records, classes, or structs—and mark them with the `[Union]` attribute.
+
+```csharp
+[Union]
+public sealed class ClassLookupKey
+{
+    private readonly int id;
+    private readonly string? name;
+}
+```
+
+[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/uniontypes-recap-69958878/?t=58)
+
+If the type contains the necessary members, the compiler treats it as a union type.
+A significant advantage of this feature is that it does not require specific runtime support.
+Consequently, union types can be used when targeting older frameworks, including the full .NET Framework.
 
 ---
 
-## What does not compile here, and why
+## 10. Conclusion
 
-The demo project in this repo runs the tuple half of the chapter as-is and **hand-writes** the union half.
-This section exists so that is a known limitation rather than a surprise.
+> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958879/) · 1:28
 
-Unions are a C# 15 feature, which means an SDK whose Roslyn understands them.
-The newest SDK installed on this machine is 10.0.102:
+### Summary
 
-```
-$ dotnet --list-sdks
-8.0.424 [C:\Program Files\dotnet\sdk]
-9.0.317 [C:\Program Files\dotnet\sdk]
-10.0.102 [C:\Program Files\dotnet\sdk]
-```
+This lesson concludes the "Mastering Types in C#" module, synthesizing key learnings about the C# type system.
+It reviews the nuances of class construction, the performance characteristics of generic constraints, the hazards of mutable value types, and the modern features—records, tuples, and union types—that enable expressive, multi-paradigm programming.
 
-Setting `<LangVersion>preview</LangVersion>` as the lesson instructs is not enough, because "preview" means the newest version *this* compiler knows:
+### Key concepts
 
-```
-error CS0106: The modifier 'public' is not valid for this item
-error CS0106: The modifier 'readonly' is not valid for this item
-error CS1513: } expected
-```
+- Object initialization order and the impact of field-like initializers.
+- The implementation and performance of the `new()` constraint across different .NET runtimes.
+- The risks of mutable structs and the mechanics of compiler-injected defensive copies.
+- Value-based semantics and equality performance in records and record structs.
+- Structural grouping with tuples and the introduction of native union types in C# 15.
 
-Those are **parse** errors, not feature-gate errors.
-The compiler is not refusing a known keyword; it does not know `union` is a keyword at all and is trying to read the declaration as something else.
-`-p:LangVersion=15` fails earlier still, with `error CS1617: Invalid option '15' for /langversion`.
+### Lesson notes
 
-The manual `[Union]` route from [5.1](#51-no-runtime-support-required) gets further and still stops.
-Declaring `UnionAttribute` and `IUnion` compiles fine, and a `[Union] readonly record struct` with `TryGetValue` overloads compiles fine, because those are ordinary C#.
-What fails is the part that needs compiler cooperation:
+The module provided a deep dive into the C# type system, focusing on how different type definitions affect performance, memory, and code expressiveness.
 
-```
-error CS8121: An expression of type 'LookupKey' cannot be handled by a pattern of type 'int'.
-error CS8121: An expression of type 'LookupKey' cannot be handled by a pattern of type 'string'.
-```
+#### Classes and Generic Constraints
 
-So **union recognition is entirely a compiler feature**.
-The attribute and the interface are the handshake, but without a compiler that looks for them they are just two unused declarations.
-That is a sharper version of the lesson's "no runtime support required" claim than the lesson itself gives: no runtime support, and *all* compiler support.
+The exploration of classes focused on the construction lifecycle, specifically how field initializers are injected into constructor execution.
+A significant portion of the module was dedicated to the `where T : new()` constraint.
+On modern .NET, the JIT compiler can optimize this constraint into a direct constructor call.
+In contrast, on older frameworks like .NET Framework, this constraint often routes through `Activator.CreateInstance`, which can wrap exceptions and negatively impact performance.
 
-**What the demo does instead.** It transcribes the decompiled shape from [4.3](#43-one-object-field-and-what-it-costs) by hand, with the type tests written out as the `if (value is int id)` chain the compiler would emit.
-That is enough to reproduce every measurable claim in the chapter, because all of them are properties of the generated shape rather than of the syntax: the boxed `object?` storage, the missing `ToString` and equality, the `default` case, and the `TryGetValue` fix.
-What it cannot show is the part that only exists at compile time - the exhaustiveness warning when an arm is missing.
+#### Structs and Defensive Copies
 
-**To run the real thing** when an SDK 11 is available, two changes are needed:
+The module addressed the complexities of value types, particularly the dangers of mutable structs.
+Because structs are copied by value, mutating a copy instead of the original is a common source of bugs.
+To preserve immutability invariants, the compiler often injects defensive copies when a non-readonly member is accessed on a readonly receiver (such as a `readonly` field or an `in` parameter).
+This ensures the original state is not modified, though it can lead to silent performance overhead or logic errors if the developer expects the mutation to persist.
 
-1. `global.json` pins `10.0.100` with `rollForward: latestFeature`, which rolls forward across feature bands of 10.0 but **not** to a new major. It has to be repointed.
-2. `LangVersion` has to move to `preview`, overriding `latest` from `src/Directory.Build.props`.
+#### Records and Equality
 
----
+Records were introduced as a modern way to implement value-based semantics.
+The module highlighted how record structs solve the "Default Struct Equality Problem."
+Default struct equality often falls back to `ValueType.Equals`, which may use reflection or inefficient hashing (such as keying only off the first field).
+Record structs generate typed equality and hashing logic based on the entire declared data shape, providing both safety and performance.
 
-## Measured on this machine
+#### Tuples and Union Types
 
-Intel Core i7-10700 @ 2.90GHz, 8 physical cores, Windows 11 26200, .NET 10.0.11, BenchmarkDotNet 0.15.8.
-
-### Union lookup: the chapter's benchmark
-
-The lesson's own four benchmarks, plus two for the manual union from [5.2](#52-the-manual-union-that-does-not-box).
-
-| Method | Mean | Ratio | Gen0 | Allocated |
-| --- | ---: | ---: | ---: | ---: |
-| DirectById | 1.091 ns | 1.00 | - | - |
-| DirectByName | 3.583 ns | 3.29 | - | - |
-| LookupKeyById | 2.616 ns | 2.40 | 0.0057 | **24 B** |
-| LookupKeyByName | 4.101 ns | 3.76 | - | - |
-| ManualKeyById | 1.585 ns | 1.45 | - | - |
-| ManualKeyByName | 3.663 ns | 3.36 | - | - |
-
-**The 24 bytes are exactly the lesson's number**, on different hardware and a different runtime, and the string case allocates nothing.
-That pair is the cleanest possible demonstration that the cost is boxing and not "unions are slow": same type, same call, and the only difference is whether the active case was already a reference.
-
-The two manual rows are the part the course describes but does not measure.
-Swapping `object? Value` for `int?` + `string?` with `TryGetValue` removes the allocation **and** most of the overhead: `ManualKeyById` is 1.59 ns against the direct call's 1.09 ns, where the generated union costs 2.62 ns.
-The remaining half-nanosecond is the nullable check.
-
-The means above move by a few percent between runs; the `Allocated` column does not move at all, and it is the column the chapter is about.
-
-> **Aside: this benchmark needs more iterations than it looks like it does.**
-> Everything here runs in single-digit nanoseconds, and at BenchmarkDotNet's default of 5 iterations a single outlier moved `ManualKeyById` to **29.7 ns**, a 22x ratio that would have read as a real and dramatic finding.
-> Fifteen iterations gives 1.575 ns and is stable across runs.
-> The benchmark class pins `iterationCount: 15` for that reason, with a comment saying so.
-
-### Tuple storage, and what it costs
-
-| Method | Mean | Gen0 | Allocated |
-| --- | ---: | ---: | ---: |
-| CreateValueTuple | 0.0425 ns | - | - |
-| CreateSystemTuple | 3.1518 ns | 0.0077 | 32 B |
-| CreateSystemTupleNoEscape | 0.0026 ns | - | - |
-| ValueTupleKeyLookup | 14.7959 ns | - | - |
-| SystemTupleKeyLookup | 26.2096 ns | 0.0249 | **104 B** |
-
-Two findings here that the course does not have.
-
-> **Aside: "System.Tuple is heap allocated" is no longer literally true on .NET 10.**
-> `CreateSystemTupleNoEscape` builds a `Tuple<string, int>`, reads `Item2`, and returns.
-> It allocates **nothing**, because the JIT can prove the instance never leaves the method and keeps it off the heap.
-> The first version of this benchmark returned only `Item2` from both cases and measured 0 B for each, which flatters the old tuple for a reason that has nothing to do with the lesson.
-> `CreateSystemTuple` returns the tuple so it genuinely escapes, and there the 32 bytes appear.
-> The lesson's advice is unaffected - anything you return, store or put in a collection escapes - but the mechanism is now "allocates when it escapes" rather than "always allocates".
-
-**The composite-key case is where the two tuples really separate**, and 104 bytes per lookup is a much bigger number than the 32 the storage model suggests.
-It decomposes exactly, measured separately:
-
-| | Allocated |
-| --- | ---: |
-| `Tuple.Create(...)`, escaping | 32 B |
-| `Tuple.GetHashCode()` | 24 B |
-| `Tuple.Equals(other)` | 48 B |
-| Dictionary lookup with a pre-built key | 72 B |
-| **Full lookup** | **104 B** |
-
-`Tuple<T1, T2>` implements hashing and equality through `IStructuralEquatable`, which takes an `IEqualityComparer` and therefore works in terms of `object`.
-So the `int` element is boxed once for the hash and once per side for the comparison: 24 + 24 + 24 = 72 bytes of boxing per lookup, on top of the 32 for the key itself.
-The `ValueTuple` version allocates zero and runs in less than half the time.
-
-A `Dictionary<Tuple<string, int>, V>` is therefore not a slightly worse composite key than a `ValueTuple` one.
-It allocates 104 bytes on every read, which is the kind of thing that only shows up as GC pressure under load.
-
-### The demo output
-
-```
--- What 10,000 of each allocate --
-  10,000 x Tuple.Create(string, int) = 320,000 bytes  (32.0 per instance)
-  10,000 x (string, int)             =       0 bytes
-
--- Where the names actually go: TupleElementNamesAttribute --
-  ParseEndpoint("api.example.com:444") = api.example.com:444
-  return type in metadata      = System.ValueTuple`2[System.String,System.Int32]
-  TupleElementNamesAttribute   = [host, port]
-  ParseGlobalEndpoint metadata = [host, port]
-  Element names survive into metadata. The alias name `GlobalEndpoint` does not.
-
--- Structural equality, for free --
-  (1,2) == (1,3) : False
-  (1,2) == (1,2) : True
-  hash codes equal: True
-  (x:1,y:2) == (a:1,b:2) : True   <- names are not compared
-  ToString() = (1, 2)   <- and the names are gone here too
-
--- An extension method cannot be aimed at a tuple's meaning --
-  endpoint.ToEndpointString() = api.example.com:443
-  retryPolicy.ToEndpointString() = attempts:3   <- offered on an unrelated tuple
-  The compiler has no way to tell the two apart: both are ValueTuple<string, int>.
-
--- What 10,000 of each case allocate --
-  GeneratedLookupKey from int    =  240,000 bytes  (24.0 per instance)
-  GeneratedLookupKey from string =        0 bytes  (0.0 per instance)
-  ManualLookupKey    from int    =        0 bytes  (0.0 per instance)
-
--- The case nobody declared: default --
-  default(GeneratedLookupKey).Value      = null
-  default(GeneratedLookupKey).Describe() = uninitialized
-  `int Id | string Name` has two cases. The runtime type has three.
-  ManualLookupKey zero    = id 0
-  ManualLookupKey default = <uninitialized>
-  zero.Equals(default)    = False   <- int? keeps 'id 0' and 'no case' apart
-
--- What a generated union does not come with --
-  a.ToString()   = MasteringCSharp.TuplesAndUnions.Demos.GeneratedLookupKey   <- the type name, not the value
-  a.Equals(b)    = True   (two unions over the same id)
-  hashes equal   = True
-  Equality falls back to ValueType.Equals, which boxes and compares the object field.
-  one a.Equals(b) call allocated 80 bytes (result True)
-  record struct version: ma == mb = True, ToString = id 42
-```
-
-Two of those lines are worth stopping on.
-
-**`ManualLookupKey    from int = 0 bytes`** confirms the deep dive's central claim from the other direction.
-The generated shape costs 24 bytes per instance and the manual shape costs nothing, for the same two cases and the same public API.
-
-**`one a.Equals(b) call allocated 80 bytes`** is the [4.4](#44-what-you-do-not-get) warning made concrete.
-Comparing two unions with no generated equality goes through `ValueType.Equals` and allocates 80 bytes for a single `bool`.
-The `record struct` version on the next line allocates nothing and prints a useful `ToString` besides.
-If you take one practical rule out of the union half of this chapter, it is that the `union` keyword is the demo form and `[Union] readonly record struct` is the production form.
-
----
-
-## Common misconceptions
-
-**"Tuple element names are part of the type."**
-They are compile-time only. `(string host, int port)` and `(string server, int number)` are the same type, assignment between them compiles, and an extension method on one is offered on both.
-
-**"So the names are thrown away entirely."**
-Not quite. They are erased from the *type* but emitted as a `TupleElementNamesAttribute` on the signature, which is how a consumer in another assembly still sees them. Alias names get no such treatment.
-
-**"Tuples are immutable."**
-A `ValueTuple` is a struct of public fields. `endpoint.port++` compiles. There is no readonly tuple.
-
-**"A struct key hashes all of its fields, so a tuple key and a hand-written struct key behave the same."**
-A `ValueTuple` overrides `GetHashCode` and uses everything. A hand-written struct holding a reference type inherits the runtime fallback that uses the first field only - that is [chapter 6](06-mastering-records.md#42-the-cause-blittable-vs-non-blittable), and it is why tuples are safe as keys where a naive struct is not.
-
-**"A union is a discriminated union with its own storage per case."**
-The keyword form is one `object?` field. The int case boxes, and there is no tag beyond the runtime type of that field.
-
-**"A union with two cases has two states."**
-It has three. `union` always generates a struct, and `default` gives a `Value` of `null` that matches neither declared case. Only a class-based `[Union]` type escapes this.
-
-**"Unions need .NET 11 at runtime."**
-They need an SDK 11 compiler. The runtime contract is one attribute and one interface you can declare yourself, so a union can target .NET Framework.
-
-**"`LangVersion=preview` unlocks C# 15."**
-It unlocks the newest version the installed compiler knows. On the .NET 10 SDK that is C# 14, and `union` does not even parse.
-
-**"Unions come with equality and `ToString` like records do."**
-Neither is generated. Equality falls back to `ValueType.Equals`, which boxes, and measured 80 bytes for a single comparison here.
-
----
-
-## Self-test
-
-1. Two variables typed `(string host, int port)` and `(string server, int number)`. Does assignment between them compile, and what does that tell you about where element names live?
-2. You write an extension method on `(string host, int port)`. Name a tuple in your codebase that will be offered the method and should not be, and explain the rule that causes it.
-3. Element names are erased at compile time, yet a caller in another assembly still sees `host` and `port`. Reconcile those two statements.
-4. Give the chapter's rule for when a tuple should become a `record struct`, and the single symptom that signals it most sharply.
-5. Why is `readonly record struct` the recommended landing spot rather than `class` or `record`? List what carries over from the tuple and what is added.
-6. `union LookupKey(int Id, string Name)` declares two cases. How many states can a `LookupKey` be in at runtime, and where does the extra one come from?
-7. `LookupKeyById` allocates 24 bytes and `LookupKeyByName` allocates none. Explain both halves from the generated implementation.
-8. What two declarations does a project need in order to use unions when targeting .NET Framework, and what does that tell you about where the feature actually lives?
-9. A manual `[Union]` type exposes both `object? Value` and `TryGetValue(out int)`. Which does pattern matching use, and why does the answer determine whether the type allocates?
-10. Why does the deep dive back the int case with `int?` rather than `int`? Name the two separate problems it solves.
-11. Why does a class-based union need fewer switch arms than a struct-based one?
-12. A `Dictionary<Tuple<string, int>, V>` lookup allocated 104 bytes per read here. Break that number down.
-
-<details>
-<summary>Answer key</summary>
-
-1. It compiles. Element names are compile-time metadata, not part of the type: both variables are `ValueTuple<string, int>`, so the assignment is between two values of one type.
-2. Any `(string, int)` tuple at all - the lesson uses `(name: "attempts", count: 3)`. The extension targets `ValueTuple<string, int>`, and since names are not part of the type, the compiler cannot distinguish an endpoint from a retry policy.
-3. The names are erased from the *type* but the compiler emits a `TupleElementNamesAttribute` on the member's signature. The type is nameless; the signature is annotated. Alias names get no equivalent treatment and do not survive.
-4. Replace a tuple when it models a domain concept in a public API, when it grows large, or when it is used very frequently. The sharpest symptom is needing an extension method, because that is the moment the shape acquired meaning that structural identity cannot carry.
-5. It keeps everything the tuple had: no allocation, all-field value equality and hashing, and deconstruction. It adds an identity the compiler enforces, a real `ToString`, and immutability. A `class` or `record` would add a heap allocation the tuple never had.
-6. Three. The `union` keyword always generates a struct, so `default(LookupKey)` exists and leaves the backing `object?` as `null`, matching neither `Id` nor `Name`. That is why switch expressions over struct unions must handle `null`.
-7. The generated union stores its case in a single `object?` field. An `int` is a value type and must be boxed to fit, which is 24 bytes on x64. A `string` is already a reference, so it is stored as-is with no additional allocation.
-8. `UnionAttribute` and `IUnion`, both declarable in your own project under `System.Runtime.CompilerServices`. It tells you the feature needs no runtime support at all - it lives entirely in the compiler, which recognises those two shapes by duck typing.
-9. `TryGetValue`. The compiler prefers it over reading `Value`, and that is the whole point: reading `Value` would box the int case, while `TryGetValue` reads it out of a typed field. Without the compiler preferring `TryGetValue`, changing the storage would not help.
-10. First, it avoids boxing, since the int lives in a typed field rather than an `object`. Second, it separates `default` from a genuine id of 0, which with a plain `int` field would be the same bytes and therefore indistinguishable.
-11. A class has no `default` that is a valid instance, so its `Value` can be non-nullable and the compiler can prove there is no uninitialized state. A struct union always has `default`, so it needs an extra arm for it.
-12. 32 bytes for the `Tuple.Create` key, which escapes into the dictionary call; 24 bytes for `Tuple.GetHashCode`, which boxes the int through `IStructuralEquatable`; and 48 bytes for `Equals`, which boxes the int on each side. 32 + 24 + 48 = 104.
-
-</details>
+Tuples were discussed as a lightweight mechanism for grouping data without the need for named types, supporting structural equality and positional deconstruction.
+The module concluded with a look at Union Types, a feature arriving in C# 15.
+Unions allow for the direct modeling of alternatives (e.g., a result that is either a Success or an Error), enabling a more functional style of programming within the C# ecosystem.
 
 ---
 
 ## Running the demo
 
-The demo is instant. The benchmarks take a few minutes and must be Release.
-
 ```bash
 cd src/mastering-csharp/07-mastering-tuples-and-union-types/MasteringCSharp.TuplesAndUnions.Demos
 dotnet run -c Release                  # all four sections
-dotnet run -c Release -- valuetuple    # part 1.1
-dotnet run -c Release -- tuples        # part 1.2 to 1.4
-dotnet run -c Release -- limits        # part 2
-dotnet run -c Release -- unions        # parts 3 to 5, hand-written
+dotnet run -c Release -- valuetuple
+dotnet run -c Release -- tuples
+dotnet run -c Release -- limits
+dotnet run -c Release -- unions
 ```
 
 ```bash
 cd src/mastering-csharp/07-mastering-tuples-and-union-types/MasteringCSharp.TuplesAndUnions.Benchmarks
-dotnet run -c Release -- --filter '*LookupBenchmarks*'            # the chapter's union benchmark
-dotnet run -c Release -- --filter '*TupleAllocationBenchmarks*'   # tuple storage and key cost
 dotnet run -c Release -- --list flat
+dotnet run -c Release -- --filter '*LookupBenchmarks*'
+dotnet run -c Release -- --filter '*TupleAllocationBenchmarks*'
 ```
 
-The `unions` section runs hand-written stand-ins for the C# 15 feature, for the reasons in [What does not compile here](#what-does-not-compile-here-and-why).
-Every measurement it prints is real; the syntax it demonstrates is not the syntax you will eventually write.
-
-`LookupBenchmarks` pins 15 iterations rather than BenchmarkDotNet's default 5, because everything it measures runs in single-digit nanoseconds and 5 iterations produced a 20x outlier.
-
----
-
-## Module wrap-up
-
-> [Conclusion](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958879/)
-
-Lesson 10 closes the whole type-modelling module rather than this chapter, and the through-line it draws is worth keeping:
-
-| Chapter | The thing that is not obvious |
-| --- | --- |
-| [Classes](04-mastering-classes.md) | Field initializers are injected into the constructor, and `where T : new()` routes through `Activator.CreateInstance` on .NET Framework |
-| [Structs](05-mastering-structs.md) | The compiler injects defensive copies on readonly receivers, so mutations silently do not stick |
-| [Records](06-mastering-records.md) | Default struct equality boxes and may hash one field; `record struct` generates typed all-field equality |
-| Tuples and unions | A tuple is a shape, not a type; a union is one `object?` field, and the closed set is the feature |
-
-The recurring shape across all four: **C# gives you a default behaviour that looks like the one you wanted, and the gap only shows up under measurement.**
-Defensive copies, first-field hashing, and boxed union storage are all the same kind of bug - correct-looking code whose cost or semantics live one layer below the syntax.
-
----
-
-## Threads into later chapters
-
-| Deferred here | Picked up in |
-| --- | --- |
-| Exhaustiveness checks over unions and closed hierarchies | [Mastering Pattern Matching](https://dometrain.com/take/course/mastering-csharp-3256129/exhaustiveness-checks-for-classes-and-unions-69958915/) |
-| Tuple patterns and positional deconstruction as recursive patterns | Mastering Pattern Matching |
-| Boxing as a systematic allocation source | Mastering LINQ (the cost of boxed iterators) |
-| Result-based error handling as an alternative to exceptions | Not covered further in this course |
+The demo is instant.
+The benchmarks need Release and take a few minutes.
+The `unions` section runs hand-written stand-ins for the C# 15 feature rather than the `union` keyword itself.
