@@ -8,16 +8,14 @@ they pin their own target frameworks and package versions, and `src/.editorconfi
 
 ```
 src/<course-slug>/
-├── notes/
-│   └── <NN>-<chapter-slug>.md
 └── <NN>-<chapter-slug>/
     ├── <Course>.<Chapter>.Demos/
     └── <Course>.<Chapter>.Benchmarks/
 ```
 
-`<course-slug>` is Dometrain's own slug, for example `mastering-csharp`. `<NN>` is the
-chapter's position in the course, zero-padded. Keeping notes and code under the same
-course folder means a chapter is one self-contained unit.
+`<course-slug>` is Dometrain's own slug, for example `mastering-csharp`.
+`<NN>` is the chapter's position in the course, zero-padded.
+The notes file lives wherever the user asked for it (see `SKILL.md`); this layout covers the demo code only.
 
 Project names are PascalCase dotted paths, for example
 `MasteringCSharp.ValueVsReference.Demos`. Split demos from benchmarks: benchmarks need
@@ -127,6 +125,6 @@ dotnet build -c Release          # expect zero warnings
 dotnet run -c Release            # every entry point, not just one
 ```
 
-Paste the real output into the notes' `Running the demo` section, which is the only part
+Paste the real output into the notes' `运行 Demo` section, which is the only part
 of the file that is not course content. Output you did not actually see is the one thing
 in this workflow that is worse than no output at all.
