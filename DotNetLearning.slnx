@@ -6,6 +6,11 @@
     <File Path="src/Directory.Packages.props" />
   </Folder>
   <Folder Name="/src/" />
+  <Folder Name="/src/1brc/" />
+  <Folder Name="/src/1brc/02-warming-up-projects/">
+    <Project Path="src/1brc/02-warming-up-projects/OneBrc.WarmingUp.Core/OneBrc.WarmingUp.Core.csproj" />
+    <Project Path="src/1brc/02-warming-up-projects/OneBrc.WarmingUp.Demos/OneBrc.WarmingUp.Demos.csproj" />
+  </Folder>
   <Folder Name="/src/mastering-csharp/" />
   <Folder Name="/src/mastering-csharp/03-value-types-vs-reference-types/">
     <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Benchmarks/MasteringCSharp.ValueVsReference.Benchmarks.csproj" />
