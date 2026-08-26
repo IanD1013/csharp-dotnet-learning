@@ -1,9 +1,18 @@
-namespace OneBrc.WarmingUp.Core;
+namespace Shared;
 
-/// <summary>
-/// Appends one block per run to results.log, so every level of the challenge can be compared
-/// against the ones before it: elapsed time, throughput, memory pressure and GC counts.
-/// </summary>
+public static class GlobalConstants
+{
+    // The course pins these to a fixed drive (V:\Dometrain\1BRC\Files). Here they resolve under
+    // the temp folder so a 13 GB measurements file never lands in the working tree, which also
+    // means they are static readonly rather than const.
+    public static readonly string FilesDirectory = Path.Combine(Path.GetTempPath(), "1brc", "Files");
+    public static readonly string FilePath = Path.Combine(FilesDirectory, "measurements.txt");
+
+    public const int ExpectedStationCount = 413;
+    //public const int ExpectedStationCount = 10_000;
+}
+
+
 public static class ResultLogger
 {
     private const string ResultFileName = "results.log";

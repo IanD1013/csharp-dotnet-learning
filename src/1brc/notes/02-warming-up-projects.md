@@ -391,78 +391,86 @@ if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
 
 ## 运行 Demo
 
+Demo 代码按课程官方仓库 [Dometrain/from-zero-to-hero-1-billion-row-performance-challenge-in-dotnet](https://github.com/Dometrain/from-zero-to-hero-1-billion-row-performance-challenge-in-dotnet) 的方式组织,按 level 分组而不是按章节号:
+
+```
+src/1brc/
+├── notes/            本章及后续各章笔记
+├── Shared/           SharedTypes.cs:GlobalConstants、ResultLogger
+└── DataGenerator/    Program.cs:413 个气象站 + Box-Muller 生成器
+```
+
+后续章节按上游仓库补上 `Level1_Naive/` … `Level6_Expert/` 和 `Benchmarkts/`。
+
 ```bash
-cd src/1brc/02-warming-up-projects/OneBrc.WarmingUp.Demos
+cd src/1brc/DataGenerator
 dotnet run -c Release
 ```
 
-单独运行某一节:`dotnet run -c Release -- spec`、`dotnet run -c Release -- generator [rowCount]`、`dotnet run -c Release -- test-files`。
+课程里两个问题都在提示符上手输;这里参数优先,所以也能非交互运行:`dotnet run -c Release -- 10_000_000 [path]`。
 生成的测量文件写在 `%TEMP%\1brc\Files` 下,不进入工作区。
-`OneBrc.WarmingUp.Core` 对应课程里的 Shared 项目(`GlobalConstants`、`ResultLogger`),`OneBrc.WarmingUp.Demos` 里是数据生成器和三节演示。
-气象站列表只收录课程画面上实际出现的 16 个,而不是完整的 413 个,所以同样行数下文件比课程里的略小。
+
+10,000 行:
 
 ```text
-Files directory: C:\Users\iantu\AppData\Local\Temp\1brc\Files
+╔══════════════════════════════════════════════════════════════╗
+║           1BRC Weather Data Generator (.NET 10)              ║
+╚══════════════════════════════════════════════════════════════╝
 
-=== 1. What is 1BRC actually? ===
-  file:             C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements-10k.txt
-  UTF-8 BOM:        absent (as the spec requires)
-  CRLF line breaks: 0 (the spec wants \n only)
-  rows:             10,000
-  unique stations:  16 (the spec allows up to 10,000)
-  longest name:     13 bytes (the spec allows 1 to 100)
-  one decimal:      True
-  within -99.9..99.9: True
-  output:           {Abha=-11.9/18.0/50.1, Abidjan=-4.5/25.7/56.4, Abéché=3.5/28.8/54.4, Accra=-4.5/25.4/53.2, Addis Ababa=-12.4/16.3/53.8, Adelaide=-11.8/17.5/46.9, Aden=-10.4/29.2/56.6, Ahvaz=-7.0/25.5/57.4, Albuquerque=-14.3/13.4/42.8, Alexandra=-23.5/11.8/43.4, Alexandria=-23.2/20.4/50.9, Algiers=-14.1/18.7/53.4, Alice Springs=-4.6/20.7/52.6, Almaty=-23.3/10.3/37.5, Amsterdam=-22.5/10.1/43.8, Zürich=-21.5/9.7/41.0}
+Row Count:   Output file [C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt]:
+  ► Row count:      10,000
+  ► Output file:    C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt
+  ► Station count:  413
 
-=== 2. Data Generator and Other Projects ===
-  - Output file:    C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt
-  - Station count:  16
-  - Expected count: 413 (the full course dataset)
+  Directory created: C:\Users\iantu\AppData\Local\Temp\1brc\Files
+  Generating data...
 
-  Progress: 100.00% | 1,000,000 / 1,000,000 rows | 3.79M rows/sec | ETA: 00:00:00
-  Generated 1,000,000 rows in 0.27s (12.95 MB)
 
-📁 Results saved: C:\Users\iantu\AppData\Local\Temp\1brc\Files\results.log
 
-  Last entry in results.log:
-  | ================================================================================
-  | [2026-08-24 19:58:11] Level00_DataGenerator
-  | ================================================================================
-  | Performance:
-  |   Rows:               1,000,000
-  |   Stations:           16
-  |   Elapsed:            00:00:00.2701994
-  |   Throughput:         3,700,970 rows/sec (88.24 MB/sec)
-  |
-  | Memory:
-  |   Working Set:        67 MB
-  |   GC Memory:          47 MB
-  |   Gen0 Collections:   8
-  |   Gen1 Collections:   2
-  |   Gen2 Collections:   1
-  |
-  | Processor:
-  |   CPU Cores:          12
-  | --------------------------------------------------------------------------------
-  | Wrote 12.95 MB to C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt
-  |
-  |
+╔══════════════════════════════════════════════════════════════╗
+║                      Generation Complete!                    ║
+╚══════════════════════════════════════════════════════════════╝
 
-=== 3. Let's Generate Test Files ===
-          rows |       size |   elapsed | throughput
-  -------------+------------+-----------+-----------
-        10,000 |     133 KB |     0.01s | 1.91M rows/sec
-       100,000 |    1.29 MB |     0.03s | 2.98M rows/sec
-     1,000,000 |   12.95 MB |     0.25s | 3.97M rows/sec
-    10,000,000 |  129.52 MB |     1.97s | 5.08M rows/sec
+  Total rows:     10,000
+  Time elapsed:   00:00:00.015
+  Rows/second:    640,911
+  Output file:    C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt
+  File size:      0.00 GB (138,231 bytes)
+```
 
-  Extrapolated to 1,000,000,000 rows: 12.66 GB
+10,000,000 行:
 
-  First lines of measurements-10k.txt:
-  | Alice Springs;24.5
-  | Almaty;3.5
-  | Albuquerque;7.3
-  | Abha;36.8
-  | Alice Springs;11.1
+```text
+╔══════════════════════════════════════════════════════════════╗
+║           1BRC Weather Data Generator (.NET 10)              ║
+╚══════════════════════════════════════════════════════════════╝
+
+Row Count:   Output file [C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt]:
+  ► Row count:      10,000,000
+  ► Output file:    C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt
+  ► Station count:  413
+
+  Generating data...
+
+  Progress: 100.00% | 10,000,000 / 10,000,000 rows | 5.59M rows/sec | ETA: 00:00:00
+
+╔══════════════════════════════════════════════════════════════╗
+║                      Generation Complete!                    ║
+╚══════════════════════════════════════════════════════════════╝
+
+  Total rows:     10,000,000
+  Time elapsed:   00:00:01.805
+  Rows/second:    5,539,075
+  Output file:    C:\Users\iantu\AppData\Local\Temp\1brc\Files\measurements.txt
+  File size:      0.13 GB (138,018,630 bytes)
+```
+
+生成文件的头几行:
+
+```text
+Xi'an;24.3
+Gangtok;-0.2
+Bujumbura;34.9
+Lomé;30.6
+Paris;-10.9
 ```

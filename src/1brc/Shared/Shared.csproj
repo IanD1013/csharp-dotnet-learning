@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <!--
+      CA1716: `Shared` is a reserved word in VB. The name mirrors the course repo
+      (Dometrain/from-zero-to-hero-1-billion-row-performance-challenge-in-dotnet) so code can be
+      read side by side with it, and nothing here is consumed from another language.
+    -->
+    <NoWarn>$(NoWarn);CA1716</NoWarn>
+  </PropertyGroup>
+
+</Project>
