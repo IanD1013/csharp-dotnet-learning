@@ -82,4 +82,51 @@ public static class ResultLogger
             Console.WriteLine($"\n⚠️ Results could not be saved: {ex.Message}");
         }
     }
+
+    /// <summary>
+    /// Formats results to 1BRC output format.
+    /// </summary>
+    public static string FormatOutput<T>(IEnumerable<KeyValuePair<string, T>> sortedResults) =>
+        FormatOutput(sortedResults, static value => value?.ToString() ?? string.Empty);
+
+    /// <summary>
+    /// Formats results with custom formatter.
+    /// </summary>
+    public static string FormatOutput<T>(
+        IEnumerable<KeyValuePair<string, T>> sortedResults,
+        Func<T, string> formatter)
+    {
+        ArgumentNullException.ThrowIfNull(sortedResults);
+        ArgumentNullException.ThrowIfNull(formatter);
+
+        return "{" +
+               string.Join(", ", sortedResults.Select(kvp => $"{kvp.Key}={formatter(kvp.Value)}")) +
+               "}";
+    }
+}
+
+
+public class StationStats
+{
+    public double Min { get; set; }
+    public double Max { get; set; }
+    public double Sum { get; set; }
+
+    public int Count { get; set; }
+
+    public double Mean => Count > 0 ? Sum / Count : 0;
+
+    public void Update(double temp)
+    {
+        if (temp < Min)
+            Min = temp;
+
+        if (temp > Max)
+            Max = temp;
+
+        Sum += temp;
+        Count++;
+    }
+
+    public override string ToString() => $"{Min:F1}/{Mean:F1}/{Max:F1}";
 }
