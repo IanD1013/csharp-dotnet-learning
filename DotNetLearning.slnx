@@ -8,6 +8,7 @@
   <Folder Name="/src/" />
   <Folder Name="/src/1brc/">
     <Project Path="src/1brc/DataGenerator/DataGenerator.csproj" />
+    <Project Path="src/1brc/Level1_Naive/Level1_Naive.csproj" />
     <Project Path="src/1brc/Shared/Shared.csproj" />
   </Folder>
   <Folder Name="/src/mastering-csharp/" />
