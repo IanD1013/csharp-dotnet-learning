@@ -128,5 +128,17 @@ public class StationStats
         Count++;
     }
 
+    public void Merge(StationStats other)
+    {
+        if (other.Min < Min)
+            Min = other.Min;
+
+        if (other.Max > Max)
+            Max = other.Max;
+
+        Sum += other.Sum;
+        Count += other.Count;
+    }
+
     public override string ToString() => $"{Min:F1}/{Mean:F1}/{Max:F1}";
 }

@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!--
+      CA1707: the underscore comes from the course repo's own folder and namespace names
+      (Dometrain/from-zero-to-hero-1-billion-row-performance-challenge-in-dotnet), kept so the
+      benchmark classes here line up with it one for one.
+    -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" />
+  </ItemGroup>
+
+</Project>
