@@ -106,6 +106,60 @@ public static class ResultLogger
 }
 
 
+/// <summary>
+/// Level 4's stack-allocated replacement for <see cref="StationStats"/>, from
+/// "Let's Start Coding". A struct so the dictionary inlines the stats instead of the GC
+/// tracking one small object per station.
+/// </summary>
+public struct StationStatsStruct
+{
+    // CA1051: public fields are the point here. Properties would add a getter/setter pair on the
+    // hottest path in the challenge, and the lesson declares plain fields for exactly that reason.
+#pragma warning disable CA1051
+    public double Min;
+    public double Max;
+    public double Sum;
+    public long Count;
+#pragma warning restore CA1051
+
+    public static StationStatsStruct Create() => new()
+    {
+        Min = double.MaxValue,
+        Max = double.MinValue,
+        Sum = 0,
+        Count = 0
+    };
+
+    public readonly double Mean => Count > 0 ? Sum / Count : 0;
+
+    public void Update(double temperature)
+    {
+        if (temperature < Min)
+            Min = temperature;
+
+        if (temperature > Max)
+            Max = temperature;
+
+        Sum += temperature;
+        Count++;
+    }
+
+    public void Merge(in StationStatsStruct other)
+    {
+        if (other.Min < Min)
+            Min = other.Min;
+
+        if (other.Max > Max)
+            Max = other.Max;
+
+        Sum += other.Sum;
+        Count += other.Count;
+    }
+
+    public readonly override string ToString() => $"{Min:F1}/{Mean:F1}/{Max:F1}";
+}
+
+
 public class StationStats
 {
     public double Min { get; set; }

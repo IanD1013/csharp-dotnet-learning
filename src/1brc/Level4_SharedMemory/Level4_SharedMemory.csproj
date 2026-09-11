@@ -3,18 +3,18 @@
   <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <!-- LineParsingBenchmark compares Span.IndexOf against a manual char* scan. -->
+    <!-- Level 4 walks the memory-mapped view through byte* pointers ("Introduction to MMF"). -->
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <!--
-      CA1707: the underscore comes from the course repo's own folder and namespace names
+      CA1707: the underscore is the course repo's own project name
       (Dometrain/from-zero-to-hero-1-billion-row-performance-challenge-in-dotnet), kept so the
-      benchmark classes here line up with it one for one.
+      Level* folders here line up with it one for one.
     -->
     <NoWarn>$(NoWarn);CA1707</NoWarn>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="BenchmarkDotNet" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
   </ItemGroup>
 
 </Project>
