@@ -14,6 +14,7 @@
     <Project Path="src/1brc/Level3_Parallel/Level3_Parallel.csproj" />
     <Project Path="src/1brc/Level4_SharedMemory/Level4_SharedMemory.csproj" />
     <Project Path="src/1brc/Level5_SIMD/Level5_SIMD.csproj" />
+    <Project Path="src/1brc/Level6_Expert/Level6_Expert.csproj" />
     <Project Path="src/1brc/Shared/Shared.csproj" />
   </Folder>
   <Folder Name="/src/mastering-csharp/" />

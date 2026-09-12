@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <!-- Level 6 walks the memory-mapped view through byte* pointers, loads SIMD vectors from them
+         and allocates its hash table with NativeMemory.AlignedAlloc. -->
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <!--
+      CA1707: the underscore is the course repo's own project name
+      (Dometrain/from-zero-to-hero-1-billion-row-performance-challenge-in-dotnet), kept so the
+      Level* folders here line up with it one for one.
+    -->
+    <NoWarn>$(NoWarn);CA1707</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+  </ItemGroup>
+
+</Project>
