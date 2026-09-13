@@ -1,0 +1,19 @@
+# Build context root for the Docker images under docker/docker-for-developers/demo-app.
+# The context has to be src/ so the images can restore against Directory.Build.props
+# and Directory.Packages.props, which live here.
+
+**/.dockerignore
+**/.env
+**/.git
+**/.gitignore
+**/.idea
+**/.vs
+**/.vscode
+**/*.*proj.user
+**/*.user
+**/bin
+**/obj
+**/node_modules
+**/Dockerfile*
+**/docker-compose*
+artifacts
