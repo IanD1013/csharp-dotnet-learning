@@ -17,6 +17,12 @@
     <Project Path="src/1brc/Level6_Expert/Level6_Expert.csproj" />
     <Project Path="src/1brc/Shared/Shared.csproj" />
   </Folder>
+  <Folder Name="/src/docker/" />
+  <Folder Name="/src/docker/docker-for-developers/" />
+  <Folder Name="/src/docker/docker-for-developers/demo-app/">
+    <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Api/DockerForDevelopers.DemoApp.Api.csproj" />
+    <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Frontend/DockerForDevelopers.DemoApp.Frontend.csproj" />
+  </Folder>
   <Folder Name="/src/mastering-csharp/" />
   <Folder Name="/src/mastering-csharp/03-value-types-vs-reference-types/">
     <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Benchmarks/MasteringCSharp.ValueVsReference.Benchmarks.csproj" />
