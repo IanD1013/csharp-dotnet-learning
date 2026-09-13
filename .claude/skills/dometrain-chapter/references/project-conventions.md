@@ -17,6 +17,38 @@ src/<course-slug>/
 `<NN>` is the chapter's position in the course, zero-padded.
 The notes file lives wherever the user asked for it (see `SKILL.md`); this layout covers the demo code only.
 
+### Courses that build one app across chapters
+
+Some courses have no self-contained demo per chapter. They build a single
+application and keep extending it: one chapter creates it, a later one adds a
+Dockerfile, later ones add compose, volumes, networking. Numbering the folder per
+chapter would force that one app to be copied once per chapter, and the copies
+would drift apart immediately.
+
+For those, use one shared folder named after the app rather than the chapter,
+with no `NN` prefix:
+
+```
+src/docker/docker-for-developers/
+├── demo-app/
+│   ├── DockerForDevelopers.DemoApp.Api/
+│   └── DockerForDevelopers.DemoApp.Frontend/
+└── notes/
+    ├── 07-creating-our-demo-application.md
+    └── 08-building-our-own-images.md
+```
+
+Later chapters edit that folder in place instead of creating a sibling, and the
+project names drop the chapter segment because they outlive it.
+
+Notes files are unaffected. They stay one per chapter, numbered as always; a
+chapter's `运行 Demo` section points into the shared folder and describes the
+state that chapter leaves it in.
+
+Choose this only when the course genuinely works this way. A course of
+independent per-chapter demos keeps the numbered layout above, where a shared
+folder would just become a junk drawer.
+
 Project names are PascalCase dotted paths, for example
 `MasteringCSharp.ValueVsReference.Demos`. Split demos from benchmarks: benchmarks need
 Release and take minutes, demos should stay instant to run, and merging them makes both
