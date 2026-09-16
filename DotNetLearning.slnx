@@ -22,6 +22,7 @@
   <Folder Name="/src/docker/docker-for-developers/demo-app/">
     <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Api/DockerForDevelopers.DemoApp.Api.csproj" />
     <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Frontend/DockerForDevelopers.DemoApp.Frontend.csproj" />
+    <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Tests/DockerForDevelopers.DemoApp.Tests.csproj" />
   </Folder>
   <Folder Name="/src/mastering-csharp/" />
   <Folder Name="/src/mastering-csharp/03-value-types-vs-reference-types/">
