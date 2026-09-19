@@ -1,14 +1,14 @@
 # Introduction to Dependency Injection
 
-> Course: [From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · Chapter 2
-> 8 lessons · ~32:21
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · 第 2 章
+> 共 8 课 · 约 32:21
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
+## 课程索引
 
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [The problem with dependencies](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/) | 6:47 | [↓](#1-the-problem-with-dependencies) |
 | 2 | [Why Dependency injection is necessary](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/) | 5:13 | [↓](#2-why-dependency-injection-is-necessary) |
@@ -23,37 +23,37 @@
 
 ## 1. The problem with dependencies
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/) · 6:47
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/) · 6:47
 
-### Summary
+### 总结
 
-This lesson explores the fundamental issues that arise when software components are tightly coupled to their dependencies.
-By examining a car modeling exercise, it demonstrates how hard-coding concrete implementations within high-level classes leads to rigid inheritance structures and significant testing challenges.
-Understanding these pitfalls is essential for recognizing why Dependency Injection is a necessary pattern for building maintainable and testable .NET applications.
+本课探讨当软件组件与其依赖紧密耦合时所产生的根本性问题。
+通过一个汽车建模的练习,它演示了在高层类中硬编码具体实现会如何导致僵化的继承结构和严重的测试难题。
+理解这些陷阱,对于认识依赖注入为何是构建可维护、可测试的 .NET 应用所必需的模式至关重要。
 
-### Key concepts
+### 核心概念
 
-* **Tight Coupling**: When a high-level class is directly responsible for instantiating its own dependencies, making it difficult to swap implementations.
-* **Inheritance Bloat**: The tendency to create specialized subclasses (e.g., `PetrolCar`, `DieselCar`) to handle different dependency types, leading to complex and fragile hierarchies.
-* **Testability Constraints**: The inability to isolate a component for testing because it is bound to a specific, concrete implementation of its dependencies.
-* **High-Level vs. Low-Level Modules**: High-level modules (like a `Car`) should not depend on low-level implementation details (like a specific `PetrolEngine`).
+- **Tight Coupling(紧耦合)**:高层类直接负责实例化自己的依赖,导致难以替换实现。
+- **Inheritance Bloat(继承膨胀)**:倾向于为不同的依赖类型创建专门的子类(例如 `PetrolCar`、`DieselCar`),从而导致复杂而脆弱的层次结构。
+- **Testability Constraints(可测试性受限)**:由于组件被绑定到其依赖的某个特定的具体实现,无法把它隔离出来进行测试。
+- **High-Level vs. Low-Level Modules(高层模块与低层模块)**:高层模块(比如 `Car`)不应该依赖低层的实现细节(比如某个具体的 `PetrolEngine`)。
 
-### Lesson notes
+### 课程笔记
 
-#### The Modeling Challenge
+#### 建模的挑战
 
-When modeling a system like a car in C#, it is common to classify objects by their differentiators, such as engine type (petrol, diesel, or electric).
-A common but flawed approach is to use inheritance to create specific types for every variation.
+在 C# 中对汽车这类系统建模时,常见的做法是按对象的区分特征来分类,比如发动机类型(汽油、柴油或电动)。
+一种常见但有缺陷的做法,是用继承为每一种变体创建具体的类型。
 
-For example, one might create an abstract `Car` class and then derive `PetrolCar`, `DieselCar`, and `ElectricCar`.
-This creates a modeling challenge because any further differentiator leads to deeper and deeper inheritance.
-An `ElectricCar` might need to be further split into a `BatteryElectricCar` or a `HydrogenElectricCar`.
-This model is fragile; changes to the parent class have a significant knock-on effect throughout the hierarchy.
+例如,你可能会创建一个抽象的 `Car` 类,然后派生出 `PetrolCar`、`DieselCar` 和 `ElectricCar`。
+这会带来建模上的挑战,因为任何新增的区分特征都会导致继承层次越来越深。
+`ElectricCar` 可能还需要进一步拆分成 `BatteryElectricCar` 或 `HydrogenElectricCar`。
+这种模型很脆弱;对父类的修改会在整个层次结构中产生显著的连锁反应。
 
-#### Tight Coupling and Instantiation
+#### 紧耦合与实例化
 
-The core problem is not just inheritance, but how dependencies are managed within these classes.
-In a tightly coupled system, the high-level class (the `Car`) is responsible for instantiating its own low-level dependencies (the engine).
+核心问题不只是继承,还在于这些类内部是如何管理依赖的。
+在一个紧耦合的系统里,高层类(`Car`)要负责实例化自己的低层依赖(发动机)。
 
 ```csharp
 namespace TheDependencyProblem.CarExample;
@@ -79,9 +79,9 @@ public class PetrolEngine
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/?t=275)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/?t=275)
 
-If you decide to create a diesel version of the car, you are forced to create a new class or modify the existing one to accommodate a different concrete engine type.
+如果你决定做一个柴油版本的汽车,就不得不创建一个新类,或者修改现有的类,以容纳另一种具体的发动机类型。
 
 ```csharp
 public class PetrolCar
@@ -103,9 +103,9 @@ public class PetrolEngine
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/?t=285)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/?t=285)
 
-To support a different fuel type, you would need to define a new engine class and a corresponding car class:
+要支持另一种燃料类型,你需要定义一个新的发动机类和一个与之对应的汽车类:
 
 ```csharp
 public class DieselEngine
@@ -127,46 +127,46 @@ public class DieselCar
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/?t=295)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-problem-with-dependencies-53953083/?t=295)
 
-In this scenario, the `Car` is no longer just a car; it is specifically a `PetrolCar` or a `DieselCar` because it is tied to a concrete implementation.
-Ideally, a car should just be a car that *has* an engine.
+在这种情况下,`Car` 已经不再只是一辆车了;因为它被绑定到了具体实现,它具体成了 `PetrolCar` 或者 `DieselCar`。
+理想情况下,一辆车就应该只是一辆*拥有*发动机的车。
 
-#### The Impact on Testability
+#### 对可测试性的影响
 
-Depending on concrete implementations renders a system untestable in isolation.
-If you need to test the wheel-spinning system or the steering system of a car in a lab environment, you cannot do so if the car depends directly on a `PetrolEngine`.
-If the engine is not yet ready or available, the car cannot start, and the wheels cannot spin.
+依赖具体实现会让一个系统无法被隔离测试。
+如果你需要在实验室环境中测试汽车的车轮转动系统或转向系统,而这辆车又直接依赖 `PetrolEngine`,那你就做不到。
+如果发动机还没准备好或者拿不到,车就发动不了,轮子也转不起来。
 
-Because the high-level module (`Car`) depends on an implementation rather than an abstraction, you cannot substitute the real engine with a "mock" or a simple wheel-spinning mechanism for testing purposes.
-This violation of clean architecture principles makes it impossible to verify high-level logic without also involving all low-level dependencies.
+由于高层模块(`Car`)依赖的是实现而不是抽象,你无法出于测试目的把真实的发动机替换成一个 "mock" 或者一个简单的车轮转动装置。
+这种对整洁架构原则的违背,使得你不可能在不牵扯所有低层依赖的情况下验证高层逻辑。
 
-Dependency Injection is the solution to this problem, allowing high-level modules to depend on abstractions, thereby decoupling the components and enabling full testability.
+依赖注入正是这个问题的解决方案,它让高层模块依赖抽象,从而解耦各个组件,并实现完整的可测试性。
 
 ---
 
 ## 2. Why Dependency injection is necessary
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/) · 5:13
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/) · 5:13
 
-### Summary
+### 总结
 
-Dependency injection (DI) addresses the issue of tight coupling by ensuring that high-level components depend on abstractions rather than concrete implementations.
-By utilizing interfaces, a system becomes modular and testable, allowing developers to swap implementations—such as replacing a real engine with a test double—without modifying the consuming class.
-This approach decouples the creation of dependencies from their usage, facilitating cleaner architecture and easier maintenance.
+依赖注入(DI)通过确保高层组件依赖抽象而不是具体实现,来解决紧耦合的问题。
+借助接口,系统会变得模块化且可测试,开发者可以在不修改消费方类的前提下替换实现,比如把真实的发动机换成一个测试替身。
+这种做法把依赖的创建与依赖的使用解耦开来,有助于形成更整洁的架构和更轻松的维护。
 
-### Key concepts
+### 核心概念
 
-* **Abstractions over Implementations**: High-level modules should not depend on low-level implementation details.
-* **Interface Contracts**: Using interfaces like `ICarEngine` defines a set of behaviors that any implementation must satisfy.
-* **Constructor Injection**: Passing dependencies through a class constructor allows the consumer to provide any implementation that matches the required abstraction.
-* **Testability**: DI enables the use of "fake" or "test" implementations, allowing code to be tested in isolation without external side effects.
-* **Modularity**: Systems become more flexible as components can be swapped out with minimal impact on the rest of the codebase.
+- **Abstractions over Implementations(抽象优先于实现)**:高层模块不应该依赖低层的实现细节。
+- **Interface Contracts(接口契约)**:使用 `ICarEngine` 这样的接口,定义了任何实现都必须满足的一组行为。
+- **Constructor Injection(构造函数注入)**:通过类的构造函数传入依赖,使得消费方可以提供任何符合所需抽象的实现。
+- **Testability(可测试性)**:DI 让我们可以使用 "fake" 或 "test" 实现,从而在没有外部副作用的情况下隔离地测试代码。
+- **Modularity(模块化)**:系统变得更灵活,因为替换组件对代码库其余部分的影响极小。
 
-### Lesson notes
+### 课程笔记
 
-In a tightly coupled system, a high-level component like a `Car` might directly instantiate its dependencies, such as a `PetrolEngine`.
-This creates a hard dependency on a specific implementation, making the system rigid and difficult to extend or test.
+在一个紧耦合的系统里,像 `Car` 这样的高层组件可能会直接实例化自己的依赖,比如 `PetrolEngine`。
+这会形成对某个特定实现的硬依赖,使系统变得僵化,难以扩展和测试。
 
 ```csharp
 namespace TheDependencyProblem.CarExample;
@@ -190,11 +190,11 @@ public class PetrolEngine
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=10)
 
-To solve this, the dependency should be inverted by introducing an abstraction.
-An interface, such as `ICarEngine`, defines the contract that any engine must follow—specifically, the ability to `Start()`.
-Any class that wants to serve as an engine must implement this interface.
+要解决这个问题,应该通过引入一个抽象来反转依赖。
+像 `ICarEngine` 这样的接口,定义了任何发动机都必须遵循的契约,具体来说就是具备 `Start()` 的能力。
+任何想要充当发动机的类,都必须实现这个接口。
 
 ```csharp
 public void StartEngine()
@@ -217,12 +217,12 @@ public class PetrolEngine
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=75)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=75)
 
-Once the interface is defined, concrete implementations like `PetrolEngine` and `DieselEngine` can implement it.
-The `Car` class is then refactored to accept an `ICarEngine` through its constructor.
-This is known as constructor injection.
-The `Car` no longer knows or cares which specific engine it is using, as long as the object provided adheres to the `ICarEngine` contract.
+接口定义好之后,`PetrolEngine` 和 `DieselEngine` 这样的具体实现就可以去实现它。
+接着把 `Car` 类重构为通过构造函数接收一个 `ICarEngine`。
+这就是所谓的构造函数注入。
+只要传进来的对象遵守 `ICarEngine` 契约,`Car` 就不再知道、也不再关心自己用的是哪一种具体的发动机。
 
 ```csharp
 public class Car
@@ -246,11 +246,11 @@ public interface ICarEngine
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=160)
 
-This pattern significantly improves testability.
-In a testing environment, a `TestEngine` can be created that implements `ICarEngine` but does not require actual fuel or complex setup.
-This allows the `Car` module to be tested in isolation from the complexities of a real engine implementation.
+这种模式显著提升了可测试性。
+在测试环境中,可以创建一个实现了 `ICarEngine` 的 `TestEngine`,它不需要真实的燃料,也不需要复杂的准备工作。
+这让 `Car` 模块可以脱离真实发动机实现的复杂性,被隔离地测试。
 
 ```csharp
 void Start();
@@ -273,10 +273,10 @@ void Start();
             //Battery, induction coil, spark plug, fuel
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=250)
 
-Finally, the consuming code (such as `Program.cs`) becomes responsible for "injecting" the specific implementation into the `Car`.
-This makes the application modular, as different engine types can be swapped in at the entry point of the application without changing the internal logic of the `Car` class.
+最后,消费方代码(比如 `Program.cs`)负责把具体实现 "注入" 到 `Car` 中。
+这让应用变得模块化,因为可以在应用的入口处换用不同的发动机类型,而不必改动 `Car` 类的内部逻辑。
 
 ```csharp
 using TheDependencyProblem.CarExample;
@@ -288,35 +288,35 @@ var petrolCar = new Car(new PetrolEngine());
 var testCar = new Car(new TestEngine());
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=265)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-dependency-injection-is-necessary-53953084/?t=265)
 
 ---
 
 ## 3. A practical example of the dependency problem
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/) · 10:25
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/) · 10:25
 
-### Summary
+### 总结
 
-This lesson demonstrates the practical consequences of tight coupling in a .NET application using a database-driven example.
-It illustrates how hard-coding concrete implementations like `UserRepository` or `SqliteDbConnectionFactory` prevents unit testing and limits modularity.
-By applying Dependency Injection principles—specifically Inversion of Control through constructor injection and the use of interfaces—developers can decouple business logic from infrastructure, enabling the use of mock objects and interchangeable database providers.
+本课用一个数据库驱动的例子,演示了 .NET 应用中紧耦合带来的实际后果。
+它说明了硬编码 `UserRepository` 或 `SqliteDbConnectionFactory` 这类具体实现,会如何阻碍单元测试并限制模块化。
+通过应用依赖注入的原则,具体来说就是借助构造函数注入实现控制反转并使用接口,开发者可以把业务逻辑与基础设施解耦,从而能够使用 mock 对象和可互换的数据库提供程序。
 
-### Key concepts
+### 核心概念
 
-- Tight coupling vs. Loose coupling
-- Inversion of Control (IoC) via constructor injection
-- Programming to an abstraction (interfaces) rather than an implementation
-- Testability: Mocking dependencies to isolate business logic
-- Modularity: Swapping infrastructure components without changing business logic
+- 紧耦合与松耦合
+- 通过构造函数注入实现控制反转(IoC)
+- 面向抽象(接口)编程,而不是面向实现编程
+- 可测试性:通过 mock 依赖来隔离业务逻辑
+- 模块化:在不改动业务逻辑的情况下替换基础设施组件
 
-### Lesson notes
+### 课程笔记
 
-In a typical .NET application, business logic often depends on external infrastructure like databases.
-Without Dependency Injection (DI), these dependencies are usually hard-coded, creating a "dependency problem" where components are tightly coupled.
+在典型的 .NET 应用中,业务逻辑常常依赖数据库这类外部基础设施。
+如果没有依赖注入(DI),这些依赖通常会被硬编码,造成组件之间紧耦合的 "依赖问题"。
 
-Consider a `UserService` that directly instantiates a `UserRepository`.
-This makes the service dependent on a specific implementation rather than an abstraction:
+来看一个直接实例化 `UserRepository` 的 `UserService`。
+这让这个服务依赖于一个特定的实现,而不是一个抽象:
 
 ```csharp
 public class UserService
@@ -341,10 +341,10 @@ public class UserService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=55)
 
-The problem compounds as we go deeper into the stack.
-The `UserRepository` itself is often tied to a specific database technology, such as SQLite, by directly instantiating a factory:
+随着我们深入到调用栈更下层,问题会进一步加剧。
+`UserRepository` 自身也常常通过直接实例化一个工厂,被绑定到某种特定的数据库技术上,比如 SQLite:
 
 ```csharp
 namespace TheDependencyProblem.Data;
@@ -368,14 +368,14 @@ public class UserRepository
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=100)
 
-This tight coupling is problematic for two main reasons.
-First, it hinders **testability**; you cannot unit test the `UserService` without a live database because you cannot intercept the calls to the repository.
-Second, it reduces **modularity**; switching from SQLite to another provider like MySQL would require manual changes to the repository code.
+这种紧耦合主要有两方面的问题。
+第一,它妨碍了**可测试性**;没有一个真实运行的数据库,你就无法对 `UserService` 做单元测试,因为你没办法拦截对仓储的调用。
+第二,它降低了**模块化程度**;要从 SQLite 切换到 MySQL 之类的另一种提供程序,就得手工修改仓储的代码。
 
-To solve this, we introduce abstractions.
-We define an `IDbConnectionFactory` interface and ensure our concrete factory implements it:
+为了解决这个问题,我们引入抽象。
+我们定义一个 `IDbConnectionFactory` 接口,并让具体的工厂去实现它:
 
 ```csharp
 namespace TheDependencyProblem.Data;
@@ -399,11 +399,11 @@ public class SqliteDbConnectionFactory : IDbConnectionFactory
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=175)
 
-Next, we refactor `UserRepository` to use **Constructor Injection**.
-Instead of the repository creating its own factory, it accepts an `IDbConnectionFactory` through its constructor.
-This is known as Inverting Control:
+接下来,我们把 `UserRepository` 重构为使用**构造函数注入**。
+仓储不再自己创建工厂,而是通过构造函数接收一个 `IDbConnectionFactory`。
+这就是所谓的反转控制:
 
 ```csharp
 public class UserRepository
@@ -423,10 +423,10 @@ public class UserRepository
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=205)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=205)
 
-This allows the repository to work interchangeably with different database providers.
-For example, a `MySqlDbConnectionFactory` can now be used without changing the repository's internal logic:
+这让仓储可以与不同的数据库提供程序互换配合使用。
+例如,现在可以在不改动仓储内部逻辑的情况下使用 `MySqlDbConnectionFactory`:
 
 ```csharp
 public class MySqlDbConnectionFactory : IDbConnectionFactory
@@ -438,10 +438,10 @@ public class MySqlDbConnectionFactory : IDbConnectionFactory
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=265)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=265)
 
-Finally, we apply the same principle to the `UserService` by introducing an `IUserRepository` interface.
-This decouples the service from the specific data access implementation:
+最后,我们通过引入 `IUserRepository` 接口,把同样的原则应用到 `UserService` 上。
+这让服务与具体的数据访问实现解耦:
 
 ```csharp
 public class UserService
@@ -463,10 +463,10 @@ public class UserService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=430)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=430)
 
-With these abstractions in place, the code becomes fully testable.
-In a unit test project, we can provide a `FakeUserRepository` that uses an in-memory dictionary instead of a real database:
+有了这些抽象之后,代码就变得完全可测试了。
+在单元测试项目中,我们可以提供一个 `FakeUserRepository`,它用一个内存中的字典来代替真实的数据库:
 
 ```csharp
 public class FakeUserRepository : IUserRepository
@@ -485,10 +485,10 @@ public class FakeUserRepository : IUserRepository
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=505)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=505)
 
-More realistically, developers use mocking libraries like **NSubstitute** to define behavior dynamically.
-This avoids the need to manually create fake classes for every test scenario:
+更贴近实际的做法是,开发者会使用 **NSubstitute** 这类 mock 库来动态定义行为。
+这样就不必为每一种测试场景手工创建 fake 类:
 
 ```csharp
 public class UserRepositoryTests
@@ -503,35 +503,35 @@ public class UserRepositoryTests
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=565)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-practical-example-of-the-dependency-problem-53953085/?t=565)
 
-By depending on abstractions and inverting control to the constructor, the application becomes modular, maintainable, and easily testable without requiring external dependencies like a database to be present during unit testing.
+通过依赖抽象并把控制反转到构造函数,应用变得模块化、可维护、易于测试,单元测试时也不再需要数据库这类外部依赖在场。
 
 ---
 
 ## 4. A less obvious example of a Dependency Injection use-case
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/) · 4:24
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/) · 4:24
 
-### Summary
+### 总结
 
-This lesson demonstrates how to apply the Dependency Inversion Principle to system-level dependencies that are often overlooked, specifically the system clock.
-By abstracting DateTime.Now behind an interface, developers can transform non-deterministic, untestable code into a modular system where time-based logic can be verified through unit tests using mocked providers.
+本课演示如何把依赖倒置原则应用到那些常被忽视的系统级依赖上,具体来说就是系统时钟。
+通过把 DateTime.Now 抽象到一个接口背后,开发者可以把不确定、不可测试的代码,变成一个模块化的系统,其中基于时间的逻辑可以借助 mock 的提供程序通过单元测试来验证。
 
-### Key concepts
+### 核心概念
 
-- Identifying hidden dependencies on system resources.
-- The problem of non-deterministic code in unit testing.
-- Abstracting DateTime.Now using the IDateTimeProvider interface.
-- Implementing a SystemDateTimeProvider for production use.
-- Injecting abstractions to achieve modularity and testability.
+- 识别对系统资源的隐藏依赖。
+- 不确定性代码在单元测试中带来的问题。
+- 使用 IDateTimeProvider 接口抽象 DateTime.Now。
+- 为生产环境实现一个 SystemDateTimeProvider。
+- 通过注入抽象来获得模块化与可测试性。
 
-### Lesson notes
+### 课程笔记
 
-While some use cases for Dependency Injection are immediately apparent, others involve system-level implementations that are hidden in plain sight.
-A primary example is the use of the system clock via `DateTime.Now`.
+依赖注入的一些使用场景一眼就能看出来,另一些则涉及那些明明就摆在眼前、却容易被忽略的系统级实现。
+一个典型的例子,就是通过 `DateTime.Now` 使用系统时钟。
 
-Consider a `Greeter` class with a method that generates a message based on the current time:
+来看一个 `Greeter` 类,它有一个根据当前时间生成问候语的方法:
 
 ```csharp
 public class Greeter
@@ -549,10 +549,10 @@ public class Greeter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=25)
 
-In a standard execution environment, this class works as expected.
-For instance, if called in the morning, it correctly returns "Good morning."
+在标准的运行环境中,这个类能按预期工作。
+例如,如果在早上调用它,它会正确地返回 "Good morning"。
 
 ```csharp
 using ...
@@ -564,14 +564,14 @@ var message = greeter.CreateGreetMessage();
 Console.WriteLine(message);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=70)
 
-However, this implementation has a significant flaw: it cannot be unit tested for all scenarios.
-Because the class is tightly coupled to the system clock (`DateTime.Now`), a developer cannot write a test to verify the "Good afternoon" logic unless they run the test during those specific hours.
-The code depends on a concrete implementation detail of the operating system rather than an abstraction.
+然而,这个实现有一个严重的缺陷:它无法针对所有场景做单元测试。
+由于这个类与系统时钟(`DateTime.Now`)紧耦合,开发者除非在那个特定的时间段运行测试,否则没办法写测试去验证 "Good afternoon" 这条逻辑。
+这段代码依赖的是操作系统的一个具体实现细节,而不是一个抽象。
 
-To solve this, apply the Dependency Inversion Principle by creating an abstraction for the date and time provider.
-This involves defining an interface and a concrete implementation that wraps the system clock.
+要解决这个问题,就应用依赖倒置原则,为日期时间提供程序创建一个抽象。
+这需要定义一个接口,以及一个包装系统时钟的具体实现。
 
 ```csharp
 public interface IDateTimeProvider
@@ -585,10 +585,10 @@ public class SystemDateTimeProvider
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=175)
 
-The `Greeter` class is refactored to accept the `IDateTimeProvider` interface through its constructor.
-This allows the class to use any implementation of the provider—whether it is the real system clock or a mocked version for testing.
+把 `Greeter` 类重构为通过构造函数接收 `IDateTimeProvider` 接口。
+这让这个类可以使用该提供程序的任意实现,无论是真实的系统时钟,还是用于测试的 mock 版本。
 
 ```csharp
 public Greeter(IDateTimeProvider dateTimeProvider)
@@ -612,11 +612,11 @@ public interface IDateTimeProvider
 {
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=235)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=235)
 
-Note that to fully implement this change, the `CreateGreetMessage` method must be updated to use the injected `_dateTimeProvider.DateTimeNow` instead of the static `DateTime.Now` call.
+注意,要完整落实这项改动,还必须把 `CreateGreetMessage` 方法改为使用注入进来的 `_dateTimeProvider.DateTimeNow`,而不是静态的 `DateTime.Now` 调用。
 
-Finally, the application can be initialized by injecting the concrete `SystemDateTimeProvider`.
+最后,应用可以通过注入具体的 `SystemDateTimeProvider` 来完成初始化。
 
 ```csharp
 using ...
@@ -629,39 +629,39 @@ var message = greeter.CreateGreetMessage();
 Console.WriteLine(message);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=225)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/a-less-obvious-example-of-a-dependency-injection-use-case-53953086/?t=225)
 
-By depending on the abstraction, the code becomes modular and fully testable, as a mock provider can now be injected to return any specific time required for a test case.
+由于依赖的是抽象,代码变得模块化且完全可测试,因为现在可以注入一个 mock 的提供程序,返回某个测试用例所需的任意特定时间。
 
 ---
 
 ## 5. Dependency injection benefits past testability
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/dependency-injection-benefits-past-testability-53953087/) · 1:11
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/dependency-injection-benefits-past-testability-53953087/) · 1:11
 
-### Summary
+### 总结
 
-Dependency Injection (DI) provides significant advantages beyond unit testing, including sophisticated management of dependency lifetimes and the implementation of structural design patterns like Decorators and Interceptors.
-By decoupling abstractions from their implementations, DI enables cleaner, more reusable code and facilitates safer refactoring through improved testability.
+依赖注入(DI)带来的重要优势不止于单元测试,还包括对依赖生命周期的精细管理,以及 Decorator、Interceptor 这类结构型设计模式的实现。
+通过把抽象与它们的实现解耦,DI 让代码更整洁、更可复用,并借助更好的可测试性让重构更安全。
 
-### Key concepts
+### 核心概念
 
-- **Lifetime Management**: DI containers allow for precise control over the lifecycle of dependencies (e.g., Singleton, Scoped, or Transient).
-- **Structural Design Patterns**: DI facilitates the use of Decorators and Interceptors, allowing for cross-cutting concerns to be handled cleanly.
-- **Code Reusability**: By depending on abstractions rather than concrete implementations, code becomes more modular and reusable.
-- **Refactoring Safety**: Even if testability were the only benefit, the ability to write reliable unit tests makes code significantly safer to refactor.
+- **Lifetime Management(生命周期管理)**:DI 容器允许精确控制依赖的生命周期(例如 Singleton、Scoped 或 Transient)。
+- **Structural Design Patterns(结构型设计模式)**:DI 便于使用 Decorator 与 Interceptor,让横切关注点能够被干净地处理。
+- **Code Reusability(代码可复用性)**:依赖抽象而不是具体实现,会让代码更模块化、更可复用。
+- **Refactoring Safety(重构安全性)**:即便可测试性是唯一的好处,能够写出可靠的单元测试也让重构代码安全得多。
 
-### Lesson notes
+### 课程笔记
 
-While testability is often the most immediate benefit of Dependency Injection, it is not the only one.
-DI serves as a foundation for several advanced architectural patterns and practices that improve the overall quality and maintainability of a codebase.
+可测试性往往是依赖注入最直接的好处,但它并不是唯一的好处。
+DI 是若干高级架构模式与实践的基础,而这些模式与实践能提升整个代码库的质量与可维护性。
 
-One of the primary advantages is the ability to manage the **lifetimes** of dependencies.
-Instead of a class being responsible for creating and destroying its own dependencies, the DI container manages these lifecycles, ensuring that resources are shared or disposed of correctly based on the application's needs.
+其中一个主要优势,是能够管理依赖的**生命周期**。
+不再由类自己负责创建和销毁自己的依赖,而是由 DI 容器来管理这些生命周期,确保资源按照应用的需要被正确地共享或释放。
 
-Furthermore, DI enables the implementation of the **Decorator** and **Interceptor** patterns.
-These patterns allow developers to wrap or intercept calls to a dependency to add functionality—such as logging, caching, or validation—without modifying the original implementation.
-This is made possible because the consuming class depends on an abstraction (an interface) rather than a specific concrete class.
+此外,DI 使得 **Decorator** 与 **Interceptor** 模式的实现成为可能。
+这些模式让开发者可以包装或拦截对依赖的调用,在不修改原有实现的情况下增加日志、缓存或校验之类的功能。
+之所以能做到这一点,是因为消费方类依赖的是一个抽象(接口),而不是某个特定的具体类。
 
 ```csharp
 public Greeter(IDateTimeProvider dateTimeProvider)
@@ -685,39 +685,39 @@ public interface IDateTimeProvider
 {
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/dependency-injection-benefits-past-testability-53953087/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/dependency-injection-benefits-past-testability-53953087/?t=10)
 
-Even if testability were the sole benefit, it would remain a critical reason to adopt DI.
-Code that is easily testable is inherently safer.
-When unit tests are comprehensive, developers can refactor logic with confidence, knowing that any regressions will be caught immediately.
-DI facilitates this by allowing the injection of mock or stub implementations of interfaces like `IDateTimeProvider` during testing.
+即便可测试性是唯一的好处,它也仍然是采用 DI 的一个关键理由。
+易于测试的代码在本质上就更安全。
+当单元测试足够全面时,开发者可以放心地重构逻辑,因为任何回归问题都会被立刻发现。
+DI 让这一点更容易做到,因为它允许在测试时注入 `IDateTimeProvider` 这类接口的 mock 或 stub 实现。
 
 ---
 
 ## 6. Injecting Classes vs Abstract classes vs Interfaces
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/) · 1:51
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/) · 1:51
 
-### Summary
+### 总结
 
-This lesson explores the technical and architectural differences between injecting concrete classes, abstract classes, and interfaces in .NET.
-While dependency injection containers can technically resolve concrete types, adhering to the Dependency Inversion Principle requires depending on abstractions to ensure code remains decoupled, testable, and maintainable.
-Interfaces are the recommended choice due to their full mockability and alignment with the principle of composition over inheritance, though they should be applied pragmatically based on the need for testability or swappability.
+本课探讨在 .NET 中注入具体类、抽象类和接口之间的技术差异与架构差异。
+虽然依赖注入容器在技术上可以解析具体类型,但遵循依赖倒置原则要求我们依赖抽象,以确保代码保持解耦、可测试和可维护。
+接口是推荐的选择,因为它们完全可以被 mock,也契合组合优于继承的原则,不过应该根据是否需要可测试性或可替换性来务实地使用它们。
 
-### Key concepts
+### 核心概念
 
-*   **Dependency Inversion Principle (DIP):** High-level components should depend on abstractions, not on concrete implementations.
-*   **Concrete Injection:** Injecting a specific class (e.g., `SystemDateTimeProvider`) technically works but couples the consumer to that specific implementation.
-*   **Abstract Classes:** These provide a level of abstraction but are not fully mockable and enforce inheritance hierarchies.
-*   **Interfaces:** The preferred abstraction in C# because they are fully mockable and support composition over inheritance.
-*   **Pragmatic Abstraction:** Interfaces should be used when unit testability or swappability is required, rather than as a default for every class.
+- **Dependency Inversion Principle (DIP,依赖倒置原则)**:高层组件应该依赖抽象,而不是依赖具体实现。
+- **Concrete Injection(注入具体类)**:注入某个特定的类(例如 `SystemDateTimeProvider`)在技术上是可行的,但会把消费方耦合到那个特定实现上。
+- **Abstract Classes(抽象类)**:它们提供了一定程度的抽象,但无法被完全 mock,而且会强制形成继承层次。
+- **Interfaces(接口)**:C# 中首选的抽象方式,因为它们完全可以被 mock,并且支持组合优于继承。
+- **Pragmatic Abstraction(务实的抽象)**:应该在需要单元可测试性或可替换性时使用接口,而不是把它当成每个类的默认选项。
 
-### Lesson notes
+### 课程笔记
 
-In .NET, you have the flexibility to inject concrete classes, abstract classes, or interfaces.
-While the dependency injection container can handle all three, the choice significantly impacts the architecture and testability of your application.
+在 .NET 中,你可以灵活地注入具体类、抽象类或接口。
+虽然依赖注入容器这三种都能处理,但这个选择会显著影响应用的架构和可测试性。
 
-Consider a `Greeter` class that depends on an interface:
+来看一个依赖于接口的 `Greeter` 类:
 
 ```csharp
 namespace TheDependencyProblem;
@@ -744,11 +744,11 @@ public class Greeter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=10)
 
-If you were to change the constructor to accept a concrete implementation like `SystemDateTimeProvider`, the code would still function and technically "inject" a dependency.
-However, this approach violates the Dependency Inversion Principle.
-By depending on a specific implementation, you lose the benefits of abstraction.
+如果你把构造函数改成接收 `SystemDateTimeProvider` 这样的具体实现,代码仍然能正常工作,而且在技术上也确实 "注入" 了一个依赖。
+然而,这种做法违背了依赖倒置原则。
+依赖某个特定实现,就失去了抽象带来的好处。
 
 ```csharp
 namespace TheDependencyProblem;
@@ -775,12 +775,12 @@ public class Greeter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=25)
 
-Abstract classes can serve as abstractions to a degree.
-However, interfaces are generally preferred in the C# ecosystem.
-Abstract classes are not fully mockable in many testing frameworks, whereas interfaces are.
-Furthermore, modern C# development tends to favor composition over inheritance; abstract classes force an inheritance hierarchy that can become rigid and less desirable over time.
+抽象类在一定程度上可以充当抽象。
+不过在 C# 生态中,通常还是更推荐接口。
+在很多测试框架中,抽象类无法被完全 mock,而接口可以。
+此外,现代 C# 开发倾向于组合优于继承;抽象类会强制形成一套继承层次,而它可能随着时间推移变得僵化、越来越不理想。
 
 ```csharp
 namespace TheDependencyProblem;
@@ -807,11 +807,11 @@ public class Greeter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=70)
 
-The final recommendation is to prefer interfaces over concrete or abstract classes because they make unit testing and swapping implementations significantly easier.
-However, you do not need an interface for every single class.
-The decision to create an interface should be based on whether the component needs to be unit testable or if the implementation needs to be swappable.
+最终的建议是,优先选择接口而不是具体类或抽象类,因为接口让单元测试和替换实现都容易得多。
+不过,你并不需要为每一个类都做一个接口。
+是否创建接口,应该取决于这个组件是否需要可被单元测试,或者它的实现是否需要可被替换。
 
 ```csharp
 namespace TheDependencyProblem;
@@ -838,30 +838,30 @@ public class Greeter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/injecting-classes-vs-abstract-classes-vs-interfaces-53953088/?t=85)
 
 ---
 
 ## 7. So do you have to do all that manually??
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/so-do-you-have-to-do-all-that-manually-53953089/) · 1:21
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/so-do-you-have-to-do-all-that-manually-53953089/) · 1:21
 
-### Summary
+### 总结
 
-This lesson addresses the practicality of manual dependency injection, introducing the Dependency Injection (DI) framework (or IoC container) as the standard solution in .NET.
-While manual instantiation is technically possible, .NET provides a built-in, high-performance DI framework that automates object creation and lifetime management, such as singletons and scoped services, eliminating the need for developers to manually wire up dependencies.
+本课讨论手工做依赖注入是否现实,并介绍依赖注入(DI)框架(或称 IoC 容器)作为 .NET 中的标准解决方案。
+虽然手工实例化在技术上是可行的,但 .NET 提供了一个内置的高性能 DI 框架,它会自动完成对象创建与生命周期管理,比如单例和作用域服务,从而让开发者不必再手工把依赖接起来。
 
-### Key concepts
+### 核心概念
 
-- **DI Framework / IoC Container**: A library or tool that automates the creation and injection of dependencies.
-- **Manual Injection**: The process of manually instantiating classes and passing their dependencies through constructors.
-- **Service Lifetimes**: Management of how long an object lives (e.g., Singletons, Scoped, or Transient), which is handled automatically by the DI framework.
-- **Built-in .NET Support**: ASP.NET Core and modern .NET include a native, high-performance DI container out of the box.
+- **DI Framework / IoC Container(DI 框架 / IoC 容器)**:一个自动完成依赖创建与注入的库或工具。
+- **Manual Injection(手工注入)**:手工实例化类,并通过构造函数把它们的依赖传进去的过程。
+- **Service Lifetimes(服务生命周期)**:对一个对象存活多久的管理(例如 Singleton、Scoped 或 Transient),这由 DI 框架自动处理。
+- **Built-in .NET Support(.NET 内置支持)**:ASP.NET Core 和现代 .NET 开箱即带一个原生的高性能 DI 容器。
 
-### Lesson notes
+### 课程笔记
 
-When implementing dependency injection, a common question is whether developers must manually instantiate every class and its dependencies.
-In a simple scenario, you might have a class like `Greeter` that depends on an `IDateTimeProvider` to determine the appropriate greeting based on the time of day:
+在实现依赖注入时,一个常见的问题是:开发者是不是必须手工实例化每一个类及其依赖。
+在一个简单的场景中,你可能有一个像 `Greeter` 这样的类,它依赖 `IDateTimeProvider` 来根据一天中的时间决定合适的问候语:
 
 ```csharp
 namespace TheDependencyProblem;
@@ -888,9 +888,9 @@ public class Greeter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/so-do-you-have-to-do-all-that-manually-53953089/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/so-do-you-have-to-do-all-that-manually-53953089/?t=10)
 
-To use this class, you would traditionally need to manually create the implementation of the dependency and pass it into the constructor every time you want to use the service:
+要使用这个类,传统做法是每次想用这个服务时,都手工创建依赖的实现并把它传入构造函数:
 
 ```csharp
 using ...
@@ -902,49 +902,49 @@ var message = greeter.CreateGreetMessage();
 Console.WriteLine(message);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/so-do-you-have-to-do-all-that-manually-53953089/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/so-do-you-have-to-do-all-that-manually-53953089/?t=25)
 
-While this manual approach is technically possible, it becomes unmanageable as applications grow.
-Managing object lifetimes—such as ensuring a service acts as a singleton or has a narrow scope—requires significant boilerplate code and manual tracking.
+虽然这种手工做法在技术上可行,但随着应用不断变大,它会变得难以管理。
+管理对象的生命周期,比如确保某个服务表现为单例、或者只存在于很窄的作用域内,需要大量样板代码和手工跟踪。
 
-To solve this, developers use a Dependency Injection (DI) framework, also known as an Inversion of Control (IoC) container.
-This tool acts as a library that manages the instantiation and injection of services automatically.
-Since .NET Core 1.0, Microsoft has included a built-in DI framework that is both fast and feature-rich.
-This framework is the standard for modern .NET development, including ASP.NET Core.
-It removes the need for manual wiring, allowing developers to focus on application logic while the container handles the complexities of dependency resolution and lifecycle management.
+为了解决这个问题,开发者会使用依赖注入(DI)框架,也就是所谓的控制反转(IoC)容器。
+这个工具作为一个库,自动管理服务的实例化与注入。
+自 .NET Core 1.0 起,微软就内置了一个既快速又功能丰富的 DI 框架。
+这个框架是现代 .NET 开发(包括 ASP.NET Core)的标准。
+它免去了手工接线的必要,让开发者专注于应用逻辑,而由容器来处理依赖解析与生命周期管理的复杂性。
 
 ---
 
 ## 8. Section recap
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953090/) · 1:09
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953090/) · 1:09
 
-### Summary
+### 总结
 
-This lesson provides a comprehensive recap of the foundational principles of Dependency Injection (DI) in .NET.
-It reviews the core problems DI addresses—specifically in the context of databases, I/O, and networking—and explores its application for system-level dependencies like date and time providers.
-The lesson emphasizes the benefits of DI beyond testability and introduces the built-in .NET dependency injection framework as the standard mechanism for managing dependencies across all modern versions of the platform.
+本课对 .NET 中依赖注入(DI)的基础原则做了一次全面回顾。
+它回顾了 DI 所要解决的核心问题,特别是在数据库、I/O 和网络这些场景下的问题,并探讨了它在日期时间提供程序这类系统级依赖上的应用。
+本课强调了 DI 在可测试性之外的好处,并介绍了 .NET 内置的依赖注入框架,它是该平台所有现代版本中管理依赖的标准机制。
 
-### Key concepts
+### 核心概念
 
-- Identification of the architectural problems solved by Dependency Injection.
-- Common DI use cases: Databases, I/O operations, and networking.
-- System-level DI: Abstracting system components like DateTime.
-- Comparison of DI implementations: Concrete classes, abstract classes, and interfaces.
-- The role and stability of the built-in .NET dependency injection framework.
+- 识别依赖注入所解决的架构问题。
+- 常见的 DI 使用场景:数据库、I/O 操作和网络。
+- 系统级 DI:抽象 DateTime 这类系统组件。
+- DI 实现方式的比较:具体类、抽象类和接口。
+- .NET 内置依赖注入框架的作用与稳定性。
 
-### Lesson notes
+### 课程笔记
 
-The section established the fundamental necessity of Dependency Injection (DI) by identifying the architectural challenges it solves.
-DI is particularly critical in modern software development when managing interactions with external resources such as databases, file I/O, and network services.
+本章通过识别依赖注入(DI)所解决的架构挑战,确立了它的根本必要性。
+在现代软件开发中,当需要管理与数据库、文件 I/O 和网络服务等外部资源的交互时,DI 尤为关键。
 
-A less obvious but equally important use case for DI involves system-level dependencies.
-For instance, using a provider for DateTime allows developers to decouple their logic from the system clock, which is essential for creating deterministic tests and managing time-sensitive logic.
+DI 的一个不那么明显、但同样重要的使用场景,涉及系统级依赖。
+例如,为 DateTime 使用一个提供程序,可以让开发者把自己的逻辑与系统时钟解耦,这对于编写确定性的测试和管理时间敏感的逻辑来说至关重要。
 
-While DI significantly improves testability, it offers broader architectural benefits.
-When implementing DI, developers can utilize concrete classes, abstract classes, or interfaces.
-Interface-based DI is the recommended approach for achieving the highest degree of decoupling and flexibility.
+DI 显著提升了可测试性,但它带来的架构层面的好处更为广泛。
+在实现 DI 时,开发者可以使用具体类、抽象类或接口。
+基于接口的 DI 是推荐的做法,它能获得最高程度的解耦与灵活性。
 
-In the .NET ecosystem, manual implementation of DI patterns is rarely necessary.
-The platform includes a built-in dependency injection framework that has been a core component since .NET Core 1.0.
-This framework remains consistent across .NET 5, .NET 6, and future versions, providing a stable foundation for managing object lifecycles and dependencies.
+在 .NET 生态中,很少需要手工实现 DI 模式。
+这个平台内置了一个依赖注入框架,自 .NET Core 1.0 起它就是核心组件。
+这个框架在 .NET 5、.NET 6 及未来版本中保持一致,为管理对象生命周期与依赖提供了稳定的基础。
