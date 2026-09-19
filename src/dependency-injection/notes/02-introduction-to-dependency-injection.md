@@ -948,3 +948,56 @@ DI 显著提升了可测试性,但它带来的架构层面的好处更为广泛�
 在 .NET 生态中,很少需要手工实现 DI 模式。
 这个平台内置了一个依赖注入框架,自 .NET Core 1.0 起它就是核心组件。
 这个框架在 .NET 5、.NET 6 及未来版本中保持一致,为管理对象生命周期与依赖提供了稳定的基础。
+
+---
+
+## 运行 Demo
+
+本章的代码取自课程的 `1.Introduction` 目录,重新整理成一个可以从头跑到尾的 demo,外加一个证明"可测试性"这件事真的成立的测试项目。
+
+```
+src/dependency-injection/02-introduction-to-dependency-injection/
+  DependencyInjection.Introduction.Demos/
+    CarExample/TightlyCoupledCars.cs   第 1 课:PetrolCar / DieselCar,自己 new 发动机
+    CarExample/Car.cs                  第 2 课:Car + ICarEngine + PetrolEngine / DieselEngine / TestEngine
+    Data/TightlyCoupledUserService.cs  第 3 课的"之前":service new repository new factory
+    Data/UserRepository.cs             第 3 课的"之后":IDbConnectionFactory 构造函数注入
+    Data/UserService.cs                依赖 IUserRepository
+    Data/DbConnectionFactories.cs      SQLite 文件版 + SQLite 内存版两个 provider
+    Data/DatabaseInitializer.cs        建表,课程代码里没有
+    Data/SqliteGuidTypeHandler.cs      Dapper 的 Guid <-> TEXT 转换,课程代码里没有
+    Clock/Greeter.cs                   第 4、6 课:DateTime.Now vs IDateTimeProvider vs 注入具体类
+    CarDemo.cs / DataDemo.cs / ClockDemo.cs / ContainerDemo.cs
+  DependencyInjection.Introduction.Tests/
+    CarTests.cs                        TestEngine 和 NSubstitute 两种替身
+    GreeterTests.cs                    六个 InlineData 覆盖三个分支
+    FakeUserRepository.cs              第 3 课那个手写的 fake
+    UserServiceTests.cs                fake 与 NSubstitute mock,全程不碰数据库
+    UserRepositoryTests.cs             同一个 repository 指向内存数据库
+```
+
+```bash
+cd src/dependency-injection/02-introduction-to-dependency-injection/DependencyInjection.Introduction.Demos
+dotnet run                 # 四个小节全跑
+dotnet run -- car          # 第 1、2 课
+dotnet run -- data         # 第 3 课
+dotnet run -- clock        # 第 4、6 课
+dotnet run -- container    # 第 7 课
+```
+
+```bash
+cd src/dependency-injection/02-introduction-to-dependency-injection/DependencyInjection.Introduction.Tests
+dotnet test
+```
+
+Demo 是瞬间跑完的。
+`data` 小节会在系统临时目录下建一个 `di-intro-demo.db`,每次运行都会先清空表。
+
+和课程代码的出入,以及原因:
+
+- 目标框架是 net10.0,跟着仓库的 `src/Directory.Build.props` 走,课程代码是 net6.0。
+- 课程用 `MySqlDbConnectionFactory` 演示换 provider,但那个实现只是 `new MySqlConnection()`,连不上任何东西。这里换成第二个真能跑的 SQLite 实现:共享缓存的内存数据库。它需要一个 keep-alive 连接把库撑住,顺带提前照应了第 5 课说的生命周期管理。
+- 课程的 `SqliteDbConnectionFactory` 在自己的构造函数里硬编码连接串,这本身就是一个没被注入的依赖。这里把 `DbConnectionOptions` 也改成构造函数传入。
+- SQLite 没有 GUID 类型,`Guid` 以 TEXT 往返,Dapper 需要一个 type handler 才认。加上它之后仓储代码就可以和课程里的一模一样。
+- 课程的 `UserRepositoryTests` 只有空的 Arrange / Act / Assert 注释,这里补成了真正会跑的断言。
+- `ContainerDemo` 是第 7 课那句"你不需要手工做这些"的展开:同一套对象图,先手工 new 一遍,再用 `ServiceCollection` 注册一遍,并顺手看一眼 singleton 与 transient 的区别。真正的讲解在第 3 章。

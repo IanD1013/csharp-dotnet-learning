@@ -17,6 +17,11 @@
     <Project Path="src/1brc/Level6_Expert/Level6_Expert.csproj" />
     <Project Path="src/1brc/Shared/Shared.csproj" />
   </Folder>
+  <Folder Name="/src/dependency-injection/" />
+  <Folder Name="/src/dependency-injection/02-introduction-to-dependency-injection/">
+    <Project Path="src/dependency-injection/02-introduction-to-dependency-injection/DependencyInjection.Introduction.Demos/DependencyInjection.Introduction.Demos.csproj" />
+    <Project Path="src/dependency-injection/02-introduction-to-dependency-injection/DependencyInjection.Introduction.Tests/DependencyInjection.Introduction.Tests.csproj" />
+  </Folder>
   <Folder Name="/src/docker/" />
   <Folder Name="/src/docker/docker-for-developers/" />
   <Folder Name="/src/docker/docker-for-developers/demo-app/">
