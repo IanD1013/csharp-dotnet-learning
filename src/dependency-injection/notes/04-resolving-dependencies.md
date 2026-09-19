@@ -1,14 +1,14 @@
 # Resolving dependencies
 
-> Course: [From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · Chapter 4
-> 15 lessons · ~25:09
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · 第 4 章
+> 共 15 课 · 约 25:09
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
+## 课程索引
 
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Resolving dependencies in different project types](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-different-project-types-53953161/) | 0:21 | [↓](#1-resolving-dependencies-in-different-project-types) |
 | 2 | [Resolving dependencies from the constructor](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/) | 0:59 | [↓](#2-resolving-dependencies-from-the-constructor) |
@@ -30,30 +30,30 @@
 
 ## 1. Resolving dependencies in different project types
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-different-project-types-53953161/) · 0:21
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-different-project-types-53953161/) · 0:21
 
-### Summary
+### 总结
 
-This lesson introduces the various patterns for resolving dependencies across different .NET project types, including Console applications, Web APIs, Minimal APIs, MVC, Razor Pages, Blazor, and gRPC.
-While the underlying dependency injection container and registration process remain consistent, the specific entry points for resolution—such as manual service provider construction, constructor injection, or method parameter injection—vary to accommodate the specific requirements and lifecycles of each framework template.
+本课介绍在不同 .NET 项目类型中解析依赖的各种模式,涵盖控制台应用、Web API、Minimal API、MVC、Razor Pages、Blazor 以及 gRPC。
+底层的依赖注入容器和注册流程保持一致,但具体的解析入口点会有所不同,比如手动构建 service provider、构造函数注入或方法参数注入,以适配每种框架模板各自的需求和生命周期。
 
-### Key concepts
+### 核心概念
 
-*   **Manual Resolution**: Required in non-hosted environments like Console applications where the service provider must be built and queried manually.
-*   **Constructor Injection**: The standard pattern for framework-managed classes such as Web API/MVC Controllers, Razor Page models, and gRPC services.
-*   **Parameter Injection**: A specialized pattern for Minimal API route handlers where dependencies are resolved directly from the method signature.
-*   **Project-Specific Registrations**: Variations in how services are registered, such as the use of `AddServerSideBlazor` in Blazor Server or configuring a scoped `HttpClient` in Blazor WebAssembly.
+*   **Manual Resolution(手动解析)**:在控制台应用这类没有宿主(host)的环境中必须使用,需要手动构建 service provider 并从中查询服务。
+*   **Constructor Injection(构造函数注入)**:适用于由框架管理的类的标准模式,例如 Web API / MVC 控制器、Razor Page 模型和 gRPC 服务。
+*   **Parameter Injection(参数注入)**:Minimal API 路由处理器专有的模式,依赖直接从方法签名中解析。
+*   **Project-Specific Registrations(项目特有的注册方式)**:注册方式上的差异,例如 Blazor Server 中使用 `AddServerSideBlazor`,或在 Blazor WebAssembly 中配置一个 scoped 的 `HttpClient`。
 
-### Lesson notes
+### 课程笔记
 
-Dependency resolution in .NET is highly dependent on the project type and the specific class requiring the service.
-While the registration of services into the `IServiceCollection` is a shared fundamental, the retrieval mechanism changes based on whether the framework manages the instantiation of the class.
+在 .NET 中,依赖解析高度取决于项目类型以及需要该服务的具体类。
+把服务注册到 `IServiceCollection` 是所有项目共通的基础,但获取机制会随着"该类的实例化是否由框架管理"而变化。
 
-#### Console Applications
+#### Console Applications(控制台应用)
 
-In a standard Console application, there is no built-in host to manage the service lifecycle automatically.
-Developers must manually create a `ServiceCollection`, register dependencies, and call `BuildServiceProvider()` to create the container.
-Services are then retrieved using `GetRequiredService<T>` or `GetService<T>`.
+在标准的控制台应用中,没有内置的宿主来自动管理服务的生命周期。
+开发者必须手动创建 `ServiceCollection`、注册依赖,并调用 `BuildServiceProvider()` 来创建容器。
+随后再通过 `GetRequiredService<T>` 或 `GetService<T>` 取出服务。
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -80,8 +80,8 @@ await application.RunAsync(args);
 
 #### Minimal APIs
 
-Minimal APIs simplify dependency resolution by allowing services to be injected directly as parameters in the route handler delegates.
-The framework automatically resolves these parameters from the DI container when the endpoint is called.
+Minimal API 简化了依赖解析:服务可以直接作为路由处理委托的参数注入。
+当端点被调用时,框架会自动从 DI 容器中解析这些参数。
 
 ```csharp
 app.MapGet("weather", (ILogger<Program> logger) =>
@@ -102,10 +102,10 @@ app.MapGet("weather", (ILogger<Program> logger) =>
 });
 ```
 
-#### Web API and MVC Controllers
+#### Web API and MVC Controllers(Web API 与 MVC 控制器)
 
-For Controller-based projects, constructor injection is the primary mechanism.
-The framework's controller factory identifies the dependencies defined in the constructor and resolves them before instantiating the controller.
+对于基于控制器的项目,构造函数注入是主要机制。
+框架的控制器工厂会识别构造函数中声明的依赖,并在实例化控制器之前解析它们。
 
 ```csharp
 [ApiController]
@@ -126,10 +126,10 @@ public class WeatherForecastController : ControllerBase
 }
 ```
 
-#### gRPC Services
+#### gRPC Services(gRPC 服务)
 
-gRPC services in .NET also utilize constructor injection.
-The service implementation class inherits from a generated base class, and the DI container provides the required services when a gRPC call is routed to the implementation.
+.NET 中的 gRPC 服务同样使用构造函数注入。
+服务实现类继承自生成的基类,当一次 gRPC 调用被路由到该实现时,DI 容器会提供所需的服务。
 
 ```csharp
 public class GreeterService : Greeter.GreeterBase
@@ -151,10 +151,10 @@ public class GreeterService : Greeter.GreeterBase
 }
 ```
 
-#### Blazor Applications
+#### Blazor Applications(Blazor 应用)
 
-Blazor Server and Blazor WebAssembly register services in `Program.cs`.
-Blazor Server typically registers services like `WeatherForecastService` as Singletons or Scoped, while Blazor WebAssembly frequently registers a scoped `HttpClient` configured with the base address of the host environment.
+Blazor Server 和 Blazor WebAssembly 都在 `Program.cs` 中注册服务。
+Blazor Server 通常把 `WeatherForecastService` 这类服务注册为 Singleton 或 Scoped,而 Blazor WebAssembly 则经常注册一个 scoped 的 `HttpClient`,并把它配置成指向宿主环境的基地址。
 
 ```csharp
 // Blazor WebAssembly example
@@ -171,25 +171,25 @@ await builder.Build().RunAsync();
 
 ## 2. Resolving dependencies from the constructor
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/) · 0:59
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/) · 0:59
 
-### Summary
+### 总结
 
-Constructor injection is the primary and most straightforward method for resolving dependencies in .NET applications.
-By defining required services as parameters in a class constructor, the built-in dependency injection container automatically provides the necessary instances at runtime, provided they have been registered in the application's service collection.
+构造函数注入是 .NET 应用中解析依赖的首要方式,也是最直接的方式。
+只要把所需的服务声明为类构造函数的参数,内置的依赖注入容器就会在运行时自动提供相应的实例,前提是这些服务已经注册到应用的 service collection 中。
 
-### Key concepts
+### 核心概念
 
-- **Constructor Injection**: The standard pattern for requesting dependencies by declaring them as constructor parameters.
-- **Automatic Resolution**: The .NET dependency injection container automatically fulfills constructor requirements during object instantiation.
-- **Service Registration**: Dependencies must be registered in the service container (typically in `Program.cs`) to be resolvable.
-- **Framework-Provided Services**: Certain services, such as `ILogger`, are automatically registered by ASP.NET Core and do not require manual configuration.
+- **Constructor Injection(构造函数注入)**:通过把依赖声明为构造函数参数来请求依赖的标准模式。
+- **Automatic Resolution(自动解析)**:.NET 依赖注入容器会在对象实例化过程中自动满足构造函数的要求。
+- **Service Registration(服务注册)**:依赖必须注册到服务容器中(通常在 `Program.cs`)才能被解析。
+- **Framework-Provided Services(框架提供的服务)**:某些服务(例如 `ILogger`)由 ASP.NET Core 自动注册,无需手动配置。
 
-### Lesson notes
+### 课程笔记
 
-In .NET, the most common and default method for resolving services is through constructor injection.
-This approach is standard even when not using a formal dependency injection framework, but it is fully automated within the .NET ecosystem.
-To resolve a service within a class, such as a Web API controller, you simply define the service as a parameter in the class's constructor.
+在 .NET 中,解析服务最常见也是默认的方式就是构造函数注入。
+即便不使用正式的依赖注入框架,这种做法也是标准写法,而在 .NET 生态中它是完全自动化的。
+要在某个类(比如一个 Web API 控制器)中解析服务,只需把该服务定义为这个类构造函数的一个参数。
 
 ```csharp
 private static readonly string[] Summaries = new[]
@@ -214,10 +214,10 @@ private static readonly string[] Summaries = new[]
             TemperatureC = Random.Shared.Next(-20, 55),
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/?t=25)
 
-When a class is instantiated, the dependency injection framework automatically identifies the required dependencies and provides the appropriate instances.
-For this to work, the service must be registered in the application's configuration, typically found in the `Program.cs` file (or `Startup.cs` in older project structures).
+当一个类被实例化时,依赖注入框架会自动识别它所需的依赖,并提供合适的实例。
+要让这一切生效,服务必须注册在应用的配置中,通常位于 `Program.cs` 文件(在更老的项目结构中则是 `Startup.cs`)。
 
 ```csharp
 using ResolvingDeps.WebApi.Filters;
@@ -244,34 +244,34 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-constructor-53953162/?t=40)
 
-In ASP.NET Core, many essential services are registered automatically by the framework.
-For example, while you may not see an explicit registration for `ILogger` in `Program.cs`, it is configured behind the scenes, allowing it to be injected into controllers or other services immediately without additional setup.
+在 ASP.NET Core 中,许多必要的服务是由框架自动注册的。
+例如,你在 `Program.cs` 里看不到对 `ILogger` 的显式注册,但它已经在幕后配置好了,因此无需任何额外设置就能立刻注入到控制器或其他服务中。
 
 ---
 
 ## 3. Resolving dependencies from the method
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-method-53953163/) · 1:27
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-method-53953163/) · 1:27
 
-### Summary
+### 总结
 
-ASP.NET Core allows for resolving dependencies directly within a method's parameters using the [FromServices] attribute, offering an alternative to standard constructor injection.
-This approach is particularly beneficial when a dependency is only needed for a single action within a class, as it simplifies unit testing by removing the need to mock that dependency for other methods.
-While useful for reducing test boilerplate, this technique should be used sparingly to maintain adherence to the Single Responsibility Principle and ensure that classes do not become overly complex.
+ASP.NET Core 允许使用 [FromServices] 特性直接在方法参数上解析依赖,这为标准的构造函数注入提供了另一种选择。
+当某个依赖只被类中的单个 action 用到时,这种做法尤其有价值,因为它免去了在测试其他方法时还要为该依赖创建 mock 的麻烦,从而简化单元测试。
+虽然它能减少测试样板代码,但这一技巧应当克制使用,以便继续遵守单一职责原则,并确保类不会变得过于复杂。
 
-### Key concepts
+### 核心概念
 
-* Method-level dependency resolution in ASP.NET Core
-* Using the [FromServices] attribute for action parameters
-* Improving testability by isolating dependencies to specific use cases
-* Balancing method injection with the Single Responsibility Principle (SRP)
+* ASP.NET Core 中的方法级依赖解析
+* 在 action 参数上使用 [FromServices] 特性
+* 通过把依赖隔离到特定用例来提升可测试性
+* 在方法注入与单一职责原则(SRP)之间取得平衡
 
-### Lesson notes
+### 课程笔记
 
-In most ASP.NET Core applications, dependencies are resolved through constructor injection.
-This pattern ensures that the required services are available to all methods within the controller or class.
+在大多数 ASP.NET Core 应用中,依赖是通过构造函数注入来解析的。
+这种模式保证了所需的服务对控制器或类中的所有方法都可用。
 
 ```csharp
 public class WeatherForecastController : ControllerBase
@@ -304,14 +304,14 @@ public class WeatherForecastController : ControllerBase
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-method-53953163/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-method-53953163/?t=25)
 
-A challenge arises when a class contains multiple methods, but a specific dependency is only required by one of them.
-With constructor injection, every unit test for every method in that class must provide a mock for that dependency, even if the method under test does not use it.
+当一个类包含多个方法,而某个依赖只有其中一个方法需要时,问题就出现了。
+在构造函数注入下,这个类中每个方法的每个单元测试都必须为该依赖提供一个 mock,哪怕被测方法根本用不到它。
 
-To optimize this, ASP.NET Core provides the `[FromServices]` attribute.
-When applied to a method parameter, the framework resolves the dependency directly from the DI container only when that specific method is called.
-This removes the dependency from the class constructor and limits its scope to the single action that requires it.
+为了优化这一点,ASP.NET Core 提供了 `[FromServices]` 特性。
+把它应用到方法参数上之后,框架只会在该方法被调用时才直接从 DI 容器中解析这个依赖。
+这样就把依赖从类的构造函数中移除了,并把它的作用范围限制在真正需要它的那个 action 上。
 
 ```csharp
 public class WeatherForecastController : ControllerBase
@@ -338,37 +338,37 @@ public class WeatherForecastController : ControllerBase
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-method-53953163/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-method-53953163/?t=40)
 
-While this technique is useful for simplifying tests, it is generally considered an exception rather than the rule.
-If a class has many methods and only one requires a specific service, it may be a sign that the class is handling too many responsibilities.
-Following the Single Responsibility Principle often leads to smaller classes where constructor injection remains the most appropriate choice.
-However, method-level injection is a valuable tool to have when refactoring or when dealing with specific architectural constraints.
+这个技巧虽然有助于简化测试,但通常被视为例外而非常规做法。
+如果一个类有很多方法,却只有其中一个需要某个特定服务,这往往说明这个类承担了过多职责。
+遵循单一职责原则通常会得到更小的类,而在更小的类里,构造函数注入仍然是最合适的选择。
+不过,在重构时或面对特定架构约束时,方法级注入是一个值得拥有的工具。
 
 ---
 
 ## 4. Resolving dependencies in a console setup
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/) · 1:17
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/) · 1:17
 
-### Summary
+### 总结
 
-In .NET console applications, dependency resolution must be managed manually because they lack the automatic infrastructure found in ASP.NET Core.
-This involves explicitly creating a ServiceCollection, registering dependencies, building a ServiceProvider, and manually resolving the entry-point service.
-Once the top-level service is resolved, the DI container automatically handles constructor injection for all subsequent dependencies in the graph.
+在 .NET 控制台应用中,依赖解析必须手动管理,因为它们没有 ASP.NET Core 那样的自动化基础设施。
+这包括显式创建 ServiceCollection、注册依赖、构建 ServiceProvider,并手动解析作为入口点的服务。
+一旦顶层服务被解析出来,DI 容器就会自动为依赖图中后续的所有依赖完成构造函数注入。
 
-### Key concepts
+### 核心概念
 
-- Manual `ServiceCollection` instantiation.
-- Dependency registration via `AddSingleton`, `AddScoped`, or `AddTransient`.
-- Materializing the container with `BuildServiceProvider`.
-- Entry-point resolution using `GetRequiredService`.
-- Constructor injection as the primary resolution mechanism.
+- 手动实例化 `ServiceCollection`。
+- 通过 `AddSingleton`、`AddScoped` 或 `AddTransient` 注册依赖。
+- 用 `BuildServiceProvider` 把容器实体化。
+- 使用 `GetRequiredService` 解析入口点。
+- 构造函数注入作为主要的解析机制。
 
-### Lesson notes
+### 课程笔记
 
-To implement Dependency Injection in a console application, you must first include the `Microsoft.Extensions.DependencyInjection` NuGet package in your project file.
-This package provides the necessary abstractions and default implementation for the DI container.
+要在控制台应用中实现依赖注入,首先必须在项目文件中引入 `Microsoft.Extensions.DependencyInjection` NuGet 包。
+这个包提供了 DI 容器所需的抽象和默认实现。
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -387,11 +387,11 @@ This package provides the necessary abstractions and default implementation for 
 </Project>
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/?t=30)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/?t=30)
 
-Unlike ASP.NET Core, which handles service resolution automatically through controllers, console applications require manual configuration of the service container.
-You begin by instantiating a `ServiceCollection` and registering your application's services.
-After registration, you call `BuildServiceProvider()` to create the `IServiceProvider` and then manually resolve the entry-point service.
+ASP.NET Core 会通过控制器自动处理服务解析,控制台应用则不同,需要手动配置服务容器。
+你先实例化一个 `ServiceCollection`,并注册应用的各个服务。
+注册完成后,调用 `BuildServiceProvider()` 创建 `IServiceProvider`,然后手动解析入口点服务。
 
 ```csharp
 if (args.Length == 0)
@@ -412,11 +412,11 @@ var application = serviceProvider.GetRequiredService<Application>();
 await application.RunAsync(args);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/?t=20)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/?t=20)
 
-Once the root service is resolved, the DI container automatically cascades resolution down the dependency tree.
-Any dependencies required by the `Application` class are injected through its constructor.
-This automatic resolution continues for all nested dependencies registered in the container.
+一旦根服务被解析出来,DI 容器就会沿着依赖树自动级联解析。
+`Application` 类所需的任何依赖都会通过它的构造函数注入进来。
+这种自动解析会对容器中注册的所有嵌套依赖持续进行下去。
 
 ```csharp
 namespace ResolvingDeps.ConsoleApp;
@@ -439,36 +439,36 @@ public class Application
             WriteIndented = true
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-a-console-setup-53953164/?t=70)
 
-It is important to note that the `[FromServices]` attribute, commonly used in ASP.NET Core minimal APIs or controllers, is not supported in console applications.
-This is because the wiring logic required for `[FromServices]` is specific to the ASP.NET Core framework.
-In a console setup, all dependency resolution must occur via constructor injection.
+需要特别注意的是,在 ASP.NET Core Minimal API 或控制器中常用的 `[FromServices]` 特性,在控制台应用中是不受支持的。
+原因在于 `[FromServices]` 所需的装配逻辑是 ASP.NET Core 框架特有的。
+在控制台环境中,所有依赖解析都必须通过构造函数注入完成。
 
 ---
 
 ## 5. Resolving dependencies from the HttpContext
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/) · 1:09
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/) · 1:09
 
-### Summary
+### 总结
 
-In ASP.NET Core Web API, the HttpContext object provides access to the current request's services via the RequestServices property.
-While this property exposes an IServiceProvider that can resolve any registered dependency, using it directly within a controller action is considered a bad practice.
-It implements the Service Locator anti-pattern, which hides a method's true dependencies and complicates unit testing.
-Developers should instead prefer constructor injection or the [FromServices] attribute for cleaner, more transparent dependency management.
+在 ASP.NET Core Web API 中,HttpContext 对象通过 RequestServices 属性提供了对当前请求所用服务的访问。
+这个属性暴露出一个可以解析任何已注册依赖的 IServiceProvider,但直接在控制器 action 中使用它被认为是一种糟糕的做法。
+它实现的是 Service Locator 反模式,会隐藏方法真正的依赖,并让单元测试变得复杂。
+开发者应当优先使用构造函数注入或 [FromServices] 特性,以获得更清晰、更透明的依赖管理。
 
-### Key concepts
+### 核心概念
 
-- HttpContext.RequestServices: The property used to access the scoped service provider for the current request.
-- IServiceProvider: The interface returned by RequestServices that allows manual resolution of services.
-- Service Locator Anti-pattern: The practice of resolving dependencies manually inside a method rather than declaring them explicitly.
-- Testability: Manual resolution hides dependencies, making it difficult to mock them in unit tests.
+- HttpContext.RequestServices:用于访问当前请求的 scoped service provider 的属性。
+- IServiceProvider:RequestServices 返回的接口,允许手动解析服务。
+- Service Locator 反模式:在方法内部手动解析依赖,而不是显式声明它们的做法。
+- 可测试性:手动解析会隐藏依赖,使得在单元测试中难以对它们进行 mock。
 
-### Lesson notes
+### 课程笔记
 
-In an ASP.NET Core Web API controller, every action has access to the HttpContext.
-This object encapsulates all information regarding the specific HTTP request and response.
+在 ASP.NET Core Web API 控制器中,每个 action 都能访问 HttpContext。
+这个对象封装了与具体这一次 HTTP 请求和响应相关的全部信息。
 
 ```csharp
 _logger = logger;
@@ -491,10 +491,10 @@ _logger = logger;
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/?t=10)
 
-Within the HttpContext, there is a property called RequestServices.
-This property is an implementation of IServiceProvider, which allows you to resolve services directly from the dependency injection container.
+在 HttpContext 内部,有一个名为 RequestServices 的属性。
+这个属性是 IServiceProvider 的一个实现,它让你可以直接从依赖注入容器中解析服务。
 
 ```csharp
 _logger = logger;
@@ -518,23 +518,23 @@ _logger = logger;
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/?t=35)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/?t=35)
 
-Once you have access to the IServiceProvider, you can call methods like GetService or GetRequiredService to retrieve any registered dependency.
+拿到 IServiceProvider 之后,你就可以调用 GetService 或 GetRequiredService 之类的方法,取出任何已注册的依赖。
 
-#### Why this is a bad practice
+#### 为什么这是糟糕的做法
 
-While resolving dependencies from HttpContext.RequestServices is possible, it is generally considered a bad practice for several reasons:
+从 HttpContext.RequestServices 解析依赖虽然可行,但基于以下几点原因,它通常被认为是糟糕的做法:
 
-1. **Hides Dependencies**: By resolving services inside the method body, the method's signature no longer reflects what it actually needs to function. This makes the code harder to understand and maintain.
-2. **Reduced Testability**: It becomes significantly harder to unit test the controller action because you must mock the entire HttpContext and its service provider, rather than simply passing in a mock of the specific service.
-3. **Service Locator Pattern**: This approach is a form of the Service Locator anti-pattern, where the component "reaches out" to find its dependencies instead of having them provided.
+1. **隐藏依赖**:在方法体内部解析服务,会让方法签名不再反映它运行时真正需要什么。这使代码更难理解、更难维护。
+2. **降低可测试性**:对这个控制器 action 做单元测试会变得困难得多,因为你必须 mock 整个 HttpContext 及其 service provider,而不是直接传入某个具体服务的 mock。
+3. **Service Locator 模式**:这种做法是 Service Locator 反模式的一种形式,组件"主动去找"自己的依赖,而不是由外部提供给它。
 
-#### Recommended Alternatives
+#### 推荐的替代方案
 
-Instead of using RequestServices, you should use one of the following standard dependency injection techniques:
-- **Constructor Injection**: Inject the required service into the controller's constructor and store it in a private field.
-- **[FromServices] Attribute**: If a service is only needed for a specific action, use the [FromServices] attribute on the action parameter.
+与其使用 RequestServices,你应当选择下面这些标准的依赖注入技巧之一:
+- **构造函数注入**:把所需的服务注入到控制器的构造函数中,并保存在一个私有字段里。
+- **[FromServices] 特性**:如果某个服务只有特定的 action 需要,就在该 action 的参数上使用 [FromServices] 特性。
 
 ```csharp
 public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -559,31 +559,31 @@ public WeatherForecastController(ILogger<WeatherForecastController> logger)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/?t=45)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-the-httpcontext-53953165/?t=45)
 
 ---
 
 ## 6. Resolving dependencies from Action Filters as Attributes
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/) · 2:42
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/) · 2:42
 
-### Summary
+### 总结
 
-This lesson explains how to handle dependencies within ASP.NET Core Action Filters when used as attributes.
-Since attributes only support constant parameters, standard constructor injection is not possible.
-The lesson demonstrates a workaround using the Service Locator pattern to resolve services from `HttpContext.RequestServices` while cautioning that this is generally considered an anti-pattern.
+本课讲解当 ASP.NET Core 的 Action Filter 以特性(attribute)形式使用时,该如何处理其中的依赖。
+由于特性只支持常量参数,标准的构造函数注入在这里行不通。
+本课演示了一种使用 Service Locator 模式从 `HttpContext.RequestServices` 解析服务的变通做法,同时提醒这通常被视为反模式。
 
-### Key concepts
+### 核心概念
 
-* **IAsyncActionFilter**: An interface used to create filters that surround action execution, allowing code to run before and after an action.
-* **Attribute Constraints**: Attributes in C# only allow constant parameters, which prevents the direct injection of services via the constructor when the attribute is applied to a controller or action.
-* **Service Locator Pattern**: A technique where services are manually requested from a service provider (in this case, `HttpContext.RequestServices`) rather than being injected.
-* **Anti-pattern Warning**: Using the Service Locator pattern is generally discouraged and should only be used when no other alternatives are available.
+* **IAsyncActionFilter**:用于创建包裹 action 执行过程的过滤器的接口,可以在 action 前后运行代码。
+* **Attribute Constraints(特性的限制)**:C# 中的特性只允许常量参数,这使得把特性应用到控制器或 action 上时,无法通过构造函数直接注入服务。
+* **Service Locator Pattern(服务定位器模式)**:一种手动从 service provider(这里是 `HttpContext.RequestServices`)请求服务,而不是由外部注入的技巧。
+* **反模式警告**:使用 Service Locator 模式通常是不被推荐的,只有在没有其他替代方案时才应使用。
 
-### Lesson notes
+### 课程笔记
 
-An action filter can be implemented as an attribute to measure the execution time of a request.
-By implementing `IAsyncActionFilter`, the filter can execute logic before the request starts and after it completes using a `try...finally` block.
+可以把 action filter 实现为一个特性,用来测量请求的执行时间。
+通过实现 `IAsyncActionFilter`,过滤器就能借助 `try...finally` 块,在请求开始之前和完成之后分别执行逻辑。
 
 ```csharp
 namespace ResolvingDeps.WebApi.Attributes;
@@ -606,10 +606,10 @@ public class DurationLoggerAttribute : Attribute, IAsyncActionFilter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=10)
 
-While `Console.WriteLine` works for simple demonstrations, production code should use `ILogger`.
-However, attempting to use standard constructor injection within an attribute leads to significant limitations.
+`Console.WriteLine` 用于简单演示还行,但生产代码应该使用 `ILogger`。
+然而,试图在特性中使用标准的构造函数注入会遇到很大的限制。
 
 ```csharp
 namespace ResolvingDeps.WebApi.Attributes;
@@ -632,10 +632,10 @@ public class DurationLoggerAttribute : Attribute, IAsyncActionFilter
         }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=70)
 
-Attributes can only accept constant parameters.
-Because a service like `ILogger` is not a constant, it cannot be passed into the attribute's constructor when applying it to a controller action.
+特性只能接受常量参数。
+由于 `ILogger` 这样的服务不是常量,在把特性应用到控制器 action 上时,它无法被传入特性的构造函数。
 
 ```csharp
 public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -657,10 +657,10 @@ public WeatherForecastController(ILogger<WeatherForecastController> logger)
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=85)
 
-To resolve this, you can use the Service Locator pattern.
-By accessing the `HttpContext` from the `ActionExecutingContext`, you can retrieve the `RequestServices` (the `IServiceProvider` for the current scope) and manually resolve the required service.
+要解决这个问题,可以使用 Service Locator 模式。
+通过从 `ActionExecutingContext` 访问 `HttpContext`,你就能取到 `RequestServices`(当前作用域的 `IServiceProvider`),然后手动解析所需的服务。
 
 ```csharp
 public class DurationLoggerAttribute : Attribute, IAsyncActionFilter
@@ -684,32 +684,32 @@ public class DurationLoggerAttribute : Attribute, IAsyncActionFilter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=140)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-action-filters-as-attributes-53953167/?t=140)
 
-Although this approach works and allows for structured logging, it is considered an anti-pattern.
-Manual service resolution bypasses the benefits of dependency injection and should be avoided if better alternatives exist.
+这种做法虽然可行,也能实现结构化日志,但它被认为是一种反模式。
+手动解析服务绕开了依赖注入带来的好处,如果存在更好的替代方案就应当避免。
 
 ---
 
 ## 7. Resolving dependencies from Service Filters
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/) · 2:42
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/) · 2:42
 
-This lesson demonstrates how to transition from using the Service Locator pattern within action filters to a more robust dependency injection approach using Service Filters.
-By implementing the IAsyncActionFilter interface and registering the filter in the DI container, developers can utilize constructor injection within filters, significantly improving code maintainability and testability compared to resolving services manually from HttpContext.
+本课演示如何从 action filter 中的 Service Locator 模式,转向使用 Service Filter 这种更健壮的依赖注入方式。
+通过实现 IAsyncActionFilter 接口并把过滤器注册到 DI 容器,开发者就能在过滤器中使用构造函数注入,相比从 HttpContext 手动解析服务,代码的可维护性和可测试性都大幅提升。
 
-### Key concepts
+### 核心概念
 
-- Limitations of standard attributes regarding constructor injection.
-- The Service Locator anti-pattern in filters using `HttpContext.RequestServices`.
-- Implementing the `IAsyncActionFilter` interface for custom filter logic.
-- Registering filters as services in the IServiceCollection.
-- Applying filters via the `[ServiceFilter]` attribute.
+- 标准特性在构造函数注入方面的限制。
+- 过滤器中使用 `HttpContext.RequestServices` 的 Service Locator 反模式。
+- 实现 `IAsyncActionFilter` 接口来编写自定义过滤逻辑。
+- 把过滤器作为服务注册到 IServiceCollection 中。
+- 通过 `[ServiceFilter]` 特性应用过滤器。
 
-### Lesson notes
+### 课程笔记
 
-When implementing action filters as attributes, developers often encounter a limitation: attributes are metadata and do not support constructor injection from the dependency injection (DI) container.
-A common but suboptimal workaround is to use the Service Locator pattern by accessing the service provider through the `HttpContext` within the filter's execution context.
+当把 action filter 实现为特性时,开发者常常会碰到一个限制:特性属于元数据,不支持从依赖注入(DI)容器进行构造函数注入。
+一个常见但并不理想的变通做法,是在过滤器的执行上下文中通过 `HttpContext` 访问 service provider,也就是使用 Service Locator 模式。
 
 ```csharp
 {
@@ -732,16 +732,16 @@ A common but suboptimal workaround is to use the Service Locator pattern by acce
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=10)
 
-This approach is problematic because it hides dependencies within the method body, making the code harder to reason about and significantly more difficult to unit test.
-Testing such a filter requires mocking the `HttpContext`, the `ActionExecutingContext`, and the service provider itself.
+这种做法之所以有问题,是因为它把依赖藏在了方法体内部,让代码更难推理,单元测试的难度也大幅上升。
+测试这样一个过滤器需要 mock `HttpContext`、`ActionExecutingContext` 以及 service provider 本身。
 
-#### Implementing Service Filters
+#### 实现 Service Filter
 
-A better alternative is to use a Service Filter.
-Instead of creating an attribute that contains the logic, you create a class that implements the `IAsyncActionFilter` interface.
-This allows the filter to participate fully in the DI lifecycle, enabling constructor injection for required services like loggers.
+更好的替代方案是使用 Service Filter。
+不再创建一个包含逻辑的特性,而是创建一个实现 `IAsyncActionFilter` 接口的类。
+这样过滤器就能完整参与 DI 生命周期,从而可以通过构造函数注入取得像 logger 这样的必需服务。
 
 ```csharp
 namespace ResolvingDeps.WebApi.Filters;
@@ -764,9 +764,9 @@ public class DurationLoggerFilter : IAsyncActionFilter
         }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=55)
 
-The implementation logic remains similar to the attribute-based approach, but the dependencies are now explicitly declared in the constructor and provided by the container.
+实现逻辑和基于特性的做法基本相同,但依赖现在是在构造函数中显式声明、并由容器提供的。
 
 ```csharp
 public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
@@ -785,12 +785,12 @@ public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionE
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=70)
 
-#### Registration and Application
+#### 注册与应用
 
-Because the filter now relies on constructor injection, it must be registered in the DI container.
-Typically, these filters are registered with a scoped lifetime in `Program.cs`.
+由于过滤器现在依赖构造函数注入,它必须注册到 DI 容器中。
+通常这类过滤器会在 `Program.cs` 中以 scoped 生命周期注册。
 
 ```csharp
 using ResolvingDeps.WebApi.Filters;
@@ -817,10 +817,10 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=85)
 
-To apply this filter to a controller or a specific action, you use the `[ServiceFilter]` attribute and specify the type of the filter class.
-This tells ASP.NET Core to resolve the filter instance from the DI container at runtime, ensuring all its dependencies are properly injected.
+要把这个过滤器应用到某个控制器或某个具体 action 上,可以使用 `[ServiceFilter]` 特性并指定过滤器类的类型。
+这会告诉 ASP.NET Core 在运行时从 DI 容器中解析该过滤器实例,从而确保它的所有依赖都被正确注入。
 
 ```csharp
 public WeatherForecastController(ILogger<WeatherForecastController> logger)
@@ -842,35 +842,35 @@ public WeatherForecastController(ILogger<WeatherForecastController> logger)
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-service-filters-53953168/?t=100)
 
-In the example above, the previous `[DurationLogger]` attribute is replaced with `[ServiceFilter(typeof(DurationLoggerFilter))]`.
-This approach ensures that the filter is fully testable, as you can now simply pass a mocked logger into the filter's constructor during unit testing.
+在上面的例子中,原先的 `[DurationLogger]` 特性被替换成了 `[ServiceFilter(typeof(DurationLoggerFilter))]`。
+这种做法保证了过滤器完全可测试,因为在单元测试时你只需把一个 mock 的 logger 传入过滤器的构造函数即可。
 
 ---
 
 ## 8. Resolving dependencies from Middleware
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/) · 2:32
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/) · 2:32
 
-**Summary**
+**总结**
 
-This lesson demonstrates how to implement custom middleware in ASP.NET Core to handle cross-cutting concerns like request timing and logging.
-It highlights the standard pattern for middleware construction, the proper way to inject dependencies via the constructor rather than manual service resolution from HttpContext, and the importance of middleware ordering within the request pipeline.
+本课演示如何在 ASP.NET Core 中实现自定义中间件,以处理请求计时和日志这类横切关注点。
+它重点说明了中间件构造的标准模式、通过构造函数注入依赖(而不是从 HttpContext 手动解析服务)的正确方式,以及中间件在请求管道中顺序的重要性。
 
-**Key concepts**
+**核心概念**
 
-* Middleware structure and the `RequestDelegate`.
-* The `InvokeAsync` method and `HttpContext`.
-* Constructor injection for services within middleware.
-* Middleware registration using `app.UseMiddleware<T>`.
-* The significance of middleware ordering in the pipeline.
+* 中间件的结构与 `RequestDelegate`。
+* `InvokeAsync` 方法与 `HttpContext`。
+* 在中间件中使用构造函数注入服务。
+* 使用 `app.UseMiddleware<T>` 注册中间件。
+* 中间件在管道中顺序的重要意义。
 
-**Lesson notes**
+**课程笔记**
 
-Middleware in ASP.NET Core provides a way to execute logic during the request pipeline.
-Unlike filters which are typically applied to specific actions or controllers, middleware can be applied globally to all requests.
-A standard middleware class requires a `RequestDelegate` in its constructor and an `InvokeAsync` method that accepts an `HttpContext`.
+ASP.NET Core 中的中间件提供了一种在请求管道中执行逻辑的方式。
+过滤器通常只应用于特定的 action 或控制器,中间件则不同,它可以全局地作用于所有请求。
+一个标准的中间件类需要在构造函数中接收一个 `RequestDelegate`,并提供一个接受 `HttpContext` 的 `InvokeAsync` 方法。
 
 ```csharp
 namespace ResolvingDeps.WebApi.Middlewares;
@@ -892,10 +892,10 @@ public class DurationLoggerMiddleware
             await _next(context);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=25)
 
-To implement logic that surrounds a request, such as timing its duration, you wrap the call to the next delegate in a try-finally block.
-This ensures that the logic executes both before and after the subsequent components in the pipeline.
+要实现包裹整个请求的逻辑(比如给请求计时),你需要把对下一个委托的调用放进 try-finally 块中。
+这样可以确保逻辑在管道中后续组件执行之前和之后都会运行。
 
 ```csharp
 public DurationLoggerMiddleware(RequestDelegate next)
@@ -920,10 +920,10 @@ public DurationLoggerMiddleware(RequestDelegate next)
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=40)
 
-While it is possible to resolve services manually from `HttpContext.RequestServices`, the preferred and most idiomatic approach is to use constructor injection.
-You can inject any registered service, such as an `ILogger`, directly into the middleware's constructor alongside the `RequestDelegate`.
+虽然从 `HttpContext.RequestServices` 手动解析服务是可行的,但更推荐、也更地道的做法是使用构造函数注入。
+你可以把任何已注册的服务(例如 `ILogger`)和 `RequestDelegate` 一起直接注入到中间件的构造函数中。
 
 ```csharp
 public class DurationLoggerMiddleware
@@ -947,11 +947,11 @@ public class DurationLoggerMiddleware
         }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=145)
 
-Middleware must be registered in the `Program.cs` file using the `UseMiddleware<T>` extension method on the `WebApplication` instance.
-Unlike service registration where order generally does not matter, the order of middleware registration is critical as it defines the execution sequence of the request pipeline.
-Placing a timing middleware at the very top ensures it measures the duration of the entire request, including all subsequent middleware and the final action execution.
+中间件必须在 `Program.cs` 文件中通过 `WebApplication` 实例上的 `UseMiddleware<T>` 扩展方法注册。
+服务注册的顺序通常无关紧要,中间件注册的顺序却至关重要,因为它决定了请求管道的执行次序。
+把计时中间件放在最顶端,可以确保它测量的是整个请求的耗时,涵盖后续所有中间件以及最终的 action 执行。
 
 ```csharp
 builder.Services.AddControllers();
@@ -979,33 +979,33 @@ app.MapControllers();
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-from-middleware-53953169/?t=115)
 
 ---
 
 ## 9. Resolving dependencies in Minimal APIs
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/) · 3:13
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/) · 3:13
 
-### Summary
+### 总结
 
-Minimal APIs in .NET provide a streamlined way to resolve dependencies by injecting them directly into route handler delegates.
-Unlike the traditional controller-based approach, Minimal APIs automatically detect and resolve services from the dependency injection container, often eliminating the need for explicit attributes like [FromServices].
-This lesson explores how to inject services like ILogger into endpoints and highlights the importance of understanding service lifetimes and scopes when resolving dependencies at the application level versus the request level.
+.NET 中的 Minimal API 提供了一种精简的依赖解析方式:把依赖直接注入到路由处理委托中。
+与传统的基于控制器的做法不同,Minimal API 会自动从依赖注入容器中识别并解析服务,通常无需显式使用 [FromServices] 这样的特性。
+本课探讨如何把 ILogger 这类服务注入到端点中,并强调在应用级别与请求级别解析依赖时,理解服务生命周期和作用域的重要性。
 
-### Key concepts
+### 核心概念
 
-* **Delegate Parameter Injection**: Services are passed directly into the lambda or method mapped to a route.
-* **Implicit Resolution**: The framework automatically identifies services in the container without requiring the `[FromServices]` attribute.
-* **Request Scoping**: Dependencies resolved within the route delegate are scoped to the specific HTTP request.
-* **Application vs. Request Scope**: Resolving services via `app.Services` (Application scope) can lead to issues if those services are intended to be scoped to a request.
-* **Middleware Consistency**: Middleware registration remains consistent with the standard ASP.NET Core approach using `app.UseMiddleware<T>()`.
+* **Delegate Parameter Injection(委托参数注入)**:服务直接传入映射到路由的 lambda 或方法。
+* **Implicit Resolution(隐式解析)**:框架会自动识别容器中的服务,无需 `[FromServices]` 特性。
+* **Request Scoping(请求作用域)**:在路由委托中解析出的依赖,其作用域是这一次具体的 HTTP 请求。
+* **应用作用域 vs. 请求作用域**:通过 `app.Services`(应用作用域)解析服务,如果这些服务本应限定在请求作用域内,就可能引发问题。
+* **Middleware Consistency(中间件一致性)**:中间件注册仍然沿用标准 ASP.NET Core 的做法,即 `app.UseMiddleware<T>()`。
 
-### Lesson notes
+### 课程笔记
 
-Minimal APIs, introduced in .NET 6, simplify the process of building APIs by allowing developers to define endpoints and their logic in a more concise manner.
-One of the key features of Minimal APIs is how they handle dependency injection.
-The standard middleware registration remains consistent with other ASP.NET Core templates; you can still use `app.UseMiddleware<T>()` to capture requests across your mapped endpoints.
+.NET 6 引入的 Minimal API 让开发者能以更简洁的方式定义端点及其逻辑,从而简化了构建 API 的过程。
+Minimal API 的一个关键特性,就是它处理依赖注入的方式。
+标准的中间件注册与其他 ASP.NET Core 模板保持一致;你依然可以使用 `app.UseMiddleware<T>()` 来拦截所有已映射端点上的请求。
 
 ```csharp
 using ResolvingDeps.MinimalApi;
@@ -1032,10 +1032,10 @@ app.MapGet("weather", () =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=25)
 
-In Minimal APIs, you can resolve dependencies by adding them as parameters to the delegate (the lambda function) of your route handler.
-For example, if you want to use a logger within a `MapGet` endpoint, you can simply include `ILogger<Program>` in the parameter list.
+在 Minimal API 中,你可以把依赖作为参数加到路由处理器的委托(lambda 函数)上来解析它们。
+例如,如果你想在某个 `MapGet` 端点里使用日志,只需把 `ILogger<Program>` 放进参数列表即可。
 
 ```csharp
 var app = builder.Build();
@@ -1061,12 +1061,12 @@ app.MapGet("weather", (ILogger<Program> _logger) =>
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=70)
 
-The Minimal API framework is "smart" enough to look into the dependency injection container—which is populated during the `WebApplication.CreateBuilder(args)` phase—and automatically provide the requested service.
-While earlier versions or other patterns might require the `[FromServices]` attribute to be explicit, it is not strictly necessary here as the framework detects the service type automatically.
+Minimal API 框架足够"聪明",它会去查看依赖注入容器(该容器在 `WebApplication.CreateBuilder(args)` 阶段被填充),并自动提供所请求的服务。
+早期版本或其他模式可能要求显式加上 `[FromServices]` 特性,但在这里并非必需,因为框架会自动识别服务类型。
 
-It is technically possible to resolve services manually using the `app.Services` property, which provides access to the `IServiceProvider`.
+从技术上讲,你也可以通过 `app.Services` 属性手动解析服务,它提供了对 `IServiceProvider` 的访问。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -1095,10 +1095,10 @@ app.MapGet("weather", (ILogger<Program> logger) =>
     return Results.Ok(weather);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=145)
 
-However, manual resolution at the application level can be dangerous.
-When you resolve a service using `app.Services.GetRequiredService<T>()` outside of a request delegate, you are resolving it at the application scope.
+不过,在应用级别手动解析是有风险的。
+当你在请求委托之外使用 `app.Services.GetRequiredService<T>()` 解析服务时,你是在应用作用域中解析它。
 
 ```csharp
 var logger = app.Services.GetRequiredService<ILogger<Program>>();
@@ -1123,12 +1123,12 @@ app.MapGet("weather", () =>
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=160)
 
-This is a common mistake.
-Services resolved at the application level persist for the lifetime of the application, whereas services injected into the `MapGet` delegate are resolved within a request scope.
-Using an application-scoped service where a request-scoped service is expected can lead to unexpected behavior or resource leaks.
-The correct and safest approach is to inject dependencies directly into the route handler parameters.
+这是一个常见错误。
+在应用级别解析出来的服务会在整个应用生命周期内一直存在,而注入到 `MapGet` 委托中的服务是在请求作用域内解析的。
+在本应使用请求作用域服务的地方使用了应用作用域的服务,可能导致意料之外的行为或资源泄漏。
+正确且最安全的做法,是把依赖直接注入到路由处理器的参数中。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -1155,33 +1155,33 @@ app.MapGet("weather", (ILogger<Program> logger) =>
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-minimal-apis-53953170/?t=175)
 
 ---
 
 ## 10. Resolving dependencies in Razor Views & Pages
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/) · 1:28
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/) · 1:28
 
-### Summary
+### 总结
 
-This lesson demonstrates how to resolve dependencies directly within Razor Views and Razor Pages using the @inject directive.
-While constructor injection is the standard for classes like controllers or PageModels, the @inject directive allows services to be accessed directly in the markup for scenarios where data or logic is needed specifically for the UI rendering.
+本课演示如何使用 @inject 指令,直接在 Razor 视图和 Razor Pages 中解析依赖。
+对控制器或 PageModel 这类类而言,构造函数注入是标准做法;而当 UI 渲染本身需要某些数据或逻辑时,@inject 指令可以让你直接在标记中访问服务。
 
-### Key concepts
+### 核心概念
 
-* The @inject directive syntax: @inject <Type> <Name>.
-* Injecting services into MVC Views (.cshtml).
-* Injecting services into Razor Pages.
-* Accessing service members within Razor markup using the @ symbol.
-* Maintaining standard constructor injection for supporting classes.
+* @inject 指令的语法:@inject <Type> <Name>。
+* 把服务注入到 MVC 视图(.cshtml)中。
+* 把服务注入到 Razor Pages 中。
+* 在 Razor 标记中通过 @ 符号访问服务成员。
+* 配套类仍然保持标准的构造函数注入。
 
-### Lesson notes
+### 课程笔记
 
-In ASP.NET Core MVC and Razor Pages, you can resolve services directly within your markup files.
-This is particularly useful when a view requires a service that is not provided by the controller or the PageModel.
+在 ASP.NET Core MVC 和 Razor Pages 中,你可以直接在标记文件里解析服务。
+当某个视图需要一个既不由控制器也不由 PageModel 提供的服务时,这一点尤其有用。
 
-Consider a service class designed to provide a message:
+来看一个用于提供消息的服务类:
 
 ```csharp
 namespace ResolvingDeps.Mvc;
@@ -1192,10 +1192,10 @@ public class ServiceToInject
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/?t=25)
 
-To resolve this service in an MVC View (such as Index.cshtml), use the @inject directive at the top of the file.
-You must specify the service type and provide a name for the instance.
+要在 MVC 视图(例如 Index.cshtml)中解析这个服务,在文件顶部使用 @inject 指令。
+你必须指定服务类型,并为该实例提供一个名称。
 
 ```razor
 @{
@@ -1210,12 +1210,12 @@ You must specify the service type and provide a name for the instance.
 </div>
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/?t=55)
 
-Once the service is injected, its properties and methods can be accessed anywhere in the Razor file using the @ symbol followed by the instance name.
+服务注入之后,就可以在 Razor 文件的任何位置,通过 @ 符号加上实例名来访问它的属性和方法。
 
-This approach is identical for Razor Pages.
-Although Razor Pages typically utilize a PageModel where dependencies are resolved via constructor injection, the @inject directive remains available for use directly within the .cshtml file.
+这种做法在 Razor Pages 中完全相同。
+虽然 Razor Pages 通常会使用 PageModel,并在其中通过构造函数注入解析依赖,但 @inject 指令依然可以直接在 .cshtml 文件中使用。
 
 ```razor
 @page
@@ -1230,33 +1230,33 @@ Although Razor Pages typically utilize a PageModel where dependencies are resolv
 </div>
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/?t=80)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-razor-views-pages-53953172/?t=80)
 
-Using the @inject directive in views does not impact the rest of the project's architecture; controllers and other classes should continue to resolve their dependencies through their constructors.
+在视图中使用 @inject 指令不会影响项目其余部分的架构;控制器和其他类应当继续通过它们的构造函数解析依赖。
 
 ---
 
 ## 11. Resolving dependencies in Blazor
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/) · 1:00
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/) · 1:00
 
-Blazor utilizes a consistent approach to dependency injection across both Server and WebAssembly models, mirroring the patterns found in ASP.NET Core MVC and Razor Pages.
-By using the @inject directive within Razor components, developers can easily resolve services like HttpClient or custom business logic services.
-Standard C# classes within a Blazor application continue to use traditional constructor injection for dependency resolution, ensuring a unified development experience across the .NET ecosystem.
+Blazor 在 Server 和 WebAssembly 两种模型下采用一致的依赖注入方式,与 ASP.NET Core MVC 和 Razor Pages 中的模式如出一辙。
+通过在 Razor 组件中使用 @inject 指令,开发者可以轻松解析 HttpClient 或自定义业务逻辑服务。
+Blazor 应用中的普通 C# 类则继续使用传统的构造函数注入来解析依赖,从而在整个 .NET 生态中保持统一的开发体验。
 
-### Key concepts
+### 核心概念
 
-*   **@inject Directive**: The primary mechanism for resolving dependencies within Razor components.
-*   **Model Consistency**: Blazor Server and Blazor WebAssembly share the same dependency injection syntax.
-*   **Constructor Injection**: Standard C# classes within Blazor projects still utilize constructor injection for service resolution.
-*   **Parity with ASP.NET Core**: The DI patterns in Blazor are designed to be familiar to developers coming from MVC or Razor Pages.
+*   **@inject 指令**:在 Razor 组件中解析依赖的主要机制。
+*   **Model Consistency(模型一致性)**:Blazor Server 与 Blazor WebAssembly 共用相同的依赖注入语法。
+*   **Constructor Injection(构造函数注入)**:Blazor 项目中的普通 C# 类仍然使用构造函数注入来解析服务。
+*   **与 ASP.NET Core 对齐**:Blazor 中的 DI 模式在设计上就让来自 MVC 或 Razor Pages 的开发者感到熟悉。
 
-### Lesson notes
+### 课程笔记
 
-Blazor employs a dependency injection mechanism that is highly consistent with ASP.NET Core MVC and Razor Pages.
-This consistency simplifies the transition between different project types within the .NET ecosystem.
-In Razor components, dependencies are resolved using the `@inject` directive.
-This directive specifies the service type and the name of the property through which the service will be accessed.
+Blazor 采用的依赖注入机制与 ASP.NET Core MVC 和 Razor Pages 高度一致。
+这种一致性让开发者在 .NET 生态中不同项目类型之间的切换变得更简单。
+在 Razor 组件中,依赖通过 `@inject` 指令解析。
+该指令会指定服务类型,以及用于访问该服务的属性名称。
 
 ```razor
 @page "/fetchdata"
@@ -1283,10 +1283,10 @@ else
                 <th>Temp. (C)</th>
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/?t=55)
 
-This approach is identical in both Blazor Server and Blazor WebAssembly.
-For instance, in a Blazor WebAssembly application, the `HttpClient` is commonly injected to perform data fetching operations within the component's lifecycle methods, such as `OnInitializedAsync`.
+这种做法在 Blazor Server 和 Blazor WebAssembly 中是完全一样的。
+例如,在 Blazor WebAssembly 应用中,通常会注入 `HttpClient`,以便在组件生命周期方法(比如 `OnInitializedAsync`)中执行数据获取操作。
 
 ```razor
 <td>@forecast.Summary</td>
@@ -1313,10 +1313,10 @@ For instance, in a Blazor WebAssembly application, the `HttpClient` is commonly 
         public string? Summary { get; set; }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/?t=40)
 
-In Blazor Server, you might inject a specific service class (like a `WeatherForecastService`) instead of `HttpClient`.
-The usage within the `@code` block remains the same, where the injected property is used to call service methods to retrieve data.
+在 Blazor Server 中,你注入的可能是某个具体的服务类(比如 `WeatherForecastService`)而不是 `HttpClient`。
+在 `@code` 块中的用法保持不变,依然是用注入进来的属性去调用服务方法来获取数据。
 
 ```razor
 <td>@forecast.Summary</td>
@@ -1336,36 +1336,36 @@ The usage within the `@code` block remains the same, where the injected property
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-blazor-53953173/?t=25)
 
-While Razor components use the `@inject` directive, standard C# classes within a Blazor project continue to use constructor injection.
-This ensures that the core principles of dependency injection are maintained throughout the entire application architecture.
+Razor 组件使用 `@inject` 指令,而 Blazor 项目中的普通 C# 类仍然使用构造函数注入。
+这确保了依赖注入的核心原则在整个应用架构中都得到贯彻。
 
 ---
 
 ## 12. Resolving dependencies in gRPC Services
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/) · 1:16
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/) · 1:16
 
-**Summary**
+**总结**
 
-gRPC services in .NET leverage the built-in dependency injection container through standard constructor injection.
-By defining service contracts in Protobuf files and inheriting from the generated base classes, developers can easily inject dependencies like loggers or business services.
-The integration is finalized in the application startup by adding gRPC services to the container and mapping the service endpoints, which ensures that all cascaded dependencies are correctly resolved at runtime.
+.NET 中的 gRPC 服务通过标准的构造函数注入来使用内置的依赖注入容器。
+只要在 Protobuf 文件中定义服务契约,并继承生成的基类,开发者就能轻松注入 logger 或业务服务这类依赖。
+整个集成在应用启动时收尾:把 gRPC 服务添加到容器并映射服务端点,以确保运行时所有级联的依赖都能被正确解析。
 
-**Key concepts**
+**核心概念**
 
-* Protobuf (.proto) files as templates for service contracts.
-* Inheritance from generated base classes (e.g., GreeterBase).
-* Standard constructor injection for service dependencies.
-* Registration using AddGrpc() in the service collection.
-* Endpoint mapping via MapGrpcService<T>() to enable DI resolution.
+* 用 Protobuf(.proto)文件作为服务契约的模板。
+* 继承自生成的基类(例如 GreeterBase)。
+* 使用标准的构造函数注入解析服务依赖。
+* 在 service collection 中通过 AddGrpc() 注册。
+* 通过 MapGrpcService<T>() 映射端点,以启用 DI 解析。
 
-**Lesson notes**
+**课程笔记**
 
-gRPC is an increasingly popular framework for high-performance internal service communication, particularly where contract-based communication is preferred.
-In a .NET gRPC project, the service contract is defined using a Protocol Buffers (protobuf) file.
-This file acts as a template to generate the necessary C# base classes and message types behind the scenes.
+gRPC 是一个日益流行的框架,适用于高性能的内部服务通信,尤其是在偏好基于契约通信的场景中。
+在 .NET 的 gRPC 项目里,服务契约使用 Protocol Buffers(protobuf)文件来定义。
+这个文件充当模板,在幕后生成所需的 C# 基类和消息类型。
 
 ```protobuf
 syntax = "proto3";
@@ -1391,11 +1391,11 @@ message HelloReply {
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/?t=40)
 
-The service implementation inherits from the generated base class (e.g., `Greeter.GreeterBase`).
-Dependency injection in gRPC services is straightforward and follows the same pattern as other .NET components: dependencies are requested via the class constructor.
-Microsoft's implementation ensures that you do not need to manually resolve services; the standard constructor pattern remains unchanged.
+服务实现类继承自生成的基类(例如 `Greeter.GreeterBase`)。
+gRPC 服务中的依赖注入非常直接,与其他 .NET 组件遵循同样的模式:依赖通过类的构造函数来请求。
+微软的实现确保你无需手动解析服务;标准的构造函数模式保持不变。
 
 ```csharp
 namespace ResolvingDeps.GrpcService.Services;
@@ -1419,12 +1419,12 @@ public class GreeterService : Greeter.GreeterBase
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/?t=55)
 
-To enable dependency resolution, the gRPC services must be registered and mapped within `Program.cs`.
-The `AddGrpc` method adds the required infrastructure to the service collection.
-The `MapGrpcService<T>` method then initializes the service endpoint.
-This mapping ensures that any dependencies required by the service, or any dependencies cascading from those, are automatically resolved from the DI container when the service is invoked.
+要启用依赖解析,gRPC 服务必须在 `Program.cs` 中完成注册和映射。
+`AddGrpc` 方法把所需的基础设施添加到 service collection 中。
+随后 `MapGrpcService<T>` 方法初始化服务端点。
+这个映射确保了当服务被调用时,它所需的任何依赖、以及由这些依赖级联出来的依赖,都会自动从 DI 容器中解析出来。
 
 ```csharp
 using ResolvingDeps.GrpcService.Services;
@@ -1448,34 +1448,34 @@ app.MapGet("/",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-grpc-services-53953174/?t=70)
 
 ---
 
 ## 13. Resolving dependencies in Hosted Services
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/) · 2:38
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/) · 2:38
 
-### Summary
+### 总结
 
-In ASP.NET Core, hosted services are used to perform background operations such as processing message queues or executing timed tasks.
-By inheriting from the BackgroundService base class, developers can implement the ExecuteAsync method to define long-running logic that respects the application's lifecycle via a CancellationToken.
-These services are registered in the IServiceCollection using AddHostedService, and they support standard dependency injection, allowing for the resolution of services like ILogger through the constructor.
+在 ASP.NET Core 中,hosted service 用于执行后台操作,例如处理消息队列或运行定时任务。
+通过继承 BackgroundService 基类,开发者可以实现 ExecuteAsync 方法来定义长时间运行的逻辑,并借助 CancellationToken 遵循应用的生命周期。
+这些服务使用 AddHostedService 注册到 IServiceCollection 中,并且完整支持标准的依赖注入,可以通过构造函数解析 ILogger 之类的服务。
 
-### Key concepts
+### 核心概念
 
-- Background tasks using IHostedService and BackgroundService.
-- Implementing the ExecuteAsync override for continuous execution.
-- Managing service lifecycles with CancellationToken.
-- Registering hosted services with AddHostedService<T>().
-- Resolving dependencies via constructor injection in background services.
+- 使用 IHostedService 和 BackgroundService 执行后台任务。
+- 重写 ExecuteAsync 以实现持续执行的逻辑。
+- 用 CancellationToken 管理服务生命周期。
+- 通过 AddHostedService<T>() 注册 hosted service。
+- 在后台服务中通过构造函数注入解析依赖。
 
-### Lesson notes
+### 课程笔记
 
-Hosted services (or background services) are a powerful feature in ASP.NET Core for running tasks in the background, such as queue consumers or periodic timers.
-While you can implement the IHostedService interface directly, the BackgroundService base class is typically preferred for continuous background tasks as it provides a simplified implementation pattern.
+Hosted service(后台服务)是 ASP.NET Core 中一项强大的功能,用于在后台运行任务,比如队列消费者或周期性定时器。
+你可以直接实现 IHostedService 接口,但对于持续运行的后台任务,通常更推荐使用 BackgroundService 基类,因为它提供了更简化的实现模式。
 
-To create a background service, define a class that inherits from BackgroundService and override the ExecuteAsync method.
+要创建一个后台服务,定义一个继承自 BackgroundService 的类,并重写 ExecuteAsync 方法。
 
 ```csharp
 namespace ResolvingDeps.WebApi.HostedServices;
@@ -1489,10 +1489,10 @@ public class BackgroundTicker : BackgroundService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=70)
 
-The ExecuteAsync method receives a CancellationToken which should be used to monitor when the application is shutting down.
-A common pattern is to use a while loop that checks IsCancellationRequested.
+ExecuteAsync 方法会收到一个 CancellationToken,应当用它来监测应用何时正在关闭。
+一种常见模式是使用一个 while 循环来检查 IsCancellationRequested。
 
 ```csharp
 namespace ResolvingDeps.WebApi.HostedServices;
@@ -1509,10 +1509,10 @@ public class BackgroundTicker : BackgroundService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=85)
 
-Inside the loop, you can perform the background logic.
-It is important to pass the stoppingToken to any asynchronous methods, such as Task.Delay, to ensure the service responds promptly to shutdown requests.
+在循环内部,你可以执行后台逻辑。
+重要的是要把 stoppingToken 传给任何异步方法(例如 Task.Delay),以确保服务能及时响应关闭请求。
 
 ```csharp
 namespace ResolvingDeps.WebApi.HostedServices;
@@ -1530,9 +1530,9 @@ public class BackgroundTicker : BackgroundService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=100)
 
-To activate the hosted service, it must be registered in the dependency injection container using the AddHostedService extension method on IServiceCollection.
+要让 hosted service 生效,必须使用 IServiceCollection 上的 AddHostedService 扩展方法把它注册到依赖注入容器中。
 
 ```csharp
 // Add services to the container.
@@ -1560,11 +1560,11 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=115)
 
-Hosted services fully support dependency injection.
-Instead of using Console.WriteLine, you should inject dependencies like ILogger<T> through the constructor.
-The DI container will resolve these dependencies when the hosted service is instantiated at application startup.
+Hosted service 完整支持依赖注入。
+与其使用 Console.WriteLine,你应该通过构造函数注入 ILogger<T> 这类依赖。
+当 hosted service 在应用启动时被实例化,DI 容器会解析这些依赖。
 
 ```csharp
 namespace ResolvingDeps.WebApi.HostedServices;
@@ -1589,32 +1589,32 @@ public class BackgroundTicker : BackgroundService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-hosted-services-53953175/?t=145)
 
 ---
 
 ## 14. Resolving dependencies in service registration
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/) · 1:54
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/) · 1:54
 
-### Summary
+### 总结
 
-In .NET, while the dependency injection container typically handles service instantiation automatically, developers can manually resolve dependencies during the registration process.
-By utilizing factory overloads for methods such as AddScoped, you can access an IServiceProvider instance to explicitly retrieve required services and pass them into a class constructor.
-This approach provides the flexibility needed for complex initialization logic or when specific manual configuration is required before a service is added to the container.
+在 .NET 中,依赖注入容器通常会自动处理服务的实例化,但开发者也可以在注册过程中手动解析依赖。
+借助 AddScoped 等方法的工厂重载,你可以拿到一个 IServiceProvider 实例,显式取出所需的服务,并把它们传入某个类的构造函数。
+当初始化逻辑较为复杂,或者服务加入容器前需要特定的手动配置时,这种做法提供了必要的灵活性。
 
-### Key concepts
+### 核心概念
 
-- Factory overloads for service registration.
-- Manual dependency resolution using IServiceProvider.
-- The GetRequiredService<T> method.
-- Scoped execution within the registration factory.
-- Custom instantiation of services with existing dependencies.
+- 服务注册的工厂重载。
+- 使用 IServiceProvider 手动解析依赖。
+- GetRequiredService<T> 方法。
+- 注册工厂内部的作用域执行。
+- 用已有依赖自定义服务的实例化过程。
 
-### Lesson notes
+### 课程笔记
 
-In standard .NET dependency injection, services are often registered by simply providing the implementation type.
-The container then uses reflection to identify the constructor and resolve dependencies automatically.
+在标准的 .NET 依赖注入中,服务往往只需提供实现类型即可完成注册。
+容器随后会使用反射识别构造函数,并自动解析依赖。
 
 ```csharp
 // Add services to the container.
@@ -1642,11 +1642,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/?t=25)
 
-However, there are cases where you need to resolve services in a specific way or perform manual instantiation.
-This is done by using a factory delegate that provides an `IServiceProvider` (often named `provider`).
-This provider is scoped to the registration and represents the service provider that will be materialized when the service is requested.
+不过,有些情况下你需要以特定方式解析服务,或者需要手动完成实例化。
+这时可以使用一个提供 `IServiceProvider`(通常命名为 `provider`)的工厂委托。
+这个 provider 的作用域绑定到该次注册,代表服务被请求时将被实体化的那个 service provider。
 
 ```csharp
 // Add services to the container.
@@ -1677,11 +1677,11 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/?t=40)
 
-Within this factory, you can use the `provider` to resolve existing services using `GetRequiredService<T>()`.
-This allows you to manually fetch dependencies—such as an `ILogger`—and pass them into the constructor of the service you are registering.
-This technique is essential for advanced scenarios where you need to perform custom logic during the instantiation of a service.
+在这个工厂内部,你可以用 `provider` 通过 `GetRequiredService<T>()` 解析已有的服务。
+这让你能手动取出依赖(比如一个 `ILogger`),再把它传入你正在注册的那个服务的构造函数。
+对于需要在服务实例化过程中执行自定义逻辑的高级场景,这一技巧是必不可少的。
 
 ```csharp
 // Add services to the container.
@@ -1713,33 +1713,33 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/resolving-dependencies-in-service-registration-53953176/?t=100)
 
 ---
 
 ## 15. Section recap
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953180/) · 0:31
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953180/) · 0:31
 
-### Summary
+### 总结
 
-This lesson summarizes the various methods for resolving dependencies across the .NET ecosystem, covering project types such as Console applications, Web APIs, MVC, Razor Pages, Blazor, gRPC, and Hosted Services.
-It emphasizes that service resolution can occur within UI components, background tasks, and even during the service registration phase itself.
+本课总结了在 .NET 生态中解析依赖的各种方式,覆盖控制台应用、Web API、MVC、Razor Pages、Blazor、gRPC 和 Hosted Service 等项目类型。
+它强调服务解析可以发生在 UI 组件中、后台任务中,甚至发生在服务注册阶段本身。
 
-### Key concepts
+### 核心概念
 
-* Dependency resolution in Console applications and Web APIs.
-* Integration with MVC, Razor Pages, and Razor Views.
-* Service injection in Blazor components and gRPC services.
-* Utilizing dependencies within Hosted Services for background processing.
-* Resolving services during the registration process.
+* 控制台应用与 Web API 中的依赖解析。
+* 与 MVC、Razor Pages 和 Razor 视图的集成。
+* Blazor 组件与 gRPC 服务中的服务注入。
+* 在 Hosted Service 中利用依赖完成后台处理。
+* 在注册过程中解析服务。
 
-### Lesson notes
+### 课程笔记
 
-The section provided a broad overview of how to resolve services within different .NET project templates.
-The flexibility of the built-in Dependency Injection (DI) framework allows for seamless integration across various application architectures.
+本章全面介绍了如何在不同的 .NET 项目模板中解析服务。
+内置依赖注入(DI)框架的灵活性,使它能够无缝融入各种应用架构。
 
-Key areas covered include:
-* **Web and UI Frameworks**: Implementation details for resolving dependencies in Web APIs, MVC controllers, and Razor Pages. This includes the use of the `@inject` directive within Razor Views and Blazor components to bring services directly into the UI layer.
-* **Communication and Background Tasks**: Techniques for resolving dependencies in gRPC services and Hosted Services, ensuring that background logic has access to required application services.
-* **Console and Registration Logic**: Manual resolution in Console applications and the ability to resolve dependencies even within the service registration logic itself, allowing for dynamic configuration based on other registered services.
+覆盖的关键领域包括:
+* **Web 与 UI 框架**:在 Web API、MVC 控制器和 Razor Pages 中解析依赖的实现细节。这也包括在 Razor 视图和 Blazor 组件中使用 `@inject` 指令,把服务直接带入 UI 层。
+* **通信与后台任务**:在 gRPC 服务和 Hosted Service 中解析依赖的技巧,确保后台逻辑能够访问所需的应用服务。
+* **控制台与注册逻辑**:控制台应用中的手动解析,以及在服务注册逻辑内部就能解析依赖的能力,从而可以基于其他已注册的服务进行动态配置。
