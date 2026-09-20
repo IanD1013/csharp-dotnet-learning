@@ -996,3 +996,158 @@ consoleWriter.WriteLine("Hi From Source Generated DI");
 最后,本章展望了 .NET 生态中依赖注入的未来。
 源生成式的 service provider 代表着一次重大转变,它把解析逻辑移到编译期,以减少开销并提升启动性能。
 下一章将在这些基础之上引入 Scrutor,这是一个旨在增强 .NET 内置依赖注入框架能力的库。
+
+---
+
+## 运行 Demo
+
+本章的代码取自课程的 `5.Advanced` 目录。
+课程那五个独立项目(`CustomScope.ConsoleApp`、`MultiFunction.ConsoleApp`、`Weather.Api`、`Weather.Minimal.Api`、`DependencyInjectionFuture.ConsoleApp`)被合并成一个可以从头跑到尾的 demo,每节课一个小节。
+需要 Web 宿主的那几节课会在进程内启动真正的 ASP.NET Core 应用,并通过 HTTP 调用它。
+
+```
+src/dependency-injection/06-advanced-techniques/DependencyInjection.Advanced.Demos/
+  CustomScopeDemo.cs                    第 1 课:根 provider、CreateScope()、IServiceScopeFactory 三种解析
+  Api/DurationLoggerAttribute.cs        第 2 课:从 HttpContext.RequestServices 取 ILogger 的 filter
+  Api/DurationLoggerFilter.cs           第 2 课的对照组:构造函数注入 ILogger,用 [ServiceFilter] 挂载
+  Api/WeatherForecastController.cs      两个端点,分别挂上面两个 filter
+  ServiceLocatorDemo.cs                 第 2 课
+  Handlers/                             第 3 课:IHandler、CommandNameAttribute、HandlerOrchestrator、HandlerExtensions、Application
+  HandlerOrchestratorDemo.cs            第 3 课
+  CapturedDependencyDemo.cs             第 4 课:闭包捕获 vs 处理器参数注入,对比实例 id
+  MultipleProvidersDemo.cs              第 5 课:BuildServiceProvider() vs app.Services,对比单例 id
+  Weather/LoggedWeatherService.cs       第 6 课:装饰器
+  DecoratorDemo.cs                      第 6 课
+  SourceGenerated/MyServiceProvider.cs  第 7 课:Jab 的 [ServiceProvider] partial 类
+  SourceGeneratedDemo.cs                第 7 课
+  Api/InProcessApi.cs                   在环回地址的随机端口上起一个应用,课程代码里没有
+  Api/InlineLoggerProvider.cs           同步写控制台的 logger,保证日志行不乱序,课程代码里没有
+  Weather/LocalWeatherService.cs        返回本地假数据的 IWeatherService,课程代码里没有
+```
+
+```bash
+cd src/dependency-injection/06-advanced-techniques/DependencyInjection.Advanced.Demos
+dotnet run -c Release                  # 七个小节全跑
+dotnet run -c Release -- scope         # 第 1 课
+dotnet run -c Release -- locator       # 第 2 课
+dotnet run -c Release -- orchestrator  # 第 3 课
+dotnet run -c Release -- capturing     # 第 4 课
+dotnet run -c Release -- providers     # 第 5 课
+dotnet run -c Release -- decorator     # 第 6 课
+dotnet run -c Release -- sourcegen     # 第 7 课
+```
+
+Demo 是瞬间跑完的,而且不需要联网。
+
+实际输出:
+
+```text
+======================================================================
+  Creating a custom scope
+======================================================================
+
+Resolved straight from the root provider, with no scope in sight:
+  1st: 4befc7ba-28ae-470d-bbb9-e9a236af97bf
+  2nd: 4befc7ba-28ae-470d-bbb9-e9a236af97bf
+  -> same instance: True  <- scoped behaves like a singleton here
+
+Two scopes created with IServiceProvider.CreateScope():
+  scope 1: 56aa5725-053e-45c1-9851-93fd050219e5
+  scope 2: b0b22931-3666-454e-a23a-004b7bd7cd96
+  -> one instance per scope, disposed when the using block ends
+
+The same two scopes, created with IServiceScopeFactory instead:
+  scope 1: cb524c17-e248-4420-a267-0a4d19b934c5
+  scope 2: ac983b1d-3395-46de-ba79-36e4961bf6ac
+  -> same behaviour, narrower interface
+
+
+======================================================================
+  The service locator anti-pattern
+======================================================================
+
+[DurationLogger] pulls ILogger out of HttpContext.RequestServices:
+  [log] DurationLoggerAttribute: Request with name DependencyInjection.Advanced.Demos.Api.WeatherForecastController.GetCurrentWeatherLocated (DependencyInjection.Advanced.Demos) completed in 39ms
+  -> the filter works, but nothing in its signature admits it needs a logger
+
+[ServiceFilter<DurationLoggerFilter>] takes ILogger in its constructor:
+  [log] DurationLoggerFilter: Request with name DependencyInjection.Advanced.Demos.Api.WeatherForecastController.GetCurrentWeatherInjected (DependencyInjection.Advanced.Demos) completed in 38ms
+  -> same log line, and the dependency is now part of the type's contract
+
+
+======================================================================
+  When service locator makes sense
+======================================================================
+
+Commands discovered by scanning for [CommandName] on IHandler types:
+  "time" -> GetCurrentTimeHandler
+  "weather" -> GetCurrentLondonWeatherHandler
+
+Dispatching, with Application injecting only the orchestrator:
+  weather -> The temperature in London is 11.4C
+  time    -> The current time is 2026-09-20T16:04:27.1310524+12:00
+  coffee  -> No handler found for command name coffee
+  -> a new command is a new class plus an attribute, nothing else changes
+
+
+======================================================================
+  Avoiding capturing dependencies
+======================================================================
+
+Resolved from app.Services and captured by the endpoint lambda:
+  request 1 used instance 96ebb55f-8599-41d7-bb0b-37f947e84fd2
+  request 2 used instance 96ebb55f-8599-41d7-bb0b-37f947e84fd2
+  -> registered Transient, behaving like a singleton for the app's whole life
+
+Declared as a handler parameter, so it comes from the request scope:
+  request 1 used instance 7a3cf065-2d5d-427c-9f41-2bf64e459c8f
+  request 2 used instance 3fba0977-bcf1-43fd-bd38-e8b5af397f48
+  -> a fresh instance per request, which is what Transient promised
+
+
+======================================================================
+  Avoiding multiple service providers
+======================================================================
+
+Singleton resolved from builder.Services.BuildServiceProvider() at startup:
+  startup: c3d12f06-2646-40b2-acda-c64490cbaf61
+  request: 6e1b3564-3582-4b49-bd79-19145812b556
+  -> same instance: False  <- two containers, two "singletons"
+
+Singleton resolved from app.Services after the app was built:
+  startup: 7d30f26e-2a8a-44cb-a7f6-bbf9f2ac1f58
+  request: 7d30f26e-2a8a-44cb-a7f6-bbf9f2ac1f58
+  -> same instance: True
+
+
+======================================================================
+  Creating decorators
+======================================================================
+
+IWeatherService resolved to LoggedWeatherService, which wraps LocalWeatherService.
+
+Calling it, with the timing written by the decorator and nothing else:
+  [log] IWeatherService: Weather retrieval for city: Athens, took 26ms
+  The temperature in Athens is 24.8C
+  -> LocalWeatherService never learned what a Stopwatch is
+
+
+======================================================================
+  The future of dependency injection
+======================================================================
+
+Hi From Source Generated DI
+  resolved ConsoleWriter with no reflection involved
+  -> a missing registration would have been a compiler error, not a runtime one
+```
+
+和课程代码的出入,以及原因:
+
+- 目标框架是 net10.0,跟着仓库的 `src/Directory.Build.props` 走,课程代码是 net6.0。
+- 课程的 `OpenWeatherService` 调用 api.openweathermap.org,用的是录课时硬编码在源码里的 API key。本章七节课讲的都是生命周期、作用域、装饰器和服务定位,没有一节依赖真实的 HTTP 调用,所以换成返回固定数据的 `LocalWeatherService`,让 demo 离线可跑、每次结果一致。
+- `IWeatherService` 多了一个 `InstanceId`。第 4、5 课的结论就是"这两次拿到的是不是同一个实例",不把实例身份打印出来就看不见。
+- 第 2 课课程只给了 `DurationLoggerAttribute` 一种写法。这里加了一个构造函数注入 `ILogger`、用 `[ServiceFilter]` 挂载的 `DurationLoggerFilter` 作对照,好让"意图"和"可测试性"这两条落在能直接对比的代码上。
+- 第 4、5 课的问题只有真正跑起来才会暴露,所以 `InProcessApi` 会在 `http://127.0.0.1:0` 上启动应用,再用 `HttpClient` 发真实请求,而不是模拟。
+- 第 5 课里的 `builder.Services.BuildServiceProvider()` 正是分析器 ASP0000 要拦的写法,那一行上加了 `#pragma warning disable ASP0000`,因为这个警告本身就是本课要讲的内容。
+- `Jab` 用的是当前版本 0.12.0,课程录制时是 0.6.0,`[ServiceProvider]` 和 `[Transient]` 的写法没有变化。
+- 日志走的是 `InlineLoggerProvider` 这个同步写控制台的实现,而不是默认的控制台 logger。默认 logger 在后台线程刷缓冲,日志行会和 `Console.WriteLine` 的说明文字交错,读起来就乱了。

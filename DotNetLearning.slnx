@@ -22,6 +22,9 @@
     <Project Path="src/dependency-injection/02-introduction-to-dependency-injection/DependencyInjection.Introduction.Demos/DependencyInjection.Introduction.Demos.csproj" />
     <Project Path="src/dependency-injection/02-introduction-to-dependency-injection/DependencyInjection.Introduction.Tests/DependencyInjection.Introduction.Tests.csproj" />
   </Folder>
+  <Folder Name="/src/dependency-injection/06-advanced-techniques/">
+    <Project Path="src/dependency-injection/06-advanced-techniques/DependencyInjection.Advanced.Demos/DependencyInjection.Advanced.Demos.csproj" />
+  </Folder>
   <Folder Name="/src/docker/" />
   <Folder Name="/src/docker/docker-for-developers/" />
   <Folder Name="/src/docker/docker-for-developers/demo-app/">

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+
+    <!--
+      CA1848 wants LoggerMessage delegates. The lessons here log through plain
+      _logger.LogInformation calls, exactly as the course writes them, and swapping in generated
+      delegates would obscure the decorator and the filter without teaching anything.
+    -->
+    <NoWarn>$(NoWarn);CA1848</NoWarn>
+  </PropertyGroup>
+
+  <!-- Lessons 2, 4 and 5 host a real ASP.NET Core app in-process to show the trap they teach. -->
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Jab" />
+  </ItemGroup>
+
+</Project>
