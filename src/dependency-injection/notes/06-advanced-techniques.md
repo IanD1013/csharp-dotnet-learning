@@ -1,50 +1,50 @@
 # Advanced techniques
 
-> Course: [From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · Chapter 6
-> 8 lessons · ~47:32
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · 第 6 章
+> 共 8 课 · 约 47:32
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
+## 课程索引
 
-| # | Lesson | Length | Section |
-| --- | --- | --- | --- |
-| 1 | [Creating a custom scope](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/) | 5:42 | [↓](#1-creating-a-custom-scope) |
-| 2 | [The service locator anti-pattern](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-service-locator-anti-pattern-53953211/) | 2:48 | [↓](#2-the-service-locator-anti-pattern) |
-| 3 | [When service locator makes sense](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/) | 20:37 | [↓](#3-when-service-locator-makes-sense) |
-| 4 | [Avoiding capturing dependencies](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/) | 3:14 | [↓](#4-avoiding-capturing-dependencies) |
-| 5 | [Avoiding multiple service providers](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/) | 3:18 | [↓](#5-avoiding-multiple-service-providers) |
-| 6 | [Creating decorators](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/) | 7:11 | [↓](#6-creating-decorators) |
-| 7 | [The future of dependency injection](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/) | 3:55 | [↓](#7-the-future-of-dependency-injection) |
-| 8 | [Section recap](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953217/) | 0:47 | [↓](#8-section-recap) |
+| #   | 课程                                                                                                                                                                                       | 时长  | 小节                                        |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ----- | ------------------------------------------- |
+| 1   | [Creating a custom scope](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/)                         | 5:42  | [↓](#1-creating-a-custom-scope)             |
+| 2   | [The service locator anti-pattern](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-service-locator-anti-pattern-53953211/)       | 2:48  | [↓](#2-the-service-locator-anti-pattern)    |
+| 3   | [When service locator makes sense](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/)       | 20:37 | [↓](#3-when-service-locator-makes-sense)    |
+| 4   | [Avoiding capturing dependencies](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/)         | 3:14  | [↓](#4-avoiding-capturing-dependencies)     |
+| 5   | [Avoiding multiple service providers](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/) | 3:18  | [↓](#5-avoiding-multiple-service-providers) |
+| 6   | [Creating decorators](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/)                                 | 7:11  | [↓](#6-creating-decorators)                 |
+| 7   | [The future of dependency injection](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/)   | 3:55  | [↓](#7-the-future-of-dependency-injection)  |
+| 8   | [Section recap](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953217/)                                             | 0:47  | [↓](#8-section-recap)                       |
 
 ---
 
 ## 1. Creating a custom scope
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/) · 5:42
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/) · 5:42
 
-### Summary
+### 总结
 
-In console applications or background services, the DI container does not automatically manage scopes like it does in ASP.NET Core.
-To use scoped services correctly in these environments—such as when processing individual messages from a bus—developers must manually create and manage custom scopes.
-This lesson demonstrates how to use IServiceProvider.CreateScope() and IServiceScopeFactory to define boundaries for scoped lifetimes, ensuring that services are resolved and disposed of correctly within a specific unit of work.
+在控制台应用或后台服务中,DI 容器不会像在 ASP.NET Core 中那样自动管理作用域。
+要在这些环境中正确使用 scoped 服务,比如在处理来自消息总线的单条消息时,开发者必须手动创建并管理自定义作用域。
+本课演示如何使用 IServiceProvider.CreateScope() 和 IServiceScopeFactory 为 scoped 生命周期划定边界,确保服务在某个特定的工作单元内被正确解析和释放。
 
-### Key concepts
+### 核心概念
 
-*   **Implicit vs. Explicit Scopes**: In ASP.NET Core, scopes are tied to the lifetime of an HTTP request; in console apps, scopes must be defined manually.
-*   **Scoped Service Behavior**: Without an active scope, services registered as scoped are treated as singletons by the root service provider.
-*   **IServiceScope**: An interface representing a temporary boundary where scoped services live.
-*   **IServiceScopeFactory**: The preferred architectural approach for creating scopes, providing a more narrow and controlled interface than the full service provider.
+- **Implicit vs. Explicit Scopes(隐式作用域 vs. 显式作用域)**:在 ASP.NET Core 中,作用域与一次 HTTP 请求的生命周期绑定;在控制台应用中,作用域必须手动定义。
+- **Scoped Service Behavior(Scoped 服务的行为)**:如果没有活动的作用域,注册为 scoped 的服务会被根 service provider 当作单例对待。
+- **IServiceScope**:一个表示临时边界的接口,scoped 服务就存活在这个边界内。
+- **IServiceScopeFactory**:创建作用域时在架构上更推荐的做法,它提供了一个比完整的 service provider 更窄、更受控的接口。
 
-### Lesson notes
+### 课程笔记
 
-In a standard Web API, the DI container manages scopes automatically.
-However, in a console application or a service consuming messages from an event bus (like RabbitMQ or Azure Service Bus), you often want a scope to represent the processing of a single individual message.
-Without a manually defined scope, the container has no way of knowing when a scoped lifetime should begin or end.
+在标准的 Web API 中,DI 容器会自动管理作用域。
+但在控制台应用中,或者在消费事件总线(比如 RabbitMQ 或 Azure Service Bus)消息的服务中,你往往希望用一个作用域来表示对单条消息的处理。
+如果没有手动定义作用域,容器就无从知道一个 scoped 生命周期应该何时开始、何时结束。
 
-Consider a service used to demonstrate identity across resolutions:
+考虑这样一个服务,用它来演示多次解析之间实例的身份:
 
 ```csharp
 namespace CustomScope.ConsoleApp;
@@ -55,10 +55,10 @@ public class ExampleService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=85)
 
-If you register this service as scoped in a console application and resolve it directly from the root `IServiceProvider`, it will behave like a singleton.
-Every resolution will return the same instance because no scope boundary has been established.
+如果你在控制台应用中把这个服务注册为 scoped,并直接从根 `IServiceProvider` 解析它,它的行为会和单例一样。
+每次解析都会返回同一个实例,因为没有建立任何作用域边界。
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -77,12 +77,12 @@ Console.WriteLine(exampleService1.Id);
 Console.WriteLine(exampleService2.Id);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=100)
 
-To create a custom scope, use the `CreateScope()` method.
-This returns an `IServiceScope` which contains its own `ServiceProvider`.
-Services resolved from this scoped provider are unique to that scope.
-By wrapping the scope in a `using` block, you ensure that all services created within that scope are correctly disposed of when the block ends.
+要创建自定义作用域,使用 `CreateScope()` 方法。
+它返回一个 `IServiceScope`,其中包含它自己的 `ServiceProvider`。
+从这个作用域的 provider 解析出来的服务是该作用域独有的。
+把作用域包在 `using` 块里,可以确保该作用域内创建的所有服务在块结束时被正确释放。
 
 ```csharp
 services.AddScoped<ExampleService>();
@@ -102,12 +102,12 @@ using (var serviceScope = serviceProvider.CreateScope())
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=235)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=235)
 
-While calling `CreateScope()` on the `IServiceProvider` is functional, it can be seen as a violation of the Service Locator pattern because it gives the consumer access to the full-fledged provider.
-A more architecturally sound approach is to use `IServiceScopeFactory`.
-This factory is automatically registered by the DI container and its sole responsibility is creating scopes.
-This makes the intent of the code clearer and restricts the power given to the component injecting the factory.
+在 `IServiceProvider` 上调用 `CreateScope()` 虽然可以工作,但它可以被看作对 Service Locator 模式的一种违反,因为它让使用方拿到了功能完整的 provider。
+在架构上更合理的做法是使用 `IServiceScopeFactory`。
+这个工厂由 DI 容器自动注册,它唯一的职责就是创建作用域。
+这让代码的意图更清晰,也限制了注入该工厂的组件所获得的能力。
 
 ```csharp
 services.AddScoped<ExampleService>();
@@ -129,33 +129,33 @@ using (var serviceScope = serviceScopeFactory.CreateScope())
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=310)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-a-custom-scope-53953210/?t=310)
 
 ---
 
 ## 2. The service locator anti-pattern
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-service-locator-anti-pattern-53953211/) · 2:48
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-service-locator-anti-pattern-53953211/) · 2:48
 
-### Summary
+### 总结
 
-The service locator pattern is considered an anti-pattern in modern .NET development because it obscures a class's dependencies and complicates unit testing.
-By resolving services directly from an IServiceProvider or HttpContext within a method body rather than injecting them via a constructor, developers hide the true requirements of a component, making the code harder to maintain and mock effectively.
+在现代 .NET 开发中,Service Locator 模式被认为是一种反模式,因为它会掩盖一个类的依赖,并让单元测试变得复杂。
+如果在方法体内直接从 IServiceProvider 或 HttpContext 解析服务,而不是通过构造函数注入,开发者就隐藏了组件真正的需求,使代码更难维护、也更难有效地进行 mock。
 
-### Key concepts
+### 核心概念
 
-* **Service Locator Definition**: A pattern where a central registry or provider (like `IServiceProvider`) is used to resolve dependencies on demand within a class, rather than having them injected.
-* **Hidden Dependencies**: Using a service locator hides what a class actually needs to function, making the API surface dishonest about its requirements.
-* **Testing Friction**: Mocking dependencies becomes significantly more difficult because the tester must set up the entire service provider infrastructure rather than just passing a mock into a constructor.
-* **Intent**: Explicit constructor injection shows the intent of the class, whereas service location requires reading the implementation details to understand dependencies.
+- **Service Locator Definition(Service Locator 的定义)**:一种在类内部通过中心化的注册表或 provider(比如 `IServiceProvider`)按需解析依赖,而不是让依赖被注入进来的模式。
+- **Hidden Dependencies(隐藏的依赖)**:使用 Service Locator 会隐藏一个类实际需要什么才能工作,让它的 API 表面无法诚实地表达自身的需求。
+- **Testing Friction(测试摩擦)**:mock 依赖会变得困难得多,因为测试者必须搭建整套 service provider 基础设施,而不是只把一个 mock 传进构造函数。
+- **Intent(意图)**:显式的构造函数注入能展现类的意图,而 Service Locator 则要求阅读实现细节才能弄清依赖。
 
-### Lesson notes
+### 课程笔记
 
-The service locator is a pattern that allows a component to resolve its dependencies by querying a central container or provider.
-In modern .NET, this is typically done by using `IServiceProvider` directly.
-While it was once common, it is now widely regarded as an anti-pattern because it circumvents the primary benefits of Dependency Injection.
+Service Locator 是一种让组件通过查询中心化的容器或 provider 来解析自身依赖的模式。
+在现代 .NET 中,这通常是通过直接使用 `IServiceProvider` 来完成的。
+它曾经很常见,但如今被广泛视为一种反模式,因为它绕开了依赖注入的主要好处。
 
-A common example of this anti-pattern occurs in ASP.NET Core filters or attributes, where a developer might use the `HttpContext` to resolve a service manually:
+这种反模式的一个常见例子出现在 ASP.NET Core 的 filter 或 attribute 中,开发者可能会用 `HttpContext` 手动解析服务:
 
 ```csharp
 public class DurationLoggerAttribute : Attribute, IAsyncActionFilter
@@ -178,54 +178,54 @@ public class DurationLoggerAttribute : Attribute, IAsyncActionFilter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-service-locator-anti-pattern-53953211/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-service-locator-anti-pattern-53953211/?t=25)
 
-#### Why it is an anti-pattern
+#### 为什么它是一种反模式
 
-**1. Lack of Intent**
-Intent is a critical aspect of software design.
-When a class defines its dependencies in its constructor (e.g., `public MyController(IDatabase db)`), it explicitly communicates that it requires a database to function.
-If you use a service locator inside a method, a consumer of that class cannot know what dependencies are required without reading the internal implementation.
-If the source code is not available, the class becomes a "black box" with hidden requirements.
+**1. Lack of Intent(缺乏意图表达)**
+意图是软件设计中至关重要的一个方面。
+当一个类在构造函数中声明它的依赖时(例如 `public MyController(IDatabase db)`),它就明确地表达了自己需要一个数据库才能工作。
+如果你在方法内部使用 Service Locator,这个类的使用方不去读内部实现就无法知道需要哪些依赖。
+如果拿不到源代码,这个类就变成了一个带有隐藏需求的“黑盒”。
 
-**2. Testing and Mocking Difficulties**
-Service location makes unit testing significantly more complex.
-If a method hides a dependency resolution inside its body, a test will fail at runtime with a `NullReferenceException` or a resolution error unless the developer knows exactly which service to mock and how to register it in a mock container.
-In the example above, to test the `DurationLoggerAttribute`, a developer would have to mock the `ActionExecutingContext`, which contains an `HttpContext`, which contains a `RequestServices` provider, which finally returns the `ILogger`.
-This creates a "messy" testing setup compared to simply passing a mock logger into a constructor.
+**2. Testing and Mocking Difficulties(测试与 mock 的困难)**
+Service Locator 会让单元测试复杂得多。
+如果一个方法把依赖解析藏在方法体内,除非开发者确切知道该 mock 哪个服务、以及如何把它注册到 mock 容器里,否则测试会在运行时以 `NullReferenceException` 或解析错误失败。
+在上面的例子中,要测试 `DurationLoggerAttribute`,开发者必须 mock `ActionExecutingContext`,它里面包含一个 `HttpContext`,后者又包含一个 `RequestServices` provider,最后才返回 `ILogger`。
+与简单地把一个 mock logger 传进构造函数相比,这会造成一套“混乱”的测试搭建。
 
-**3. Maintenance Overhead**
-Injecting `IServiceProvider` instead of the specific services required is generally discouraged.
-You should always prefer injecting the specific services needed.
-If you find yourself in a situation where you feel forced to use a service locator, it should be treated as an edge case that requires extensive documentation to explain how the code should be tested and why the pattern was necessary.
+**3. Maintenance Overhead(维护开销)**
+一般不建议注入 `IServiceProvider` 来代替所需的具体服务。
+你应当始终优先注入真正需要的那些具体服务。
+如果你发现自己处在不得不使用 Service Locator 的处境,那就应当把它当作一种边缘情况来对待,需要用详尽的文档说明这段代码应该怎么测试,以及为什么必须使用这种模式。
 
-While there are very specific, legitimate use cases where the benefits of service location outweigh the drawbacks (such as certain framework-level constraints), these are rare and should be communicated clearly to the development team.
+确实存在一些非常特定的、合理的使用场景,其中 Service Locator 的收益超过它的弊端(比如某些框架层面的约束),但这类场景很少见,而且应当向开发团队清楚地说明。
 
 ---
 
 ## 3. When service locator makes sense
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/) · 20:37
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/) · 20:37
 
-### Summary
+### 总结
 
-While the Service Locator pattern is typically considered an anti-pattern, it is a valid choice for infrastructure-level components that must dynamically resolve services based on runtime data, such as command-line arguments or message types.
-This lesson demonstrates how to implement a 'Handler Orchestrator' that uses assembly scanning and custom attributes to map string commands to specific handler implementations.
-By injecting IServiceScopeFactory and creating a localized service provider scope, the orchestrator can resolve dependencies for specific handlers without polluting the main application's constructor with every possible service implementation, effectively mimicking the internal behavior of libraries like MediatR.
+虽然 Service Locator 模式通常被认为是一种反模式,但对于那些必须根据运行时数据(例如命令行参数或消息类型)动态解析服务的基础设施级组件来说,它是一个合理的选择。
+本课演示如何实现一个“Handler Orchestrator”,它利用程序集扫描和自定义 attribute 把字符串命令映射到具体的 handler 实现。
+通过注入 IServiceScopeFactory 并创建一个局部的 service provider 作用域,orchestrator 可以为特定的 handler 解析依赖,而不必把所有可能的服务实现都塞进主应用的构造函数,这实际上模仿了 MediatR 这类库的内部行为。
 
-### Key concepts
+### 核心概念
 
-* **Infrastructure-level Service Location**: Using service location within a specialized orchestrator rather than as a global dependency.
-* **Dynamic Command Dispatching**: Mapping runtime strings (e.g., CLI arguments) to specific service types.
-* **Assembly Scanning**: Automatically discovering types that implement a specific interface within an assembly.
-* **Metadata-driven Resolution**: Using custom attributes to associate metadata (like command names) with implementation types.
-* **Scoped Resolution in Singletons**: Using `IServiceScopeFactory` to resolve scoped or transient services from within a singleton orchestrator.
+- **Infrastructure-level Service Location(基础设施级的 Service Locator)**:在专门的 orchestrator 内部使用 Service Locator,而不是把它当作全局依赖。
+- **Dynamic Command Dispatching(动态命令分发)**:把运行时的字符串(例如 CLI 参数)映射到具体的服务类型。
+- **Assembly Scanning(程序集扫描)**:自动发现程序集中实现了某个特定接口的类型。
+- **Metadata-driven Resolution(元数据驱动的解析)**:使用自定义 attribute 把元数据(比如命令名)与实现类型关联起来。
+- **Scoped Resolution in Singletons(在单例中解析 scoped 服务)**:使用 `IServiceScopeFactory` 从单例 orchestrator 内部解析 scoped 或 transient 服务。
 
-### Lesson notes
+### 课程笔记
 
-In complex applications, such as a multi-function console app, you may need to execute different logic based on runtime input.
-A common example is a CLI that accepts commands like `weather` or `time`.
-Hardcoding these mappings into the main application class leads to bloated constructors and rigid code.
+在复杂的应用中,比如一个多功能的控制台应用,你可能需要根据运行时输入执行不同的逻辑。
+一个常见的例子是接受 `weather` 或 `time` 这类命令的 CLI。
+把这些映射硬编码进主应用类会导致构造函数臃肿、代码僵化。
 
 ```csharp
 using MultiFunction.ConsoleApp.Time;
@@ -251,9 +251,9 @@ if (args.Length == 0)
 await application.RunAsync(args);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=25)
 
-To handle this dynamically, we define a common interface, `IHandler`, which all command implementations must fulfill.
+为了动态处理这件事,我们定义一个公共接口 `IHandler`,所有命令实现都必须满足它。
 
 ```csharp
 namespace MultiFunction.ConsoleApp.Handlers;
@@ -264,9 +264,9 @@ public interface IHandler
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=175)
 
-Individual handlers, such as the `GetCurrentLondonWeatherHandler`, implement this interface and receive their own specific dependencies via standard constructor injection.
+各个 handler,比如 `GetCurrentLondonWeatherHandler`,实现这个接口,并通过标准的构造函数注入接收它们各自特定的依赖。
 
 ```csharp
 private readonly IConsoleWriter _consoleWriter;
@@ -286,12 +286,12 @@ private readonly IConsoleWriter _consoleWriter;
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=250)
 
-To resolve these handlers dynamically, we implement a `HandlerOrchestrator`.
-This class is a specialized service locator.
-Instead of injecting every possible handler into the `Application` class, we inject the orchestrator.
-The orchestrator uses `IServiceScopeFactory` to create a scope and resolve the required handler type at runtime.
+为了动态解析这些 handler,我们实现一个 `HandlerOrchestrator`。
+这个类是一个专用的 Service Locator。
+我们不把所有可能的 handler 都注入 `Application` 类,而是注入这个 orchestrator。
+orchestrator 使用 `IServiceScopeFactory` 创建作用域,并在运行时解析所需的 handler 类型。
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -310,10 +310,10 @@ public class HandlerOrchestrator
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=370)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=370)
 
-The orchestrator resolves the handler by looking up the type in a dictionary and using the `IServiceProvider` from a new scope to instantiate it.
-This ensures that the handler's dependencies are correctly managed according to their registered lifetimes.
+orchestrator 通过在字典中查找类型,并使用新作用域中的 `IServiceProvider` 来实例化它,从而解析出 handler。
+这确保了 handler 的依赖会按照它们注册的生命周期被正确管理。
 
 ```csharp
     public IHandler? GetHandlerForCommandName(string command)
@@ -330,9 +330,9 @@ This ensures that the handler's dependencies are correctly managed according to 
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=475)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=475)
 
-To avoid manual registration of every command-to-type mapping, we use a custom attribute, `CommandNameAttribute`, to decorate handler classes.
+为了避免手动注册每一条命令到类型的映射,我们用一个自定义 attribute `CommandNameAttribute` 来标注 handler 类。
 
 ```csharp
 namespace MultiFunction.ConsoleApp.Handlers;
@@ -344,9 +344,9 @@ public class CommandNameAttribute : Attribute
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=535)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=535)
 
-Using reflection and assembly scanning, the orchestrator can automatically discover all classes implementing `IHandler` that are decorated with the `CommandNameAttribute` and populate its internal mapping dictionary.
+借助反射和程序集扫描,orchestrator 可以自动发现所有实现了 `IHandler` 且被 `CommandNameAttribute` 标注的类,并填充它内部的映射字典。
 
 ```csharp
 private void RegisterCommandHandler()
@@ -365,10 +365,10 @@ private void RegisterCommandHandler()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=655)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=655)
 
-Finally, to make the system truly plug-and-play, we create extension methods for `IServiceCollection`.
-These methods handle both the registration of the orchestrator and the automatic registration of all discovered handler types into the DI container.
+最后,为了让这套系统真正做到即插即用,我们为 `IServiceCollection` 编写扩展方法。
+这些方法既负责注册 orchestrator,也负责把所有发现的 handler 类型自动注册到 DI 容器中。
 
 ```csharp
 namespace MultiFunction.ConsoleApp.Handlers;
@@ -389,35 +389,35 @@ public static class HandlerExtensions
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=1135)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/when-service-locator-makes-sense-53953212/?t=1135)
 
-This approach provides a clean, extensible architecture where adding a new command only requires creating a new class that implements `IHandler` and adding the `CommandName` attribute.
-The infrastructure handles the rest through controlled service location.
+这种做法提供了一个清晰、可扩展的架构:添加一条新命令只需要创建一个实现 `IHandler` 的新类,并加上 `CommandName` attribute。
+其余的事情由基础设施通过受控的 Service Locator 来完成。
 
 ---
 
 ## 4. Avoiding capturing dependencies
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/) · 3:14
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/) · 3:14
 
-### Summary
+### 总结
 
-Capturing dependencies in closures is a common mistake in .NET applications, particularly when using Minimal APIs.
-When a service is resolved from the root service provider outside of a request handler and then used inside that handler's lambda expression, it becomes captured as a closure.
-This effectively turns the service into a singleton for the lifetime of the application, regardless of its intended lifetime (e.g., transient or scoped), which can lead to severe concurrency issues and state corruption.
+在闭包中捕获依赖是 .NET 应用中的一个常见错误,在使用 Minimal API 时尤其如此。
+当一个服务在请求处理器之外从根 service provider 解析出来,然后在该处理器的 lambda 表达式内部被使用时,它就被当作闭包捕获了。
+这实际上让该服务在应用的整个生命周期内变成了单例,无论它原本预期的生命周期是什么(例如 transient 或 scoped),并可能导致严重的并发问题和状态损坏。
 
-### Key concepts
+### 核心概念
 
-- **Closure Capture**: Accessing variables from an outer scope within a lambda expression, causing the variable to be held in memory as long as the lambda exists.
-- **Root Provider Resolution**: Resolving services directly from `app.Services` (the root container) rather than the request-specific scope.
-- **Lifetime Distortion**: The phenomenon where a transient or scoped service behaves like a singleton because it is captured by a long-lived delegate.
-- **Minimal API Parameter Injection**: The practice of declaring dependencies as parameters in the endpoint handler to ensure they are resolved correctly from the request scope.
+- **Closure Capture(闭包捕获)**:在 lambda 表达式中访问外层作用域的变量,导致该变量只要 lambda 还存在就一直被保留在内存中。
+- **Root Provider Resolution(从根 provider 解析)**:直接从 `app.Services`(根容器)解析服务,而不是从请求专属的作用域解析。
+- **Lifetime Distortion(生命周期扭曲)**:transient 或 scoped 服务因为被一个长生命周期的委托捕获,从而表现得像单例的现象。
+- **Minimal API Parameter Injection(Minimal API 的参数注入)**:把依赖声明为端点处理器的参数,以确保它们能从请求作用域中被正确解析。
 
-### Lesson notes
+### 课程笔记
 
-In a standard Minimal API implementation, dependencies are typically injected directly into the route handler delegate.
-This ensures that the Model Context Protocol or the underlying Dependency Injection (DI) container can manage the service's lifetime correctly.
-For example, if a service is registered as transient, it will be instantiated every time the endpoint is called.
+在标准的 Minimal API 实现中,依赖通常直接注入到路由处理器委托中。
+这确保 Model Context Protocol 或底层的依赖注入(DI)容器能够正确管理服务的生命周期。
+例如,如果一个服务注册为 transient,那么每次调用该端点时它都会被实例化。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -440,10 +440,10 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=20)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=20)
 
-In the implementation above, the `OpenWeatherService` is resolved through the method parameters.
-If you place a breakpoint in the constructor of `OpenWeatherService`, you will see it triggered on every request because it is registered with a transient lifetime.
+在上面的实现中,`OpenWeatherService` 是通过方法参数解析的。
+如果你在 `OpenWeatherService` 的构造函数里打一个断点,你会看到它在每次请求时都被触发,因为它注册的是 transient 生命周期。
 
 ```csharp
 namespace Weather.Minimal.Api.Weather;
@@ -466,10 +466,10 @@ public class OpenWeatherService : IWeatherService
         var weatherResponse = await httpClient.GetAsync(url);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=50)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=50)
 
-A common but fatal flaw occurs when developers resolve the service from the root service provider (`app.Services`) before the request is even created.
-By resolving the service outside the scope of the handler and then using it inside the lambda, the service is captured as a closure.
+一个常见但致命的缺陷发生在:开发者在请求尚未被创建之前,就从根 service provider(`app.Services`)解析了服务。
+在处理器作用域之外解析服务、然后在 lambda 内部使用它,会让这个服务被当作闭包捕获。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -491,14 +491,14 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=100)
 
-In this scenario, the `weatherService` is resolved once when the application starts.
-Even though it is registered as `Transient`, it is now treated as an out-of-scope singleton because the same instance is reused for every single request.
-This bypasses the intended DI lifecycle and can cause significant concurrency issues, especially if the service is not thread-safe.
+在这种情况下,`weatherService` 在应用启动时只被解析一次。
+尽管它注册的是 `Transient`,现在却被当成了一个脱离作用域的单例,因为每一次请求都复用同一个实例。
+这绕过了原本设计的 DI 生命周期,并可能引发严重的并发问题,尤其当该服务不是线程安全的时候。
 
-To fix this, ensure that services are resolved within their proper scope by passing them as arguments to the handler delegate.
-This allows the framework to properly resolve the dependency from the request-specific scope for every execution.
+要修复这个问题,把服务作为参数传给处理器委托,确保它们在正确的作用域内被解析。
+这样框架就能在每次执行时从请求专属的作用域中正确解析依赖。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -520,27 +520,27 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-capturing-dependencies-53953213/?t=175)
 
 ---
 
 ## 5. Avoiding multiple service providers
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/) · 3:18
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/) · 3:18
 
-Creating multiple service providers is a common mistake that can lead to subtle and difficult-to-debug issues in .NET applications.
-When an ASP.NET Core application is built, it typically manages a single internal service provider to resolve dependencies for the lifetime of the application.
+创建多个 service provider 是一个常见错误,它会在 .NET 应用中引发难以察觉、难以调试的问题。
+当一个 ASP.NET Core 应用被构建出来时,它通常会管理一个内部的 service provider,在应用的整个生命周期内用它来解析依赖。
 
-### Key concepts
+### 核心概念
 
-- **Independent Containers**: Calling `BuildServiceProvider()` creates a new, isolated dependency injection container.
-- **Singleton Violation**: Singletons are only unique within the scope of a single service provider. Multiple providers result in multiple "singleton" instances.
-- **Startup Pitfalls**: Manually building a provider during startup (e.g., to run migrations or access configuration) is the primary cause of this issue.
-- **Best Practices**: In Web APIs, rely on the framework's `builder.Build()`; in console applications, ensure `BuildServiceProvider()` is called only once.
+- **Independent Containers(相互独立的容器)**:调用 `BuildServiceProvider()` 会创建一个全新的、彼此隔离的依赖注入容器。
+- **Singleton Violation(单例被破坏)**:单例只在单个 service provider 的范围内是唯一的。多个 provider 会导致出现多个“单例”实例。
+- **Startup Pitfalls(启动阶段的陷阱)**:在启动过程中手动构建 provider(例如为了执行数据库迁移或读取配置)是造成这个问题的主要原因。
+- **Best Practices(最佳实践)**:在 Web API 中依赖框架的 `builder.Build()`;在控制台应用中确保 `BuildServiceProvider()` 只被调用一次。
 
-### Lesson notes
+### 课程笔记
 
-In a standard Minimal API setup, services are registered to the `IServiceCollection` and resolved automatically by the framework.
+在标准的 Minimal API 配置中,服务被注册到 `IServiceCollection`,并由框架自动解析。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -563,10 +563,10 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=10)
 
-Problems arise when a developer needs to access a service before the application has fully started.
-For example, consider an `IdGenerator` registered as a singleton:
+当开发者需要在应用完全启动之前访问某个服务时,问题就出现了。
+例如,考虑一个注册为单例的 `IdGenerator`:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -593,9 +593,9 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=55)
 
-If you attempt to resolve this `IdGenerator` during the configuration phase by calling `BuildServiceProvider()`, you create a second container:
+如果你在配置阶段调用 `BuildServiceProvider()` 来解析这个 `IdGenerator`,你就创建了第二个容器:
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -623,10 +623,10 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=85)
 
-When the application eventually runs and handles a request, it uses its own internal service provider.
-If the endpoint also injects the `IdGenerator`, the instance provided to the endpoint will be different from the instance resolved during startup.
+当应用最终运行并处理请求时,它使用的是自己内部的 service provider。
+如果端点也注入了 `IdGenerator`,那么提供给端点的实例会与启动期间解析出来的实例不同。
 
 ```csharp
 using Microsoft.AspNetCore.Mvc;
@@ -652,14 +652,14 @@ app.MapGet("weather/{city}",
     Console.WriteLine(idGen.Id);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=130)
 
-In this scenario, the console will output two different GUIDs, even though the service is registered as a singleton.
-This happens because each service provider maintains its own internal dictionary of singleton instances.
-This can lead to critical failures if the singleton is intended to manage shared state, such as a cache or a database connection pool.
+在这种情况下,控制台会输出两个不同的 GUID,尽管该服务注册的是单例。
+这是因为每个 service provider 都维护着自己内部的单例实例字典。
+如果这个单例本来是用来管理共享状态的,比如缓存或数据库连接池,那就可能导致严重的故障。
 
-To resolve this, avoid calling `BuildServiceProvider()` in the `Program.cs` of a Web API.
-Instead, perform service resolution after the application has been built using `app.Services` or within the scope of a request.
+要解决这个问题,避免在 Web API 的 `Program.cs` 中调用 `BuildServiceProvider()`。
+取而代之的是,在应用构建完成之后使用 `app.Services` 进行服务解析,或者在某次请求的作用域内解析。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -683,31 +683,31 @@ app.MapGet("weather/{city}",
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=190)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/avoiding-multiple-service-providers-53953214/?t=190)
 
 ---
 
 ## 6. Creating decorators
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/) · 7:11
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/) · 7:11
 
-### Summary
+### 总结
 
-Decorators allow you to add behavior to a service without modifying its original implementation, adhering to the Single Responsibility Principle.
-By wrapping a core service with a decorator that implements the same interface, you can inject cross-cutting concerns like logging or performance monitoring.
-In .NET, this is achieved by registering the base implementation as a concrete type and then registering the interface using a factory function that resolves the base type and wraps it in the decorator.
+装饰器让你能够在不修改服务原有实现的前提下为它添加行为,从而遵循单一职责原则。
+用一个实现了相同接口的装饰器把核心服务包起来,你就可以注入日志记录或性能监控这类横切关注点。
+在 .NET 中,这是通过把基础实现按具体类型注册,然后用一个工厂函数注册接口来实现的,该工厂函数解析出基础类型并把它包进装饰器。
 
-### Key concepts
+### 核心概念
 
-- **Decorator Pattern**: A structural pattern that allows behavior to be added to an individual object, dynamically, without affecting the behavior of other objects from the same class.
-- **Separation of Concerns**: Keeping business logic (like weather retrieval) separate from infrastructure concerns (like logging and timing).
-- **Dependency Redirection**: Configuring the DI container to resolve an interface to a decorator, which in turn resolves the underlying implementation.
-- **Factory Registration**: Using the `IServiceCollection` factory delegate to manually instantiate a decorator with its required dependencies.
+- **Decorator Pattern(装饰器模式)**:一种结构型模式,允许在不影响同一个类的其他对象行为的前提下,动态地为某个单独对象添加行为。
+- **Separation of Concerns(关注点分离)**:把业务逻辑(比如获取天气)与基础设施关注点(比如日志和计时)分开。
+- **Dependency Redirection(依赖重定向)**:配置 DI 容器,让接口解析到装饰器,而装饰器再去解析底层的实现。
+- **Factory Registration(工厂式注册)**:使用 `IServiceCollection` 的工厂委托,手动实例化装饰器并传入它所需的依赖。
 
-### Lesson notes
+### 课程笔记
 
-In a standard .NET API, a controller typically depends on an interface for its business logic.
-For example, a `WeatherForecastController` might depend on `IWeatherService` to retrieve data for a specific city.
+在标准的 .NET API 中,controller 通常依赖一个接口来完成业务逻辑。
+例如,`WeatherForecastController` 可能依赖 `IWeatherService` 来获取某个特定城市的数据。
 
 ```csharp
 using ...
@@ -735,10 +735,10 @@ public class WeatherForecastController : ControllerBase
         }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=25)
 
-While you could implement timing and logging logic directly inside the `OpenWeatherService` implementation using a `Stopwatch` and `try/finally` block, this violates the Single Responsibility Principle.
-The service should only be concerned with communicating with the weather API.
+虽然你可以用 `Stopwatch` 和 `try/finally` 块直接在 `OpenWeatherService` 实现内部完成计时和日志逻辑,但这违反了单一职责原则。
+这个服务应当只关心与天气 API 的通信。
 
 ```csharp
 $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={OpenWeatherA
@@ -764,11 +764,11 @@ $"https://api.openweathermap.org/data/2.5/weather?q={city}&appid={OpenWeatherA
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=140)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=140)
 
-A more maintainable approach is to create a decorator.
-The `LoggedWeatherService` class implements the same `IWeatherService` interface and accepts an instance of `IWeatherService` in its constructor.
-This allows it to act as a wrapper around the actual implementation.
+更易维护的做法是创建一个装饰器。
+`LoggedWeatherService` 类实现同一个 `IWeatherService` 接口,并在构造函数中接收一个 `IWeatherService` 实例。
+这让它可以充当真实实现的包装器。
 
 ```csharp
 using System.Diagnostics;
@@ -794,9 +794,9 @@ public class LoggedWeatherService : IWeatherService
         {
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=250)
 
-The decorator delegates the actual work to the inner service while handling the timing and logging logic independently.
+装饰器把真正的工作委托给内部的服务,同时独立地处理计时和日志逻辑。
 
 ```csharp
 public async Task<WeatherResponse?> GetCurrentWeatherAsync(string city)
@@ -815,10 +815,10 @@ public async Task<WeatherResponse?> GetCurrentWeatherAsync(string city)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=405)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=405)
 
-To configure this in the Dependency Injection container, you must register the concrete implementation (`OpenWeatherService`) as itself.
-Then, register the interface (`IWeatherService`) using a factory delegate that resolves the concrete service and the logger to instantiate the decorator.
+要在依赖注入容器中配置这一点,你必须把具体实现(`OpenWeatherService`)按它自身的类型注册。
+然后,用一个工厂委托来注册接口(`IWeatherService`),该委托解析出具体服务和 logger,用它们来实例化装饰器。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -843,35 +843,35 @@ if (app.Environment.IsDevelopment())
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=415)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/creating-decorators-53953215/?t=415)
 
-When the application resolves `IWeatherService`, it receives the `LoggedWeatherService`.
-Internally, the decorator uses the resolved `OpenWeatherService` to perform the actual API calls, effectively decoupling the metric collection from the business logic.
+当应用解析 `IWeatherService` 时,它拿到的是 `LoggedWeatherService`。
+在内部,装饰器使用解析出来的 `OpenWeatherService` 来执行真正的 API 调用,从而有效地把指标采集与业务逻辑解耦。
 
 ---
 
 ## 7. The future of dependency injection
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/) · 3:55
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/) · 3:55
 
-Source generators, introduced in C# 9 and .NET 5, enable a form of meta-programming where code is inspected and additional code is generated during compile time.
-In the context of dependency injection, this allows for the creation of service providers that do not rely on runtime reflection.
+源生成器在 C# 9 和 .NET 5 中被引入,它带来了一种元编程形式:在编译期检查代码并生成额外的代码。
+在依赖注入的语境下,这使得创建不依赖运行时反射的 service provider 成为可能。
 
-### Key concepts
+### 核心概念
 
-- **Source Generators**: Meta-programming introduced in C# 9 that allows inspecting code and generating additional source files during compilation.
-- **Compile-time Safety**: Errors in DI configuration (e.g., missing dependencies) are caught during the build process rather than at runtime.
-- **Performance**: Eliminates the overhead of reflection, resulting in faster startup times and near-instant service resolution.
-- **Jab Library**: A third-party library that implements source-generated DI in a way that feels familiar to standard .NET DI.
+- **Source Generators(源生成器)**:C# 9 引入的元编程能力,允许在编译期检查代码并生成额外的源文件。
+- **Compile-time Safety(编译期安全)**:DI 配置中的错误(例如缺少依赖)会在构建过程中被发现,而不是在运行时。
+- **Performance(性能)**:消除了反射的开销,带来更快的启动时间和近乎即时的服务解析。
+- **Jab Library(Jab 库)**:一个第三方库,它以一种贴近标准 .NET DI 的方式实现了源生成式的 DI。
 
-### Lesson notes
+### 课程笔记
 
-The primary advantages of source-generated DI are compile-time checks and performance.
-If a service is missing or incorrectly registered, the compiler will issue an error, preventing runtime failures.
-Additionally, because the resolution logic is generated as standard C# code, application startup and service resolution are significantly faster because the application is simply calling code as if it were manually written.
+源生成式 DI 的主要优势是编译期检查和性能。
+如果某个服务缺失或注册有误,编译器会报错,从而避免运行时故障。
+此外,由于解析逻辑是以标准 C# 代码的形式生成的,应用启动和服务解析都会明显更快,因为应用只是在调用代码,就好像这些代码是手写的一样。
 
-To implement source-generated DI, libraries like `Jab` can be used.
-First, define the interfaces and implementations:
+要实现源生成式的 DI,可以使用 `Jab` 这类库。
+首先,定义接口和实现:
 
 ```csharp
 namespace DependencyInjectionFuture.ConsoleApp;
@@ -890,11 +890,11 @@ public interface IConsoleWriter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=100)
 
-Next, create a `partial` class to act as the service provider.
-This class must be decorated with the `[ServiceProvider]` attribute.
-Services are registered using attributes like `[Transient]`, `[Scoped]`, or `[Singleton]` directly on the class definition.
+接下来,创建一个 `partial` 类来充当 service provider。
+这个类必须标注 `[ServiceProvider]` attribute。
+服务通过直接写在类定义上的 `[Transient]`、`[Scoped]` 或 `[Singleton]` 这类 attribute 来注册。
 
 ```csharp
 using Jab;
@@ -909,10 +909,10 @@ public partial class MyServiceProvider
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=130)
 
-Upon saving, the source generator automatically produces the implementation details for the partial class.
-This generated code handles the instantiation and lifetime management of the services, including the creation of scopes and disposal of services.
+保存之后,源生成器会自动为这个 partial 类产出实现细节。
+生成的代码负责服务的实例化和生命周期管理,包括作用域的创建和服务的释放。
 
 ```csharp
 namespace DependencyInjectionFuture.ConsoleApp{
@@ -940,10 +940,10 @@ namespace DependencyInjectionFuture.ConsoleApp{
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=160)
 
-Finally, the generated service provider can be used in the application.
-It provides a type-safe `GetService<T>` method that resolves dependencies without the overhead of runtime reflection.
+最后,生成的 service provider 就可以在应用中使用了。
+它提供了类型安全的 `GetService<T>` 方法,在解析依赖时不带运行时反射的开销。
 
 ```csharp
 using DependencyInjectionFuture.ConsoleApp;
@@ -956,43 +956,43 @@ var consoleWriter = serviceProvider.GetService<IConsoleWriter>();
 consoleWriter.WriteLine("Hi From Source Generated DI");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=205)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-future-of-dependency-injection-53953216/?t=205)
 
-While ASP.NET Core currently relies heavily on reflection-based DI, source-generated alternatives are likely to become more prominent in the future of .NET development due to their efficiency and safety.
+虽然 ASP.NET Core 目前仍然严重依赖基于反射的 DI,但源生成式的替代方案凭借其效率和安全性,很可能在未来的 .NET 开发中占据更重要的位置。
 
 ---
 
 ## 8. Section recap
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953217/) · 0:47
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953217/) · 0:47
 
-### Summary
+### 总结
 
-This lesson provides a comprehensive summary of advanced dependency injection techniques in .NET, including manual scope management, the nuances of the service locator pattern, and architectural patterns like decorators.
-It also reviews best practices for avoiding common pitfalls such as captured dependencies and redundant service providers, while looking forward to the role of source generation in the future of DI.
+本课全面总结了 .NET 中依赖注入的高级技巧,包括手动的作用域管理、Service Locator 模式的种种微妙之处,以及装饰器这类架构模式。
+它还回顾了避免常见陷阱的最佳实践,比如被捕获的依赖和多余的 service provider,同时展望了源生成在 DI 未来中的角色。
 
-### Key concepts
+### 核心概念
 
-*   **Manual Scope Creation**: Understanding how to explicitly create and manage service scopes.
-*   **Service Locator Pattern**: Recognizing why it is generally considered an anti-pattern, while identifying specific scenarios where specifying intent makes it acceptable.
-*   **Dependency Integrity**: Strategies for avoiding captured dependencies and preventing the proliferation of multiple service providers.
-*   **Decorator Pattern**: Implementing decorators elegantly using the built-in DI container.
-*   **Source Generation**: The evolution of DI towards source-generated service providers for improved performance and compile-time safety.
+- **Manual Scope Creation(手动创建作用域)**:理解如何显式地创建和管理服务作用域。
+- **Service Locator Pattern(Service Locator 模式)**:认识到为什么它通常被视为反模式,同时识别出那些因为能明确表达意图而可以接受它的特定场景。
+- **Dependency Integrity(依赖的完整性)**:避免被捕获的依赖、防止 service provider 泛滥的各种策略。
+- **Decorator Pattern(装饰器模式)**:利用内置的 DI 容器优雅地实现装饰器。
+- **Source Generation(源生成)**:DI 朝着源生成式 service provider 演进,以获得更好的性能和编译期安全。
 
-### Lesson notes
+### 课程笔记
 
-This section explored several advanced techniques for mastering dependency injection in .NET applications.
-The journey began with manual scope management, demonstrating how to create custom scopes to control the lifetime of services beyond the standard request-response cycle.
+本章探索了若干用于精通 .NET 应用依赖注入的高级技巧。
+这段旅程从手动的作用域管理开始,演示了如何创建自定义作用域,以便在标准的请求-响应周期之外控制服务的生命周期。
 
-A significant portion of the section was dedicated to the Service Locator pattern.
-While often labeled an anti-pattern because it hides dependencies and complicates testing, there are specific contexts where it can be used effectively, particularly when the implementation allows for explicit intent.
+本章有相当一部分内容专门讨论 Service Locator 模式。
+它常常因为隐藏依赖、让测试复杂化而被贴上反模式的标签,但在某些特定场景下它可以被有效地使用,尤其是当实现方式允许表达明确意图的时候。
 
-To ensure architectural integrity, the section covered how to avoid common mistakes such as captured dependencies—where a service with a longer lifetime (like a Singleton) holds onto a service with a shorter lifetime (like a Scoped service).
-Additionally, the lessons emphasized the importance of maintaining a single source of truth by avoiding the creation of multiple service providers within the same application context.
+为了保证架构的完整性,本章讲解了如何避免一些常见错误,比如被捕获的依赖,也就是生命周期较长的服务(例如 Singleton)持有生命周期较短的服务(例如 Scoped 服务)。
+此外,这些课程还强调了通过避免在同一个应用上下文中创建多个 service provider 来维持单一事实来源的重要性。
 
-For structural patterns, the section demonstrated how to implement decorators elegantly.
-This allows for the addition of behavior to services without modifying their underlying implementation, all while leveraging the DI container to resolve the decorated chain.
+在结构型模式方面,本章演示了如何优雅地实现装饰器。
+这让你可以在不修改底层实现的情况下为服务添加行为,同时借助 DI 容器来解析这条被装饰的调用链。
 
-Finally, the section looked toward the future of dependency injection in the .NET ecosystem.
-Source-generated service providers represent a significant shift, moving resolution logic to compile-time to reduce overhead and improve startup performance.
-The next section will build upon these foundations by introducing Scrutor, a library designed to enhance the capabilities of the built-in .NET dependency injection framework.
+最后,本章展望了 .NET 生态中依赖注入的未来。
+源生成式的 service provider 代表着一次重大转变,它把解析逻辑移到编译期,以减少开销并提升启动性能。
+下一章将在这些基础之上引入 Scrutor,这是一个旨在增强 .NET 内置依赖注入框架能力的库。
