@@ -28,6 +28,10 @@
   <Folder Name="/src/dependency-injection/07-extending-dependency-injection-with-scrutor/">
     <Project Path="src/dependency-injection/07-extending-dependency-injection-with-scrutor/DependencyInjection.Scrutor.Demos/DependencyInjection.Scrutor.Demos.csproj" />
   </Folder>
+  <Folder Name="/src/dependency-injection/08-creating-our-own-dependency-injection-framework/">
+    <Project Path="src/dependency-injection/08-creating-our-own-dependency-injection-framework/DependencyInjection.CustomFramework.Demos/DependencyInjection.CustomFramework.Demos.csproj" />
+    <Project Path="src/dependency-injection/08-creating-our-own-dependency-injection-framework/DependencyInjection.CustomFramework.Vax/DependencyInjection.CustomFramework.Vax.csproj" />
+  </Folder>
   <Folder Name="/src/docker/" />
   <Folder Name="/src/docker/docker-for-developers/" />
   <Folder Name="/src/docker/docker-for-developers/demo-app/">

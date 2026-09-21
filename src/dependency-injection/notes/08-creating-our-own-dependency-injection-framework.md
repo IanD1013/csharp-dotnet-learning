@@ -635,3 +635,133 @@ service1.PrintId();
 [▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953329/?t=10)
 
 通过实现这些特性,这个自定义框架达到了与基础 DI 容器的功能对等,能够通过一套干净、流式的 API 支持 singleton 管理和复杂的依赖解析。
+
+---
+
+## 运行 Demo
+
+课程把框架放在一个叫 `Vax` 的类库里,由 `Consumer.ConsoleApp` 消费。
+这里保持同样的两个项目:`DependencyInjection.CustomFramework.Vax` 的根命名空间就是 `Vax`,所以消费端的代码仍然是课程里的 `using Vax;`。
+Vax 没有任何外部依赖,连 `Microsoft.Extensions.DependencyInjection` 都没有引用。
+第 1 课只讲动机,没有代码,因此没有对应的可运行小节。
+
+Vax 保存的是课程结束时的最终状态;第 3、4 课在录制过程中出现的中间版本只存在于笔记的代码块里,不在项目里。
+
+```
+src/dependency-injection/08-creating-our-own-dependency-injection-framework/
+  DependencyInjection.CustomFramework.Vax/
+    ServiceLifetime.cs        Singleton 和 Transient,课程没有实现 Scoped
+    ServiceDescriptor.cs      ServiceType / ImplementationType / Implementation /
+                              ImplementationFactory / Lifetime
+    ServiceCollection.cs      List<ServiceDescriptor> + AddSingleton / AddTransient 的各个重载、
+                              AddService、BuildServiceProvider
+    ServiceProvider.cs        两个字典、GenerateServices、GetConstructorParameters、
+                              GetService、GetRequiredService
+  DependencyInjection.CustomFramework.Demos/
+    Services/                 IConsoleWriter、ConsoleWriter、IIdGenerator、IdGenerator
+    DesignDemo.cs             第 2 课:目标 API,外加 GetRequiredService 与 GetService 的区别
+    ImplementationDemo.cs     第 3 课:描述符长什么样、递归构造函数解析、
+                              Singleton vs Transient、Lazy 让注册顺序无关紧要
+    ExtendingDemo.cs          第 4 课:泛型约束、自注册、手写描述符、实例注册、工厂注册
+    RecapDemo.cs              第 5 课:课程收尾的那段程序
+```
+
+```bash
+cd src/dependency-injection/08-creating-our-own-dependency-injection-framework/DependencyInjection.CustomFramework.Demos
+dotnet run -c Release                      # 四个小节全跑
+dotnet run -c Release -- design            # 第 2 课
+dotnet run -c Release -- implementation    # 第 3 课
+dotnet run -c Release -- extending         # 第 4 课
+dotnet run -c Release -- recap             # 第 5 课
+```
+
+Demo 瞬间跑完,不需要联网。
+`IdGenerator` 的 id 是每个实例构造时新生成的 Guid,所以每次运行都不一样;要看的是同一小节里两行 id 相同还是不同。
+
+实际输出:
+
+```text
+======================================================================
+  The design
+======================================================================
+
+Hello from DI
+  resolved ConsoleWriter for IConsoleWriter
+  -> same five lines you would write against the built-in container,
+     running entirely on the Vax project next door
+
+GetRequiredService on something nobody registered:
+  InvalidOperationException: No service for type 'DependencyInjection.CustomFramework.Demos.Services.IIdGenerator' has been registered.
+  GetService returned null instead of throwing
+
+
+======================================================================
+  The implementation
+======================================================================
+
+What a registration actually is:
+  IConsoleWriter -> ConsoleWriter as Singleton
+  IIdGenerator -> IdGenerator as Singleton
+  -> ServiceCollection is a List<ServiceDescriptor>, so Count is 2
+
+Resolving IIdGenerator twice, registered as Singleton:
+  id: 33adf9ab-d82e-4001-b6f6-0cbbea35a436
+  id: 33adf9ab-d82e-4001-b6f6-0cbbea35a436
+  ReferenceEquals: True
+  -> IdGenerator never asked for an IConsoleWriter; GetConstructorParameters
+     read its constructor and resolved one out of the same container
+
+The same two services as Transient:
+  id: d378105d-815a-4dd3-81cd-15344ab5a77d
+  id: b02bf9ed-6238-40c5-a020-52dd69cf9d69
+  -> two ids: the transient dictionary holds a factory, and it runs per request
+
+Registering the dependency after the thing that needs it:
+  id: d55dc26f-85fc-48ab-9542-1a589074b8ce
+  -> works, because the singleton is a Lazy<object>: BuildServiceProvider only
+     records how to build it, and the constructor runs on the first request
+
+
+======================================================================
+  Extending the main implementation
+======================================================================
+
+Type safety, enforced by the compiler rather than at runtime:
+  AddSingleton<TService, TImplementation>() is constrained to
+  where TImplementation : class, TService
+  -> services.AddSingleton<IIdGenerator, ConsoleWriter>() is CS0311 at build time,
+     so it can never reach Activator.CreateInstance and fail there
+
+Self-registration, for a concrete type with no interface:
+  written by the self-registered ConsoleWriter
+  the descriptor maps ConsoleWriter -> ConsoleWriter
+
+A descriptor built by hand and handed to AddService:
+  written by a service registered through a hand-built descriptor
+
+An instance created outside the container:
+  ReferenceEquals(existing, resolved): True
+  -> AddSingleton(object) reads the runtime type as the service type and stores
+     the object itself, so nothing is ever constructed for it
+
+A factory, which gets the provider and can resolve nested dependencies:
+  id: eb043082-c6d6-4f85-953e-9b58dc6e43d4
+  id: eb043082-c6d6-4f85-953e-9b58dc6e43d4
+  ReferenceEquals: True
+  -> the factory is wrapped in the same Lazy, so a singleton factory runs once
+
+The same factory registered as Transient:
+  id: 564acf95-18ed-434e-954f-26c51c42b4f0
+  id: 0871a6d1-d1b5-4b98-b37b-eed5b4745d9e
+  -> two ids: the transient branch invokes the factory on every request
+
+
+======================================================================
+  Section recap
+======================================================================
+
+  id: 13203bc5-61d2-43f2-9589-1575656d9499
+  ReferenceEquals(service1, service2): True
+  -> registration by instance, registration by factory, nested resolution and
+     singleton lifetime, on a container with zero external dependencies
+```

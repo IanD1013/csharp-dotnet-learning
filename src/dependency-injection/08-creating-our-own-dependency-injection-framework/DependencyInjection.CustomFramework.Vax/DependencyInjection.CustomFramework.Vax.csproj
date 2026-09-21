@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <!-- The course calls the framework "Vax" and consumes it as `using Vax;`. -->
+    <RootNamespace>Vax</RootNamespace>
+  </PropertyGroup>
+
+</Project>
