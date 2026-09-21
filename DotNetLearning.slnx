@@ -25,6 +25,9 @@
   <Folder Name="/src/dependency-injection/06-advanced-techniques/">
     <Project Path="src/dependency-injection/06-advanced-techniques/DependencyInjection.Advanced.Demos/DependencyInjection.Advanced.Demos.csproj" />
   </Folder>
+  <Folder Name="/src/dependency-injection/07-extending-dependency-injection-with-scrutor/">
+    <Project Path="src/dependency-injection/07-extending-dependency-injection-with-scrutor/DependencyInjection.Scrutor.Demos/DependencyInjection.Scrutor.Demos.csproj" />
+  </Folder>
   <Folder Name="/src/docker/" />
   <Folder Name="/src/docker/docker-for-developers/" />
   <Folder Name="/src/docker/docker-for-developers/demo-app/">

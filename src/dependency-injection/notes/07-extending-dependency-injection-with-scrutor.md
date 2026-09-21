@@ -1458,3 +1458,344 @@ Scrutor 为标准的 .NET 依赖注入(DI)容器提供了强有力的扩展,尤�
 扫描虽然简化了注册,却需要谨慎实现。
 开发者必须留意潜在的副作用,比如意外注册了本不该进入容器的类型,或者制造出相互冲突的注册。
 使用像 `RegistrationStrategy.Throw` 这样具体的注册策略,可以在发生注册冲突时让应用显式失败,从而帮助管理这些风险。
+
+---
+
+## 运行 Demo
+
+本章的代码取自课程的 `6.Scrutor` 目录。
+课程那两个项目(`ScrutorScanning.ConsoleApp` 和 `Weather.Api`)被合并成一个可以从头跑到尾的 demo,每节课一个小节。
+所有小节共用一个程序集,所以每次扫描都额外用 `InNamespaces` 限定在本节自己的命名空间里;课程里每个项目只装它自己的示例,不需要这层限定。
+第 11 课是本章回顾,没有对应的可运行小节。
+
+```
+src/dependency-injection/07-extending-dependency-injection-with-scrutor/DependencyInjection.Scrutor.Demos/
+  IntroDemo.cs                          第 1 课:手写注册与等价的一次扫描,产出同样的描述符
+  Scanning/                             第 1、4 课的示例服务:ExampleA/B/AB、UserRepository、OrderRepository
+  Weather/LoggedWeatherService.cs       第 2 课:Stopwatch + try-finally 版装饰器
+  DecoratorDemo.cs                      第 2 课:工厂手写装饰 vs Decorate,以及 TryDecorate 的真实语义
+  Logging/                              第 3 课:ILoggerAdapter、LoggerAdapter、TimedLogOperation
+  Weather/TimedLoggedWeatherService.cs  第 3 课:重构后的装饰器,只剩一行 using
+  TimedOperationDemo.cs                 第 3 课
+  ScanningDemo.cs                       第 4 课:AsMatchingInterface / AsSelf / AsImplementedInterfaces /
+                                        AsSelfWithInterfaces、生命周期覆盖、Where 过滤、层级化扫描
+  InterfaceMarking/                     第 5 课:三个空标记接口和三个示例服务
+  InterfaceMarkingDemo.cs               第 5 课
+  AttributeMarking/                     第 6 课:Singleton/Transient/Scoped 三个自定义特性和三个示例服务
+  AttributeMarkingDemo.cs               第 6 课
+  NamespaceFiltering/                   第 7 课:Services 和 Internal 两个命名空间
+  NamespaceFilteringDemo.cs             第 7 课:InNamespaces、NotInNamespaces、WithoutAttribute
+  Descriptors/                          第 8 课:[ServiceDescriptor] 的五种写法各一个类
+  ServiceDescriptorDemo.cs              第 8 课
+  Strategies/                           第 9 课:同时带 [Singleton] 和 [Transient] 的服务
+  RegistrationStrategyDemo.cs           第 9 课:Append、Skip、Replace、Throw
+  Pitfalls/                             第 10 课:被宽泛过滤器误伤的连接池和迁移服务
+  PitfallsDemo.cs                       第 10 课
+  Output/Registrations.cs               课程的 PrintRegisteredService,额外打印 keyed 注册的 key
+  Output/InlineLoggerProvider.cs        同步写控制台的 logger,保证日志行不乱序,课程代码里没有
+  Weather/LocalWeatherService.cs        返回本地假数据的 IWeatherService,替掉课程里调 OpenWeather 的实现
+```
+
+```bash
+cd src/dependency-injection/07-extending-dependency-injection-with-scrutor/DependencyInjection.Scrutor.Demos
+dotnet run -c Release                   # 十个小节全跑
+dotnet run -c Release -- intro          # 第 1 课
+dotnet run -c Release -- decorate       # 第 2 课
+dotnet run -c Release -- timed          # 第 3 课
+dotnet run -c Release -- scanning       # 第 4 课
+dotnet run -c Release -- interfaces     # 第 5 课
+dotnet run -c Release -- attributes     # 第 6 课
+dotnet run -c Release -- namespaces     # 第 7 课
+dotnet run -c Release -- descriptor     # 第 8 课
+dotnet run -c Release -- strategies     # 第 9 课
+dotnet run -c Release -- pitfalls       # 第 10 课
+```
+
+Demo 是瞬间跑完的,而且不需要联网。
+用的是 Scrutor 7.0.0,课程录制时是 3.3.0。
+
+实际输出:
+
+```text
+======================================================================
+  What is Scrutor?
+======================================================================
+
+Scrutor version in use: 7.0.0.0
+
+Registered by hand, one line per service:
+  IExampleAService -> ExampleAService as Transient
+  IExampleBService -> ExampleBService as Transient
+  IUserRepository -> UserRepository as Transient
+  IOrderRepository -> OrderRepository as Transient
+
+The same four descriptors, produced by one scan instead:
+  IExampleAService -> ExampleAService as Transient
+  IExampleBService -> ExampleBService as Transient
+  IUserRepository -> UserRepository as Transient
+  IOrderRepository -> OrderRepository as Transient
+
+  -> the container cannot tell the two apart, and the second one keeps working
+     as services are added, because it describes a rule rather than a list
+
+
+======================================================================
+  Registering service decorators
+======================================================================
+
+The native way: register the concrete type, then hand-build the decorator in a factory.
+  LocalWeatherService -> LocalWeatherService as Transient
+  IWeatherService -> (factory) as Transient
+  resolved LoggedWeatherService, calling it for Athens:
+  [log] Weather retrieval for city: Athens, took 38ms
+  it is 27.4C in Athens
+
+The Scrutor way: register the service normally, then decorate it.
+  IWeatherService -> (factory) as Transient
+  IWeatherService [key: IWeatherService+56ef35cdfb4d4db5b2054bbcfc3635d4+Decorated] -> LocalWeatherService as Transient
+  resolved LoggedWeatherService, calling it for London:
+  [log] Weather retrieval for city: London, took 39ms
+  it is 14.1C in London
+
+  -> Decorate moved the original registration onto a generated key and put the
+     decorator's factory at IWeatherService, which is how the decorator receives
+     the inner service without asking for IWeatherService and recursing
+
+Decorate on a service nobody registered:
+  DecorationException: Could not find any registered services for type 'DependencyInjection.Scrutor.Demos.Weather.IWeatherService'.
+  TryDecorate on the same empty collection returned False
+  -> that is the Try the name refers to: "decorate if the service is there",
+     not "decorate unless it is already decorated"
+
+Which means calling it twice does stack two decorators:
+  first TryDecorate returned True
+  second TryDecorate returned True
+  resolved LoggedWeatherService, calling it for Auckland:
+  [log] Weather retrieval for city: Auckland, took 25ms
+  [log] Weather retrieval for city: Auckland, took 25ms
+  it is 18.9C in Auckland
+  -> two timing lines, one per layer: a registration helper run twice double-wraps
+
+
+======================================================================
+  Surprise optional refactoring lecture
+======================================================================
+
+Before: LoggedWeatherService held a Stopwatch, a try and a finally around one await.
+After:  TimedLoggedWeatherService is a using statement and a return.
+
+Calling the decorated service:
+  [log] Weather retrieval for city: Athens, completed in 33ms
+  it is 27.4C in Athens
+  -> the timing line above was written by Dispose, not by the service
+
+The same operation used inline, the way the course uses it in a controller:
+  ...building the response...
+  [log] WeatherEndpoint response completed in 52ms
+  -> the block above timed itself, with no Stopwatch in sight
+
+
+======================================================================
+  Service registration by scanning
+======================================================================
+
+AsMatchingInterface: register ExampleAService as IExampleAService, by name.
+  IExampleAService -> ExampleAService as Transient
+  IExampleBService -> ExampleBService as Transient
+  IUserRepository -> UserRepository as Transient
+  IOrderRepository -> OrderRepository as Transient
+  -> ExampleABService is missing: no IExampleABService exists to match its name
+
+AsSelf: register every class as its own type.
+  ExampleAService -> ExampleAService as Transient
+  ExampleBService -> ExampleBService as Transient
+  ExampleABService -> ExampleABService as Transient
+  UserRepository -> UserRepository as Transient
+  OrderRepository -> OrderRepository as Transient
+
+AsImplementedInterfaces, with the default transient lifetime replaced by singleton.
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IExampleAService -> ExampleABService as Singleton
+  IExampleBService -> ExampleABService as Singleton
+  IUserRepository -> UserRepository as Singleton
+  IOrderRepository -> OrderRepository as Singleton
+  -> ExampleABService appears twice, once per interface it implements
+
+AsSelfWithInterfaces: self plus interfaces, wired through a factory.
+  ExampleABService -> ExampleABService as Singleton
+  IExampleAService -> (factory) as Singleton
+  IExampleBService -> (factory) as Singleton
+  all three resolve to one instance: True
+  -> the two interfaces are factories that forward to the self registration,
+     which is why the singleton is not duplicated three times over
+
+Where(...EndsWith("Repository")): the whole repository layer in one declaration.
+  IUserRepository -> UserRepository as Scoped
+  IOrderRepository -> OrderRepository as Scoped
+
+Two AddClasses calls in one Scan: services singleton, repositories scoped.
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IUserRepository -> UserRepository as Scoped
+  IOrderRepository -> OrderRepository as Scoped
+  -> each AddClasses resets the context, so the two rules do not bleed into each other
+
+
+======================================================================
+  Interface marking
+======================================================================
+
+Name-based filtering gives one lifetime to everything it catches:
+  IExampleAService -> ExampleAService as Scoped
+  IExampleBService -> ExampleBService as Scoped
+  IExampleCService -> ExampleCService as Scoped
+  -> three services, three scoped registrations, whether that was wanted or not
+
+AssignableTo<T> over marker interfaces, one AddClasses per lifetime:
+  IExampleAService -> ExampleAService as Singleton
+  ISingletonService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Transient
+  ITransientService -> ExampleBService as Transient
+  IExampleCService -> ExampleCService as Scoped
+  IScopedService -> ExampleCService as Scoped
+  -> each class got the lifetime it asked for, and the marker interfaces
+     were registered as service types too, because they are implemented interfaces
+
+The same scan with AsMatchingInterface instead:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Transient
+  IExampleCService -> ExampleCService as Scoped
+  -> the markers are gone, but only because every class is named after its interface
+
+
+======================================================================
+  Attribute marking
+======================================================================
+
+WithAttribute<T> in place of AssignableTo<T>, one AddClasses per lifetime:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Transient
+  IExampleCService -> ExampleCService as Scoped
+
+  -> compare with lesson 5: no ISingletonService or ITransientService rows,
+     because the marker is metadata now and not part of the type's interface list
+
+Where the lifetime is declared, per class:
+  ExampleAService  [Singleton]
+  ExampleBService  [Transient]
+  ExampleCService  [Scoped]
+  -> readable from the class itself, without opening Program.cs
+
+
+======================================================================
+  Namespace filtering
+======================================================================
+
+InNamespaces("DependencyInjection.Scrutor.Demos.NamespaceFiltering.Services"), everything singleton:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IExampleCService -> ExampleCService as Singleton
+  -> ExampleAService still carries [Singleton], but the scan never looked:
+     the lifetime came from the Scan call, and the attribute was ignored
+
+Every class under the chapter's namespace gets the same lifetime, wanted or not:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IExampleCService -> ExampleCService as Singleton
+  ICacheWarmerService -> CacheWarmerService as Singleton
+  IDiagnosticsService -> DiagnosticsService as Singleton
+  -> the two internal types came along for the ride, as singletons
+
+NotInNamespaces("DependencyInjection.Scrutor.Demos.NamespaceFiltering.Internal") puts them back out:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IExampleCService -> ExampleCService as Singleton
+
+WithoutAttribute<ScopedAttribute> excludes the one edge case instead:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IExampleCService -> ExampleCService as Singleton
+  ICacheWarmerService -> CacheWarmerService as Singleton
+  -> DiagnosticsService is gone, CacheWarmerService stayed
+
+And the whole thing hinges on a string: "DependencyInjection.Scrutor.Demos.NamespaceFiltering.Services"
+  -> rename the folder in a refactor and the compiler says nothing; the app
+     starts and fails on the first resolve, which is what the unit tests are for
+
+
+======================================================================
+  Using the ServiceDescriptor attribute
+======================================================================
+
+One AddClasses with no filter at all, closed by UsingAttributes():
+  DefaultService -> DefaultService as Transient
+  IDefaultService -> DefaultService as Transient
+  IInterfaceOnlyService -> InterfaceOnlyService as Transient
+  ISingletonOnlyService -> SingletonOnlyService as Singleton
+  SelfAndInterfaceService -> SelfAndInterfaceService as Singleton
+  ISelfAndInterfaceService -> SelfAndInterfaceService as Singleton
+  MultiService -> MultiService as Singleton
+  IMultiService -> MultiService as Singleton
+
+What each attribute asked for:
+  [ServiceDescriptor]                                       -> self and interface, transient
+  [ServiceDescriptor(typeof(IInterfaceOnlyService))]        -> that interface only, transient
+  [ServiceDescriptor(typeof(ISingletonOnlyService), Singleton)] -> that interface only, singleton
+  [ServiceDescriptor(null, Singleton)]                      -> self and interface, singleton
+  two attributes on MultiService                            -> both rows, in attribute order
+
+  -> no custom attribute classes were written for any of this, and the lifetime
+     lives on the class rather than in the Scan call
+
+
+======================================================================
+  Using RegistrationStrategies
+======================================================================
+
+ExampleBService carries both [Singleton] and [Transient], so two passes claim it.
+
+Default (Append):
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  IExampleBService -> ExampleBService as Transient
+  -> registered twice, the same as calling Add twice
+
+RegistrationStrategy.Skip:
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Singleton
+  -> the transient pass found IExampleBService already there and left it alone
+
+RegistrationStrategy.Replace():
+  IExampleAService -> ExampleAService as Singleton
+  IExampleBService -> ExampleBService as Transient
+  -> the singleton row is gone; the transient pass overwrote it
+
+RegistrationStrategy.Throw:
+  DuplicateTypeRegistrationException: A service of type 'DependencyInjection.Scrutor.Demos.Strategies.IExampleBService' has already been registered.
+  -> the app refuses to start, which is the point: the duplicate was a mistake
+
+
+======================================================================
+  Potential pitfalls
+======================================================================
+
+A filter broad enough to be convenient: everything named *Service, transient.
+  IConnectionPoolService -> ConnectionPoolService as Transient
+  IDatabaseMigrationService -> DatabaseMigrationService as Transient
+  pool on first resolve:  5125e833-4ae9-4dcb-8fdf-498c4ad7612a
+  pool on second resolve: 9c358166-95fa-4887-9de7-4274e01b4c45
+  same instance: False  <- a connection pool per caller
+  -> DatabaseMigrationService is resolvable too, and it was never meant to be
+  -> nothing failed; the build was clean and the app started
+
+The same two types, registered explicitly:
+  IConnectionPoolService -> ConnectionPoolService as Singleton
+  same instance: True
+  -> two lines of registration, and both problems are gone
+
+Where scanning is worth it, RegistrationStrategy.Throw keeps it honest:
+  DuplicateTypeRegistrationException: A service of type 'DependencyInjection.Scrutor.Demos.Pitfalls.IConnectionPoolService' has already been registered.
+  -> the broad filter is still broad, but it can no longer overwrite a deliberate
+     registration in silence
+```

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+
+    <!--
+      CA1848 wants LoggerMessage delegates. Lessons 2 and 3 log through plain _logger.Log
+      calls, exactly as the course writes them, and generated delegates would bury the
+      decorator and the timed operation under ceremony that teaches nothing here.
+    -->
+    <NoWarn>$(NoWarn);CA1848</NoWarn>
+
+    <!--
+      CA1716 objects to the parameter name "template" because it collides with a keyword in
+      other .NET languages. ILoggerAdapter is copied from the course verbatim and nothing here
+      is consumed from VB, so the rule is pure noise in this project.
+    -->
+    <NoWarn>$(NoWarn);CA1716</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Logging" />
+    <PackageReference Include="Scrutor" />
+  </ItemGroup>
+
+</Project>
