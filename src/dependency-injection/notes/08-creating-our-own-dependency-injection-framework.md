@@ -1,14 +1,14 @@
 # Creating our own Dependency Injection framework
 
-> Course: [From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · Chapter 8
-> 5 lessons · ~35:28
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · 第 8 章
+> 共 5 课 · 约 35:28
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
+## 课程索引
 
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Why should we even bother?](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-should-we-even-bother-53953324/) | 1:25 | [↓](#1-why-should-we-even-bother) |
 | 2 | [The design](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/) | 2:57 | [↓](#2-the-design) |
@@ -20,56 +20,56 @@
 
 ## 1. Why should we even bother?
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-should-we-even-bother-53953324/) · 1:25
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/why-should-we-even-bother-53953324/) · 1:25
 
-### Summary
+### 总结
 
-Building a custom Dependency Injection (DI) framework from scratch is a pedagogical exercise designed to deepen understanding of Inversion of Control (IoC) containers.
-By deconstructing DI into its basic components, developers can grasp the underlying logic and architectural patterns that are often hidden behind high-level APIs.
-This process not only clarifies how dependencies are managed but also introduces coding practices that can be adapted to improve general software implementation.
+从零开始构建一个自定义的依赖注入(Dependency Injection,DI)框架是一种教学式的练习,目的是加深对控制反转(Inversion of Control,IoC)容器的理解。
+通过把 DI 拆解成它的基本组成部分,开发者可以掌握那些通常被隐藏在高层 API 背后的底层逻辑和架构模式。
+这个过程不仅澄清了依赖是如何被管理的,还引入了一些可以被借鉴、用于改进一般软件实现的编码实践。
 
-### Key concepts
+### 核心概念
 
-* **Learning through deconstruction**: Gaining mastery by breaking a complex system down into its fundamental parts.
-* **Internal mechanics of IoC**: Understanding how a container manages service registration and resolution behind the scenes.
-* **Pattern adaptation**: Identifying logic and practices within framework design that can be applied to standard application development.
-* **Core architectural understanding**: Moving beyond API usage to understand the principles of dependency management.
+* **Learning through deconstruction(通过拆解来学习)**:通过把一个复杂系统拆分成它的基本组成部分来获得精通。
+* **Internal mechanics of IoC(IoC 的内部机制)**:理解容器在幕后是如何管理服务注册与解析的。
+* **Pattern adaptation(模式借鉴)**:识别框架设计中那些可以应用到普通应用程序开发里的逻辑和实践。
+* **Core architectural understanding(核心架构理解)**:超越 API 的使用层面,去理解依赖管理的原则。
 
-### Lesson notes
+### 课程笔记
 
-The objective of this section is to implement a functional Dependency Injection (DI) framework from the ground up.
-This exercise is rooted in the principle that true mastery of a system is achieved by deconstructing it into its fundamental components.
-By building an Inversion of Control (IoC) container from scratch, the internal mechanics that are typically abstracted away become visible and understandable.
+本章的目标是从头实现一个可用的依赖注入(DI)框架。
+这个练习的根基在于这样一条原则:真正掌握一个系统,是通过把它拆解成基本组成部分来实现的。
+通过从零构建一个控制反转(IoC)容器,那些通常被抽象掉的内部机制变得可见、可理解。
 
-While building a custom DI framework is an optional exercise and not strictly necessary for standard application development, there is significant benefit in understanding the underlying logic.
-This deep dive provides a realistic look at the challenges and solutions involved in dependency management.
-Furthermore, observing the implementation process reveals architectural patterns and best practices that can be directly adapted to enhance the quality and maintainability of general software code.
+虽然构建自定义 DI 框架是一项可选的练习,对标准的应用程序开发来说并非严格必要,但理解其底层逻辑有相当大的好处。
+这次深入剖析提供了一个真实的视角,让你看到依赖管理中涉及的挑战与解决方案。
+此外,观察这个实现过程会揭示出一些架构模式和最佳实践,它们可以被直接借鉴,用来提升一般软件代码的质量与可维护性。
 
 ---
 
 ## 2. The design
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/) · 2:57
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/) · 2:57
 
-### Summary
+### 总结
 
-This lesson outlines the architectural goals and API design for building a custom Dependency Injection (DI) framework in .NET.
-The objective is to replicate the look and feel of the built-in .NET DI container, including familiar patterns like service collections, service providers, and standard registration methods such as AddSingleton.
-By mirroring the existing Microsoft API, the custom framework remains intuitive while demonstrating the internal mechanics of service registration, lifetime management, and resolution without external dependencies.
+本课勾勒出在 .NET 中构建自定义依赖注入(DI)框架的架构目标与 API 设计。
+目标是复刻 .NET 内置 DI 容器的外观与使用感受,包括 service collection、service provider 这类熟悉的模式,以及 AddSingleton 这样的标准注册方法。
+通过对齐现有的 Microsoft API,这个自定义框架既保持直观,又能在不依赖任何外部库的情况下展示服务注册、生命周期管理和解析的内部机制。
 
-### Key concepts
+### 核心概念
 
-- **API Parity**: Designing the custom framework to match the `Microsoft.Extensions.DependencyInjection` API for familiarity.
-- **Service Collection**: A container for registering service descriptors.
-- **Service Provider**: The engine responsible for resolving and managing the lifecycle of services.
-- **Service Descriptors**: Metadata describing the service type, implementation type, and lifetime.
-- **Resolution Methods**: Implementing `GetRequiredService` to retrieve non-nullable service instances.
-- **Testability**: Using interfaces to wrap static calls like `Console.WriteLine` for better mockability.
+- **API Parity(API 对等)**:把自定义框架设计成与 `Microsoft.Extensions.DependencyInjection` API 一致,以保持熟悉感。
+- **Service Collection(服务集合)**:用于注册 service descriptor 的容器。
+- **Service Provider(服务提供者)**:负责解析服务并管理其生命周期的引擎。
+- **Service Descriptors(服务描述符)**:描述服务类型、实现类型和生命周期的元数据。
+- **Resolution Methods(解析方法)**:实现 `GetRequiredService` 以获取非空的服务实例。
+- **Testability(可测试性)**:使用接口来包装 `Console.WriteLine` 这类静态调用,以便更好地进行 mock。
 
-### Lesson notes
+### 课程笔记
 
-The project begins with a standard console application named `Consumer.ConsoleApp`.
-This application serves as the testbed for the custom DI framework.
+项目从一个名为 `Consumer.ConsoleApp` 的标准控制台应用开始。
+这个应用作为自定义 DI 框架的试验场。
 
 ```csharp
 // See https://aka.ms/new-console-template for more information
@@ -77,11 +77,11 @@ This application serves as the testbed for the custom DI framework.
 Console.WriteLine("Hello, World!");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=25)
 
-The design goal is to achieve API parity with the built-in .NET DI container.
-This involves implementing a `ServiceCollection` to hold registrations and a `ServiceProvider` to resolve them.
-By using the same naming conventions—such as `AddSingleton`, `AddTransient`, and `GetRequiredService`—the framework remains easy to use for developers already familiar with the standard .NET ecosystem.
+设计目标是与内置的 .NET DI 容器达成 API 对等。
+这需要实现一个用来保存注册信息的 `ServiceCollection`,以及一个用来解析它们的 `ServiceProvider`。
+通过采用相同的命名约定,比如 `AddSingleton`、`AddTransient` 和 `GetRequiredService`,这个框架对已经熟悉标准 .NET 生态的开发者来说依然容易上手。
 
 ```csharp
 var services = new ServiceCollection();
@@ -92,10 +92,10 @@ var serviceProvider = services.BuildServiceProvider();
 var service = serviceProvider.GetRequiredService();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=55)
 
-To demonstrate the framework, a simple logging service is defined.
-Wrapping `Console.WriteLine` in an interface like `IConsoleWriter` is a standard practice to improve testability, as it allows the console output to be mocked or validated during unit testing.
+为了演示这个框架,这里定义了一个简单的日志服务。
+把 `Console.WriteLine` 包装进 `IConsoleWriter` 这样的接口是一种提升可测试性的标准做法,因为它让控制台输出可以在单元测试中被 mock 或校验。
 
 ```csharp
 namespace Consumer.ConsoleApp;
@@ -114,11 +114,11 @@ public interface IConsoleWriter
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=115)
 
-The final design allows for registering services with specific lifetimes and resolving them via the service provider.
-The implementation will support generic methods for registration and resolution, ensuring a type-safe developer experience.
-The framework is built using only the .NET SDK, with zero external dependencies, to illustrate the core logic of dependency injection.
+最终的设计允许以指定的生命周期注册服务,并通过 service provider 来解析它们。
+这个实现将支持用于注册和解析的泛型方法,从而确保类型安全的开发体验。
+该框架仅使用 .NET SDK 构建,零外部依赖,以此说明依赖注入的核心逻辑。
 
 ```csharp
 using Consumer.ConsoleApp;
@@ -134,29 +134,32 @@ var service = serviceProvider.GetRequiredService<IConsoleWriter>();
 service.WriteLine("Hello from DI");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-design-53953326/?t=145)
 
 ---
 
 ## 3. The implementation
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/) · 19:57
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/) · 19:57
 
-**Summary**
-This lesson demonstrates the step-by-step creation of a custom Dependency Injection (DI) framework named "Vax."
-It covers the implementation of a service collection for registration, a service provider for resolution, and the logic required to handle both transient and singleton lifetimes, including recursive constructor parameter resolution using reflection.
+### 总结
 
-**Key concepts**
-* **ServiceCollection**: A specialized list of service descriptors used to register dependencies.
-* **ServiceDescriptor**: A metadata container storing the service type, implementation type, and lifetime.
-* **ServiceLifetime**: An enumeration defining how instances are managed (Transient or Singleton).
-* **ServiceProvider**: The core engine that resolves and provides service instances.
-* **Recursive Resolution**: The process of automatically resolving a service's constructor parameters by querying the container.
-* **Lazy Initialization**: Ensuring Singleton services are only instantiated when first requested to avoid registration order issues.
+本课一步步演示如何创建一个名为 "Vax" 的自定义依赖注入(DI)框架。
+内容涵盖用于注册的 service collection、用于解析的 service provider,以及处理 transient 和 singleton 生命周期所需的逻辑,其中包括使用反射递归解析构造函数参数。
 
-**Lesson notes**
-The framework begins with the `ServiceCollection`, which acts as a registry for dependencies.
-It inherits from `List<ServiceDescriptor>`, allowing it to store the definitions of the services that the container will eventually manage.
+### 核心概念
+
+* **ServiceCollection**:一个用来注册依赖的、专门存放 service descriptor 的列表。
+* **ServiceDescriptor**:一个元数据容器,保存服务类型、实现类型和生命周期。
+* **ServiceLifetime**:一个枚举,定义实例是如何被管理的(Transient 或 Singleton)。
+* **ServiceProvider**:负责解析并提供服务实例的核心引擎。
+* **Recursive Resolution(递归解析)**:通过向容器查询,自动解析某个服务的构造函数参数的过程。
+* **Lazy Initialization(延迟初始化)**:确保 Singleton 服务只在首次被请求时才实例化,以避免注册顺序带来的问题。
+
+### 课程笔记
+
+框架从 `ServiceCollection` 开始,它充当依赖的注册表。
+它继承自 `List<ServiceDescriptor>`,因此可以存放容器最终要管理的那些服务的定义。
 
 ```csharp
 namespace Vax;
@@ -167,10 +170,10 @@ public class ServiceCollection : List<ServiceDescriptor>
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=70)
 
-Each entry in the collection is a `ServiceDescriptor`.
-This class holds the `ServiceType` (the interface or base class), the `ImplementationType` (the concrete class to instantiate), and the `ServiceLifetime`.
+集合中的每一项都是一个 `ServiceDescriptor`。
+这个类保存 `ServiceType`(接口或基类)、`ImplementationType`(要实例化的具体类)以及 `ServiceLifetime`。
 
 ```csharp
 namespace Vax;
@@ -183,10 +186,10 @@ public class ServiceDescriptor
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=310)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=310)
 
-To register services, the `ServiceCollection` provides methods like `AddSingleton` and `AddTransient`.
-These methods create a new `ServiceDescriptor` and add it to the internal list.
+为了注册服务,`ServiceCollection` 提供了 `AddSingleton` 和 `AddTransient` 这样的方法。
+这些方法创建一个新的 `ServiceDescriptor` 并把它加入内部列表。
 
 ```csharp
 public ServiceCollection AddSingleton<TService, TImplementation>()
@@ -201,10 +204,10 @@ public ServiceCollection AddSingleton<TService, TImplementation>()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=295)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=295)
 
-Once all services are registered, the `BuildServiceProvider` method is called to create the `ServiceProvider`.
-This method passes the current collection to the provider's constructor.
+所有服务注册完成后,调用 `BuildServiceProvider` 方法来创建 `ServiceProvider`。
+该方法把当前集合传给 provider 的构造函数。
 
 ```csharp
 public ServiceProvider BuildServiceProvider()
@@ -214,10 +217,10 @@ public ServiceProvider BuildServiceProvider()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=385)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=385)
 
-The `ServiceProvider` is responsible for the actual resolution of types.
-It maintains two internal dictionaries: one for transient services (storing a factory function) and one for singleton services (storing a `Lazy<object>`).
+`ServiceProvider` 负责真正的类型解析。
+它维护两个内部字典:一个用于 transient 服务(保存一个工厂函数),另一个用于 singleton 服务(保存一个 `Lazy<object>`)。
 
 ```csharp
 public class ServiceProvider
@@ -242,10 +245,10 @@ public class ServiceProvider
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=595)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=595)
 
-The `GenerateServices` method iterates through the `ServiceCollection` and populates these dictionaries.
-For singletons, `Activator.CreateInstance` is wrapped in a `Lazy<object>` to ensure that the service is only created when needed, which prevents issues if dependencies are registered out of order.
+`GenerateServices` 方法遍历 `ServiceCollection` 并填充这些字典。
+对于 singleton,`Activator.CreateInstance` 被包装在 `Lazy<object>` 中,以确保服务只在需要时才被创建,这样就能避免依赖注册顺序不当所引发的问题。
 
 ```csharp
 private void GenerateServices(ServiceCollection serviceCollection)
@@ -270,10 +273,10 @@ private void GenerateServices(ServiceCollection serviceCollection)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=880)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=880)
 
-To handle services that have their own dependencies, the framework uses a recursive method called `GetConstructorParameters`.
-This method inspects the first constructor of the implementation type, retrieves its parameters, and calls `GetService` for each parameter type to resolve the dependency tree.
+为了处理那些自身还带有依赖的服务,框架使用了一个名为 `GetConstructorParameters` 的递归方法。
+这个方法检查实现类型的第一个构造函数,取出它的参数,并针对每个参数类型调用 `GetService` 来解析整棵依赖树。
 
 ```csharp
 private object?[] GetConstructorParameters(ServiceDescriptor descriptor)
@@ -286,11 +289,11 @@ private object?[] GetConstructorParameters(ServiceDescriptor descriptor)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=805)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=805)
 
-The `GetService` method logic first checks the singleton dictionary.
-If a match is found, it returns the value from the `Lazy` wrapper.
-If not, it checks the transient dictionary and invokes the factory function.
+`GetService` 方法的逻辑先检查 singleton 字典。
+如果找到匹配项,它就从 `Lazy` 包装器中返回对应的值。
+如果没有,它就检查 transient 字典并调用工厂函数。
 
 ```csharp
 public object? GetService(Type serviceType)
@@ -304,10 +307,10 @@ public object? GetService(Type serviceType)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=910)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=910)
 
-Finally, the framework can be used to resolve complex dependency trees.
-For instance, an `IdGenerator` that depends on an `IConsoleWriter` can be registered and resolved automatically.
+最后,这个框架可以用来解析复杂的依赖树。
+例如,一个依赖 `IConsoleWriter` 的 `IdGenerator` 可以被注册并自动解析。
 
 ```csharp
 using Vax;
@@ -325,35 +328,35 @@ var service2 = serviceProvider.GetService<IIdGenerator>();
 service1.PrintId();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=1130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/the-implementation-53953327/?t=1130)
 
 ---
 
 ## 4. Extending the main implementation
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/) · 10:36
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/) · 10:36
 
-### Summary
+### 总结
 
-This lesson focuses on enhancing a custom Dependency Injection framework to achieve feature parity with the built-in .NET DI container.
-Key improvements include adding generic constraints to ensure type safety during registration, supporting self-registered services, allowing the registration of pre-existing object instances, and implementing factory-based registration.
-The lesson also covers the necessary modifications to the ServiceProvider to resolve these new registration types, ensuring both singleton and transient lifecycles are respected.
+本课聚焦于增强这个自定义依赖注入框架,使其与 .NET 内置的 DI 容器达成功能对等。
+主要的改进包括:加入泛型约束以确保注册时的类型安全、支持自注册的服务、允许注册已经存在的对象实例,以及实现基于工厂的注册。
+本课还涵盖了对 ServiceProvider 所做的必要修改,使其能够解析这些新的注册类型,并确保 singleton 和 transient 两种生命周期都得到遵守。
 
-### Key concepts
+### 核心概念
 
-- Generic constraints for type safety (`where TImplementation : class, TService`).
-- Self-registration overloads (`AddSingleton<TService>`).
-- Manual `ServiceDescriptor` registration.
-- Instance-based registration for existing objects.
-- Factory-based registration using `Func<ServiceProvider, TService>`.
-- Updating `ServiceProvider` resolution logic to handle instances and factories.
+- 用于类型安全的泛型约束(`where TImplementation : class, TService`)。
+- 自注册重载(`AddSingleton<TService>`)。
+- 手动的 `ServiceDescriptor` 注册。
+- 针对已有对象的基于实例的注册。
+- 使用 `Func<ServiceProvider, TService>` 的基于工厂的注册。
+- 更新 `ServiceProvider` 的解析逻辑,以处理实例和工厂。
 
-### Lesson notes
+### 课程笔记
 
-#### Type Safety with Generic Constraints
+#### 使用泛型约束保证类型安全
 
-To prevent invalid registrations where a concrete class does not implement the specified interface, generic constraints must be added to the `AddSingleton` and `AddTransient` methods.
-By specifying `where TImplementation : class, TService`, the compiler ensures that the implementation type is compatible with the service type.
+为了防止出现具体类并未实现所指定接口的无效注册,必须给 `AddSingleton` 和 `AddTransient` 方法加上泛型约束。
+通过指定 `where TImplementation : class, TService`,编译器可以确保实现类型与服务类型是兼容的。
 
 ```csharp
 namespace Vax;
@@ -379,12 +382,12 @@ public class ServiceCollection : List<ServiceDescriptor>
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=55)
 
-#### Self-Registration and Manual Descriptors
+#### 自注册与手动描述符
 
-In many cases, a service is registered as its own implementation.
-Overloads are added to support this "self-registration" pattern, simplifying the API for users who do not need to map an interface to a class.
+在很多情况下,一个服务是以它自己作为实现来注册的。
+为此添加了一些重载来支持这种 "self-registration" 模式,为那些不需要把接口映射到类的用户简化 API。
 
 ```csharp
 ollection : List<ServiceDescriptor>
@@ -408,9 +411,9 @@ e : class
 entation : class, TService
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=85)
 
-Additionally, providing an `AddService` method allows users to manually register their own `ServiceDescriptor` instances, offering maximum flexibility.
+此外,提供一个 `AddService` 方法可以让用户手动注册自己的 `ServiceDescriptor` 实例,从而提供最大的灵活性。
 
 ```csharp
 namespace Vax;
@@ -435,12 +438,12 @@ public class ServiceCollection : List<ServiceDescriptor>
         where TService : class
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=175)
 
-#### Registering Existing Instances
+#### 注册已有的实例
 
-To support scenarios where an object has already been instantiated outside the container, an `AddSingleton` overload is implemented that accepts an `object`.
-This instance is stored directly in the `ServiceDescriptor`.
+为了支持对象已经在容器之外被实例化的场景,这里实现了一个接受 `object` 的 `AddSingleton` 重载。
+这个实例会被直接保存在 `ServiceDescriptor` 中。
 
 ```csharp
 public class ServiceCollection : List<ServiceDescriptor>
@@ -464,12 +467,12 @@ public class ServiceCollection : List<ServiceDescriptor>
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=220)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=220)
 
-#### Factory-Based Registration
+#### 基于工厂的注册
 
-Factory-based registration allows for custom instantiation logic.
-The `ServiceDescriptor` is updated to include an `ImplementationFactory` property, which is a function that takes a `ServiceProvider` and returns the resolved object.
+基于工厂的注册允许自定义实例化逻辑。
+`ServiceDescriptor` 被更新,加入了一个 `ImplementationFactory` 属性,它是一个接受 `ServiceProvider` 并返回已解析对象的函数。
 
 ```csharp
 public class ServiceDescriptor
@@ -486,9 +489,9 @@ public class ServiceDescriptor
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=430)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=430)
 
-The `ServiceCollection` is then updated with overloads to accept these factories.
+随后 `ServiceCollection` 也被更新,加入了接受这些工厂的重载。
 
 ```csharp
 ImplementationFactory = factory,
@@ -515,12 +518,12 @@ ImplementationFactory = factory,
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=460)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=460)
 
-#### Updating the Service Provider Logic
+#### 更新 Service Provider 的逻辑
 
-The `ServiceProvider` must be modified to handle these new registration types within its `GenerateServices` method.
-For singletons, the provider checks if a pre-existing instance or a factory is available before defaulting to reflection-based instantiation.
+`ServiceProvider` 必须做出修改,以便在它的 `GenerateServices` 方法中处理这些新的注册类型。
+对于 singleton,provider 会先检查是否有预先存在的实例或工厂可用,然后才退回到基于反射的实例化。
 
 ```csharp
 case ServiceLifetime.Singleton:
@@ -551,9 +554,9 @@ case ServiceLifetime.Singleton:
                     continue;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=490)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=490)
 
-Similar logic is applied to transient services, ensuring that the factory is invoked every time the service is requested.
+对 transient 服务也应用了类似的逻辑,确保每次请求该服务时工厂都会被调用。
 
 ```csharp
 GetConstructorParameters(serviceDescriptor))!);
@@ -572,38 +575,38 @@ GetConstructorParameters(serviceDescriptor))!);
                     continue;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=535)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/extending-the-main-implementation-53953328/?t=535)
 
 ---
 
 ## 5. Section recap
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953329/) · 0:33
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953329/) · 0:33
 
-### Summary
+### 总结
 
-This lesson concludes the section on building a custom Dependency Injection (DI) framework in .NET.
-It reviews the architectural approach of mimicking the standard Microsoft DI container's API surface, the implementation of core registration and resolution logic, and the extension of the framework to support features like singleton lifetimes and factory-based service registration.
+本课为这一章"在 .NET 中构建自定义依赖注入(DI)框架"作结。
+它回顾了模仿标准 Microsoft DI 容器 API 表面的架构思路、核心注册与解析逻辑的实现,以及为支持 singleton 生命周期和基于工厂的服务注册等特性而对框架所做的扩展。
 
-### Key concepts
+### 核心概念
 
-* Designing a custom IoC container with a familiar Microsoft-style API.
-* Implementing a ServiceCollection for service registration.
-* Building a ServiceProvider to handle dependency resolution.
-* Supporting different registration methods, including direct instances and factory delegates.
-* Managing service lifetimes such as Singletons.
+* 用一套熟悉的 Microsoft 风格 API 来设计自定义 IoC 容器。
+* 实现一个用于服务注册的 ServiceCollection。
+* 构建一个用于处理依赖解析的 ServiceProvider。
+* 支持多种注册方式,包括直接传入实例和工厂委托。
+* 管理诸如 Singleton 之类的服务生命周期。
 
-### Lesson notes
+### 课程笔记
 
-The development of the custom DI framework focused on creating a functional Inversion of Control (IoC) container that mirrors the look and feel of the standard .NET implementation.
-This approach ensures that developers familiar with the Microsoft DI container can easily transition to using this custom framework.
+这个自定义 DI 框架的开发,重点在于创建一个可用的控制反转(IoC)容器,并让它在外观和使用感受上与标准的 .NET 实现保持一致。
+这种做法确保了熟悉 Microsoft DI 容器的开发者可以轻松过渡到使用这个自定义框架。
 
-The implementation process involved establishing the core mechanics of service registration through a `ServiceCollection`.
-This collection stores the definitions of how services should be created and managed.
-Once registrations are complete, the `BuildServiceProvider` method is invoked to create the engine responsible for resolving these dependencies at runtime.
+实现过程涉及通过 `ServiceCollection` 建立服务注册的核心机制。
+这个集合存放着服务应当如何被创建和管理的定义。
+注册完成后,调用 `BuildServiceProvider` 方法来创建那个在运行时负责解析这些依赖的引擎。
 
-The framework supports various registration patterns, including the ability to register existing instances and the use of factory delegates.
-Factory delegates are particularly powerful as they allow for manual control over instantiation while still leveraging the provider to resolve nested dependencies.
+该框架支持多种注册模式,包括注册已有实例的能力以及使用工厂委托。
+工厂委托尤其强大,因为它们允许你手动控制实例化过程,同时仍然借助 provider 来解析嵌套的依赖。
 
 ```csharp
 using Consumer.ConsoleApp;
@@ -629,6 +632,6 @@ var service2 = serviceProvider.GetService<IdGenerator>();
 service1.PrintId();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953329/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953329/?t=10)
 
-By implementing these features, the custom framework achieves feature parity with basic DI containers, allowing for singleton management and complex dependency resolution through a clean, fluent API.
+通过实现这些特性,这个自定义框架达到了与基础 DI 容器的功能对等,能够通过一套干净、流式的 API 支持 singleton 管理和复杂的依赖解析。
