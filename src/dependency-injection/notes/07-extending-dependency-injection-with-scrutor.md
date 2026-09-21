@@ -1,54 +1,54 @@
 # Extending Dependency Injection with Scrutor
 
-> Course: [From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · Chapter 7
-> 11 lessons · ~43:56
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Dependency Injection in .NET with C#](https://dometrain.com/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp/) · 第 7 章
+> 共 11 课 · 约 43:56
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
+## 课程索引
 
-| # | Lesson | Length | Section |
-| --- | --- | --- | --- |
-| 1 | [What is Scrutor?](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/) | 1:34 | [↓](#1-what-is-scrutor) |
-| 2 | [Registering service decorators](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/) | 3:58 | [↓](#2-registering-service-decorators) |
-| 3 | [Surprise optional refactoring lecture](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/) | 8:26 | [↓](#3-surprise-optional-refactoring-lecture) |
-| 4 | [Service registration by scanning](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/) | 13:09 | [↓](#4-service-registration-by-scanning) |
-| 5 | [Interface marking](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/) | 3:28 | [↓](#5-interface-marking) |
-| 6 | [Attribute marking](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/) | 3:13 | [↓](#6-attribute-marking) |
-| 7 | [Namespace filtering](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/) | 2:19 | [↓](#7-namespace-filtering) |
-| 8 | [Using the ServiceDescriptor attribute](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/) | 2:47 | [↓](#8-using-the-servicedescriptor-attribute) |
-| 9 | [Using RegistrationStrategies](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/) | 2:24 | [↓](#9-using-registrationstrategies) |
-| 10 | [Potential pitfalls](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/potential-pitfalls-53953312/) | 1:52 | [↓](#10-potential-pitfalls) |
-| 11 | [Section recap](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953313/) | 0:46 | [↓](#11-section-recap) |
+| #   | 课程                                                                                                                                                                                                       | 时长  | 小节                                             |
+| --- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----- | ------------------------------------------------ |
+| 1   | [What is Scrutor?](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/)                                                       | 1:34  | [↓](#1-what-is-scrutor)                          |
+| 2   | [Registering service decorators](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/)                          | 3:58  | [↓](#2-registering-service-decorators)           |
+| 3   | [Surprise optional refactoring lecture](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/)            | 8:26  | [↓](#3-surprise-optional-refactoring-lecture)    |
+| 4   | [Service registration by scanning](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/)                      | 13:09 | [↓](#4-service-registration-by-scanning)         |
+| 5   | [Interface marking](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/)                                                    | 3:28  | [↓](#5-interface-marking)                        |
+| 6   | [Attribute marking](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/)                                                    | 3:13  | [↓](#6-attribute-marking)                        |
+| 7   | [Namespace filtering](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/)                                                | 2:19  | [↓](#7-namespace-filtering)                      |
+| 8   | [Using the ServiceDescriptor attribute](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/)            | 2:47  | [↓](#8-using-the-servicedescriptor-attribute)    |
+| 9   | [Using RegistrationStrategies](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/)                              | 2:24  | [↓](#9-using-registrationstrategies)             |
+| 10  | [Potential pitfalls](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/potential-pitfalls-53953312/)                                                  | 1:52  | [↓](#10-potential-pitfalls)                      |
+| 11  | [Section recap](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953313/)                                                            | 0:46  | [↓](#11-section-recap)                           |
 
 ---
 
 ## 1. What is Scrutor?
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/) · 1:34
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/) · 1:34
 
-### Summary
+### 总结
 
-Scrutor is an open-source library created by Kristian Hellang that extends the built-in .NET Dependency Injection container with advanced features like assembly scanning and service decoration.
-By providing a fluent API and efficient extension methods for IServiceCollection, Scrutor allows developers to automate service registration and implement the decorator pattern without the overhead of manual configuration or switching to a full third-party DI container.
-It effectively elevates the minimalist Microsoft.Extensions.DependencyInjection framework to an industry-standard level, offering the power of more complex frameworks while maintaining the simplicity of the native .NET ecosystem.
+Scrutor 是由 Kristian Hellang 创建的一个开源库,它为 .NET 内置的依赖注入容器扩展了程序集扫描、服务装饰之类的高级特性。
+通过为 IServiceCollection 提供流式 API 和高效的扩展方法,Scrutor 让开发者可以自动化服务注册、实现装饰器模式,而不必承担手动配置的开销,也不必换成一个完整的第三方 DI 容器。
+它实际上把极简的 Microsoft.Extensions.DependencyInjection 框架提升到了业界标准的水平,在保持原生 .NET 生态简洁性的同时,提供了那些更复杂框架才有的能力。
 
-### Key concepts
+### 核心概念
 
-* **Open-source extension**: Enhances the standard `Microsoft.Extensions.DependencyInjection` library.
-* **Assembly Scanning**: Automates the registration of multiple services based on conventions, interfaces, or attributes.
-* **Decoration**: Provides a clean, fluent way to implement the Decorator pattern for services.
-* **Standardization**: Bridges the feature gap between the built-in container and third-party alternatives like Autofac or Ninject.
+* **Open-source extension(开源扩展)**:增强标准的 `Microsoft.Extensions.DependencyInjection` 库。
+* **Assembly Scanning(程序集扫描)**:基于约定、接口或特性自动注册多个服务。
+* **Decoration(装饰)**:提供一种干净、流式的方式来为服务实现装饰器模式。
+* **Standardization(标准化)**:弥合内置容器与 Autofac、Ninject 等第三方替代方案之间的功能差距。
 
-### Lesson notes
+### 课程笔记
 
-Scrutor is a library designed to add missing functionality to the standard .NET dependency injection container.
-While the built-in container is lightweight and sufficient for many tasks, it lacks native support for advanced registration techniques.
-Scrutor addresses this by adding extension methods that enable two primary features: registration by scanning and service decoration.
+Scrutor 是一个旨在为标准 .NET 依赖注入容器补齐缺失功能的库。
+内置容器虽然轻量,对许多任务来说也足够用,但它缺少对高级注册技术的原生支持。
+Scrutor 通过添加扩展方法解决了这个问题,这些扩展方法带来了两项主要特性:按扫描注册和服务装饰。
 
-To use Scrutor, the package must be added as a dependency in the project file.
-The following example demonstrates a project configuration including the Scrutor library:
+要使用 Scrutor,必须把这个包作为依赖添加到项目文件中。
+下面的示例展示了一个包含 Scrutor 库的项目配置:
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -68,15 +68,15 @@ The following example demonstrates a project configuration including the Scrutor
 </Project>
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/?t=3)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/?t=3)
 
-In standard .NET development, scanning and decoration often require manual implementation.
-Manual scanning involves iterating through types in an assembly and registering them individually, while manual decoration typically requires complex factory registrations.
-Scrutor provides a more efficient and readable alternative through its fluent API.
+在标准的 .NET 开发中,扫描和装饰往往需要手动实现。
+手动扫描意味着遍历某个程序集中的类型并逐个注册,而手动装饰通常需要复杂的工厂注册。
+Scrutor 通过它的流式 API 提供了一种更高效、更易读的替代方案。
 
-The library is particularly valuable when developers face complaints that the built-in container is too "bare-bones".
-By adding Scrutor, the container gains the vast majority of features found in larger, more complex DI packages.
-The following code illustrates a basic setup using a `ServiceCollection` where Scrutor's extension methods would be applied to manage service registrations:
+当开发者面对“内置容器太简陋”这类抱怨时,这个库尤其有价值。
+加上 Scrutor 之后,容器就获得了那些更大、更复杂的 DI 包中绝大多数的特性。
+下面的代码展示了一个使用 `ServiceCollection` 的基础配置,Scrutor 的扩展方法会在这里被用来管理服务注册:
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -98,35 +98,35 @@ void PrintRegisteredService(IServiceCollection serviceCollection)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/?t=26)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/what-is-scrutor-53953303/?t=26)
 
-Scrutor's scanning capabilities are significantly more elaborate than simple name-based searches.
-It allows for complex filtering and registration strategies, making it a highly flexible tool for managing large numbers of dependencies.
-The implementation of these features typically begins with scanning, as it is a common requirement for modern .NET applications, followed by decoration to handle cross-cutting concerns.
+Scrutor 的扫描能力远不止基于名称的简单搜索那么简单。
+它支持复杂的过滤和注册策略,这让它成为管理大量依赖时非常灵活的工具。
+这些特性的实现通常从扫描开始,因为这是现代 .NET 应用的常见需求,然后再用装饰来处理横切关注点。
 
 ---
 
 ## 2. Registering service decorators
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/) · 3:58
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/) · 3:58
 
-### Summary
+### 总结
 
-This lesson demonstrates how to use the Scrutor library to implement the Decorator pattern in .NET Dependency Injection.
-It contrasts the manual, verbose method of wrapping services with Scrutor's streamlined .Decorate<TService, TDecorator>() extension method, which handles the complexity of service replacement and dependency wrapping automatically.
+本课演示如何使用 Scrutor 库在 .NET 依赖注入中实现装饰器模式。
+它把手动包装服务的那种冗长做法,与 Scrutor 精简的 .Decorate<TService, TDecorator>() 扩展方法作对比,后者会自动处理服务替换和依赖包装的复杂性。
 
-### Key concepts
+### 核心概念
 
-- **Decorator Pattern**: A structural pattern that allows behavior to be added to an individual object, dynamically, without affecting the behavior of other objects from the same class.
-- **Scrutor**: A third-party library that extends the native .NET `IServiceCollection` with advanced registration capabilities.
-- **Service Decoration**: The process of replacing a registered service with a new implementation that wraps the original implementation.
-- **`Decorate` Method**: A Scrutor extension that simplifies the registration of decorators by automatically handling the injection of the inner service.
-- **`TryDecorate` Method**: A variation that only applies the decorator if the service has not already been decorated, following standard .NET "Try" conventions.
+- **Decorator Pattern(装饰器模式)**:一种结构型模式,允许动态地给单个对象添加行为,而不影响同一个类的其他对象的行为。
+- **Scrutor**:一个第三方库,为原生的 .NET `IServiceCollection` 扩展了高级注册能力。
+- **Service Decoration(服务装饰)**:用一个包装了原实现的新实现,来替换已注册服务的过程。
+- **`Decorate` Method(`Decorate` 方法)**:Scrutor 的一个扩展方法,它自动处理内层服务的注入,从而简化装饰器的注册。
+- **`TryDecorate` Method(`TryDecorate` 方法)**:一个变体,只有当服务尚未被装饰时才应用装饰器,遵循标准的 .NET “Try” 约定。
 
-### Lesson notes
+### 课程笔记
 
-Implementing the decorator pattern using the native .NET Dependency Injection container can be verbose and "clunky."
-It typically requires registering the base implementation and then using a factory delegate to manually resolve dependencies and wrap the service.
+用原生的 .NET 依赖注入容器实现装饰器模式,写起来既冗长又“笨拙”。
+它通常需要先注册基础实现,然后用一个工厂委托来手动解析依赖并包装服务。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -151,10 +151,10 @@ if (app.Environment.IsDevelopment())
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/?t=40)
 
-In the example above, `LoggedWeatherService` acts as a decorator for `IWeatherService`.
-It takes the inner service and a logger as dependencies to add timing and logging behavior around the weather retrieval logic.
+在上面的例子中,`LoggedWeatherService` 充当 `IWeatherService` 的装饰器。
+它把内层服务和一个 logger 作为依赖接收进来,从而在天气获取逻辑的外面加上计时和日志行为。
 
 ```csharp
 using System.Diagnostics;
@@ -190,11 +190,11 @@ public class LoggedWeatherService : IWeatherService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/?t=85)
 
-By installing the Scrutor library, we can replace the manual factory registration with the `Decorate` extension method.
-This makes the code significantly cleaner and more concise.
-Scrutor automatically handles removing the existing dependency registration, adding the new implementation, and re-injecting the original implementation into the decorator.
+安装了 Scrutor 库之后,我们可以用 `Decorate` 扩展方法替换掉手动的工厂注册。
+这让代码明显更干净、更简洁。
+Scrutor 会自动处理移除已有的依赖注册、添加新的实现,以及把原实现重新注入到装饰器中。
 
 ```csharp
 var builder = WebApplication.CreateBuilder(args);
@@ -221,35 +221,35 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/registering-service-decorators-53953304/?t=145)
 
-Scrutor also provides a `TryDecorate` method.
-This follows the standard .NET convention where the decoration is only applied if the service has not already been decorated, preventing redundant layers of behavior if the registration code is executed multiple times.
+Scrutor 还提供了一个 `TryDecorate` 方法。
+它遵循标准的 .NET 约定:只有当服务尚未被装饰时才应用装饰,这样即便注册代码被执行多次,也不会叠加出多余的行为层。
 
 ---
 
 ## 3. Surprise optional refactoring lecture
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/) · 8:26
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/) · 8:26
 
-**Summary**
+### 总结
 
-This lesson demonstrates a refactoring technique to replace repetitive manual profiling code—consisting of Stopwatch instances and try-finally blocks—with a clean, reusable IDisposable pattern.
-By creating a TimedLogOperation class and extending the ILoggerAdapter, developers can time operations using a simple using statement, which automatically handles starting the timer, stopping it, and logging the elapsed time upon disposal.
+本课演示一种重构技巧,用一个干净、可复用的 IDisposable 模式,替换掉那些重复的手动性能剖析代码,也就是由 Stopwatch 实例和 try-finally 块组成的代码。
+通过创建一个 TimedLogOperation 类并扩展 ILoggerAdapter,开发者可以用一个简单的 using 语句为操作计时,它会自动处理启动计时器、停止计时器,并在释放时记录已耗费的时间。
 
-**Key concepts**
+### 核心概念
 
-*   Refactoring manual profiling logic into a reusable component.
-*   Leveraging the `IDisposable` interface and `using` statements for automatic cleanup.
-*   Extending `ILoggerAdapter` to provide a fluent `TimedOperation` method.
-*   Using `Stopwatch.StartNew()` for precise execution timing.
-*   Maintaining testability by wrapping logging and timing logic.
+*   把手动的性能剖析逻辑重构成一个可复用的组件。
+*   借助 `IDisposable` 接口和 `using` 语句实现自动清理。
+*   扩展 `ILoggerAdapter`,提供一个流式的 `TimedOperation` 方法。
+*   使用 `Stopwatch.StartNew()` 进行精确的执行计时。
+*   通过包装日志和计时逻辑来保持可测试性。
 
-**Lesson notes**
+### 课程笔记
 
-Manual profiling often involves repetitive boilerplate code.
-A common pattern is to initialize a `Stopwatch`, start it, and use a `try-finally` block to ensure the elapsed time is logged even if an exception occurs.
-While functional, this approach introduces significant nesting and clutter.
+手动做性能剖析往往牵涉到重复的样板代码。
+一个常见的模式是:初始化一个 `Stopwatch`、启动它,然后用一个 `try-finally` 块来确保即使发生异常也会记录耗时。
+这种做法虽然能工作,却带来了明显的嵌套和杂乱。
 
 ```csharp
 }
@@ -272,11 +272,11 @@ While functional, this approach introduces significant nesting and clutter.
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=10)
 
-To clean this up, we can leverage the C# `using` statement.
-The `using` keyword is syntactic sugar for a `try-finally` block that calls the `Dispose()` method on an `IDisposable` object when it goes out of scope.
-For example, when using an `HttpClient`, the compiler ensures the client is disposed correctly.
+为了把它清理干净,我们可以利用 C# 的 `using` 语句。
+`using` 关键字是 `try-finally` 块的语法糖,当一个 `IDisposable` 对象离开作用域时,它会调用该对象的 `Dispose()` 方法。
+举例来说,当使用 `HttpClient` 时,编译器会确保这个 client 被正确释放。
 
 ```csharp
 }
@@ -303,14 +303,14 @@ For example, when using an `HttpClient`, the compiler ensures the client is disp
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=85)
 
-### Implementing TimedLogOperation
+#### 实现 TimedLogOperation
 
-We can encapsulate the timing and logging logic into a generic class called `TimedLogOperation<T>`.
-This class implements `IDisposable`.
-In its constructor, it starts a `Stopwatch` and stores the logger, log level, message template, and arguments.
-In the `Dispose` method, it stops the timer and logs the result.
+我们可以把计时和日志逻辑封装进一个名为 `TimedLogOperation<T>` 的泛型类。
+这个类实现了 `IDisposable`。
+在它的构造函数中,它启动一个 `Stopwatch`,并保存 logger、日志级别、消息模板和参数。
+在 `Dispose` 方法中,它停止计时器并记录结果。
 
 ```csharp
 private readonly object?[] _args;
@@ -333,12 +333,12 @@ private readonly object?[] _args;
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=235)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=235)
 
-### Integrating with ILoggerAdapter
+#### 与 ILoggerAdapter 集成
 
-To make this operation easily accessible, we add a `TimedOperation` method to the `ILoggerAdapter<TType>` interface and its implementation.
-This method returns an `IDisposable` (the `TimedLogOperation`), allowing it to be used directly within a `using` statement.
+为了让这个操作更易于使用,我们在 `ILoggerAdapter<TType>` 接口及其实现中加入一个 `TimedOperation` 方法。
+这个方法返回一个 `IDisposable`(即 `TimedLogOperation`),从而可以直接用在 `using` 语句中。
 
 ```csharp
 namespace Weather.Api.Logging;
@@ -361,12 +361,12 @@ public class LoggerAdapter<TType> : ILoggerAdapter<TType>
     {
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=340)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=340)
 
-### Final Usage
+#### 最终用法
 
-With the refactoring complete, the complex `try-finally` block in the service is replaced by a single `using var` declaration.
-This significantly improves readability while maintaining the same profiling functionality.
+重构完成后,服务里那个复杂的 `try-finally` 块被一行 `using var` 声明取代。
+这在保持同样的性能剖析功能的同时,显著提升了可读性。
 
 ```csharp
 public async Task<WeatherResponse?> GetCurrentWeatherAsync(string city)
@@ -377,9 +377,9 @@ public async Task<WeatherResponse?> GetCurrentWeatherAsync(string city)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=385)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=385)
 
-This pattern is highly flexible and can be applied anywhere a logger is available, such as within a controller to time the generation of a response.
+这个模式非常灵活,凡是有 logger 可用的地方都能用,比如在 controller 中为生成响应的过程计时。
 
 ```csharp
 [HttpGet("weather/{city}")]
@@ -399,34 +399,34 @@ public async Task<IActionResult> GetCurrentWeather([FromRoute] string city)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=475)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/surprise-optional-refactoring-lecture-53953305/?t=475)
 
 ---
 
 ## 4. Service registration by scanning
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/) · 13:09
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/) · 13:09
 
-### Summary
+### 总结
 
-Service scanning in Scrutor allows for the automatic registration of services into the .NET Dependency Injection container based on conventions and rules rather than explicit manual registration.
-By scanning assemblies, developers can apply filters—such as namespace matching or naming patterns—and define registration strategies like matching interfaces or self-registration.
-This approach reduces boilerplate code and ensures that new services following established patterns are automatically included in the container with the appropriate lifetime.
+Scrutor 中的服务扫描允许基于约定和规则,而不是显式的手动注册,把服务自动注册进 .NET 依赖注入容器。
+通过扫描程序集,开发者可以应用诸如命名空间匹配或命名模式之类的过滤器,并定义像匹配接口或自我注册这样的注册策略。
+这种做法减少了样板代码,并确保遵循既有模式的新服务会自动以恰当的生命周期被纳入容器。
 
-### Key concepts
+### 核心概念
 
-* **Assembly Scanning**: Identifying types within specific assemblies for registration automatically at startup.
-* **Filtering**: Narrowing down types using namespaces, naming conventions (e.g., `EndsWith`), or interface implementation (`AssignableTo`).
-* **Registration Strategies**: Defining how a class is registered, such as `AsMatchingInterface` (convention-based), `AsSelf`, or `AsImplementedInterfaces`.
-* **Lifetime Management**: Overriding the default transient lifetime using methods like `WithSingletonLifetime` or `WithScopedLifetime`.
-* **Hierarchical Configuration**: Nesting multiple scanning rules within a single `Scan` call to handle different registration requirements.
+* **Assembly Scanning(程序集扫描)**:在启动时自动识别特定程序集中可注册的类型。
+* **Filtering(过滤)**:使用命名空间、命名约定(例如 `EndsWith`)或接口实现关系(`AssignableTo`)来收窄类型范围。
+* **Registration Strategies(注册策略)**:定义一个类如何被注册,例如 `AsMatchingInterface`(基于约定)、`AsSelf` 或 `AsImplementedInterfaces`。
+* **Lifetime Management(生命周期管理)**:用 `WithSingletonLifetime` 或 `WithScopedLifetime` 之类的方法覆盖默认的 transient 生命周期。
+* **Hierarchical Configuration(层级化配置)**:在单次 `Scan` 调用中嵌套多条扫描规则,以应对不同的注册需求。
 
-### Lesson notes
+### 课程笔记
 
-To begin using Scrutor's scanning capabilities, you must install the `Scrutor` and `Microsoft.Extensions.DependencyInjection` packages.
-Scanning allows you to replace explicit service registrations with convention-based rules.
+要开始使用 Scrutor 的扫描能力,你必须安装 `Scrutor` 和 `Microsoft.Extensions.DependencyInjection` 这两个包。
+扫描让你可以用基于约定的规则取代显式的服务注册。
 
-Consider a project with multiple services, such as `ExampleAService` and `ExampleBService`, each implementing their respective interfaces:
+设想一个项目里有多个服务,比如 `ExampleAService` 和 `ExampleBService`,它们各自实现了对应的接口:
 
 ```csharp
 namespace ScrutorScanning.ConsoleApp.Services;
@@ -442,9 +442,9 @@ public interface IExampleBService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=40)
 
-To visualize what is registered in the container, a helper method can iterate through the `IServiceCollection` and print the service type, implementation type, and lifetime.
+为了看清容器里注册了什么,可以写一个辅助方法遍历 `IServiceCollection`,打印出服务类型、实现类型和生命周期。
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -463,12 +463,12 @@ void PrintRegisteredService(IServiceCollection serviceCollection)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=160)
 
-#### Basic Scanning with AsMatchingInterface
+#### 用 AsMatchingInterface 做基础扫描
 
-The entry point for scanning is the `Scan` extension method on `IServiceCollection`.
-The process follows a hierarchy: first, you select the assembly; second, you filter the classes; and third, you define the registration strategy.
+扫描的入口是 `IServiceCollection` 上的 `Scan` 扩展方法。
+整个过程遵循一个层级:首先选择程序集,其次过滤类,第三定义注册策略。
 
 ```csharp
 var services = new ServiceCollection();
@@ -483,22 +483,22 @@ services.Scan(selector =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=280)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=280)
 
-In this example, `AsMatchingInterface` automatically registers `ExampleAService` as `IExampleAService`.
-Scrutor identifies these matches by looking for interfaces where the name matches the class name prefixed with "I".
-If the names do not match (e.g., `ExampleABService` implementing `IExampleAService`), Scrutor will not register them using this specific strategy.
+在这个例子中,`AsMatchingInterface` 会自动把 `ExampleAService` 注册为 `IExampleAService`。
+Scrutor 识别这类匹配的方式,是寻找名称等于类名加上前缀 “I” 的接口。
+如果名称对不上(例如 `ExampleABService` 实现了 `IExampleAService`),Scrutor 就不会用这种特定策略注册它们。
 
-#### Registration Strategies and Lifetimes
+#### 注册策略与生命周期
 
-Scrutor provides several strategies for registering discovered types:
-* **AsSelf()**: Registers the class as its own type.
-* **AsMatchingInterface()**: Registers the class against an interface with a matching name.
-* **AsImplementedInterfaces()**: Registers the class against every interface it implements.
-* **AsSelfWithInterfaces()**: Registers the class as itself and its interfaces, ensuring they all point to the same instance via an internal factory.
+Scrutor 为已发现的类型提供了几种注册策略:
+* **AsSelf()**:把类注册为它自己的类型。
+* **AsMatchingInterface()**:把类注册到一个名称相匹配的接口上。
+* **AsImplementedInterfaces()**:把类注册到它实现的每一个接口上。
+* **AsSelfWithInterfaces()**:把类同时注册为它自己和它的各个接口,并通过内部的工厂确保它们都指向同一个实例。
 
-By default, Scrutor registers services with a **Transient** lifetime.
-This can be overridden using lifetime methods:
+默认情况下,Scrutor 以 **Transient** 生命周期注册服务。
+这可以用生命周期方法来覆盖:
 
 ```csharp
 {
@@ -512,9 +512,9 @@ PrintRegisteredService(services);
 var serviceProvider = services.BuildServiceProvider();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=435)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=435)
 
-When using `AsSelfWithInterfaces`, Scrutor effectively performs the following manual registration logic using a factory to ensure the singleton instance is shared across all registered types:
+使用 `AsSelfWithInterfaces` 时,Scrutor 实际上执行的是下面这段手动注册逻辑,用一个工厂来保证单例实例在所有注册类型之间共享:
 
 ```csharp
 // Manual equivalent of AsSelfWithInterfaces
@@ -523,12 +523,12 @@ services.AddSingleton<IExampleAService>(provider => provider.GetRequiredService<
 services.AddSingleton<IExampleBService>(provider => provider.GetRequiredService<ExampleABService>());
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=535)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=535)
 
-#### Advanced Filtering
+#### 高级过滤
 
-Filters can be more dynamic than simple namespace matching.
-You can use the `Where` method to filter by type name or other properties, or use `AssignableTo` to find types implementing a specific interface.
+过滤器可以比简单的命名空间匹配更灵活。
+你可以用 `Where` 方法按类型名称或其他属性过滤,或者用 `AssignableTo` 找出实现了某个特定接口的类型。
 
 ```csharp
 services.Scan(selector =>
@@ -540,9 +540,9 @@ services.Scan(selector =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=585)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=585)
 
-This is particularly useful for patterns like the Repository pattern, where you can register all repositories in one declaration:
+这对于像 Repository 模式这样的场景特别有用,你可以用一条声明注册所有 repository:
 
 ```csharp
 services.Scan(selector =>
@@ -555,12 +555,12 @@ services.Scan(selector =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=775)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=775)
 
-#### Hierarchical Scanning
+#### 层级化扫描
 
-You can include multiple `AddClasses` calls or even multiple `FromAssemblyOf` calls within a single `Scan` block.
-Each call to `AddClasses` resets the context for the next set of registration rules, allowing for complex, multi-layered registration logic within a single assembly or across multiple assemblies.
+你可以在单个 `Scan` 块中包含多次 `AddClasses` 调用,甚至多次 `FromAssemblyOf` 调用。
+每次调用 `AddClasses` 都会为下一组注册规则重置上下文,这样就能在单个程序集内部或跨多个程序集实现复杂的、多层次的注册逻辑。
 
 ```csharp
 services.Scan(selector =>
@@ -577,29 +577,31 @@ services.Scan(selector =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=685)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/service-registration-by-scanning-53953306/?t=685)
 
 ---
 
 ## 5. Interface marking
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/) · 3:28
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/) · 3:28
 
-Interface marking is a technique in Scrutor where empty "marker" interfaces are used to explicitly define the Dependency Injection lifetime of a class.
-Instead of relying on naming conventions, which can lead to accidental registrations, developers implement specific interfaces (e.g., ISingletonService) on their classes.
-Scrutor then scans for these types using the AssignableTo filter, allowing for precise control over registration and lifetime management within the service collection.
+### 总结
 
-### Key concepts
+接口标记(interface marking)是 Scrutor 中的一种技巧,用空的“标记”接口来显式定义一个类的依赖注入生命周期。
+开发者不再依赖可能导致误注册的命名约定,而是在类上实现特定的接口(例如 ISingletonService)。
+随后 Scrutor 用 AssignableTo 过滤器扫描这些类型,从而对服务集合中的注册和生命周期管理实现精确控制。
 
-* Marker Interfaces: Empty interfaces used to tag classes for specific registration behavior.
-* AssignableTo<T>: A Scrutor filter that selects classes implementing a specific interface or inheriting from a specific type.
-* Lifetime Mapping: Explicitly associating a marker interface with a DI lifetime (Singleton, Scoped, or Transient).
-* Registration Strategies: Choosing between AsImplementedInterfaces and AsMatchingInterface to control how services are added to the container.
+### 核心概念
 
-### Lesson notes
+* Marker Interfaces(标记接口):用于给类打标签以触发特定注册行为的空接口。
+* AssignableTo<T>:Scrutor 的一个过滤器,用于选出实现了某个特定接口或继承自某个特定类型的类。
+* Lifetime Mapping(生命周期映射):把标记接口显式地关联到某个 DI 生命周期(Singleton、Scoped 或 Transient)。
+* Registration Strategies(注册策略):在 AsImplementedInterfaces 和 AsMatchingInterface 之间选择,以控制服务如何被加入容器。
 
-Interface marking provides a more robust alternative to name-based registration.
-When using name-based filtering, such as checking if a class name ends with "Repository", there is a risk of accidental registrations if a class is named incorrectly or if the desired lifetime does not match the naming convention.
+### 课程笔记
+
+接口标记为基于名称的注册提供了一种更稳健的替代方案。
+使用基于名称的过滤时,比如检查类名是否以 “Repository” 结尾,一旦某个类的命名有误,或者期望的生命周期与命名约定不匹配,就有误注册的风险。
 
 ```csharp
 services.Scan(selector =>
@@ -623,10 +625,10 @@ void PrintRegisteredService(IServiceCollection serviceCollection)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=10)
 
-Instead, developers can define empty marker interfaces to represent different lifetimes.
-These interfaces serve no functional purpose other than to categorize types during assembly scanning.
+作为替代,开发者可以定义空的标记接口来代表不同的生命周期。
+这些接口除了在程序集扫描时给类型分类之外,没有任何其他功能作用。
 
 ```csharp
 namespace ScrutorScanning.ConsoleApp.Services;
@@ -637,10 +639,10 @@ public interface IScopedService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=40)
 
-Services then implement these markers alongside their functional interfaces.
-For example, a service intended to be transient would implement both its specific service interface and the `ITransientService` marker.
+服务随后在实现自己功能性接口的同时也实现这些标记接口。
+例如,一个打算作为 transient 的服务,会同时实现它自己的服务接口和 `ITransientService` 标记接口。
 
 ```csharp
 namespace ScrutorScanning.ConsoleApp.Services;
@@ -656,10 +658,10 @@ public interface IExampleBService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=55)
 
-In the Scrutor configuration, the `AssignableTo<T>` method is used to filter classes by these markers.
-This allows for chaining multiple registration rules within a single `Scan` call, with each rule targeting a different lifetime based on the implemented marker.
+在 Scrutor 的配置里,用 `AssignableTo<T>` 方法按这些标记过滤类。
+这让你可以在单次 `Scan` 调用中串联多条注册规则,每条规则根据所实现的标记对应一种不同的生命周期。
 
 ```csharp
 .AddClasses(f => f.AssignableTo<ISingletonService>())
@@ -681,10 +683,10 @@ void PrintRegisteredService(IServiceCollection serviceCollection)
     foreach (var service in serviceCollection)
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=100)
 
-When using `AsImplementedInterfaces`, Scrutor registers the class under every interface it implements.
-This means the service will be registered under its functional interface (e.g., `IExampleAService`) and the marker interface (e.g., `ISingletonService`).
+使用 `AsImplementedInterfaces` 时,Scrutor 会把这个类注册到它实现的每一个接口下。
+这意味着该服务既会注册在它的功能性接口下(例如 `IExampleAService`),也会注册在标记接口下(例如 `ISingletonService`)。
 
 ```csharp
 .AddClasses(f => f.AssignableTo<ISingletonService>())
@@ -706,11 +708,11 @@ IExampleCService -> ExampleCService as Scoped
 IScopedService -> ExampleCService as Scoped
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=115)
 
-To prevent the marker interface itself from being registered as a service type, `AsMatchingInterface` can be used.
-This strategy only registers the interface that matches the class name (e.g., `IExampleService` for `ExampleService`), effectively ignoring the marker interface for resolution purposes.
-If naming conventions are not strictly followed, `AsImplementedInterfaces` remains the safer choice, even if it results in extra registrations that are never resolved.
+为了避免标记接口本身被注册成服务类型,可以改用 `AsMatchingInterface`。
+这种策略只注册与类名相匹配的那个接口(例如 `ExampleService` 对应 `IExampleService`),就解析而言实际上忽略了标记接口。
+如果命名约定没有被严格遵守,`AsImplementedInterfaces` 仍然是更安全的选择,即使它会产生一些永远不会被解析的多余注册。
 
 ```csharp
 .AddClasses(f => f.AssignableTo<ISingletonService>())
@@ -725,37 +727,37 @@ If naming conventions are not strictly followed, `AsImplementedInterfaces` remai
                 .AsMatchingInterface()
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=135)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/interface-marking-53953307/?t=135)
 
-While interface marking is a valid technique, it is sometimes criticized as a "leaky abstraction" because it requires the implementation class to have knowledge of its intended registration lifetime within the dependency injection container.
-However, it provides a high degree of control and clarity for developers who prefer explicit marking over implicit conventions.
+接口标记虽然是一种有效的技巧,但它有时会被批评为“泄漏的抽象”,因为它要求实现类知道自己在依赖注入容器中打算采用的注册生命周期。
+不过,对于那些更偏好显式标记而非隐式约定的开发者来说,它提供了高度的控制力和清晰度。
 
 ---
 
 ## 6. Attribute marking
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/) · 3:13
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/) · 3:13
 
-### Summary
+### 总结
 
-This lesson demonstrates how to use custom attributes to manage service lifetimes in Scrutor as an alternative to marker interfaces.
-By defining and applying attributes like [Transient], [Scoped], and [Singleton] directly to service classes, developers can make dependency injection registration explicit and localized.
-This approach avoids polluting the interface hierarchy with marker types while allowing Scrutor's scanning engine to filter and register services based on these custom metadata markers.
+本课演示如何用自定义特性(attribute)来管理 Scrutor 中的服务生命周期,作为标记接口的替代方案。
+通过定义并在服务类上直接应用 [Transient]、[Scoped]、[Singleton] 之类的特性,开发者可以让依赖注入的注册变得显式且就地可见。
+这种做法避免了用标记类型污染接口层级,同时又让 Scrutor 的扫描引擎能够基于这些自定义元数据标记来过滤并注册服务。
 
-### Key concepts
+### 核心概念
 
-*   **Custom Lifetime Attributes**: Creating specific attribute classes (e.g., `TransientAttribute`) to represent DI lifetimes.
-*   **Attribute Constraints**: Using `[AttributeUsage(AttributeTargets.Class)]` to ensure lifetime markers are only applied to implementation classes.
-*   **Scrutor Attribute Filtering**: Utilizing the `WithAttribute<T>` selector to identify classes for registration.
-*   **Explicit Registration**: Improving code readability by making the DI lifetime visible directly on the class definition rather than hidden in a central configuration file.
+*   **Custom Lifetime Attributes(自定义生命周期特性)**:创建特定的特性类(例如 `TransientAttribute`)来代表各种 DI 生命周期。
+*   **Attribute Constraints(特性约束)**:使用 `[AttributeUsage(AttributeTargets.Class)]` 确保生命周期标记只能应用在实现类上。
+*   **Scrutor Attribute Filtering(Scrutor 特性过滤)**:利用 `WithAttribute<T>` 选择器来识别需要注册的类。
+*   **Explicit Registration(显式注册)**:把 DI 生命周期直接展现在类定义上,而不是藏在某个集中的配置文件里,从而提升代码可读性。
 
-### Lesson notes
+### 课程笔记
 
-While marker interfaces are a common way to categorize services for scanning, they can lead to unnecessary interface pollution.
-An alternative approach is to use custom attributes to mark classes with their intended lifetime.
-This makes the registration intent explicit on the class itself.
+标记接口虽然是给服务分类以供扫描的常见做法,但它可能导致不必要的接口污染。
+另一种做法是使用自定义特性,给类打上它所期望的生命周期标记。
+这让注册意图在类本身上就一目了然。
 
-Initially, a project might use interface-based scanning as shown here:
+一开始,项目可能像这样使用基于接口的扫描:
 
 ```csharp
 {
@@ -782,10 +784,10 @@ void PrintRegisteredService(IServiceCollection serviceCollection)
     foreach (var service in serviceCollection)
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=10)
 
-To move to an attribute-based model, you must first define the attributes.
-These classes should extend the base `Attribute` class and use the `AttributeUsage` attribute to restrict their application to classes only.
+要转向基于特性的模型,你必须先定义这些特性。
+这些类应当继承自基类 `Attribute`,并使用 `AttributeUsage` 特性把它们的应用范围限制为仅限类。
 
 ```csharp
 namespace ScrutorScanning.ConsoleApp.Attributes;
@@ -797,9 +799,9 @@ public class TransientAttribute : Attribute
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=40)
 
-Similar attributes should be created for other lifetimes, such as Scoped:
+其他生命周期也应当创建类似的特性,比如 Scoped:
 
 ```csharp
 namespace ScrutorScanning.ConsoleApp.Attributes;
@@ -811,10 +813,10 @@ public class ScopedAttribute : Attribute
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=55)
 
-Once the attributes are defined, they can be applied directly to the implementation classes.
-This removes the need for the class to implement specific marker interfaces like `IScopedService` or `ITransientService` just for the sake of the DI container.
+特性定义好之后,就可以直接应用在实现类上。
+这样一来,类就不必仅仅为了 DI 容器而去实现 `IScopedService` 或 `ITransientService` 这类特定的标记接口了。
 
 ```csharp
 using ScrutorScanning.ConsoleApp.Attributes;
@@ -834,10 +836,10 @@ public interface IExampleCService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=85)
 
-After marking the classes, the Scrutor scanning configuration must be updated.
-Instead of using `AssignableTo<T>`, use the `WithAttribute<T>` filter within the `AddClasses` method to target classes decorated with your custom attributes.
+给类打上标记之后,还必须更新 Scrutor 的扫描配置。
+不再使用 `AssignableTo<T>`,而是在 `AddClasses` 方法中使用 `WithAttribute<T>` 过滤器,来定位那些被你的自定义特性修饰的类。
 
 ```csharp
 .FromAssemblyOf<Program>()
@@ -854,11 +856,11 @@ Instead of using `AssignableTo<T>`, use the `WithAttribute<T>` filter within the
         .WithScopedLifetime();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=130)
 
-This pattern is common in other ecosystems, such as Java.
-While it does mean the class has knowledge of how it is registered in the DI container, it provides high visibility.
-Anyone looking at the class can immediately see its intended lifecycle without searching through `Startup.cs` or various extension methods.
+这种模式在其他生态中很常见,比如 Java。
+它确实意味着类知道自己是如何被注册进 DI 容器的,但它带来了很高的可见性。
+任何人看到这个类,都能立刻知道它期望的生命周期,而不必去翻 `Startup.cs` 或各种扩展方法。
 
 ```csharp
 using ScrutorScanning.ConsoleApp.Attributes;
@@ -878,34 +880,34 @@ public interface IExampleBService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/attribute-marking-53953308/?t=145)
 
 ---
 
 ## 7. Namespace filtering
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/) · 2:19
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/) · 2:19
 
-### Summary
+### 总结
 
-Scrutor allows for scanning and registering classes based on their namespaces, which is effective when projects adhere to strict naming conventions for layers like repositories or services.
-This approach eliminates the need for manual attribute decoration but imposes a uniform lifetime on all classes within a filtered namespace.
-Because namespace strings are not type-safe and can change during refactoring, this method carries a risk of runtime failures unless supported by comprehensive unit testing.
+Scrutor 允许基于命名空间扫描并注册类,这在项目对 repository、service 这类分层严格遵循命名约定时很有效。
+这种做法省去了手动给类加特性的必要,但它会给某个被过滤出来的命名空间下的所有类强加统一的生命周期。
+由于命名空间字符串不是类型安全的,而且在重构时可能改变,这种方法带有运行时失败的风险,除非有全面的单元测试作为支撑。
 
-### Key concepts
+### 核心概念
 
-- **Namespace Matching**: Using `InNamespaces` to include classes from specific string-defined namespaces.
-- **Lifetime Uniformity**: All classes registered within a single namespace filter must share the same lifetime (e.g., Singleton, Scoped, or Transient).
-- **Attribute Independence**: Namespace-based registration can ignore or override attributes like `[Singleton]` if the scanner is configured to do so.
-- **Exclusion Filters**: The `NotInNamespaces` method allows for excluding specific namespaces from a broader scan.
-- **Maintenance Risk**: Namespace-based scanning is sensitive to refactoring; changes to namespace names will break the registration if the strings in the DI configuration are not updated.
+- **Namespace Matching(命名空间匹配)**:使用 `InNamespaces` 纳入指定字符串命名空间下的类。
+- **Lifetime Uniformity(生命周期一致性)**:在单个命名空间过滤器下注册的所有类,必须共用同一种生命周期(例如 Singleton、Scoped 或 Transient)。
+- **Attribute Independence(与特性无关)**:如果扫描器被这样配置,基于命名空间的注册可以忽略或覆盖像 `[Singleton]` 这样的特性。
+- **Exclusion Filters(排除过滤器)**:`NotInNamespaces` 方法允许在一次更宽泛的扫描中排除特定的命名空间。
+- **Maintenance Risk(维护风险)**:基于命名空间的扫描对重构很敏感;如果 DI 配置中的字符串没有同步更新,命名空间改名就会让注册失效。
 
-### Lesson notes
+### 课程笔记
 
-When you have a consistent naming convention for your project, such as `Project.Repositories` or `Project.Services`, you can use namespace matching to register your dependencies.
-This avoids the need to decorate every class with attributes.
+当你的项目有一致的命名约定时,比如 `Project.Repositories` 或 `Project.Services`,你可以用命名空间匹配来注册依赖。
+这样就不必给每个类都加上特性。
 
-Previously, registration might have relied heavily on attributes to define lifetimes:
+在此之前,注册可能严重依赖特性来定义生命周期:
 
 ```csharp
 .FromAssemblyOf<Program>()
@@ -922,10 +924,10 @@ Previously, registration might have relied heavily on attributes to define lifet
     .WithScopedLifetime();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=10)
 
-To filter by namespace, use the `InNamespaces` method.
-This method accepts an array of strings representing the namespaces to scan.
+要按命名空间过滤,使用 `InNamespaces` 方法。
+这个方法接收一个字符串数组,表示要扫描的命名空间。
 
 ```csharp
 .FromAssemblyOf<Program>()
@@ -942,14 +944,14 @@ This method accepts an array of strings representing the namespaces to scan.
     .WithScopedLifetime();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=25)
 
-A significant limitation of namespace filtering is the lack of fine-grained control over lifetimes.
-Every class identified within the specified namespace must be registered with the same lifetime.
-If different lifetimes are required for classes within the same namespace, you must use more specific filters or return to attribute-based registration.
+命名空间过滤的一个显著局限,是对生命周期缺乏细粒度的控制。
+在指定命名空间内被识别出来的每一个类,都必须以相同的生命周期注册。
+如果同一命名空间下的类需要不同的生命周期,你就必须使用更具体的过滤器,或者回到基于特性的注册。
 
-When using namespace scanning, existing attributes on classes are ignored unless specifically included in the filter logic.
-For example, a class decorated with a `[Singleton]` attribute will still be registered according to the Scrutor configuration, even if that configuration specifies a different lifetime.
+使用命名空间扫描时,类上已有的特性会被忽略,除非过滤逻辑里专门把它们包含进来。
+例如,一个被 `[Singleton]` 特性修饰的类,仍然会按照 Scrutor 的配置来注册,哪怕那份配置指定的是另一种生命周期。
 
 ```csharp
 using ScrutorScanning.ConsoleApp.Attributes;
@@ -967,10 +969,10 @@ public interface IExampleAService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=55)
 
-By specifying the exact namespace string, Scrutor will register all matching classes as the implemented interface.
-In the following example, all services in the specified namespace are registered as singletons.
+只要指定了确切的命名空间字符串,Scrutor 就会把所有匹配的类注册为它们所实现的接口。
+在下面的例子中,指定命名空间下的所有服务都被注册为单例。
 
 ```csharp
 .FromAssemblyOf<Program>()
@@ -991,11 +993,11 @@ IExampleBService -> ExampleBService as Singleton
 IExampleCService -> ExampleCService as Singleton
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=85)
 
-Scrutor also provides methods for exclusion.
-You can use `NotInNamespaces` to register everything except classes within a specific namespace.
-Similarly, you can use `WithoutAttribute` to exclude classes decorated with specific markers, providing control over edge cases.
+Scrutor 还提供了用于排除的方法。
+你可以用 `NotInNamespaces` 注册除某个特定命名空间下的类之外的所有内容。
+类似地,你可以用 `WithoutAttribute` 排除被特定标记修饰的类,从而控制各种边缘情况。
 
 ```csharp
 .FromAssemblyOf<Program>()
@@ -1004,36 +1006,36 @@ Similarly, you can use `WithoutAttribute` to exclude classes decorated with spec
     .WithSingletonLifetime();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=110)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/namespace-filtering-53953309/?t=110)
 
-While powerful, namespace-based registration is considered risky because namespaces are subject to change during refactoring.
-Since these strings are not verified at compile-time, changes can lead to runtime failures.
-It is recommended to use unit tests to ensure that the expected services are correctly registered.
+基于命名空间的注册虽然强大,却被认为有风险,因为命名空间在重构过程中是会变的。
+由于这些字符串在编译期得不到校验,改动可能导致运行时失败。
+建议使用单元测试来确保期望的服务都被正确注册。
 
 ---
 
 ## 8. Using the ServiceDescriptor attribute
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/) · 2:47
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/) · 2:47
 
-### Summary
+### 总结
 
-The ServiceDescriptor attribute in Scrutor provides a unified, attribute-based approach to defining service registration directly on implementation classes.
-By using the .UsingAttributes() method during assembly scanning, developers can control service types and lifetimes without creating custom attribute classes.
-This approach offers high flexibility, including the ability to register a single class under multiple service types or lifetimes using multiple attributes, though it introduces a direct dependency between the service implementation and its registration configuration.
+Scrutor 中的 ServiceDescriptor 特性提供了一种统一的、基于特性的方式,直接在实现类上定义服务注册。
+通过在程序集扫描时使用 .UsingAttributes() 方法,开发者无需创建自定义特性类就能控制服务类型和生命周期。
+这种做法提供了很高的灵活性,包括用多个特性把同一个类注册为多种服务类型或多种生命周期,不过它也在服务实现与其注册配置之间引入了直接的依赖。
 
-### Key concepts
+### 核心概念
 
-- **ServiceDescriptor Attribute**: A Scrutor-provided attribute used to decorate classes for automatic registration.
-- **UsingAttributes()**: The scanning method required to process `ServiceDescriptor` and other registration attributes.
-- **Default Registration**: Without parameters, the attribute registers the class as itself and its implemented interfaces with a Transient lifetime.
-- **Explicit Configuration**: Parameters allow for defining specific service types and `ServiceLifetime` values.
-- **Multiple Registrations**: Support for applying multiple `ServiceDescriptor` attributes to a single class for complex registration scenarios.
+- **ServiceDescriptor Attribute(ServiceDescriptor 特性)**:Scrutor 提供的一个特性,用于修饰类以便自动注册。
+- **UsingAttributes()**:处理 `ServiceDescriptor` 及其他注册特性所需的扫描方法。
+- **Default Registration(默认注册)**:不带参数时,该特性会把类注册为它自己以及它实现的接口,生命周期为 Transient。
+- **Explicit Configuration(显式配置)**:参数允许定义具体的服务类型和 `ServiceLifetime` 值。
+- **Multiple Registrations(多重注册)**:支持在同一个类上应用多个 `ServiceDescriptor` 特性,以应对复杂的注册场景。
 
-### Lesson notes
+### 课程笔记
 
-Scrutor provides a built-in `ServiceDescriptor` attribute that allows for fine-grained control over how a service is registered during assembly scanning.
-When a class is decorated with this attribute, it can be automatically registered by calling `.UsingAttributes()` within the Scrutor scanning configuration.
+Scrutor 提供了一个内置的 `ServiceDescriptor` 特性,可以在程序集扫描期间对服务如何注册进行细粒度控制。
+当一个类被这个特性修饰时,只要在 Scrutor 的扫描配置中调用 `.UsingAttributes()`,它就能被自动注册。
 
 ```csharp
 using Scrutor;
@@ -1055,10 +1057,10 @@ public interface IExampleAService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=10)
 
-To enable this, the scanning logic must include the `.UsingAttributes()` method.
-This instructs Scrutor to look for the `ServiceDescriptor` attribute (or other custom attributes) on the classes it finds within the specified assembly.
+要启用这个功能,扫描逻辑中必须包含 `.UsingAttributes()` 方法。
+它指示 Scrutor 在指定程序集内找到的类上,去查找 `ServiceDescriptor` 特性(或其他自定义特性)。
 
 ```csharp
 .WithTransientLifetime()
@@ -1076,12 +1078,12 @@ PrintRegisteredService(services);
 var serviceProvider = services.BuildServiceProvider();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=40)
 
-By default, if no parameters are passed to `[ServiceDescriptor]`, Scrutor registers the class as its own type and also as its implemented interface, both with a **Transient** lifetime.
+默认情况下,如果不给 `[ServiceDescriptor]` 传任何参数,Scrutor 会把这个类注册为它自己的类型,同时也注册为它实现的接口,两者都是 **Transient** 生命周期。
 
-You can explicitly define which interface or type the service should be registered as by passing the type to the attribute constructor.
-When a type is specified, only that type is registered.
+你可以通过把类型传给特性的构造函数,显式地定义该服务应当被注册成哪个接口或类型。
+当指定了类型时,只有那个类型会被注册。
 
 ```csharp
 using Scrutor;
@@ -1098,10 +1100,10 @@ public class ExampleAService : IExampleAService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=65)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=65)
 
-The attribute also supports specifying the `ServiceLifetime`.
-For example, to register a service as a Singleton:
+这个特性也支持指定 `ServiceLifetime`。
+例如,把一个服务注册为 Singleton:
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -1119,10 +1121,10 @@ public class ExampleAService : IExampleAService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=75)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=75)
 
-If you want to register both the implementation class and its interface with a specific lifetime, you can pass `null` for the service type parameter.
-This reverts to the default behavior of registering both self and interfaces but applies the specified lifetime to both.
+如果你既想注册实现类,也想以某个特定生命周期注册它的接口,可以给服务类型参数传 `null`。
+这会回到既注册自身又注册各接口的默认行为,但对两者都应用所指定的生命周期。
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -1140,10 +1142,10 @@ public class ExampleAService : IExampleAService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=90)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=90)
 
-For more complex scenarios, multiple `ServiceDescriptor` attributes can be applied to a single class.
-This allows you to register the same implementation under different types with different lifetimes, and they will be registered in the order they appear on the class.
+对于更复杂的场景,可以在同一个类上应用多个 `ServiceDescriptor` 特性。
+这让你能把同一个实现注册到不同的类型、配上不同的生命周期,而它们会按照在类上出现的顺序被注册。
 
 ```csharp
 using Microsoft.Extensions.DependencyInjection;
@@ -1160,29 +1162,32 @@ public class ExampleAService : IExampleAService
 {
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-the-servicedescriptor-attribute-53953310/?t=115)
 
-While this approach couples the class to its registration logic, it makes the registration details highly visible and provides a unified way to handle dependency injection without creating many custom attributes.
+这种做法虽然把类和它的注册逻辑耦合在了一起,却让注册细节高度可见,并提供了一种统一的方式来处理依赖注入,而不必创建许多自定义特性。
 
 ---
 
 ## 9. Using RegistrationStrategies
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/) · 2:24
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/) · 2:24
 
-**Summary**
-This lesson explains how to control Scrutor's behavior when encountering duplicate service registrations using the UsingRegistrationStrategy method.
-It covers the four primary strategies—Append, Skip, Replace, and Throw—detailing how each affects the service collection and providing recommendations for maintaining application stability during assembly scanning.
+### 总结
 
-**Key concepts**
-- **RegistrationStrategy.Append**: The default behavior; adds the service registration to the collection even if it already exists.
-- **RegistrationStrategy.Skip**: If the service is already registered in the container, the new registration attempt is ignored.
-- **RegistrationStrategy.Replace**: Overwrites any existing registration for the service with the new implementation and lifetime.
-- **RegistrationStrategy.Throw**: Triggers an exception at startup if a duplicate registration is detected, ensuring configuration errors are caught immediately.
+本课讲解如何用 UsingRegistrationStrategy 方法控制 Scrutor 在遇到重复服务注册时的行为。
+它覆盖了四种主要策略 Append、Skip、Replace 和 Throw,详述每一种如何影响服务集合,并就如何在程序集扫描期间保持应用稳定性给出建议。
 
-**Lesson notes**
-When using Scrutor to scan assemblies, it is possible for a single class to match multiple registration criteria.
-For example, a service might be defined as a singleton but also inadvertently included in a scan for transient services.
+### 核心概念
+
+- **RegistrationStrategy.Append**:默认行为;即使服务已经存在,也把这条服务注册加入集合。
+- **RegistrationStrategy.Skip**:如果服务已经注册在容器中,本次注册尝试会被忽略。
+- **RegistrationStrategy.Replace**:用新的实现和生命周期覆盖该服务已有的任何注册。
+- **RegistrationStrategy.Throw**:一旦检测到重复注册,就在启动时抛出异常,确保配置错误被立刻发现。
+
+### 课程笔记
+
+使用 Scrutor 扫描程序集时,同一个类有可能匹配到多条注册条件。
+例如,某个服务被定义为单例,却又在扫描 transient 服务时被无意中包含了进来。
 
 ```csharp
 using ScrutorScanning.ConsoleApp.ServiceMarkers;
@@ -1199,7 +1204,7 @@ public interface IExampleAService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=10)
 
 ```csharp
 using ScrutorScanning.ConsoleApp.Attributes;
@@ -1217,10 +1222,10 @@ public interface IExampleBService
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=20)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=20)
 
-By default, if multiple `AddClasses` blocks match the same service, Scrutor will register the service multiple times.
-This is equivalent to calling the standard `.Add()` method on the `IServiceCollection` multiple times.
+默认情况下,如果多个 `AddClasses` 块匹配到同一个服务,Scrutor 会把这个服务注册多次。
+这等价于在 `IServiceCollection` 上多次调用标准的 `.Add()` 方法。
 
 ```csharp
 //          .AddClasses(f => f.AssignableTo<IScopedService>())
@@ -1245,10 +1250,10 @@ This is equivalent to calling the standard `.Add()` method on the `IServiceColle
             //          .UsingAttributes();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=30)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=30)
 
-In the following output, `ExampleBService` is registered twice: once as a Singleton and once as a Transient.
-This occurs because the default strategy is `Append`.
+在下面的输出里,`ExampleBService` 被注册了两次:一次作为 Singleton,一次作为 Transient。
+这是因为默认策略是 `Append`。
 
 ```csharp
 .FromAssemblyOf<Program>()
@@ -1262,14 +1267,14 @@ IExampleBService -> ExampleBService as Transient
 Process finished with exit code 0.
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=40)
 
-To change this behavior, use the `UsingRegistrationStrategy()` method.
-This method is placed after `AddClasses()` but before the registration details like `AsImplementedInterfaces()`.
+要改变这种行为,使用 `UsingRegistrationStrategy()` 方法。
+这个方法放在 `AddClasses()` 之后,但在 `AsImplementedInterfaces()` 这类注册细节之前。
 
-### Skip Strategy
+#### Skip 策略
 
-Using `RegistrationStrategy.Skip` ensures that if a service is already present in the `IServiceCollection`, the current registration attempt is ignored.
+使用 `RegistrationStrategy.Skip` 可以确保:如果服务已经存在于 `IServiceCollection` 中,当前这次注册尝试就会被忽略。
 
 ```csharp
 .AddClasses(f => f.WithAttribute<TransientAttribute>())
@@ -1285,12 +1290,12 @@ Using `RegistrationStrategy.Skip` ensures that if a service is already present i
             //      .AddClasses()
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=85)
 
-### Replace Strategy
+#### Replace 策略
 
-Using `RegistrationStrategy.Replace()` will look for an existing registration and replace it with the new configuration.
-In the example below, the Transient registration replaces the previous Singleton registration for `IExampleBService`.
+使用 `RegistrationStrategy.Replace()` 会查找已有的注册,并用新的配置替换它。
+在下面的例子中,Transient 注册替换掉了 `IExampleBService` 先前的 Singleton 注册。
 
 ```csharp
 .AddClasses(f => f.WithAttribute<TransientAttribute>())
@@ -1307,12 +1312,12 @@ IExampleBService -> ExampleBService as Transient
 Process finished with exit code 0.
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=100)
 
-### Throw Strategy
+#### Throw 策略
 
-`RegistrationStrategy.Throw` is the recommended approach for most applications.
-It causes the application to fail immediately upon startup if a duplicate registration is detected, preventing accidental misconfigurations from reaching production.
+`RegistrationStrategy.Throw` 是大多数应用的推荐做法。
+一旦检测到重复注册,它会让应用在启动时立即失败,从而防止意外的错误配置流入生产环境。
 
 ```csharp
 .WithSingletonLifetime()
@@ -1330,41 +1335,41 @@ It causes the application to fail immediately upon startup if a duplicate regist
         //     .AddClasses()
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/using-registrationstrategies-53953311/?t=115)
 
 ---
 
 ## 10. Potential pitfalls
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/potential-pitfalls-53953312/) · 1:52
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/potential-pitfalls-53953312/) · 1:52
 
-### Summary
+### 总结
 
-Scrutor's assembly scanning capabilities provide a concise way to handle dependency injection but introduce risks such as reduced code discoverability and potential lifetime mismatches.
-Over-reliance on scanning can hide registration logic, making it difficult for new developers to understand the system's configuration.
-To mitigate these issues, developers should use specific filters and consider whether the responsibility of registration belongs within the class or the DI container configuration.
+Scrutor 的程序集扫描能力提供了一种简洁的依赖注入处理方式,但也带来了诸如代码可发现性下降和生命周期错配之类的风险。
+过度依赖扫描会隐藏注册逻辑,让新来的开发者难以理解系统的配置。
+为了缓解这些问题,开发者应当使用具体的过滤器,并思考注册这项职责究竟应该属于类本身还是 DI 容器的配置。
 
-### Key concepts
+### 核心概念
 
-- Hidden registration logic and reduced discoverability.
-- Onboarding challenges for new developers due to implicit registrations.
-- Architectural concerns regarding the placement of registration metadata (attributes vs. container configuration).
-- Risk of incorrect service lifetimes (e.g., registering a singleton as transient).
-- The importance of using specific filters in the `AddClasses` method.
+- 被隐藏的注册逻辑和下降的可发现性。
+- 隐式注册给新开发者带来的上手难题。
+- 关于注册元数据放在哪里的架构考量(特性 vs. 容器配置)。
+- 服务生命周期出错的风险(例如把一个单例注册成了 transient)。
+- 在 `AddClasses` 方法中使用具体过滤器的重要性。
 
-### Lesson notes
+### 课程笔记
 
-Scrutor's scanning feature is a powerful tool for automating service registration, but it should be used sparingly and with highly specific filters.
-While scanning reduces boilerplate, it can lead to maintenance challenges where registration logic becomes hidden.
-This lack of transparency can increase the time required for new engineers to understand the application's dependency graph and how specific services are being resolved.
+Scrutor 的扫描特性是自动化服务注册的强大工具,但应当谨慎使用,并配以高度具体的过滤器。
+扫描虽然减少了样板代码,却可能带来注册逻辑被隐藏起来的维护难题。
+这种透明度的缺失,会拉长新工程师理解应用依赖关系图以及具体服务如何被解析所需要的时间。
 
-A significant architectural consideration is the location of registration metadata.
-Using marker interfaces or attributes to drive scanning shifts the responsibility of Dependency Injection (DI) configuration from the container to the individual classes.
-While attributes provide a clear link between a class and its intended lifetime, some architectural patterns suggest that classes should not be aware of how they are registered.
+一个重要的架构考量是注册元数据的位置。
+用标记接口或特性来驱动扫描,会把依赖注入(DI)配置的职责从容器转移到各个类上。
+特性虽然在类与其期望的生命周期之间建立了清晰的联系,但某些架构范式认为类不应当知道自己是如何被注册的。
 
-When implementing scanning, it is critical to use precise filters within the `AddClasses` method to prevent incorrect lifetime assignments.
-For example, a service intended to be a Singleton might accidentally be registered as Transient if the scanning criteria are too broad.
-Developers can use registration strategies, such as `RegistrationStrategy.Throw`, to handle conflicts and ensure that scanning behaves predictably.
+在实现扫描时,关键是在 `AddClasses` 方法中使用精确的过滤器,以防止生命周期被错误地分配。
+例如,如果扫描条件过于宽泛,一个本应是 Singleton 的服务可能被意外注册成 Transient。
+开发者可以使用像 `RegistrationStrategy.Throw` 这样的注册策略来处理冲突,确保扫描行为可预测。
 
 ```csharp
 //          .AsImplementedInterfaces()
@@ -1390,39 +1395,39 @@ Developers can use registration strategies, such as `RegistrationStrategy.Throw`
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/potential-pitfalls-53953312/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/potential-pitfalls-53953312/?t=10)
 
-Ultimately, while scanning is a useful feature of Scrutor, its decoration capabilities often provide more value with fewer architectural risks.
-Developers should approach scanning with caution, ensuring that the convenience of concise code does not outweigh the need for explicit and maintainable service registrations.
+归根结底,扫描虽是 Scrutor 的一个有用特性,但它的装饰能力往往能以更少的架构风险带来更多价值。
+开发者应当谨慎对待扫描,确保代码简洁带来的便利不会盖过对显式且可维护的服务注册的需求。
 
 ---
 
 ## 11. Section recap
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953313/) · 0:46
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953313/) · 0:46
 
-### Summary
+### 总结
 
-This lesson summarizes the benefits of using Scrutor to extend .NET's built-in dependency injection.
-It highlights the decorator pattern implementation and various assembly scanning strategies, such as attribute-based registration, while cautioning about the potential side effects of automated dependency discovery.
+本课总结使用 Scrutor 扩展 .NET 内置依赖注入所带来的好处。
+它着重回顾了装饰器模式的实现以及各种程序集扫描策略,比如基于特性的注册,同时也提醒注意自动依赖发现可能带来的副作用。
 
-### Key concepts
+### 核心概念
 
-- **Scrutor Decoration**: Simplifies the registration of decorators compared to standard .NET DI.
-- **Assembly Scanning**: Automatically discovers and registers types based on criteria like interfaces, namespaces, or attributes.
-- **Registration Strategies**: Control how Scrutor handles duplicate or conflicting registrations (e.g., `RegistrationStrategy.Throw`).
-- **Attribute-Based Registration**: Using custom attributes to define service lifetimes during scanning.
+- **Scrutor Decoration(Scrutor 装饰)**:相比标准的 .NET DI,简化了装饰器的注册。
+- **Assembly Scanning(程序集扫描)**:基于接口、命名空间或特性等条件自动发现并注册类型。
+- **Registration Strategies(注册策略)**:控制 Scrutor 如何处理重复或冲突的注册(例如 `RegistrationStrategy.Throw`)。
+- **Attribute-Based Registration(基于特性的注册)**:在扫描时使用自定义特性来定义服务生命周期。
 
-### Lesson notes
+### 课程笔记
 
-Scrutor provides a powerful extension to the standard .NET Dependency Injection (DI) container, specifically improving how decorators are handled.
-Instead of manual, nested registrations that can become complex and difficult to maintain, Scrutor's decoration feature allows for a much cleaner and more readable implementation of the decorator pattern.
+Scrutor 为标准的 .NET 依赖注入(DI)容器提供了强有力的扩展,尤其改善了装饰器的处理方式。
+相比那些会变得复杂又难以维护的手动嵌套注册,Scrutor 的装饰特性让装饰器模式的实现更干净、更易读。
 
-Beyond decoration, Scrutor introduces advanced assembly scanning capabilities.
-This allows developers to automatically register dependencies based on various criteria, including interfaces, specific types, namespaces, or custom attributes.
-This automation reduces the boilerplate code required in the `Program.cs` or startup configuration.
+除了装饰之外,Scrutor 还引入了高级的程序集扫描能力。
+这让开发者可以基于接口、特定类型、命名空间或自定义特性等各种条件自动注册依赖。
+这种自动化减少了 `Program.cs` 或启动配置中所需的样板代码。
 
-The following example demonstrates how to use assembly scanning with attribute marking to define lifetimes for different services within an assembly:
+下面的示例演示如何用程序集扫描配合特性标记,为一个程序集内不同的服务定义生命周期:
 
 ```csharp
 //          .AsImplementedInterfaces()
@@ -1448,8 +1453,8 @@ The following example demonstrates how to use assembly scanning with attribute m
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953313/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-dependency-injection-in-dotnet-with-csharp-2724086/section-recap-53953313/?t=10)
 
-While scanning simplifies registration, it requires careful implementation.
-Developers must be mindful of potential side effects, such as accidentally registering types that should not be in the container or creating conflicting registrations.
-Using specific registration strategies, such as `RegistrationStrategy.Throw`, can help manage these risks by ensuring the application fails explicitly if a registration conflict occurs.
+扫描虽然简化了注册,却需要谨慎实现。
+开发者必须留意潜在的副作用,比如意外注册了本不该进入容器的类型,或者制造出相互冲突的注册。
+使用像 `RegistrationStrategy.Throw` 这样具体的注册策略,可以在发生注册冲突时让应用显式失败,从而帮助管理这些风险。
