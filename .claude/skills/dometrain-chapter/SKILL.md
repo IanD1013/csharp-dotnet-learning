@@ -47,6 +47,7 @@ Each chapter's file is `<notes-folder>/<NN>-<chapter-slug>.md`, where `NN` is th
 Not "is faithful to the lessons" in spirit.
 Sentence for sentence: each sentence in the file corresponds to exactly one sentence in a lesson document, in the same order, saying the same thing.
 If a sentence has no source in a lesson document, it does not go in the file.
+The one thing in the file that is not a translated sentence is an ASCII diagram, described below, and it is drawn entirely out of what the lesson already said.
 
 You almost certainly know this topic and could explain parts of it better than the instructor did.
 That is not what the file is for.
@@ -81,6 +82,31 @@ Mechanical transformations only, the kind that would survive a bilingual diff re
 - `[Watch in the lesson](url?t=NN)` rewritten as `[▶ 观看](url?t=NN)`.
   The URL and the timestamp are untouched.
 
+### ASCII 图示
+
+A lesson often describes something the reader has to hold in their head: where bytes sit, which call happens before which, what wraps what.
+When a small ASCII diagram would make such a relationship easier to see, draw it.
+
+A diagram is a re-rendering, not an addition.
+Every box, label, arrow, and value in it comes from what the lesson already said or showed in code.
+If you cannot build the picture out of the lesson's own statements, there is no picture to draw.
+
+Diagrams tend to earn their place for memory layout (stack and heap, struct fields, padding), call or pipeline order, type and inheritance relationships, state transitions, lifetime scopes, and data flow between components.
+
+- The diagram sits inside the lesson's own section, immediately after the sentences or the code block it draws.
+- Fence it as `text`, never as a language, so it is never mistaken for source code.
+- Labels reuse the lesson's own identifiers, type names, and values, in English, exactly as written.
+  Short Chinese labels are fine for concepts the prose already introduced in Chinese.
+- It adds, never replaces.
+  Every sentence and every code block stays exactly where it was; a diagram is never a substitute for the text it illustrates.
+- Keep it under 80 columns so it does not wrap, and stay with one character set per diagram: plain ASCII or box-drawing, not a mix.
+- At most one or two per lesson section, and none at all where the prose and code are already plain.
+  A diagram that restates a single sentence is noise.
+- Draw only what the lesson stated: no inferred field offsets, no ordering the lesson did not give, no components it did not mention.
+  When you are unsure whether a detail came from the lesson or from your own knowledge, leave it out.
+
+This is the only thing in the file you compose rather than translate, and it is composed entirely out of translated material.
+
 ### Repairing obvious MCP mistakes
 
 Occasionally the MCP output is visibly mis-assembled: a document whose content clearly belongs to a different lesson in the chapter, or sections returned in an order that breaks the document's own logic mid-flow.
@@ -108,6 +134,7 @@ When you make such a repair, tell Ian in chat what you moved and why.
 ### What must not be added
 
 No mental-model opener, no comparison tables you invented, no "common misconceptions", no self-test, no measured results, no asides, no cross-references to other chapters, no translator's notes, no commentary of any kind.
+The ASCII diagrams above are the single exception, and they are an exception only because they state nothing the lesson did not.
 
 A lesson document's own `## Summary` and `## Key concepts` sections are course content and stay, translated.
 Those are the only summaries in the file.
@@ -224,5 +251,6 @@ Before you call it done:
 - Code blocks are complete, untranslated, in their original order, with `using` lines and namespaces intact.
 - Lessons with no document are marked as such, with whatever `search_code` recovered.
 - No section exists that does not correspond to a lesson.
+- Every ASCII diagram is built only from what its own lesson stated, sits beside the passage it draws, and replaced nothing.
 - Any mismatch repair you made was reported to the user in chat.
 - You told the user anything you could not retrieve.

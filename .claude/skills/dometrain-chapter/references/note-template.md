@@ -106,6 +106,30 @@ What did not change: the meaning or order of a single sentence, the code block, 
 
 Where a lesson document has sections other than these three, keep them, at `###`, in their original order, with their names translated faithfully.
 
+## ASCII 图示
+
+Where a diagram makes a relationship easier to see, it goes inside the lesson section, immediately after the passage it draws, fenced as `text`:
+
+````markdown
+栈上分配的 struct 直接存放字段值,而 class 实例在栈上只保留一个指向堆的引用。
+
+```text
+  Stack                    Heap
++-----------+           +--------------------+
+| Point     |           |                    |
+|   X = 3   |           |                    |
+|   Y = 4   |           |                    |
++-----------+           +--------------------+
+| Person    |---------->| Name = "Ada"       |
+|   (ref)   |           | Age  = 36          |
++-----------+           +--------------------+
+```
+````
+
+Every name and value in it - `Point`, `X`, `3`, `Person`, `Name`, `Age` - came from that lesson's own prose or code.
+The diagram was added beside the sentence; nothing was removed, shortened, or replaced to make room for it.
+`SKILL.md` has the full rules, including when not to draw one.
+
 ## Lessons with no document
 
 The section still exists, so the file matches the chapter:
@@ -155,5 +179,6 @@ Absent that request, the file ends with its last lesson section.
 - Chinese prose uses Chinese punctuation (,。:;""), as normal translated text would.
 - Hyphens rather than em dashes in anything you write yourself.
   Em dashes inside quoted course text (code comments, titles) are course content: leave them alone.
+- ASCII diagrams are fenced as `text`, kept under 80 columns, and use one character set throughout: plain ASCII or box-drawing, not both.
 - Anchors in the lesson index must match the generated heading ids, including the number prefix.
   Because lesson headings keep their English titles, the anchors are the same as they would be for English notes.
