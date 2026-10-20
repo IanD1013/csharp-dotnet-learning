@@ -1,14 +1,14 @@
 # Creating Async from Scratch
 
-> Course: [From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · Chapter 4
-> 6 lessons · ~46:16
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · 第 4 章
+> 共 6 课 · 约 46:16
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
+## 课程索引
 
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Introduction](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197135/) | 1:12 | [↓](#1-introduction) |
 | 2 | [Run](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/) | 8:14 | [↓](#2-run) |
@@ -21,30 +21,30 @@
 
 ## 1. Introduction
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197135/) · 1:12
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197135/) · 1:12
 
-### Summary
+### 总结
 
-This lesson introduces the process of building a custom implementation of the Task pattern, referred to as DomeTrainTask.
-By manually constructing core asynchronous primitives such as Run, Wait, and ContinueWith, and implementing the necessary machinery for async-await support, developers can gain a hands-on understanding of how the .NET runtime and C# compiler handle asynchronous operations under the hood.
+本课介绍如何自行构建 Task 模式的自定义实现,即 DomeTrainTask。
+通过手动构建 Run、Wait 和 ContinueWith 等核心异步原语,并实现 async-await 支持所需的机制,开发者可以亲手理解 .NET 运行时和 C# 编译器在底层是如何处理异步操作的。
 
-### Key concepts
+### 核心概念
 
-- **Custom Task Implementation**: Creating a `DomeTrainTask` class to replicate the behavior of the standard .NET `Task` type.
-- **Core Async Primitives**: Implementing `Run` for thread pooling, `Wait` for blocking synchronization, and `ContinueWith` for task chaining.
-- **Async-Await Integration**: Enabling the `await` keyword on custom types by implementing the Awaiter pattern (`GetAwaiter` and `INotifyCompletion`).
-- **Internal Mechanics**: Understanding how state, exceptions, and continuations are managed within a task-like object.
+- **Custom Task Implementation**(自定义 Task 实现):创建一个 `DomeTrainTask` 类,复刻标准 .NET `Task` 类型的行为。
+- **Core Async Primitives**(核心异步原语):实现用于线程池的 `Run`、用于阻塞同步的 `Wait`,以及用于任务链接的 `ContinueWith`。
+- **Async-Await Integration**(Async-Await 集成):通过实现 Awaiter 模式(`GetAwaiter` 和 `INotifyCompletion`),让自定义类型支持 `await` 关键字。
+- **Internal Mechanics**(内部机制):理解在一个类 task 对象内部,状态、异常和延续(continuation)是如何管理的。
 
-### Lesson notes
+### 课程笔记
 
-While the .NET runtime provides a robust `Task` implementation out of the box, building one from scratch reveals the underlying mechanics of asynchronous programming in C#.
-This implementation, `DomeTrainTask`, serves as a functional model to demonstrate how the compiler-generated state machine interacts with task objects.
+虽然 .NET 运行时开箱即用地提供了健壮的 `Task` 实现,但从零构建一个 task 能揭示 C# 异步编程的底层机制。
+这个实现 `DomeTrainTask` 作为一个可运行的模型,用来演示编译器生成的状态机如何与 task 对象交互。
 
-#### The DomeTrainTask Structure
+#### DomeTrainTask 的结构
 
-The core of the implementation is the `DomeTrainTask` class.
-It manages the state of the operation, including whether it has completed, any exceptions that occurred during execution, and the continuation action to be executed upon completion.
-To ensure thread safety when accessing these shared states, a `Lock` object is utilized.
+整个实现的核心是 `DomeTrainTask` 类。
+它管理操作的状态,包括操作是否已完成、执行期间发生的任何异常,以及完成时要执行的延续动作。
+为了确保访问这些共享状态时的线程安全,这里使用了一个 `Lock` 对象。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -186,10 +186,10 @@ public class DomeTrainTask
 }
 ```
 
-#### Enabling Async-Await Support
+#### 启用 Async-Await 支持
 
-To allow the `await` keyword to be used with `DomeTrainTask`, the class must provide a `GetAwaiter()` method that returns an object implementing the Awaiter pattern.
-This includes the `INotifyCompletion` interface, which provides the `OnCompleted` method used by the compiler to attach continuations to the task.
+为了让 `DomeTrainTask` 能够使用 `await` 关键字,这个类必须提供一个 `GetAwaiter()` 方法,返回一个实现了 Awaiter 模式的对象。
+这包括 `INotifyCompletion` 接口,它提供编译器用来把延续挂接到 task 上的 `OnCompleted` 方法。
 
 ```csharp
 public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
@@ -208,9 +208,9 @@ public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
 }
 ```
 
-#### Practical Usage
+#### 实际用法
 
-The following example demonstrates how `DomeTrainTask` can be used in a standard C# program, utilizing `Run` to offload work to the ThreadPool and `Delay` to simulate asynchronous waiting, all while being compatible with the `await` keyword.
+下面的示例演示了如何在一个标准 C# 程序中使用 `DomeTrainTask`:用 `Run` 把工作卸载到 ThreadPool,用 `Delay` 模拟异步等待,同时全程兼容 `await` 关键字。
 
 ```csharp
 using CreatingTaskFromScratch;
@@ -232,25 +232,25 @@ await DomeTrainTask.Run(() => Console.WriteLine($"Third DomeTrainTask Id: {Envir
 
 ## 2. Run
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/) · 8:14
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/) · 8:14
 
-### Summary
+### 总结
 
-This lesson demonstrates how to build a custom task implementation from scratch, starting with the DomeTrainTask class.
-It covers the internal state management required for asynchronous operations, including thread safety using the C# 13 Lock class, tracking completion status, and capturing exceptions.
-The lesson concludes by implementing a static Run method that offloads work to the .NET thread pool, verifying the asynchronous execution by comparing thread IDs.
+本课演示如何从零构建一个自定义 task 实现,从 DomeTrainTask 类开始。
+内容涵盖异步操作所需的内部状态管理,包括使用 C# 13 的 Lock 类实现线程安全、跟踪完成状态,以及捕获异常。
+本课最后实现了一个静态 Run 方法,把工作卸载到 .NET 线程池,并通过比较线程 ID 来验证异步执行。
 
-### Key concepts
+### 核心概念
 
-* **Custom Task Implementation**: Building `DomeTrainTask` to mimic the behavior of the standard `System.Threading.Tasks.Task`.
-* **Thread Safety**: Utilizing the `System.Threading.Lock` class (introduced in C# 13 / .NET 9) to prevent race conditions when accessing task state across multiple threads.
-* **State Management**: Tracking completion status via a boolean flag and capturing exceptions thrown during background execution to be re-thrown later.
-* **Thread Pool Integration**: Using `ThreadPool.QueueUserWorkItem` to execute actions on background threads.
-* **Verification**: Using managed thread IDs to confirm that work is successfully deferred to a background thread.
+* **Custom Task Implementation**(自定义 Task 实现):构建 `DomeTrainTask` 来模仿标准 `System.Threading.Tasks.Task` 的行为。
+* **Thread Safety**(线程安全):使用 `System.Threading.Lock` 类(在 C# 13 / .NET 9 中引入),防止多个线程访问 task 状态时出现竞态条件。
+* **State Management**(状态管理):通过一个布尔标志跟踪完成状态,并捕获后台执行期间抛出的异常,以便之后重新抛出。
+* **Thread Pool Integration**(线程池集成):使用 `ThreadPool.QueueUserWorkItem` 在后台线程上执行动作。
+* **Verification**(验证):使用托管线程 ID 来确认工作已成功推迟到后台线程上执行。
 
-### Lesson notes
+### 课程笔记
 
-The implementation begins with a basic console application and a shared `Food` base class used in previous examples to represent asynchronous work.
+实现从一个基础的控制台应用程序开始,并使用之前示例中用来表示异步工作的共享 `Food` 基类。
 
 ```csharp
 namespace CreatingTaskFromScratch;
@@ -281,10 +281,10 @@ public class Gravy() : Food(TimeSpan.FromSeconds(1));
 public class Stuffing() : Food(TimeSpan.FromSeconds(2));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=40)
 
-To create a custom task implementation, we define the `DomeTrainTask` class.
-This class requires internal fields to manage its state, including a `Lock` object to ensure thread safety, a boolean to track completion, and an `Exception` field to store any errors that occur during execution.
+为了创建自定义 task 实现,我们定义 `DomeTrainTask` 类。
+这个类需要一些内部字段来管理其状态,包括一个确保线程安全的 `Lock` 对象、一个跟踪完成状态的布尔值,以及一个存储执行期间发生的任何错误的 `Exception` 字段。
 
 ```csharp
 namespace CreatingTaskFromScratch;
@@ -298,10 +298,10 @@ public class DomeTrainTask
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=115)
 
-The `IsCompleted` property provides a public way to check the task's status.
-Because multiple threads may check or modify this value simultaneously, the getter is wrapped in a `lock` statement using the `_lock` field.
+`IsCompleted` 属性提供了一种公开的方式来检查 task 的状态。
+由于多个线程可能同时检查或修改这个值,getter 被包裹在一个使用 `_lock` 字段的 `lock` 语句中。
 
 ```csharp
 public bool IsCompleted
@@ -316,11 +316,11 @@ public bool IsCompleted
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=175)
 
-To transition the task to a completed state, we implement `SetResult` and `SetException`.
-These methods must also be thread-safe.
-If a task is already completed, attempting to set a result or an exception again is an invalid operation and should throw an exception.
+为了把 task 转换到已完成状态,我们实现 `SetResult` 和 `SetException`。
+这些方法同样必须是线程安全的。
+如果 task 已经完成,再次尝试设置结果或异常就是一个无效操作,应当抛出异常。
 
 ```csharp
 public void SetResult()
@@ -347,11 +347,11 @@ public void SetException(Exception exception)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=265)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=265)
 
-The `Run` method is a static entry point that allows a user to pass an `Action` to be executed on a background thread.
-It uses `ThreadPool.QueueUserWorkItem` to schedule the work.
-Inside the thread pool's execution block, a `try-catch` wrapper ensures that successful execution calls `SetResult`, while any thrown exceptions are captured via `SetException` so they can be re-thrown when the task is eventually awaited.
+`Run` 方法是一个静态入口点,允许用户传入一个要在后台线程上执行的 `Action`。
+它使用 `ThreadPool.QueueUserWorkItem` 来调度工作。
+在线程池的执行块内部,一个 `try-catch` 包装确保执行成功时调用 `SetResult`,而任何抛出的异常都会通过 `SetException` 捕获,以便在 task 最终被 await 时重新抛出。
 
 ```csharp
 public static DomeTrainTask Run(Action action)
@@ -375,10 +375,22 @@ public static DomeTrainTask Run(Action action)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=385)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=385)
 
-To verify the implementation, we can compare the `ManagedThreadId` of the main thread against the thread ID inside the `DomeTrainTask.Run` action.
-Since the custom task does not yet support the `await` keyword, `Console.ReadLine()` is used to prevent the application from exiting before the background thread completes.
+```text
+Main thread                          ThreadPool thread
+-----------                          -----------------
+DomeTrainTask.Run(action)
+  task = new()
+  ThreadPool.QueueUserWorkItem ----> try
+  return task                          action()
+                                       task.SetResult()
+                                     catch (Exception e)
+                                       task.SetException(e)
+```
+
+为了验证这个实现,我们可以比较主线程的 `ManagedThreadId` 与 `DomeTrainTask.Run` 动作内部的线程 ID。
+由于这个自定义 task 还不支持 `await` 关键字,这里使用 `Console.ReadLine()` 来防止应用程序在后台线程完成之前退出。
 
 ```csharp
 using CreatingTaskFromScratch;
@@ -391,34 +403,34 @@ DomeTrainTask.Run(() =>
 Console.ReadLine();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=445)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/run-62197136/?t=445)
 
 ---
 
 ## 3. ContinueWith
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/) · 17:15
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/) · 17:15
 
-### Summary
+### 总结
 
-This lesson covers the implementation of a continuation mechanism for a custom task type, allowing code to execute automatically after a task completes.
-It introduces the `ContinueWith` method, the concept of `ExecutionContext` for preserving thread state (such as security and culture settings), and refactors the task completion logic to handle stored continuations.
+本课讲解如何为自定义 task 类型实现延续机制,让代码在 task 完成后自动执行。
+本课引入了 `ContinueWith` 方法,以及用于保留线程状态(例如安全和区域性设置)的 `ExecutionContext` 概念,并重构了 task 完成逻辑,以处理已存储的延续。
 
-### Key concepts
+### 核心概念
 
-- Implementation of `ContinueWith` for task chaining.
-- Capturing and restoring `ExecutionContext` to preserve thread-local state.
-- Handling immediate vs. deferred continuation execution.
-- Refactoring task completion into a unified `CompleteTask` method.
-- The limitations and readability issues of callback-based asynchronous code.
+- 实现用于任务链接的 `ContinueWith`。
+- 捕获并恢复 `ExecutionContext`,以保留线程本地状态。
+- 处理立即执行与延迟执行的延续。
+- 把 task 完成逻辑重构为一个统一的 `CompleteTask` 方法。
+- 基于回调的异步代码的局限性和可读性问题。
 
-### Lesson notes
+### 课程笔记
 
-The `ContinueWith` method is implemented to allow a `DomeTrainTask` to execute a follow-up action once it finishes.
-This method returns a new `DomeTrainTask`, enabling the chaining of asynchronous operations.
-Inside `ContinueWith`, the code first checks if the current task has already completed.
-If it has, the continuation action is immediately queued to the `ThreadPool`.
-To ensure robustness, the action is wrapped in a try-catch block to capture any exceptions and propagate them to the continuation task.
+实现 `ContinueWith` 方法是为了让 `DomeTrainTask` 在完成后执行一个后续动作。
+这个方法返回一个新的 `DomeTrainTask`,从而可以把异步操作链接起来。
+在 `ContinueWith` 内部,代码首先检查当前 task 是否已经完成。
+如果已经完成,延续动作会被立即排入 `ThreadPool`。
+为了确保健壮性,这个动作被包裹在一个 try-catch 块中,以捕获任何异常并将其传播给延续 task。
 
 ```csharp
 public DomeTrainTask ContinueWith(Action action)
@@ -448,21 +460,21 @@ public DomeTrainTask ContinueWith(Action action)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=160)
 
-To support continuations for tasks that are still running, the class must store the state of the continuation.
-This requires two new private fields: an `Action` to store the callback and an `ExecutionContext`.
-The `ExecutionContext` is critical because it captures the logical thread state, including security identity and culture information.
-This prevents data leakage or loss of context when the task resumes on a different thread pool thread.
+为了支持对仍在运行的 task 设置延续,这个类必须存储延续的状态。
+这需要两个新的私有字段:一个存储回调的 `Action`,以及一个 `ExecutionContext`。
+`ExecutionContext` 至关重要,因为它捕获了逻辑线程状态,包括安全标识和区域性信息。
+这可以防止 task 在另一个线程池线程上恢复时出现数据泄漏或上下文丢失。
 
 ```csharp
 private Action? _action;
 private ExecutionContext? _context;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=205)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=205)
 
-If the task is not yet completed when `ContinueWith` is called, the method captures the current `ExecutionContext` and stores both the context and the action for later execution.
+如果调用 `ContinueWith` 时 task 尚未完成,该方法会捕获当前的 `ExecutionContext`,并把上下文和动作都存储起来以便之后执行。
 
 ```csharp
 else
@@ -472,11 +484,11 @@ else
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=325)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=325)
 
-The task completion logic is refactored into a unified `CompleteTask` method.
-This method is responsible for setting the task's completion state, storing any exceptions, and triggering the continuation if one was registered.
-If an `ExecutionContext` was captured, the action is invoked using `ExecutionContext.Run` to ensure the environment is correctly restored.
+task 完成逻辑被重构为一个统一的 `CompleteTask` 方法。
+这个方法负责设置 task 的完成状态、存储任何异常,并在注册了延续时触发它。
+如果捕获了 `ExecutionContext`,就使用 `ExecutionContext.Run` 调用该动作,以确保环境被正确恢复。
 
 ```csharp
 public void SetResult() => CompleteTask(null);
@@ -508,11 +520,28 @@ private void CompleteTask(Exception? exception)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=505)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=505)
 
-In a console application, this implementation allows for complex chaining.
-However, as shown in the example below, using multiple nested `ContinueWith` and `Run` calls leads to code that is difficult to read and prone to bugs, as the execution order does not follow the visual top-to-bottom flow of the source code.
-This highlights the need for more structured synchronization primitives like `.Wait()`.
+```text
+ContinueWith(action)
+  |
+  +-- _completed == true  --> ThreadPool.QueueUserWorkItem(action)
+  |
+  +-- _completed == false --> _action  = action
+                              _context = ExecutionContext.Capture()
+                                 |
+                                 v
+              SetResult() / SetException(e) --> CompleteTask(exception)
+                                                  _completed = true
+                                                  _exception = exception
+                                                  _context is null
+                                                    ? _action.Invoke()
+                                                    : ExecutionContext.Run(...)
+```
+
+在控制台应用程序中,这个实现允许进行复杂的链接。
+然而,正如下面的示例所示,使用多个嵌套的 `ContinueWith` 和 `Run` 调用会导致代码难以阅读且容易出错,因为执行顺序并不遵循源代码从上到下的视觉流程。
+这凸显了对 `.Wait()` 这类更结构化的同步原语的需求。
 
 ```csharp
 using CreatingTaskFromScratch;
@@ -537,39 +566,39 @@ task.ContinueWith(() =>
 Console.ReadLine();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=850)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/continuewith-62197137/?t=850)
 
 ---
 
 ## 4. Wait
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/) · 7:09
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/) · 7:09
 
-### Summary
+### 总结
 
-This lesson covers the implementation of a blocking Wait method for a custom Task implementation.
-By utilizing ManualResetEventSlim, the task can block the calling thread until the asynchronous operation completes.
-The implementation leverages existing ContinueWith logic to signal the event and uses ExceptionDispatchInfo to preserve stack traces when re-throwing exceptions.
-Crucially, the lesson demonstrates how to avoid deadlocks by ensuring the blocking wait occurs outside of the synchronization lock.
+本课讲解如何为自定义 Task 实现一个阻塞式的 Wait 方法。
+通过使用 ManualResetEventSlim,task 可以阻塞调用线程,直到异步操作完成。
+这个实现借助已有的 ContinueWith 逻辑来发出事件信号,并使用 ExceptionDispatchInfo 在重新抛出异常时保留堆栈跟踪。
+关键在于,本课演示了如何通过确保阻塞等待发生在同步锁之外来避免死锁。
 
-### Key concepts
+### 核心概念
 
-*   **ManualResetEventSlim**: A .NET primitive used to manage thread waiting behavior by allowing threads to block until a signal is received.
-*   **Blocking Calls**: Implementing a synchronous wait on an asynchronous operation.
-*   **ExceptionDispatchInfo**: A utility to re-throw captured exceptions while preserving the original stack trace.
-*   **Deadlock Prevention**: The necessity of performing blocking operations outside of critical sections (locks).
-*   **Code Readability**: Transitioning from nested continuations to a linear, sequential execution flow using blocking waits.
+*   **ManualResetEventSlim**:一个 .NET 原语,用于管理线程的等待行为,允许线程阻塞直到收到信号。
+*   **Blocking Calls**(阻塞调用):在异步操作上实现同步等待。
+*   **ExceptionDispatchInfo**:一个工具,用于重新抛出已捕获的异常,同时保留原始堆栈跟踪。
+*   **Deadlock Prevention**(死锁预防):必须在临界区(锁)之外执行阻塞操作。
+*   **Code Readability**(代码可读性):借助阻塞等待,从嵌套的延续过渡到线性、顺序的执行流程。
 
-### Lesson notes
+### 课程笔记
 
-#### Implementing the Wait Method
+#### 实现 Wait 方法
 
-The `Wait` method is a blocking call that prevents the calling thread from proceeding until the task has finished.
-To manage this behavior, the implementation uses `ManualResetEventSlim`.
-This class provides a `Wait` method to block the current thread and a `Set` method to release all waiting threads.
+`Wait` 方法是一个阻塞调用,在 task 完成之前阻止调用线程继续执行。
+为了管理这种行为,实现中使用了 `ManualResetEventSlim`。
+这个类提供一个阻塞当前线程的 `Wait` 方法,以及一个释放所有等待线程的 `Set` 方法。
 
-Initially, the method checks if the task is already completed.
-If it has not, a `ManualResetEventSlim` is initialized, and the task's `ContinueWith` method is used to schedule the `Set` call.
+最初,该方法检查 task 是否已经完成。
+如果没有完成,就初始化一个 `ManualResetEventSlim`,并使用 task 的 `ContinueWith` 方法来调度 `Set` 调用。
 
 ```csharp
 public void Wait()
@@ -584,18 +613,18 @@ public void Wait()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/?t=75)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/?t=75)
 
-#### Exception Handling and Thread Safety
+#### 异常处理与线程安全
 
-When a task completes with an error, the `Wait` method must propagate that exception.
-Simply using `throw _exception` is insufficient because it overwrites the stack trace, losing the information about where the error originally occurred.
-To preserve the full stack trace, `ExceptionDispatchInfo.Throw(_exception)` is used.
+当 task 以错误结束时,`Wait` 方法必须传播该异常。
+仅仅使用 `throw _exception` 是不够的,因为它会覆盖堆栈跟踪,丢失错误最初发生位置的信息。
+为了保留完整的堆栈跟踪,这里使用 `ExceptionDispatchInfo.Throw(_exception)`。
 
-Furthermore, because the task state is accessed across multiple threads, the logic must be thread-safe.
-The check for `_completed` and the initialization of the `ManualResetEventSlim` are wrapped in a lock.
-However, the actual call to `resetEventSlim.Wait()` must occur **outside** the lock.
-If the thread were to wait while holding the lock, it would create a deadlock, as the background thread completing the task would be unable to enter the lock to update the task state or trigger the continuation.
+此外,由于 task 状态会被多个线程访问,这段逻辑必须是线程安全的。
+对 `_completed` 的检查和 `ManualResetEventSlim` 的初始化被包裹在一个锁中。
+然而,对 `resetEventSlim.Wait()` 的实际调用必须发生在锁**之外**。
+如果线程在持有锁的同时等待,就会造成死锁,因为负责完成 task 的后台线程将无法进入锁来更新 task 状态或触发延续。
 
 ```csharp
 public void Wait()
@@ -620,13 +649,28 @@ public void Wait()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/?t=205)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/?t=205)
 
-#### Refactoring for Readability
+```text
+Calling thread                         Background thread
+--------------                         -----------------
+lock (_lock)
+  if (!_completed)
+    resetEventSlim = new()
+    ContinueWith(() => resetEventSlim.Set())
+(lock released)
+resetEventSlim?.Wait()  ... blocked    CompleteTask: lock (_lock)
+                                         _completed = true
+         <------------------------------ resetEventSlim.Set()
+if (_exception is not null)
+  ExceptionDispatchInfo.Throw(_exception)
+```
 
-Implementing `Wait` allows for a significant cleanup of the consumer code.
-Instead of nesting multiple `ContinueWith` calls—which leads to "callback hell" and difficult-to-read code—the logic can be written sequentially.
-This makes the execution flow clear: the main thread starts, queues a background task, waits for it to finish, and then proceeds to the next line.
+#### 为可读性而重构
+
+实现 `Wait` 之后,可以对使用方代码进行大幅清理。
+不再嵌套多个 `ContinueWith` 调用(这会导致"回调地狱"和难以阅读的代码),逻辑可以按顺序编写。
+这让执行流程变得清晰:主线程启动,排入一个后台 task,等待它完成,然后继续执行下一行。
 
 ```csharp
 // See https://aka.ms/new-console-template for more information
@@ -642,33 +686,33 @@ Console.WriteLine($"Second DomeTrainTask Id: {Environment.CurrentManagedThreadId
 DomeTrainTask.Run(() => Console.WriteLine($"Third DomeTrainTask Id: {Environment.CurrentManagedThreadId}")).Wait();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/?t=280)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/wait-62197138/?t=280)
 
-By using `.Wait()`, the program no longer requires `Console.ReadLine()` to prevent the main thread from exiting prematurely.
-The main thread is now explicitly held until the background work is complete.
+通过使用 `.Wait()`,程序不再需要 `Console.ReadLine()` 来防止主线程过早退出。
+现在主线程会被明确地挂住,直到后台工作完成。
 
 ---
 
 ## 5. Delay
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/) · 5:18
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/) · 5:18
 
-### Summary
+### 总结
 
-This lesson demonstrates how to implement a static Delay method for a custom task implementation using the .NET Timer class.
-It explains the mechanism of triggering task completion via a callback and discusses the critical architectural difference between blocking a thread with .Wait() versus using the non-blocking await keyword.
+本课演示如何使用 .NET 的 Timer 类为自定义 task 实现一个静态 Delay 方法。
+本课解释了通过回调触发 task 完成的机制,并讨论了用 .Wait() 阻塞线程与使用非阻塞的 await 关键字之间的关键架构差异。
 
-### Key concepts
+### 核心概念
 
-- Implementing asynchronous delays using `System.Threading.Timer`.
-- Using `Timer.Change` with `Timeout.InfiniteTimeSpan` for one-shot execution.
-- Understanding the thread-blocking nature of `.Wait()`.
-- Transitioning to the `await` keyword for non-blocking asynchronous flow.
+- 使用 `System.Threading.Timer` 实现异步延迟。
+- 将 `Timer.Change` 与 `Timeout.InfiniteTimeSpan` 搭配使用,实现一次性执行。
+- 理解 `.Wait()` 会阻塞线程的本质。
+- 过渡到使用 `await` 关键字实现非阻塞的异步流程。
 
-### Lesson notes
+### 课程笔记
 
-To implement a `Delay` method in the custom `DomeTrainTask` class, we initialize a new task and use a `System.Threading.Timer` to schedule its completion.
-The timer is configured to execute a callback that calls `SetResult()` on the task, effectively signaling that the delay period has elapsed.
+为了在自定义的 `DomeTrainTask` 类中实现 `Delay` 方法,我们初始化一个新的 task,并使用一个 `System.Threading.Timer` 来调度它的完成。
+这个计时器被配置为执行一个回调,在 task 上调用 `SetResult()`,从而发出延迟时间已经过去的信号。
 
 ```csharp
 public static DomeTrainTask Delay(TimeSpan delay)
@@ -681,11 +725,11 @@ public static DomeTrainTask Delay(TimeSpan delay)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=115)
 
-The `Timer.Change` method allows us to specify the delay duration.
-By providing `Timeout.InfiniteTimeSpan` as the second argument, we disable periodic signaling, ensuring the timer fires only once.
-When the timer triggers, it invokes the `CompleteTask` logic to handle task state transitions and any registered continuations.
+`Timer.Change` 方法允许我们指定延迟时长。
+通过把 `Timeout.InfiniteTimeSpan` 作为第二个参数传入,我们禁用了周期性触发,确保计时器只触发一次。
+当计时器触发时,它会调用 `CompleteTask` 逻辑来处理 task 状态的转换以及所有已注册的延续。
 
 ```csharp
 void CompleteTask(Exception? exception)
@@ -714,11 +758,11 @@ void CompleteTask(Exception? exception)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=130)
 
-When using this delay in a program, simply calling the method is insufficient because the calling thread will continue execution immediately after the timer is scheduled.
-To pause execution, we must wait for the task to complete.
-Initially, this can be done using the `.Wait()` method.
+在程序中使用这个延迟时,仅仅调用该方法是不够的,因为调用线程会在计时器被调度之后立即继续执行。
+为了暂停执行,我们必须等待 task 完成。
+一开始,可以使用 `.Wait()` 方法来做到这一点。
 
 ```csharp
 using CreatingTaskFromScratch;
@@ -736,11 +780,11 @@ DomeTrainTask.Delay(TimeSpan.FromSeconds(1)).Wait();
 DomeTrainTask.Run(() => Console.WriteLine($"Third DomeTrainTask Id: {Environment.CurrentManagedThreadId}")).Wait();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=200)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=200)
 
-While `.Wait()` works, it is dangerous because it blocks the calling thread (e.g., the main thread), preventing it from doing other work.
-A more idiomatic and efficient approach is to use the `await` keyword.
-This makes the code easier to read—flowing from top to bottom—and ensures that the thread is not blocked while waiting for the task to finish.
+虽然 `.Wait()` 可行,但它很危险,因为它会阻塞调用线程(例如主线程),使其无法做其他工作。
+一种更地道、更高效的做法是使用 `await` 关键字。
+这让代码更易读(从上到下顺序流动),并确保线程在等待 task 完成期间不被阻塞。
 
 ```csharp
 using CreatingTaskFromScratch;
@@ -758,38 +802,38 @@ await DomeTrainTask.Delay(TimeSpan.FromSeconds(1));
 await DomeTrainTask.Run(() => Console.WriteLine($"Third DomeTrainTask Id: {Environment.CurrentManagedThreadId}"));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=295)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/delay-62197139/?t=295)
 
-Implementing the `await` keyword requires the `DomeTrainTask` class to provide a `GetAwaiter` method, which returns an object implementing `INotifyCompletion`.
+要支持 `await` 关键字,`DomeTrainTask` 类需要提供一个 `GetAwaiter` 方法,该方法返回一个实现了 `INotifyCompletion` 的对象。
 
 ---
 
 ## 6. Await
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/) · 7:08
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/) · 7:08
 
-### Summary
+### 总结
 
-This lesson demonstrates how to enable async/await support for a custom task type by implementing the awaiter pattern.
-By creating a DomeTrainTaskAwaiter struct that implements INotifyCompletion and providing a GetAwaiter method on the DomeTrainTask class, the implementation leverages C#'s duck typing to integrate with the language's asynchronous state machine.
-The lesson also explores why console applications behave differently than UI applications when awaiting tasks due to the absence of a SynchronizationContext, which prevents the execution from automatically returning to the original calling thread.
+本课演示如何通过实现 awaiter 模式,为自定义 task 类型启用 async/await 支持。
+通过创建一个实现 INotifyCompletion 的 DomeTrainTaskAwaiter 结构体,并在 DomeTrainTask 类上提供一个 GetAwaiter 方法,这个实现借助 C# 的鸭子类型(duck typing)与语言的异步状态机集成。
+本课还探讨了为什么控制台应用程序在 await task 时的行为与 UI 应用程序不同:原因是缺少 SynchronizationContext,这使得执行无法自动回到最初的调用线程。
 
-### Key concepts
+### 核心概念
 
-* **Duck Typing**: The C# compiler looks for a specific method signature (`GetAwaiter()`) rather than a specific interface to determine if a type is awaitable.
-* **Awaiter Pattern**: To be awaitable, a type must return an object (an "awaiter") that has an `IsCompleted` property, a `GetResult()` method, and implements `INotifyCompletion`.
-* **INotifyCompletion**: This interface requires the `OnCompleted` method, which the state machine uses to hook up continuations when a task is not yet finished.
-* **SynchronizationContext**: A mechanism that allows asynchronous operations to resume on the original calling thread; its absence in console apps results in continuations running on thread pool threads.
+* **Duck Typing**(鸭子类型):C# 编译器通过查找特定的方法签名(`GetAwaiter()`),而不是特定的接口,来判断一个类型是否可 await。
+* **Awaiter Pattern**(Awaiter 模式):一个类型要可 await,必须返回一个对象(即"awaiter"),该对象拥有 `IsCompleted` 属性和 `GetResult()` 方法,并实现 `INotifyCompletion`。
+* **INotifyCompletion**:这个接口要求实现 `OnCompleted` 方法,状态机在 task 尚未完成时用它来挂接延续。
+* **SynchronizationContext**:一种让异步操作在最初调用线程上恢复的机制;控制台应用中没有它,导致延续在线程池线程上运行。
 
-### Lesson notes
+### 课程笔记
 
-To make a custom task type compatible with the `await` keyword, you must implement an awaiter.
-This is typically done by creating a companion struct.
-In this case, we define `DomeTrainTaskAwaiter`, which must implement the `INotifyCompletion` interface.
-The awaiter acts as a bridge between the task and the .NET asynchronous state machine.
+要让自定义 task 类型兼容 `await` 关键字,你必须实现一个 awaiter。
+这通常通过创建一个配套的结构体来完成。
+在这里,我们定义 `DomeTrainTaskAwaiter`,它必须实现 `INotifyCompletion` 接口。
+awaiter 充当 task 与 .NET 异步状态机之间的桥梁。
 
-Initially, the awaiter requires an internal constructor that takes the task it is awaiting and an implementation of `OnCompleted`.
-The `OnCompleted` method is called when the task completes, and it should trigger the continuation action.
+最初,awaiter 需要一个接收其所 await 的 task 的 internal 构造函数,以及一个 `OnCompleted` 的实现。
+`OnCompleted` 方法在 task 完成时被调用,它应当触发延续动作。
 
 ```csharp
 public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
@@ -802,10 +846,10 @@ public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=115)
 
-The .NET state machine also requires the awaiter to expose an `IsCompleted` property.
-This property allows the state machine to check if the task has already finished; if it has, the state machine can continue execution synchronously instead of yielding.
+.NET 状态机还要求 awaiter 暴露一个 `IsCompleted` 属性。
+这个属性让状态机能够检查 task 是否已经完成;如果已完成,状态机可以同步地继续执行,而不必让出。
 
 ```csharp
 public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
@@ -820,11 +864,11 @@ public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=130)
 
-Finally, the awaiter must provide a `GetResult()` method.
-This method is called by the state machine once the task is complete to retrieve the result or propagate any exceptions that occurred during execution.
-In our implementation, `GetResult()` calls the task's `Wait()` method to ensure any exceptions are thrown correctly.
+最后,awaiter 必须提供一个 `GetResult()` 方法。
+状态机在 task 完成后调用这个方法,以获取结果或传播执行期间发生的任何异常。
+在我们的实现中,`GetResult()` 调用 task 的 `Wait()` 方法,以确保任何异常都被正确抛出。
 
 ```csharp
 public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
@@ -843,10 +887,10 @@ public readonly struct DomeTrainTaskAwaiter : INotifyCompletion
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=145)
 
-With the awaiter defined, the `DomeTrainTask` itself must be updated to include a `GetAwaiter()` method.
-This is the "magic" method that the C# compiler looks for when it encounters the `await` keyword.
+定义好 awaiter 之后,`DomeTrainTask` 本身必须更新,加入一个 `GetAwaiter()` 方法。
+这就是 C# 编译器遇到 `await` 关键字时要查找的那个"魔法"方法。
 
 ```csharp
 public class DomeTrainTask
@@ -857,13 +901,24 @@ public class DomeTrainTask
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=175)
 
-This pattern relies on "duck typing." The `await` keyword does not require the task to implement a specific interface or inherit from a specific base class.
-Instead, the compiler simply checks if the type has a method named `GetAwaiter()` that returns a type implementing `INotifyCompletion`.
-If these conditions are met, the type is awaitable.
+```text
+await task
+  |
+  v
+task.GetAwaiter() --> DomeTrainTaskAwaiter : INotifyCompletion
+                        IsCompleted       -> _task.IsCompleted
+                        OnCompleted(...)  -> _task.ContinueWith(continuation)
+                        GetResult()       -> _task.Wait()
+```
 
-When running this in a console application, you will notice that while the `await` keyword correctly pauses execution until the task completes, the code may not resume on the original thread.
+这个模式依赖于"鸭子类型"。
+`await` 关键字并不要求 task 实现特定接口或继承特定基类。
+相反,编译器只是检查该类型是否有一个名为 `GetAwaiter()` 的方法,并且该方法返回一个实现了 `INotifyCompletion` 的类型。
+如果满足这些条件,该类型就是可 await 的。
+
+在控制台应用程序中运行这段代码时,你会注意到,虽然 `await` 关键字正确地暂停了执行直到 task 完成,但代码可能不会在最初的线程上恢复。
 
 ```csharp
 // Program.cs
@@ -882,8 +937,8 @@ await DomeTrainTask.Delay(TimeSpan.FromSeconds(1));
 await DomeTrainTask.Run(() => Console.WriteLine($"Third DomeTrainTask Id: {Environment.CurrentManagedThreadId}"));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=325)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/await-62197140/?t=325)
 
-In UI applications (like WinForms or WPF), a `SynchronizationContext` ensures that after an `await`, execution returns to the UI thread so the application remains responsive.
-However, console applications do not have a `SynchronizationContext`.
-Consequently, once the `await` is hit and the task completes, the continuation runs on whatever thread is available (typically a ThreadPool thread) rather than returning to the original thread (Thread 1).
+在 UI 应用程序(例如 WinForms 或 WPF)中,`SynchronizationContext` 确保在 `await` 之后执行会回到 UI 线程,从而使应用程序保持响应。
+然而,控制台应用程序没有 `SynchronizationContext`。
+因此,一旦遇到 `await` 并且 task 完成,延续就会在任何可用的线程上运行(通常是一个 ThreadPool 线程),而不是回到最初的线程(Thread 1)。
