@@ -1,41 +1,35 @@
 # Compiler Generated Code
 
-> Course: [From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · Chapter 3
-> 3 lessons · ~33:41
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · 第 3 章
+> 共 3 课 · 约 33:41
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
----
-
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Async Await Example](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-await-example-62197123/) | 6:48 | [↓](#1-async-await-example) |
 | 2 | [Decompiled Code](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/) | 24:37 | [↓](#2-decompiled-code) |
 | 3 | [Review](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/) | 2:16 | [↓](#3-review) |
 
----
-
 ## 1. Async Await Example
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-await-example-62197123/) · 6:48
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-await-example-62197123/) · 6:48
 
-### Summary
+### 总结
 
-This lesson explores the execution flow of an asynchronous method, specifically focusing on how the await keyword manages thread transitions between the UI thread and background threads.
-By tracing a GetLibraries example, it demonstrates how asynchronous programming prevents UI freezing by releasing the main thread during I/O-bound operations and resuming execution once background tasks complete.
+本课探讨异步方法的执行流程,重点关注 await 关键字如何管理 UI 线程与后台线程之间的线程切换。
+通过追踪一个 GetLibraries 示例,本课演示了异步编程如何在 I/O 密集型操作期间释放主线程、并在后台任务完成后恢复执行,从而避免 UI 卡死。
 
-### Key concepts
+### 核心概念
 
-- Thread yielding and resumption via the await keyword.
-- Maintaining UI responsiveness by freeing the main thread.
-- Background thread allocation from the .NET Thread Pool.
-- Performance optimization through synchronous completion (the "fast path").
-- The impact of thread switching on CPU cycles.
+- 通过 await 关键字让出线程并恢复执行。
+- 通过释放主线程来保持 UI 的响应性。
+- 从 .NET 线程池(Thread Pool)中分配后台线程。
+- 通过同步完成("快速路径",fast path)进行性能优化。
+- 线程切换对 CPU 周期的影响。
 
-### Lesson notes
+### 课程笔记
 
-The GetLibraries method demonstrates how async and await work together to manage multi-threading and application responsiveness.
+GetLibraries 方法演示了 async 与 await 如何协同工作,以管理多线程和应用程序的响应性。
 
 ```csharp
 public async Task<List<LibraryModel>> GetLibraries()
@@ -50,53 +44,66 @@ public async Task<List<LibraryModel>> GetLibraries()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-await-example-62197123/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-await-example-62197123/?t=40)
 
-In a UI-driven application (such as .NET MAUI, WPF, or WinForms), the main thread (Thread1) is responsible for both executing logic and rendering the user interface.
-If this thread is blocked by a long-running synchronous operation, the application becomes unresponsive.
+在 UI 驱动的应用程序中(例如 .NET MAUI、WPF 或 WinForms),主线程(Thread1)既负责执行逻辑,也负责渲染用户界面。
+如果这个线程被一个长时间运行的同步操作阻塞,应用程序就会失去响应。
 
-When GetLibraries is called, Thread1 begins execution and encounters the first await at httpClient.GetAsync.
-At this point, Thread1 is immediately released back to the system to handle user interactions like scrolling or button taps.
-Meanwhile, the .NET runtime fetches an available background thread from the thread pool (e.g., Thread2) to manage the network request.
+调用 GetLibraries 时,Thread1 开始执行,并在 httpClient.GetAsync 处遇到第一个 await。
+此时,Thread1 会被立即释放回系统,去处理滚动或按钮点击之类的用户交互。
+与此同时,.NET 运行时从线程池中取出一个可用的后台线程(例如 Thread2)来处理这个网络请求。
 
-If this request takes a significant amount of time, such as 15 seconds, the application remains responsive because the UI thread is not blocked.
-The user can still scroll or navigate while a background activity indicator is shown.
-If async/await were not used, Thread1 would be locked for the duration of the request, causing the application to freeze and potentially leading the user to force quit.
+如果这个请求耗时很长,比如 15 秒,应用程序仍会保持响应,因为 UI 线程没有被阻塞。
+在显示后台活动指示器的同时,用户仍然可以滚动或导航。
+如果不使用 async/await,Thread1 会在请求期间一直被锁住,导致应用程序卡死,并可能让用户强制退出。
 
-Once the background operation completes, it notifies the runtime, and Thread1 resumes execution to process the response.
-This cycle of yielding and resuming occurs at each await point.
-For instance, Thread1 yields again while Thread6 processes ReadAsStreamAsync, and yields once more while Thread5 handles DeserializeAsync.
+后台操作完成后,它会通知运行时,然后 Thread1 恢复执行以处理响应。
+这种让出与恢复的循环会在每个 await 点发生。
+例如,Thread6 处理 ReadAsStreamAsync 时 Thread1 会再次让出,Thread5 处理 DeserializeAsync 时它又会再让出一次。
 
-The .NET runtime optimizes this process by checking if a task has already completed before switching threads.
-If the result is already available (the "fast path"), the runtime continues execution on the current thread to avoid the CPU overhead associated with context switching.
-This high-level overview of thread management precedes a deeper dive into the specific code generated by the compiler to facilitate these transitions.
+```text
+Thread1 (UI)           后台线程
+------------           --------
+GetLibraries()
+await GetAsync  -----> Thread2: 网络请求
+   (让出)                  |
+恢复执行        <----------+
+await ReadAsStreamAsync -> Thread6
+   (让出)                  |
+恢复执行        <----------+
+await DeserializeAsync --> Thread5
+   (让出)                  |
+恢复执行        <----------+
+```
 
----
+.NET 运行时会在切换线程之前检查任务是否已经完成,以此优化这个过程。
+如果结果已经可用("快速路径"),运行时会在当前线程上继续执行,以避免与上下文切换相关的 CPU 开销。
+这一关于线程管理的高层概览,为接下来深入研究编译器为实现这些切换而生成的具体代码做好了铺垫。
 
 ## 2. Decompiled Code
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/) · 24:37
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/) · 24:37
 
-### Summary
+### 总结
 
-The C# compiler transforms asynchronous methods into a state machine to manage execution across suspension points.
-This lesson explores the decompiled code of an async method using SharpLab.io, detailing how the IAsyncStateMachine interface, AsyncTaskMethodBuilder, and the MoveNext method work together to handle task completion, thread resumption, and exception propagation.
+C# 编译器会把异步方法转换为一个状态机,以管理跨越各个挂起点的执行。
+本课使用 SharpLab.io 探讨一个 async 方法的反编译代码,详细说明 IAsyncStateMachine 接口、AsyncTaskMethodBuilder 和 MoveNext 方法如何协同工作,来处理任务完成、线程恢复和异常传播。
 
-### Key concepts
+### 核心概念
 
-- **Compiler-Generated State Machine**: Methods marked with the `async` keyword are rewritten into a private struct (in Release configuration) or class (in Debug configuration) that implements the `IAsyncStateMachine` interface.
-- **AsyncTaskMethodBuilder**: A helper struct that manages the lifecycle of the task, including starting the state machine and setting the final result or exception.
-- **State Transitions**: An internal `state` field (starting at -1) tracks the progress of the method through various `await` expressions.
-- **MoveNext Method**: The core engine of the state machine, containing a switch statement that allows the method to resume execution at the correct point after an awaited task completes.
-- **Exception Handling**: The state machine wraps the method body in a `try-catch` block, capturing exceptions and passing them to the builder to be re-thrown when the task is awaited.
+- **编译器生成的状态机**:标记了 `async` 关键字的方法会被重写为一个实现 `IAsyncStateMachine` 接口的私有 struct(在 Release 配置下)或 class(在 Debug 配置下)。
+- **AsyncTaskMethodBuilder**:一个管理任务生命周期的辅助 struct,包括启动状态机以及设置最终结果或异常。
+- **状态转换**:一个内部的 `state` 字段(从 -1 开始)跟踪方法在各个 `await` 表达式之间的进度。
+- **MoveNext 方法**:状态机的核心引擎,其中包含一个 switch 语句,使方法能在被等待的任务完成后从正确的位置恢复执行。
+- **异常处理**:状态机把方法体包裹在一个 `try-catch` 块中,捕获异常并将其交给 builder,以便在任务被等待时重新抛出。
 
-### Lesson notes
+### 课程笔记
 
-When a method is marked with the `async` keyword, the .NET compiler generates significant infrastructure code to handle the asynchronous flow.
-Using tools like SharpLab.io, developers can inspect the Intermediate Language (IL) or the decompiled C# code to understand this transformation.
-The compiler essentially breaks the method into chunks separated by `await` points.
+当一个方法被标记为 `async` 关键字时,.NET 编译器会生成大量基础设施代码来处理异步流程。
+借助 SharpLab.io 之类的工具,开发者可以查看中间语言(IL)或反编译后的 C# 代码,以理解这种转换。
+编译器本质上是把方法拆分成由 `await` 点分隔开的若干块。
 
-The original high-level C# code for a library service might look like this:
+一个库服务的原始高层 C# 代码可能如下所示:
 
 ```csharp
 using System;
@@ -127,12 +134,12 @@ class LibraryModel
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=35)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=35)
 
-#### The State Machine Entry Point
+#### 状态机入口点
 
-The compiler replaces the body of the `GetLibraries` method with code that initializes a state machine.
-This state machine is typically a private struct named something like `<GetLibraries>d__2`.
+编译器把 `GetLibraries` 方法的方法体替换为初始化一个状态机的代码。
+这个状态机通常是一个私有 struct,名字类似 `<GetLibraries>d__2`。
 
 ```csharp
 [AsyncStateMachine(typeof(<GetLibraries>d__2))]
@@ -147,20 +154,20 @@ public Task<List<LibraryModel>> GetLibraries()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=295)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=295)
 
-The entry point performs the following steps:
+入口点执行以下步骤:
 
-1. Instantiates the state machine struct.
-2. Initializing the `AsyncTaskMethodBuilder`.
-3. Sets the `state` to -1, indicating the task has not yet started.
-4. Calls `builder.Start`, which immediately executes the first part of the state machine.
-5. Returns the `Task` managed by the builder.
+1. 实例化状态机 struct。
+2. 初始化 `AsyncTaskMethodBuilder`。
+3. 把 `state` 设为 -1,表示任务尚未开始。
+4. 调用 `builder.Start`,它会立即执行状态机的第一部分。
+5. 返回由 builder 管理的 `Task`。
 
-#### The State Machine Structure
+#### 状态机结构
 
-The generated struct implements `IAsyncStateMachine` and contains fields for the method's parameters, local variables, the builder, and the current state.
-In Release builds, a struct is used for performance; in Debug builds, a class is generated to support better debugging and breakpoints.
+生成的 struct 实现了 `IAsyncStateMachine`,并包含用于方法参数、局部变量、builder 以及当前状态的字段。
+在 Release 构建中使用 struct 以获得性能;在 Debug 构建中则生成 class,以便更好地支持调试和断点。
 
 ```csharp
 [StructLayout(LayoutKind.Auto)]
@@ -178,13 +185,13 @@ private struct <GetLibraries>d__2 : IAsyncStateMachine
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=385)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=385)
 
-The compiler uses "unspeakable names" (containing angle brackets and underscores) for these fields to avoid naming conflicts with user-defined variables.
+编译器为这些字段使用"不可言说的名称"(unspeakable names,包含尖括号和下划线),以避免与用户定义的变量发生命名冲突。
 
-#### The MoveNext Method
+#### MoveNext 方法
 
-The `MoveNext` method contains the actual logic of the original method, wrapped in a `try-catch` block and driven by a `switch` statement on the `state` field.
+`MoveNext` 方法包含原始方法的实际逻辑,它被包裹在一个 `try-catch` 块中,并由一个针对 `state` 字段的 `switch` 语句驱动。
 
 ```csharp
 private void MoveNext()
@@ -216,18 +223,40 @@ private void MoveNext()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=490)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=490)
 
-When an `await` is encountered:
+遇到 `await` 时:
 
-1. The compiler checks `awaiter.IsCompleted`. If the task is already finished, it jumps to the next section of code (e.g., `goto IL_007e`) to avoid an unnecessary context switch.
-2. If the task is not finished, it sets the state (e.g., `state = 0`), saves the awaiter, and calls `AwaitUnsafeOnCompleted`. This frees the current thread to return to the caller or thread pool.
-3. When the awaited task completes, `MoveNext` is called again. The `switch` statement uses the saved state to jump directly to the correct `case` (e.g., `case 0`), restores the awaiter, and continues execution.
+1. 编译器检查 `awaiter.IsCompleted`。
+   如果任务已经完成,它会跳转到下一段代码(例如 `goto IL_007e`),以避免不必要的上下文切换。
+2. 如果任务尚未完成,它会设置状态(例如 `state = 0`),保存 awaiter,并调用 `AwaitUnsafeOnCompleted`。
+   这会释放当前线程,使其返回给调用方或线程池。
+3. 当被等待的任务完成时,`MoveNext` 会被再次调用。
+   `switch` 语句利用保存下来的状态直接跳转到正确的 `case`(例如 `case 0`),恢复 awaiter,然后继续执行。
 
-#### Exception Handling and Completion
+```text
+state = -1 --> MoveNext() --> awaiter.IsCompleted?
+                                 |            |
+                                是           否
+                                 |            |
+                                 v            v
+                          goto IL_007e   state = 0
+                                         保存 awaiter (<>u__1)
+                                         AwaitUnsafeOnCompleted
+                                         return (释放线程)
+                                              |
+                                        任务完成后
+                                              v
+                                         MoveNext()
+                                         case 0: 恢复 awaiter
+                                         state = -1
+                                         goto IL_007e
+```
 
-The entire body of `MoveNext` is encapsulated in a `try-catch` block.
-If any code throws an exception, the state machine catches it and passes it to the builder.
+#### 异常处理与完成
+
+`MoveNext` 的整个方法体都被封装在一个 `try-catch` 块中。
+如果有任何代码抛出异常,状态机会捕获它并交给 builder。
 
 ```csharp
 catch (Exception exception)
@@ -240,11 +269,11 @@ catch (Exception exception)
 <>t__builder.SetResult(result3);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=850)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=850)
 
-If a task is not awaited (e.g., using `Task.Run` without `await`), any exception caught here will be swallowed by the state machine and never surfaced, potentially leaving the application in an inconsistent state.
-Always awaiting tasks ensures that `SetException` is called and the exception is re-thrown to the caller.
-When the method completes successfully, the state is set to -2, and the final result is passed to the builder via `SetResult`.
+如果一个任务没有被等待(例如使用 `Task.Run` 却不加 `await`),在这里捕获的任何异常都会被状态机吞掉、永远不会浮现出来,这可能让应用程序处于不一致的状态。
+始终等待任务可以确保 `SetException` 被调用,并且异常会被重新抛给调用方。
+当方法成功完成时,状态会被设为 -2,最终结果通过 `SetResult` 传给 builder。
 
 ```csharp
 void IAsyncStateMachine.MoveNext()
@@ -253,31 +282,29 @@ void IAsyncStateMachine.MoveNext()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=1015)
-
----
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/decompiled-code-62197124/?t=1015)
 
 ## 3. Review
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/) · 2:16
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/) · 2:16
 
-### Summary
+### 总结
 
-This lesson reviews the architectural impact of the async keyword in C#, specifically focusing on the memory overhead of the compiler-generated state machine and the critical importance of awaiting tasks to ensure exceptions are properly propagated and handled.
-It highlights that while the 80-byte overhead per async method is negligible for most modern applications, it is a critical consideration for resource-constrained environments like IoT.
-Furthermore, the lesson reinforces that awaiting tasks is essential for exception propagation, as unawaited tasks trap exceptions within the compiler-generated MoveNext method, leading to silent failures.
+本课回顾 C# 中 async 关键字在架构层面的影响,重点关注编译器生成的状态机带来的内存开销,以及等待任务对于确保异常被正确传播和处理的关键重要性。
+本课强调,虽然每个 async 方法 80 字节的开销对大多数现代应用程序来说可以忽略不计,但对于 IoT 这类资源受限的环境,它是一个关键的考量因素。
+此外,本课再次强调,等待任务对于异常传播必不可少,因为未被等待的任务会把异常困在编译器生成的 MoveNext 方法中,导致静默失败。
 
-### Key concepts
+### 核心概念
 
-- **Memory Overhead**: Each async method adds approximately 80 bytes to the compiled assembly due to the generated state machine.
-- **State Machine Implementation**: In Release builds, the compiler optimizes the state machine as a struct; in Debug builds, it is implemented as a class.
-- **Exception Handling**: Exceptions in asynchronous methods are caught within the generated MoveNext method's internal try-catch block.
-- **Task Awaiting**: Tasks must be awaited to propagate exceptions to the caller; failing to do so results in swallowed exceptions that cannot be handled.
+- **内存开销**:由于生成的状态机,每个 async 方法会让编译后的程序集增加大约 80 字节。
+- **状态机实现**:在 Release 构建中,编译器把状态机优化为 struct;在 Debug 构建中,它被实现为 class。
+- **异常处理**:异步方法中的异常会在生成的 MoveNext 方法内部的 try-catch 块中被捕获。
+- **等待任务**:任务必须被等待,异常才能传播给调用方;否则异常会被吞掉,无法处理。
 
-### Lesson notes
+### 课程笔记
 
-The use of the async keyword triggers the compiler to generate a significant amount of underlying infrastructure to manage the method's state.
-This infrastructure increases the size of the resulting DLL by approximately 80 bytes per asynchronous method.
+使用 async 关键字会促使编译器生成大量底层基础设施来管理方法的状态。
+这些基础设施会让生成的 DLL 中每个异步方法增加大约 80 字节。
 
 ```csharp
 namespace UsingAsync;
@@ -308,14 +335,14 @@ public class Gravy() : Food(TimeSpan.FromSeconds(1));
 public class Stuffing() : Food(TimeSpan.FromSeconds(2));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/?t=7)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/?t=7)
 
-While this memory increase is generally insignificant in standard application development, it is a vital consideration for embedded systems or IoT devices where memory is strictly limited.
-The compiler further optimizes this in Release configurations by generating the state machine as a struct rather than a class, reducing heap allocations.
-In Debug configurations, the state machine remains a class to facilitate easier debugging.
+虽然这种内存增长在一般的应用开发中通常无关紧要,但对于内存受到严格限制的嵌入式系统或 IoT 设备来说,它是一个至关重要的考量因素。
+编译器在 Release 配置下会进一步优化:把状态机生成为 struct 而不是 class,从而减少堆分配。
+在 Debug 配置下,状态机仍然是 class,以便于调试。
 
-A critical aspect of working with these generated structures is the requirement to await every Task.
-When an exception occurs within an asynchronous method, it is caught by the compiler-generated try-catch block inside the MoveNext method of the state machine.
+使用这些生成的结构时,一个关键点是必须等待每一个 Task。
+当异步方法中发生异常时,它会被状态机 MoveNext 方法内部由编译器生成的 try-catch 块捕获。
 
 ```csharp
 using UsingAsync;
@@ -331,8 +358,8 @@ await gravy.Cook();
 Console.WriteLine("Ready to eat");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/?t=87)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197125/?t=87)
 
-If the task is not awaited, the exception remains trapped within the state machine and is never propagated back to the calling code.
-To ensure that exceptions can be caught and handled gracefully, every task-returning method must be properly awaited.
-This prevents exceptions from being lost and allows the application to respond to unexpected failures.
+如果任务没有被等待,异常就会一直被困在状态机中,永远不会传播回调用代码。
+为了确保异常能够被捕获并得到妥善处理,每个返回 task 的方法都必须被正确地等待。
+这可以防止异常丢失,并让应用程序能够应对意外的失败。
