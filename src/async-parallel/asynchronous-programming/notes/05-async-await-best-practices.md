@@ -1,14 +1,12 @@
 # Async/Await Best Practices
 
-> Course: [From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · Chapter 5
-> 6 lessons · ~1:24:30
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · 第 5 章
+> 共 6 课 · 约 1:24:30
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Introduction](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/) | 2:10 | [↓](#1-introduction) |
 | 2 | [Async Void](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/) | 14:18 | [↓](#2-async-void) |
@@ -21,31 +19,31 @@
 
 ## 1. Introduction
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/) · 2:10
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/) · 2:10
 
-This lesson introduces the "Async/Await Best Practices" section of the course, focusing on practical implementation details within a .NET MAUI application.
-It establishes a comparison between suboptimal asynchronous patterns and industry-standard best practices, utilizing a Hacker News client as the reference project.
-The lesson also highlights the AsyncAwaitBestPractices NuGet library, which provides utility classes like WeakEventManager to handle common asynchronous challenges such as memory leaks in event handling.
+本课介绍课程的 "Async/Await Best Practices" 部分,重点是在一个 .NET MAUI 应用中的实际实现细节。
+它以一个 Hacker News 客户端作为参考项目,对比欠佳的异步模式与业界标准的最佳实践。
+本课还着重介绍了 AsyncAwaitBestPractices NuGet 库,它提供了 WeakEventManager 等工具类,用来应对常见的异步难题,例如事件处理中的内存泄漏。
 
-### Key concepts
+### 核心概念
 
-*   Practical application of async/await in UI frameworks (.NET MAUI).
-*   Comparison of "Bad" vs. "Good" asynchronous implementation patterns.
-*   Introduction to the `AsyncAwaitBestPractices` library and its `WeakEventManager`.
-*   Handling long-running tasks and UI updates in view models.
+*   在 UI 框架(.NET MAUI)中实际运用 async/await。
+*   对比 "Bad" 与 "Good" 两种异步实现模式。
+*   介绍 `AsyncAwaitBestPractices` 库及其 `WeakEventManager`。
+*   在 view model 中处理长时间运行的任务与 UI 更新。
 
-### Lesson notes
+### 课程笔记
 
-The focus shifts from the theoretical underpinnings of asynchronous programming—such as compiler-generated state machines and custom task implementations—to practical, real-world application.
-This section utilizes a .NET MAUI application called "Hacker News" to demonstrate common pitfalls and their solutions.
-The app is a single-page client that fetches top stories from the Hacker News API and allows users to navigate to the source articles.
+关注点从异步编程的理论基础(例如编译器生成的状态机和自定义 task 实现)转向实际的、真实世界中的应用。
+本部分使用一个名为 "Hacker News" 的 .NET MAUI 应用来演示常见陷阱及其解决方案。
+该应用是一个单页客户端,它从 Hacker News API 获取热门文章,并允许用户跳转到原文。
 
-To assist with robust asynchronous implementation, the lesson introduces the `AsyncAwaitBestPractices` NuGet library.
-This library provides specialized tools, such as the `WeakEventManager`, which helps manage events in an asynchronous context without creating memory leaks or keeping objects alive longer than necessary.
+为了帮助实现健壮的异步代码,本课介绍了 `AsyncAwaitBestPractices` NuGet 库。
+该库提供了专门的工具,例如 `WeakEventManager`,它有助于在异步上下文中管理事件,而不会造成内存泄漏,也不会让对象存活得比必要的更久。
 
-The demonstration project contains two primary view models to illustrate the transition from poor to optimal code: `NewsViewModel_BadAsyncAwaitPractices` and `NewsViewModel_GoodAsyncAwaitPractices`.
+演示项目包含两个主要的 view model,用来展示从糟糕代码到最优代码的转变:`NewsViewModel_BadAsyncAwaitPractices` 和 `NewsViewModel_GoodAsyncAwaitPractices`。
 
-The "Bad" implementation contains several anti-patterns, such as calling asynchronous methods directly from a constructor without proper handling, leading to "fire and forget" scenarios that can cause unhandled exceptions or race conditions.
+"Bad" 实现包含若干反模式,例如在构造函数中直接调用异步方法而不做适当处理,从而形成 "fire and forget" 场景,可能导致未处理的异常或竞态条件。
 
 ```csharp
 using AsyncAwaitBestPractices;
@@ -75,10 +73,10 @@ partial class NewsViewModel_BadAsyncAwaitPractices : BaseViewModel
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/?t=85)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/?t=85)
 
-In contrast, the "Good" implementation refactors these patterns, utilizing modern C# features like primary constructors and more efficient asynchronous streams.
-This version serves as the reference for the target state of the application after applying the best practices discussed throughout this section.
+相比之下,"Good" 实现重构了这些模式,使用了主构造函数(primary constructor)等现代 C# 特性以及更高效的异步流。
+这个版本作为参考,展示应用在运用本部分讨论的最佳实践之后的目标状态。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -109,35 +107,35 @@ partial class NewsViewModel(IDispatcher dispatcher, HackerNewsAPIService hackerN
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197171/?t=115)
 
-By comparing these two classes side-by-side, developers can observe the impact of proper task management, cancellation token usage, and UI thread synchronization.
+通过并排比较这两个类,开发者可以看到正确的任务管理、cancellation token 的使用以及 UI 线程同步所带来的影响。
 
 ---
 
 ## 2. Async Void
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/) · 14:18
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/) · 14:18
 
-### Summary
+### 总结
 
-This lesson explores the technical dangers of using async void in C#, specifically when attempting to perform asynchronous initialization within a class constructor.
-While constructors cannot be asynchronous, wrapping an unawaited task in an async void method introduces significant risks, including race conditions and uncatchable exceptions that can crash the application.
-The lesson demonstrates why these issues occur by tracing thread execution and provides a robust alternative using the SafeFireAndForget extension method from the AsyncAwaitBestPractices library, which ensures background tasks are executed with proper error handling and explicit intent.
+本课探讨在 C# 中使用 async void 的技术风险,特别是在类的构造函数中尝试执行异步初始化的情形。
+虽然构造函数不能是异步的,但把一个未被 await 的 task 包进 async void 方法会带来重大风险,包括竞态条件以及可能导致应用崩溃的无法捕获的异常。
+本课通过追踪线程执行来演示这些问题为何会发生,并给出一个健壮的替代方案:使用 AsyncAwaitBestPractices 库中的 SafeFireAndForget 扩展方法,它确保后台任务在具备适当错误处理和明确意图的情况下执行。
 
-### Key concepts
+### 核心概念
 
-* **Constructor Limitations**: C# constructors cannot be marked as `async` because their purpose is immediate object initialization and memory allocation, not long-running task management.
-* **Unawaited Tasks**: Calling an `async Task` method without awaiting it results in a compiler warning and causes the task to run in the background, potentially hiding exceptions.
-* **Async Void Dangers**: Using `async void` (outside of event handlers) is dangerous because it returns control to the caller at the first `await`, making it impossible for the caller to catch exceptions or synchronize execution.
-* **Race Conditions**: `async void` methods often lead to race conditions where multiple threads attempt to modify the same collection or state simultaneously.
-* **SafeFireAndForget**: A specialized extension method that provides a safe way to execute background tasks by internally wrapping them in a `try-catch` block and allowing for explicit exception handling.
+* **构造函数的限制**:C# 构造函数不能标记为 `async`,因为它的用途是立即完成对象初始化和内存分配,而不是管理长时间运行的任务。
+* **未被 await 的任务**:调用一个 `async Task` 方法而不 await 它,会产生编译器警告,并导致该任务在后台运行,可能隐藏异常。
+* **Async Void 的危险**:使用 `async void`(事件处理程序之外)是危险的,因为它会在第一个 `await` 处把控制权交还给调用方,使调用方无法捕获异常或同步执行。
+* **竞态条件**:`async void` 方法经常导致竞态条件,即多个线程同时尝试修改同一个集合或状态。
+* **SafeFireAndForget**:一个专门的扩展方法,它在内部把后台任务包在 `try-catch` 块中并允许显式的异常处理,从而提供一种安全执行后台任务的方式。
 
-### Lesson notes
+### 课程笔记
 
-In C# development, a common challenge arises when an asynchronous operation must be triggered during object construction.
-In the following example, a constructor calls an asynchronous `Refresh` method.
-Because the method is not awaited, the compiler generates a warning indicating that the task will execute in the background and exceptions may be lost.
+在 C# 开发中,当一个异步操作必须在对象构造期间触发时,就会出现一个常见的难题。
+在下面的示例中,构造函数调用了一个异步的 `Refresh` 方法。
+由于该方法没有被 await,编译器会生成一条警告,指出该任务将在后台执行,异常可能会丢失。
 
 ```csharp
 namespace HackerNews;
@@ -173,10 +171,10 @@ partial class NewsViewModel_BadAsyncAwaitPractices : BaseViewModel
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=10)
 
-Attempting to resolve this by marking the constructor as `async` is invalid.
-Constructors are designed to initialize an object and assign it a location in memory; they are not intended for long-running tasks and do not support the `async` and `await` keywords.
+试图通过把构造函数标记为 `async` 来解决这个问题是无效的。
+构造函数的设计目的是初始化一个对象并为它分配内存中的位置;它们不用于长时间运行的任务,也不支持 `async` 和 `await` 关键字。
 
 ```csharp
 // This code will not compile
@@ -189,12 +187,12 @@ public async NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, Hacker
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=40)
 
-#### The Async Void Wrapper
+#### Async Void 包装方法
 
-A common but dangerous workaround is to wrap the asynchronous call in an `async void` method.
-While this removes the compiler warning, it introduces severe architectural risks.
+一种常见但危险的变通做法,是把异步调用包进一个 `async void` 方法中。
+虽然这样能消除编译器警告,但它会带来严重的架构风险。
 
 ```csharp
 public NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, HackerNewsAPIService hackerNewsAPIService) : base(dispatcher)
@@ -211,14 +209,14 @@ async void Refresh()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=100)
 
-#### Risk 1: Race Conditions
+#### 风险 1:竞态条件
 
-When `Thread 1` enters the constructor and calls the `async void Refresh()` method, it eventually hits the `await` keyword inside that method.
-At this point, control is returned to the caller (the constructor).
-`Thread 1` continues executing the remaining lines in the constructor, while a background thread (e.g., `Thread 2`) continues the work inside the `Refresh` method.
-If both threads attempt to modify the same state, such as a `TopStoryCollection`, a race condition occurs.
+当 `Thread 1` 进入构造函数并调用 `async void Refresh()` 方法时,它最终会碰到该方法内部的 `await` 关键字。
+此时,控制权被交还给调用方(构造函数)。
+`Thread 1` 继续执行构造函数中剩余的代码行,而一个后台线程(例如 `Thread 2`)继续执行 `Refresh` 方法内部的工作。
+如果两个线程都尝试修改同一个状态,例如 `TopStoryCollection`,就会发生竞态条件。
 
 ```csharp
 public NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, HackerNewsAPIService hackerNewsAPIService) : base(dispatcher)
@@ -233,14 +231,28 @@ public NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, HackerNewsAP
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=265)
+```text
+Thread 1                              Thread 2
+--------                              --------
+enters constructor
+calls async void Refresh()
+hits await inside Refresh
+control returns to constructor  ----> continues work inside Refresh
+continues remaining lines             |
+  TopStoryCollection.Clear()          |
+  TopStoryCollection.Add(...)         modifies TopStoryCollection
+          \                          /
+           +--- same state: race ---+
+```
 
-#### Risk 2: Uncatchable Exceptions
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=265)
 
-Exceptions thrown from an `async void` method are notoriously difficult to catch.
-If an exception is thrown after the first `await` in an `async void` method, it cannot be caught by a `try-catch` block in the calling method.
-This is because the calling thread has already moved past the call site.
-When the exception eventually occurs on the background thread, there is no handler to catch it, causing the entire application to crash.
+#### 风险 2:无法捕获的异常
+
+从 `async void` 方法中抛出的异常是出了名的难以捕获。
+如果异常是在 `async void` 方法中第一个 `await` 之后抛出的,调用方法中的 `try-catch` 块就无法捕获它。
+这是因为调用线程已经越过了调用点。
+当异常最终在后台线程上发生时,没有任何处理程序来捕获它,从而导致整个应用崩溃。
 
 ```csharp
 public NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, HackerNewsAPIService hackerNewsAPIService) : base(dispatcher)
@@ -262,12 +274,12 @@ async void Refresh()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=175)
 
 #### Safe Fire and Forget
 
-To handle background tasks safely, the `SafeFireAndForget` extension method (from the `AsyncAwaitBestPractices` library) should be used.
-This method explicitly signals the intent to run a task in the background while providing a mechanism to handle exceptions safely.
+为了安全地处理后台任务,应当使用 `SafeFireAndForget` 扩展方法(来自 `AsyncAwaitBestPractices` 库)。
+该方法明确表明在后台运行任务的意图,同时提供一种安全处理异常的机制。
 
 ```csharp
 public NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, HackerNewsAPIService hackerNewsAPIService) :
@@ -280,9 +292,9 @@ public NewsViewModel_BadAsyncAwaitPractices(IDispatcher dispatcher, HackerNewsAP
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=640)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=640)
 
-Internally, `SafeFireAndForget` uses `async void` in a controlled manner, wrapping the task in a `try-catch` block to ensure that any exceptions are caught and passed to the provided `onException` handler rather than crashing the process.
+在内部,`SafeFireAndForget` 以受控的方式使用 `async void`,把任务包在一个 `try-catch` 块中,确保任何异常都会被捕获并传给所提供的 `onException` 处理程序,而不是让进程崩溃。
 
 ```csharp
 static async void HandleSafeFireAndForget<TException>(Task task, bool continueOnCapturedContext, Action<TException>? onException) where TException : Exception
@@ -299,45 +311,45 @@ static async void HandleSafeFireAndForget<TException>(Task task, bool continueOn
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=685)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=685)
 
-You can also specify the type of exception you wish to handle, allowing for granular error management, such as logging specific properties of an `HttpRequestException`.
+你还可以指定希望处理的异常类型,从而实现细粒度的错误管理,例如记录 `HttpRequestException` 的特定属性。
 
 ```csharp
 Refresh(CancellationToken.None).SafeFireAndForget<HttpRequestException>(ex => 
     Trace.WriteLine(ex.HttpRequestError));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=760)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/async-void-62197172/?t=760)
 
-While `SafeFireAndForget` still allows the calling thread to continue immediately, it provides the necessary guardrails to prevent application crashes and makes the asynchronous nature of the call obvious to other developers.
+虽然 `SafeFireAndForget` 仍然允许调用线程立即继续执行,但它提供了必要的护栏来防止应用崩溃,并让其他开发者一眼就能看出这次调用是异步的。
 
 ---
 
 ## 3. CancellationToken, ConfigureAwait, .Wait() and .Result
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/) · 20:05
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/) · 20:05
 
-### Summary
+### 总结
 
-This lesson covers essential best practices for asynchronous programming in C#, focusing on the proper use of CancellationToken to handle task cancellation, ConfigureAwait to optimize thread management and prevent UI deadlocks, and the critical avoidance of blocking calls like .Wait() and .Result.
-It also introduces the ConfigureAwaitOptions enum introduced in .NET 8, which provides granular control over task continuation behavior, including context capturing, forced yielding, and exception suppression.
+本课介绍 C# 异步编程的基本最佳实践,重点是正确使用 CancellationToken 来处理任务取消、使用 ConfigureAwait 来优化线程管理并防止 UI 死锁,以及务必避免 .Wait() 和 .Result 这类阻塞调用。
+本课还介绍了 .NET 8 引入的 ConfigureAwaitOptions 枚举,它对任务的延续行为提供细粒度的控制,包括上下文捕获、强制让出(forced yielding)和异常抑制。
 
-### Key concepts
+### 核心概念
 
-* **CancellationToken**: Always propagate cancellation tokens to asynchronous methods to allow callers to terminate long-running operations and improve user experience.
-* **WaitAsync**: Use this extension method to apply a cancellation token to tasks that do not natively support cancellation parameters.
-* **ConfigureAwait(false)**: Prevents the task from capturing the current synchronization context, allowing continuations to run on any available thread pool thread. This improves performance and prevents deadlocks on the UI thread.
-* **Blocking Calls**: Avoid `.Wait()` and `.Result` as they block the calling thread, leading to potential UI freezes and thread pool exhaustion.
-* **ConfigureAwaitOptions (.NET 8)**: A flags-based enum providing advanced control over task awaitables, including `ForceYielding` and `SuppressThrowing`.
+* **CancellationToken**:始终把 cancellation token 传递给异步方法,让调用方能够终止长时间运行的操作,并改善用户体验。
+* **WaitAsync**:使用这个扩展方法,为原生不支持取消参数的任务应用 cancellation token。
+* **ConfigureAwait(false)**:阻止任务捕获当前的同步上下文,让延续可以在任何可用的线程池线程上运行。这能提升性能,并防止 UI 线程上的死锁。
+* **阻塞调用**:避免使用 `.Wait()` 和 `.Result`,因为它们会阻塞调用线程,可能导致 UI 冻结和线程池耗尽。
+* **ConfigureAwaitOptions (.NET 8)**:一个基于标志位的枚举,对任务的 awaitable 提供高级控制,包括 `ForceYielding` 和 `SuppressThrowing`。
 
-### Lesson notes
+### 课程笔记
 
-#### Cancellation Tokens and WaitAsync
+#### Cancellation Token 与 WaitAsync
 
-Asynchronous methods should always accept a `CancellationToken` to allow the consumer to manage the task's lifecycle.
-For example, in a mobile application, a developer might want to cancel a refresh operation after 15 seconds if the connection is poor.
-While many built-in methods like `Task.Delay` accept a token directly, some third-party or legacy APIs do not.
+异步方法应当始终接受一个 `CancellationToken`,让使用方能够管理任务的生命周期。
+例如,在移动应用中,开发者可能希望在网络连接较差时,于 15 秒后取消刷新操作。
+虽然 `Task.Delay` 等许多内置方法可以直接接受 token,但一些第三方或遗留 API 并不支持。
 
 ```csharp
 [RelayCommand]
@@ -358,24 +370,24 @@ async Task Refresh(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=190)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=190)
 
-If an asynchronous method does not support a `CancellationToken` parameter, the `WaitAsync` extension method can be used to "bolt on" cancellation support to the existing task.
+如果某个异步方法不支持 `CancellationToken` 参数,可以使用 `WaitAsync` 扩展方法为现有任务"外挂"取消支持。
 
 ```csharp
 // Using WaitAsync to add cancellation support to a task that doesn't natively support it
 var minimumRefreshTimeTask = Task.Delay(TimeSpan.FromSeconds(2)).WaitAsync(token);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=235)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=235)
 
-#### Optimizing Context with ConfigureAwait(false)
+#### 用 ConfigureAwait(false) 优化上下文
 
-By default, when a task is awaited, the runtime attempts to return to the original synchronization context (e.g., the UI thread).
-If the code following the `await` is computationally expensive—such as iterating over thousands of items and performing complex sorting—it can lock the UI thread and make the application unresponsive.
+默认情况下,当一个任务被 await 时,运行时会尝试回到原来的同步上下文(例如 UI 线程)。
+如果 `await` 之后的代码计算开销很大(例如遍历数千个条目并执行复杂排序),它就可能锁住 UI 线程,使应用失去响应。
 
-Using `ConfigureAwait(false)` instructs the runtime that it does not need to return to the calling thread.
-Instead, the continuation can run on any available thread from the thread pool.
+使用 `ConfigureAwait(false)` 会告诉运行时它不需要回到调用线程。
+相反,延续可以在线程池中任何可用的线程上运行。
 
 ```csharp
 [RelayCommand]
@@ -400,16 +412,16 @@ async Task Refresh(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=460)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=460)
 
-#### Avoiding Blocking Calls
+#### 避免阻塞调用
 
-Methods like `.Wait()` and `.Result` are synchronous blocking calls.
-They force the calling thread to wait until the task completes.
-If called on the UI thread, the application will freeze.
-Furthermore, in high-scale environments like ASP.NET Core, these calls lead to thread pool exhaustion because they consume two threads (the calling thread and the task thread) for a single operation.
+`.Wait()` 和 `.Result` 这类方法是同步的阻塞调用。
+它们迫使调用线程一直等到任务完成。
+如果在 UI 线程上调用,应用就会冻结。
+此外,在 ASP.NET Core 这类高规模环境中,这些调用会导致线程池耗尽,因为它们为单个操作占用了两个线程(调用线程和任务线程)。
 
-Always use the `await` keyword, even within `finally` blocks.
+始终使用 `await` 关键字,即使在 `finally` 块中也是如此。
 
 ```csharp
 finally
@@ -420,14 +432,14 @@ finally
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=655)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=655)
 
 #### ConfigureAwaitOptions (.NET 8)
 
-.NET 8 introduced the `ConfigureAwaitOptions` enum to provide more descriptive and flexible control over task awaitables.
+.NET 8 引入了 `ConfigureAwaitOptions` 枚举,对任务的 awaitable 提供更具描述性、更灵活的控制。
 
-*   `ConfigureAwaitOptions.None` is equivalent to `ConfigureAwait(false)`.
-*   `ConfigureAwaitOptions.ContinueOnCapturedContext` is equivalent to `ConfigureAwait(true)`.
+*   `ConfigureAwaitOptions.None` 等价于 `ConfigureAwait(false)`。
+*   `ConfigureAwaitOptions.ContinueOnCapturedContext` 等价于 `ConfigureAwait(true)`。
 
 ```csharp
 // Equivalent to ConfigureAwait(true)
@@ -435,7 +447,7 @@ var topStoriesList = await GetTopStories(token, storyCount: StoriesConstants.Num
                             .ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapturedContext);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=895)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=895)
 
 ```csharp
 // Equivalent to ConfigureAwait(false)
@@ -443,10 +455,10 @@ var topStoriesList = await GetTopStories(token, storyCount: StoriesConstants.Num
                             .ConfigureAwait(ConfigureAwaitOptions.None);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=925)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=925)
 
-Advanced flags include `ForceYielding`, which behaves like `Task.Yield()`, forcing the task to yield even if it has already completed.
-This can be useful for ensuring the UI thread has a chance to update.
+高级标志位包括 `ForceYielding`,它的行为类似 `Task.Yield()`,即使任务已经完成也会强制让出。
+这有助于确保 UI 线程有机会进行更新。
 
 ```csharp
 // Combining flags to prevent context capture and force yielding
@@ -454,10 +466,10 @@ var topStoriesList = await GetTopStories(token, storyCount: StoriesConstants.Num
                             .ConfigureAwait(ConfigureAwaitOptions.None | ConfigureAwaitOptions.ForceYielding);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=955)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=955)
 
-Finally, `SuppressThrowing` can be used to prevent exceptions from being re-thrown when the task is awaited.
-Note that this option is only supported for non-generic tasks (e.g., `Task`, not `Task<T>`).
+最后,`SuppressThrowing` 可用于在 await 任务时阻止异常被重新抛出。
+注意,此选项只支持非泛型任务(例如 `Task`,而不是 `Task<T>`)。
 
 ```csharp
 // Suppressing exceptions in a non-generic task (e.g., Task.Delay)
@@ -466,38 +478,38 @@ await minimumRefreshTimeTask.ConfigureAwait(ConfigureAwaitOptions.ContinueOnCapt
                                           | ConfigureAwaitOptions.SuppressThrowing);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=1090)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/cancellationtoken-configureawait-wait-and-result-62197173/?t=1090)
 
 ---
 
 ## 4. IAsyncEnumerable
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/) · 21:17
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/) · 21:17
 
-### Summary
+### 总结
 
-This lesson demonstrates how to refactor sequential asynchronous operations into parallel streams using IAsyncEnumerable and the .NET 9 Task.WhenEach API.
-By moving away from Task.WhenAll, which forces a user to wait for an entire batch of operations to complete, developers can use async iterators to stream data to the UI as it becomes available.
-The lesson also details the use of FrozenSet for immutability, the [EnumeratorCancellation] attribute for proper token handling in async streams, and the importance of maintaining ConfigureAwait(false) even on completed tasks to ensure code robustness during future refactors.
+本课演示如何使用 IAsyncEnumerable 和 .NET 9 的 Task.WhenEach API,把顺序执行的异步操作重构为并行的流。
+Task.WhenAll 会迫使用户等待整批操作全部完成,而摆脱它之后,开发者可以使用异步迭代器在数据可用时就把它流式传送到 UI。
+本课还详细介绍了用 FrozenSet 实现不可变性、在异步流中用 [EnumeratorCancellation] 特性正确处理 token,以及即使在已完成的任务上也保留 ConfigureAwait(false) 的重要性,以确保代码在未来重构时依然健壮。
 
-### Key concepts
+### 核心概念
 
-* **FrozenSet**: A .NET 8 collection that is truly immutable and optimized for read-heavy scenarios, though it carries a creation performance hit.
-* **Parallel Task Execution**: Using LINQ `Select` to kick off multiple background tasks simultaneously rather than awaiting them sequentially in a loop.
-* **IAsyncEnumerable**: An interface that enables asynchronous iteration, allowing values to be streamed to the caller as they are produced.
-* **Task.WhenEach**: A .NET 9 API that returns an `IAsyncEnumerable` of tasks in the order they complete.
-* **EnumeratorCancellation**: An attribute used on `CancellationToken` parameters within async iterators to correctly integrate with the .NET runtime's iteration logic.
-* **Yield Return**: A keyword used in async iterators to provide the next element of the stream without exiting the method.
+* **FrozenSet**:.NET 8 中一种真正不可变、针对读多场景优化的集合,不过它在创建时有性能损耗。
+* **并行任务执行**:使用 LINQ `Select` 同时启动多个后台任务,而不是在循环中逐个 await。
+* **IAsyncEnumerable**:一个支持异步迭代的接口,允许值在产生时就流式传送给调用方。
+* **Task.WhenEach**:一个 .NET 9 API,它按任务完成的顺序返回一个由任务组成的 `IAsyncEnumerable`。
+* **EnumeratorCancellation**:用于异步迭代器中 `CancellationToken` 参数的特性,使其与 .NET 运行时的迭代逻辑正确集成。
+* **Yield Return**:异步迭代器中使用的关键字,用于提供流的下一个元素而不退出方法。
 
-### Lesson notes
+### 课程笔记
 
-#### Immutability with FrozenSet
+#### 用 FrozenSet 实现不可变性
 
-When handling data from external sources like APIs or databases, it is best practice to keep that data immutable.
-.NET 8 introduced `FrozenSet<T>`, which provides a more rigid guarantee of immutability than `IReadOnlyList<T>`.
-While `IReadOnlyList` prevents direct list manipulation, the underlying values at specific indices can sometimes still be modified.
-A `FrozenSet` is truly frozen.
-However, creating a `FrozenSet` is more computationally expensive than creating a standard list, so it should be used judiciously in performance-sensitive environments like high-traffic ASP.NET Core APIs.
+在处理来自 API 或数据库等外部来源的数据时,最佳实践是保持这些数据不可变。
+.NET 8 引入了 `FrozenSet<T>`,它对不可变性的保证比 `IReadOnlyList<T>` 更严格。
+虽然 `IReadOnlyList` 阻止了对列表的直接操作,但特定索引处的底层值有时仍然可以被修改。
+`FrozenSet` 则是真正冻结的。
+然而,创建 `FrozenSet` 的计算开销比创建普通列表更大,因此在高流量的 ASP.NET Core API 这类对性能敏感的环境中应当审慎使用。
 
 ```csharp
 // Initial sequential implementation returning a FrozenSet
@@ -520,12 +532,12 @@ async Task<FrozenSet<StoryModel>> GetTopStories(CancellationToken token, int sto
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=10)
 
-#### Transitioning to Parallelism
+#### 过渡到并行
 
-The sequential approach above is inefficient because it waits for each API call to finish before starting the next.
-To improve performance, we can kick off all tasks simultaneously using LINQ and store them in a list of tasks.
+上面的顺序做法效率低下,因为它要等每个 API 调用完成后才开始下一个。
+为了提升性能,我们可以用 LINQ 同时启动所有任务,并把它们存放在一个任务列表中。
 
 ```csharp
 // Refactoring to kick off tasks in parallel
@@ -541,15 +553,15 @@ async Task<FrozenSet<StoryModel>> GetTopStories(CancellationToken token, int sto
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=370)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=370)
 
-While `Task.WhenAll` is faster than sequential execution, it creates a poor user experience because the UI remains blank until the entire batch of tasks completes.
-If fetching 100 stories takes five seconds, the user sees a spinner for the full duration before all stories appear at once.
+虽然 `Task.WhenAll` 比顺序执行更快,但它的用户体验很差,因为在整批任务完成之前 UI 一直是空白的。
+如果获取 100 篇文章需要五秒,用户就会在整个过程中一直看到一个加载圈,然后所有文章才一次性出现。
 
-#### Streaming with IAsyncEnumerable and Task.WhenEach
+#### 用 IAsyncEnumerable 和 Task.WhenEach 实现流式传输
 
-To provide a more responsive experience, we can use `IAsyncEnumerable<T>` to stream results as they arrive.
-In .NET 9, the `Task.WhenEach` method allows us to iterate over a collection of tasks and receive each one as soon as it completes.
+为了提供响应更及时的体验,我们可以使用 `IAsyncEnumerable<T>` 在结果到达时就流式传送它们。
+在 .NET 9 中,`Task.WhenEach` 方法让我们可以遍历一组任务,并在每个任务一完成时就拿到它。
 
 ```csharp
 // Using IAsyncEnumerable and Task.WhenEach for streaming
@@ -573,19 +585,37 @@ async IAsyncEnumerable<StoryModel> GetTopStories([EnumeratorCancellation] Cancel
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=1165)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=1165)
 
-In this implementation:
+在这个实现中:
 
-1.  **`yield return`**: This keyword returns a value to the caller's `await foreach` loop without exiting the method. The method state is preserved, and execution resumes after the caller processes the item.
-2.  **`[EnumeratorCancellation]`**: This attribute ensures that the `CancellationToken` passed to the method is correctly utilized by the .NET runtime's async iterator machinery.
-3.  **`.WithCancellation(token)`**: This extension method is used to pass the token into the `IAsyncEnumerable` returned by `Task.WhenEach`.
-4.  **`ConfigureAwait(false)`**: Even though `Task.WhenEach` only returns completed tasks, using `ConfigureAwait(false)` is still recommended. This prevents the code from potentially switching threads unnecessarily and ensures that if the code is later copy-pasted into a context where the task is not yet complete, it remains thread-safe.
+1.  **`yield return`**:这个关键字把一个值返回给调用方的 `await foreach` 循环,而不退出方法。
+    方法的状态会被保留,并在调用方处理完该条目后恢复执行。
+2.  **`[EnumeratorCancellation]`**:这个特性确保传给方法的 `CancellationToken` 被 .NET 运行时的异步迭代器机制正确使用。
+3.  **`.WithCancellation(token)`**:这个扩展方法用于把 token 传入 `Task.WhenEach` 返回的 `IAsyncEnumerable`。
+4.  **`ConfigureAwait(false)`**:即使 `Task.WhenEach` 只返回已完成的任务,仍然建议使用 `ConfigureAwait(false)`。
+    这可以防止代码不必要地切换线程,并确保如果这段代码之后被复制粘贴到任务尚未完成的上下文中,它依然是线程安全的。
 
-#### Consuming the Async Stream
+```text
+GetTopStoryIDs(token)
+        |
+        v
+topStoryIds.Select(id => GetStory(id, token)).ToList()
+        |
+        v
+Task.WhenEach(getTopStoriesTasks).WithCancellation(token)
+        |   tasks in the order they complete
+        v
+await topStoryTask --> yield return topStory
+                               |
+                               v
+               caller: await foreach (var story in GetTopStories(...))
+```
 
-The calling method uses an `await foreach` loop to consume the stream.
-This allows the UI to update incrementally as each story is returned, making the wait time feel significantly shorter to the user.
+#### 消费异步流
+
+调用方法使用 `await foreach` 循环来消费这个流。
+这让 UI 能在每篇文章返回时逐步更新,使用户感觉等待时间明显缩短。
 
 ```csharp
 [RelayCommand]
@@ -615,39 +645,39 @@ async Task Refresh(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=1250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/iasyncenumerable-62197174/?t=1250)
 
 ---
 
 ## 5. Returning a Task and ValueTask
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/) · 12:12
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/) · 12:12
 
-### Summary
+### 总结
 
-This lesson explores performance optimizations in asynchronous C# code, focusing on when to return a Task directly versus using the async/await keywords.
-It demonstrates how eliding async/await can reduce unnecessary context switches and thread pool overhead in simple wrapper methods, while cautioning against this practice when local exception handling (try/catch) or specific stack trace preservation is required.
-Additionally, the lesson introduces ValueTask as a memory-efficient alternative for methods where the 'hot path' often completes synchronously, such as when returning cached data, thereby avoiding heap allocations.
+本课探讨异步 C# 代码中的性能优化,重点是何时直接返回 Task、何时使用 async/await 关键字。
+它演示了在简单的包装方法中省略 async/await 如何减少不必要的上下文切换和线程池开销,同时提醒在需要本地异常处理(try/catch)或保留特定堆栈跟踪时不要这样做。
+此外,本课还介绍了 ValueTask,它是一种节省内存的替代方案,适用于"热路径"经常同步完成的方法,例如返回缓存数据时,从而避免堆分配。
 
-### Key concepts
+### 核心概念
 
-*   **Context Switch Reduction**: Returning a `Task` directly instead of awaiting it avoids the overhead of the state machine and potential thread transitions.
-*   **Eliding Async/Await**: Removing the `async` and `await` keywords in one-line pass-through methods to improve performance.
-*   **Stack Trace Implications**: Eliding `async` can cause a method to be omitted from the call stack in an exception, which may impact debugging.
-*   **Async/Await in Try/Catch**: You must use `await` inside a `try/catch` block to ensure exceptions are caught locally; returning the `Task` directly will bypass the catch block.
-*   **ValueTask**: A value-type (struct) alternative to `Task` that reduces heap allocations, ideal for methods that frequently complete synchronously.
-*   **Hot Path Optimization**: Using `ValueTask` when the most common execution path does not require asynchronous waiting (e.g., returning cached results).
+*   **减少上下文切换**:直接返回 `Task` 而不是 await 它,可以避免状态机的开销以及可能的线程切换。
+*   **省略 Async/Await**:在只有一行的透传方法中去掉 `async` 和 `await` 关键字以提升性能。
+*   **对堆栈跟踪的影响**:省略 `async` 可能导致某个方法在异常的调用栈中缺失,这可能影响调试。
+*   **Try/Catch 中的 Async/Await**:你必须在 `try/catch` 块内使用 `await`,才能确保异常在本地被捕获;直接返回 `Task` 会绕过 catch 块。
+*   **ValueTask**:`Task` 的一种值类型(struct)替代方案,可减少堆分配,非常适合经常同步完成的方法。
+*   **热路径优化**:当最常见的执行路径不需要异步等待时(例如返回缓存结果)使用 `ValueTask`。
 
-### Lesson notes
+### 课程笔记
 
-#### Eliding Async/Await for Performance
+#### 为了性能省略 Async/Await
 
-When a method simply wraps another asynchronous call and returns the same type, using the `async` and `await` keywords can introduce unnecessary overhead.
-In a standard `async await` flow, a thread enters the method, hits the `await`, and returns to the thread pool.
-When the underlying task completes, a potentially different thread is assigned to finish the method.
-For a one-line method, this results in multiple context switches just to return a value.
+当一个方法只是包装另一个异步调用并返回相同类型时,使用 `async` 和 `await` 关键字可能会引入不必要的开销。
+在标准的 `async await` 流程中,一个线程进入方法,碰到 `await`,然后回到线程池。
+当底层任务完成时,可能会分配另一个不同的线程来完成该方法。
+对于只有一行的方法来说,这会仅仅为了返回一个值而产生多次上下文切换。
 
-Consider the following implementation of `GetStory` using `async await` and `ConfigureAwait(false)`:
+考虑下面这个使用 `async await` 和 `ConfigureAwait(false)` 的 `GetStory` 实现:
 
 ```csharp
 //ToDo Refactor
@@ -657,10 +687,10 @@ async Task<StoryModel> GetStory(long storyId, CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=25)
 
-By removing the `async` and `await` keywords, the method returns the `Task` directly to the caller.
-This defers the state machine logic to the higher-level caller, saving a context switch and improving performance.
+去掉 `async` 和 `await` 关键字后,该方法会直接把 `Task` 返回给调用方。
+这把状态机逻辑推迟到更上层的调用方,从而省下一次上下文切换并提升性能。
 
 ```csharp
 //Refactored to return Task directly
@@ -670,16 +700,16 @@ Task<StoryModel> GetStory(long storyId, CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=115)
 
-**Note on Stack Traces**: When you return a `Task` directly, the method may not appear in the stack trace if an exception occurs within that task.
-While this can make debugging slightly more difficult in complex scenarios, the performance gain is often worth the trade-off in high-performance library code.
+**关于堆栈跟踪的说明**:当你直接返回 `Task` 时,如果该任务内部发生异常,这个方法可能不会出现在堆栈跟踪中。
+虽然这在复杂场景下会让调试稍微困难一些,但在高性能的库代码中,性能收益通常值得这样的取舍。
 
-#### The Try/Catch Exception
+#### Try/Catch 这个例外
 
-A common mistake is attempting to elide `async/await` inside a method that contains a `try/catch` block.
-If you return the `Task` directly, the method execution finishes immediately after the `return` statement.
-If the task subsequently fails, the exception will be thrown back to the caller of this method, bypassing the local `catch` block entirely.
+一个常见错误是在包含 `try/catch` 块的方法中尝试省略 `async/await`。
+如果你直接返回 `Task`,方法的执行会在 `return` 语句之后立即结束。
+如果该任务随后失败,异常会被抛回给这个方法的调用方,完全绕过本地的 `catch` 块。
 
 ```csharp
 // BAD PRACTICE: Returning Task inside try/catch
@@ -701,17 +731,17 @@ async Task<FrozenSet<long>> GetTopStoryIDs(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=370)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=370)
 
-To ensure the exception is caught and logged locally, the `await` keyword must be used to keep the method context alive until the task completes.
+为了确保异常在本地被捕获并记录,必须使用 `await` 关键字,让方法上下文一直存活到任务完成。
 
-#### Optimizing with ValueTask
+#### 用 ValueTask 优化
 
-While `Task` is a reference type allocated on the heap, `ValueTask` is a value type (a read-only struct) allocated on the stack.
-Adding a value to the stack is an O(1) operation and is significantly faster than heap allocation, which requires indexing and garbage collection.
+`Task` 是分配在堆上的引用类型,而 `ValueTask` 是分配在栈上的值类型(一个只读 struct)。
+向栈中添加一个值是 O(1) 操作,比堆分配快得多,因为堆分配需要索引和垃圾回收。
 
-`ValueTask` is most effective when the "hot path" of a method—the code path executed most frequently—completes synchronously.
-For example, if data is cached and can be returned immediately without an API call, `ValueTask` avoids the overhead of creating a `Task` object.
+当一个方法的"热路径"(即执行最频繁的代码路径)同步完成时,`ValueTask` 最为有效。
+例如,如果数据已被缓存,无需调用 API 就能立即返回,`ValueTask` 就能避免创建 `Task` 对象的开销。
 
 ```csharp
 // Using ValueTask for hot-path optimization
@@ -732,95 +762,95 @@ async ValueTask<FrozenSet<long>> GetTopStoryIDs(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=505)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/returning-a-task-and-valuetask-62197175/?t=505)
 
-**Best Practices for ValueTask**:
+**ValueTask 的最佳实践**:
 
-1.  **Do not reuse**: Unlike `Task`, a `ValueTask` should never be awaited multiple times.
-2.  **Do not store**: Avoid passing `ValueTask` around or storing it in fields; consume it immediately by awaiting it.
-3.  **Use for Hot Paths**: Only switch from `Task` to `ValueTask` if the method often returns a result synchronously.
+1.  **不要重复使用**:与 `Task` 不同,`ValueTask` 永远不应被 await 多次。
+2.  **不要存储**:避免到处传递 `ValueTask` 或把它存放在字段中;应当立即 await 它来消费。
+3.  **用于热路径**:只有当方法经常同步返回结果时,才把 `Task` 换成 `ValueTask`。
 
 ---
 
 ## 6. Review
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197176/) · 14:28
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197176/) · 14:28
 
-### Summary
+### 总结
 
-This lesson reviews essential best practices for asynchronous programming in C#, covering synchronization context management, exception handling, and performance optimizations.
-It emphasizes the use of await over blocking calls, the strategic use of ConfigureAwait(false), and the benefits of modern features like IAsyncEnumerable and IAsyncDisposable.
+本课回顾 C# 异步编程的基本最佳实践,涵盖同步上下文管理、异常处理和性能优化。
+它强调用 await 代替阻塞调用、有策略地使用 ConfigureAwait(false),以及 IAsyncEnumerable 和 IAsyncDisposable 等现代特性的好处。
 
-### Key concepts
+### 核心概念
 
-*   Prefer `await` over `.Wait()` or `.Result()`.
-*   Use `.GetAwaiter().GetResult()` when synchronous execution is unavoidable.
-*   Avoid `return await` except in `try-catch` or `using` blocks.
-*   Apply `ConfigureAwait(false)` in non-UI layers.
-*   Leverage `ValueTask` for performance-critical synchronous paths.
-*   Stream data with `IAsyncEnumerable`.
-*   Implement `IAsyncDisposable` for asynchronous resource cleanup.
+*   优先使用 `await`,而不是 `.Wait()` 或 `.Result()`。
+*   当同步执行无法避免时,使用 `.GetAwaiter().GetResult()`。
+*   除了在 `try-catch` 或 `using` 块中,避免使用 `return await`。
+*   在非 UI 层中应用 `ConfigureAwait(false)`。
+*   在性能关键的同步路径上利用 `ValueTask`。
+*   用 `IAsyncEnumerable` 流式传输数据。
+*   实现 `IAsyncDisposable` 以异步清理资源。
 
-### Lesson notes
+### 课程笔记
 
-#### Blocking Calls and Exception Handling
+#### 阻塞调用与异常处理
 
-The primary rule of asynchronous programming in C# is to avoid blocking calls like `.Wait()` or `.Result()`.
-These methods block the calling thread until the background task completes, which can lead to deadlocks and performance degradation.
-In modern .NET development, the `await` keyword should be the default choice.
+C# 异步编程的首要规则是避免 `.Wait()` 或 `.Result()` 这类阻塞调用。
+这些方法会阻塞调用线程,直到后台任务完成,这可能导致死锁和性能下降。
+在现代 .NET 开发中,`await` 关键字应当是默认选择。
 
-In rare scenarios where you are forced to perform sync-over-async—such as when implementing an interface that does not allow for a `Task` return type—the recommended approach is to use `.GetAwaiter().GetResult()`.
-While this is still a blocking call, it is superior to `.Wait()` or `.Result()` because it does not wrap exceptions in a `System.AggregateException`.
-Instead, it re-throws the original exception (e.g., a `TimeoutException`), preserving the expected stack trace and making debugging significantly easier.
+在少数被迫执行 sync-over-async 的场景中(例如实现一个不允许返回 `Task` 类型的接口时),推荐的做法是使用 `.GetAwaiter().GetResult()`。
+虽然这仍然是一个阻塞调用,但它优于 `.Wait()` 或 `.Result()`,因为它不会把异常包装进 `System.AggregateException`。
+相反,它会重新抛出原始异常(例如 `TimeoutException`),保留预期的堆栈跟踪,使调试明显更容易。
 
-#### Fire and Forget Tasks
+#### Fire and Forget 任务
 
-For tasks where the completion timing is not critical to the subsequent logic, avoid using `async void`.
-Instead, use the `SafeFireAndForget` extension method from the `AsyncAwaitBestPractices` NuGet package.
-This approach explicitly signals to other developers that the task is intended to run independently and provides guardrails for graceful exception handling.
+对于完成时机对后续逻辑并不关键的任务,避免使用 `async void`。
+相反,应使用 `AsyncAwaitBestPractices` NuGet 包中的 `SafeFireAndForget` 扩展方法。
+这种做法明确地向其他开发者表明该任务是要独立运行的,并为优雅的异常处理提供护栏。
 
-#### Eliding Async and Await
+#### 省略 Async 和 Await
 
-When the only use of the `await` keyword in a method is in the return statement, you can optimize performance by eliding the `async` and `await` keywords and returning the `Task` directly.
-This reduces the overhead of the state machine and unnecessary thread switches.
+当方法中 `await` 关键字的唯一用途是在 return 语句中时,你可以省略 `async` 和 `await` 关键字并直接返回 `Task`,以此优化性能。
+这减少了状态机的开销和不必要的线程切换。
 
-For example, in a service layer, you might return the task directly:
+例如,在服务层中,你可以直接返回任务:
 
 ```csharp
 public Task<StoryModel> GetStory(long storyId, CancellationToken token) => _hackerNewsClient.GetStory(storyId, token);
 ```
 
-However, there are two critical exceptions where you must keep the `await` keyword:
+不过,有两个关键的例外情况必须保留 `await` 关键字:
 
-1.  **Try-Catch Blocks**: If you return a task without awaiting it, the method exits the try block immediately, and the catch block will never intercept exceptions thrown by that task.
-2.  **Using Blocks**: Returning a task from a `using` block without awaiting it will cause the disposable object to be disposed of before the task completes, often resulting in an `ObjectDisposedException`.
+1.  **Try-Catch 块**:如果你返回一个任务而不 await 它,方法会立即退出 try 块,catch 块永远不会拦截该任务抛出的异常。
+2.  **Using 块**:在 `using` 块中返回一个任务而不 await 它,会导致可释放对象在任务完成之前就被释放,往往引发 `ObjectDisposedException`。
 
-#### Context Management with ConfigureAwait
+#### 用 ConfigureAwait 管理上下文
 
-`ConfigureAwait(false)` is used to signal that the task does not need to resume on the original synchronization context.
-This is highly recommended for non-UI layers, such as services, databases, and models, to improve performance and avoid deadlocks.
-In UI-heavy frameworks like MAUI or WinForms, the UI layer should generally avoid `ConfigureAwait(false)` to ensure updates happen on the UI thread.
+`ConfigureAwait(false)` 用于表明任务不需要在原来的同步上下文上恢复执行。
+强烈推荐在服务、数据库和模型等非 UI 层中使用它,以提升性能并避免死锁。
+在 MAUI 或 WinForms 这类以 UI 为主的框架中,UI 层通常应避免使用 `ConfigureAwait(false)`,以确保更新发生在 UI 线程上。
 
-.NET 8 and 9 introduced `ConfigureAwaitOptions`, which provide more granular control:
+.NET 8 和 9 引入了 `ConfigureAwaitOptions`,它提供更细粒度的控制:
 
-*   **None**: Equivalent to `ConfigureAwait(false)`.
-*   **ContinueOnCapturedContext**: Equivalent to `ConfigureAwait(true)`.
-*   **ForceYielding**: Forces an asynchronous yield even if the task is already completed, which can be useful for keeping the UI responsive.
-*   **SuppressThrowing**: Prevents the `await` from re-throwing exceptions, though this should be used with caution.
+*   **None**:等价于 `ConfigureAwait(false)`。
+*   **ContinueOnCapturedContext**:等价于 `ConfigureAwait(true)`。
+*   **ForceYielding**:即使任务已经完成,也强制进行一次异步让出,这有助于保持 UI 的响应性。
+*   **SuppressThrowing**:阻止 `await` 重新抛出异常,不过应谨慎使用。
 
-#### Performance and Streaming
+#### 性能与流式传输
 
-For high-performance scenarios where a method often returns synchronously, use `ValueTask`.
-Unlike `Task`, which is a class allocated on the heap, `ValueTask` is a struct that lives on the stack, reducing allocation overhead.
+对于方法经常同步返回的高性能场景,使用 `ValueTask`。
+与分配在堆上的类 `Task` 不同,`ValueTask` 是一个存在于栈上的 struct,可以减少分配开销。
 
-When dealing with APIs that return multiple results, `IAsyncEnumerable` is the preferred choice for streaming data.
-This allows the UI to update as results arrive rather than waiting for the entire collection.
-When implementing these methods, use the `[EnumeratorCancellation]` attribute to ensure the `CancellationToken` is correctly handled by the runtime iterator.
+在处理返回多个结果的 API 时,`IAsyncEnumerable` 是流式传输数据的首选。
+这让 UI 能在结果到达时就更新,而不必等待整个集合。
+在实现这些方法时,使用 `[EnumeratorCancellation]` 特性,确保 `CancellationToken` 被运行时迭代器正确处理。
 
-#### Asynchronous Resource Cleanup
+#### 异步资源清理
 
-`IAsyncDisposable` allows for asynchronous cleanup of unmanaged resources, which is particularly useful for expensive operations like closing file streams.
-This ensures the calling thread is not blocked during the disposal process.
+`IAsyncDisposable` 允许异步清理非托管资源,这对于关闭文件流这类开销较大的操作尤其有用。
+这确保调用线程在释放过程中不会被阻塞。
 
 ```csharp
 await using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate).ConfigureAwait(false))
@@ -829,6 +859,6 @@ await using (var fileStream = new FileStream(filePath, FileMode.OpenOrCreate).Co
 } // await executes here
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197176/?t=685)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/review-62197176/?t=685)
 
-In the example above, the `await` associated with the `using` block executes at the closing brace, ensuring the stream is disposed of asynchronously.
+在上面的示例中,与 `using` 块关联的 `await` 在右花括号处执行,确保流被异步释放。
