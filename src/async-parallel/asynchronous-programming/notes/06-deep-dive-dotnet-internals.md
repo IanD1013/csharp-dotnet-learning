@@ -1,14 +1,12 @@
 # Deep Dive: .NET Internals
 
-> Course: [From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · Chapter 6
-> 5 lessons · ~40:16
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · 第 6 章
+> 共 5 课 · 约 40:16
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Introduction](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197165/) | 1:24 | [↓](#1-introduction) |
 | 2 | [ThreadStatic](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/) | 5:00 | [↓](#2-threadstatic) |
@@ -20,85 +18,85 @@
 
 ## 1. Introduction
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197165/) · 1:24
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/introduction-62197165/) · 1:24
 
-### Summary
+### 总结
 
-This lesson introduces the final section of the asynchronous programming series, focusing on the internal mechanisms of .NET that power async and await.
-While developers rarely interact with these low-level components directly in daily tasks, understanding the underlying architecture—such as threads, tasks, and synchronization contexts—is essential for troubleshooting complex bugs and mastering how asynchronous operations are executed under the hood.
+本课介绍异步编程系列的最后一部分,重点是支撑 async 和 await 的 .NET 内部机制。
+虽然开发者在日常工作中很少直接接触这些底层组件,但理解其底层架构(例如线程、任务和同步上下文)对于排查复杂 bug、掌握异步操作在底层是如何执行的至关重要。
 
-### Key concepts
+### 核心概念
 
-* Internal .NET components for asynchronous execution.
-* The relationship between threads and tasks.
-* The role of synchronization contexts.
-* The importance of low-level knowledge for advanced debugging.
+* 用于异步执行的 .NET 内部组件。
+* 线程与任务之间的关系。
+* 同步上下文的作用。
+* 底层知识对高级调试的重要性。
 
-### Lesson notes
+### 课程笔记
 
-This section transitions from the high-level usage of tasks and threading to a deep dive into the .NET internals.
-Having previously explored multi-threading, parallel execution, and serial asynchronous operations, the focus now shifts to the underlying components that enable the `async-await` pattern.
+本部分从任务和线程的高层用法,过渡到对 .NET 内部机制的深入探讨。
+在此前已经探讨过多线程、并行执行和串行异步操作之后,重点现在转向支撑 `async-await` 模式的底层组件。
 
-The investigation covers the internal mechanics of threads and tasks, specifically looking at how .NET manages execution flow.
-Key architectural elements include:
+这一探讨涵盖线程和任务的内部机制,特别关注 .NET 如何管理执行流程。
+关键的架构要素包括:
 
-* **Threads**: The fundamental units of execution.
-* **Tasks**: The higher-level abstraction used for asynchronous operations.
-* **Synchronization Contexts**: The mechanism that coordinates how and where code resumes after an await.
+* **Threads**:执行的基本单元。
+* **Tasks**:用于异步操作的更高层抽象。
+* **Synchronization Contexts**:协调代码在 await 之后如何恢复、在何处恢复的机制。
 
-While it is uncommon for developers to manually create threads or custom synchronization contexts in standard application development, understanding these internals is critical.
-This knowledge provides the necessary foundation for diagnosing and resolving edge-case bugs that cannot be solved through high-level abstractions alone.
+虽然在常规应用开发中,开发者手动创建线程或自定义同步上下文并不常见,但理解这些内部机制至关重要。
+这些知识为诊断和解决那些仅靠高层抽象无法解决的边缘情况 bug 提供了必要的基础。
 
 ---
 
 ## 2. ThreadStatic
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/) · 5:00
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/) · 5:00
 
-### Summary
+### 总结
 
-The ThreadStatic attribute allows developers to define static fields that maintain unique values for each thread.
-While static fields typically share a single value across the entire application, ThreadStatic ensures that each thread has its own independent instance of the field.
-This is useful for thread-local storage but requires caution in environments with thread pooling, such as ASP.NET Core, or in asynchronous code where tasks may migrate between threads and lose access to the original thread-local data.
+ThreadStatic 特性让开发者可以定义为每个线程保持独立值的静态字段。
+静态字段通常在整个应用中共享同一个值,而 ThreadStatic 确保每个线程都拥有该字段自己独立的实例。
+这对线程本地存储很有用,但在使用线程池的环境(例如 ASP.NET Core)中,或者在任务可能在线程之间迁移、从而失去对原线程本地数据访问的异步代码中,需要谨慎使用。
 
-### Key concepts
+### 核心概念
 
-*   **ThreadStatic Attribute**: A marker for static fields that instructs the .NET runtime to provide a unique instance of the field for every thread.
-*   **Isolation**: Ensures that modifications to a static variable on one thread do not affect the value of that same variable on another thread.
-*   **Thread Reuse Risks**: In pooled environments like ASP.NET Core, threads are reused for different requests. Data left in a ThreadStatic variable can persist and leak into subsequent operations.
-*   **Async/Await Compatibility**: ThreadStatic is unreliable across await boundaries because there is no guarantee that a task will resume on the same thread it started on.
-*   **ASP.NET Core Alternatives**: For per-request data isolation in web applications, `HttpContext` is preferred over ThreadStatic.
+*   **ThreadStatic Attribute**:静态字段上的一个标记,指示 .NET 运行时为每个线程提供该字段的独立实例。
+*   **Isolation(隔离)**:确保在一个线程上对静态变量的修改,不会影响另一个线程上同一变量的值。
+*   **Thread Reuse Risks(线程复用风险)**:在 ASP.NET Core 这类池化环境中,线程会被复用于不同的请求。残留在 ThreadStatic 变量中的数据可能会保留下来,并泄漏到后续操作中。
+*   **Async/Await Compatibility(Async/Await 兼容性)**:ThreadStatic 在跨越 await 边界时并不可靠,因为无法保证任务会在它开始时所在的同一线程上恢复。
+*   **ASP.NET Core Alternatives(ASP.NET Core 替代方案)**:在 Web 应用中进行按请求的数据隔离时,优先使用 `HttpContext` 而不是 ThreadStatic。
 
-### Lesson notes
+### 课程笔记
 
-The `ThreadStatic` attribute is applied to a static field to indicate that the value of the field is unique to each thread.
-In a standard scenario, a static field has a single instance shared across the entire application.
-By applying `[ThreadStatic]`, .NET allocates a separate instance of that field for every thread that accesses it.
+`ThreadStatic` 特性应用于静态字段,用来表示该字段的值对每个线程都是独立的。
+在标准场景下,一个静态字段只有一个实例,在整个应用中共享。
+通过应用 `[ThreadStatic]`,.NET 会为每个访问该字段的线程分配一个独立的字段实例。
 
 ```csharp
 [ThreadStatic]
 private static int threadLocalValue;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/?t=10)
 
-#### Security and Thread Reuse
+#### 安全与线程复用
 
-A critical consideration when using `ThreadStatic` is thread reuse.
-In environments like ASP.NET Core, the thread pool manages a set of threads that are reused for different API requests.
-If a value is set on a `ThreadStatic` variable during one request and the thread is later reused for another request, the second request might accidentally access the first user's data.
-For web applications, it is recommended to use `HttpContext` to store request-specific data rather than `ThreadStatic` to avoid these security concerns.
+使用 `ThreadStatic` 时一个关键的考虑因素是线程复用。
+在 ASP.NET Core 这类环境中,线程池管理着一组线程,这些线程会被复用于不同的 API 请求。
+如果在一次请求中给某个 `ThreadStatic` 变量设置了值,而该线程之后又被复用于另一个请求,那么第二个请求可能会意外访问到第一个用户的数据。
+对于 Web 应用,建议使用 `HttpContext` 而不是 `ThreadStatic` 来存储请求特定的数据,以避免这些安全隐患。
 
-#### Asynchronous Programming Limitations
+#### 异步编程的局限
 
-In asynchronous C#, tasks are not guaranteed to remain on the same thread throughout their lifetime.
-When a task is awaited, the continuation may resume on a different thread, especially if `ConfigureAwait(false)` or `ConfigureAwaitOptions.None` is used.
-If a value is stored in a `ThreadStatic` variable before an `await`, it will not be available if the code resumes on a different thread, leading to inconsistent state and difficult-to-track bugs.
+在异步 C# 中,并不保证任务在其整个生命周期内都停留在同一个线程上。
+当一个任务被 await 时,其后续代码(continuation)可能会在另一个线程上恢复,尤其是在使用了 `ConfigureAwait(false)` 或 `ConfigureAwaitOptions.None` 的情况下。
+如果在 `await` 之前把一个值存进了 `ThreadStatic` 变量,而代码在另一个线程上恢复,那么这个值将不可用,从而导致状态不一致以及难以追踪的 bug。
 
-#### Implementation Example
+#### 实现示例
 
-To demonstrate thread isolation, the following example creates two manual threads.
-While manual thread creation is generally discouraged in favor of the Task Parallel Library (TPL) and async/await, it is used here to explicitly show how different threads maintain separate values for the same static field.
+为了演示线程隔离,下面的示例手动创建了两个线程。
+虽然一般不建议手动创建线程,而应优先使用任务并行库(TPL)和 async/await,但这里使用它是为了明确展示不同线程如何为同一个静态字段保持各自独立的值。
 
 ```csharp
 static class Program
@@ -144,44 +142,58 @@ static class Program
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/?t=220)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/threadstatic-62197166/?t=220)
 
-In this execution, the main thread sets its value to 100.
-The background threads assign their own random values.
-When control returns to the main thread after the background threads have joined, the main thread's value remains 100, proving that the modifications made on other threads did not affect the main thread's storage.
+在这次执行中,主线程把自己的值设为 100。
+后台线程各自赋予自己的随机值。
+在后台线程 join 之后控制权回到主线程时,主线程的值仍然是 100,这证明在其他线程上所做的修改并没有影响主线程的存储。
+
+```text
+ [ThreadStatic] threadSpecificValue
+
+ Main thread      thread1                  thread2
+ +----------+     +--------------------+   +--------------------+
+ | 100      |     | Random.Shared.Next |   | Random.Shared.Next |
+ +----------+     +--------------------+   +--------------------+
+      |
+      v  after thread1.Join() / thread2.Join()
+ +----------+
+ | 100      |
+ +----------+
+```
 
 ---
 
 ## 3. Principal
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/) · 7:40
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/) · 7:40
 
-The `IPrincipal` interface, located in the `System.Security.Principal` namespace, is the standard way to represent a security context in .NET.
-It is heavily utilized in ASP.NET Core, as well as desktop frameworks like WinUI.
-In mobile frameworks like .NET MAUI, the system typically defaults to native iOS and Android implementations for identity management.
-The principal acts as a container for all information regarding a user's identity, including their roles, claims, and specific permissions.
+位于 `System.Security.Principal` 命名空间中的 `IPrincipal` 接口,是 .NET 中表示安全上下文的标准方式。
+它在 ASP.NET Core 以及 WinUI 这类桌面框架中被大量使用。
+在 .NET MAUI 这类移动框架中,系统通常默认使用 iOS 和 Android 的原生实现来进行身份管理。
+principal 充当一个容器,装载与用户身份相关的全部信息,包括其角色、声明(claims)和具体权限。
 
-### Key concepts
+### 核心概念
 
-*   **IPrincipal and ClaimsPrincipal**: The core interfaces and classes used to manage user identity and security context.
-*   **Security Context**: The colloquial name for the principal, where user roles and permissions are stored.
-*   **Thread Propagation**: The mechanism by which identity information is moved between threads during asynchronous operations.
-*   **ExecutionContext**: The .NET internal mechanism responsible for saving and restoring context (including the principal) across thread switches.
-*   **Legacy vs. Modern .NET**: The evolution of principal handling from thread-specific (pre-.NET Framework 4.5) to context-propagated.
+*   **IPrincipal and ClaimsPrincipal**:用于管理用户身份和安全上下文的核心接口和类。
+*   **Security Context(安全上下文)**:principal 的通俗叫法,用户的角色和权限存储在其中。
+*   **Thread Propagation(线程传播)**:在异步操作期间,身份信息在线程之间传递的机制。
+*   **ExecutionContext**:.NET 的内部机制,负责在线程切换时保存和恢复上下文(包括 principal)。
+*   **Legacy vs. Modern .NET(旧版与现代 .NET)**:principal 的处理方式从绑定于线程(.NET Framework 4.5 之前)演进为随上下文传播。
 
-### Lesson notes
+### 课程笔记
 
-Historically, a principal could be manually assigned to the current thread's context using `Thread.CurrentPrincipal`.
-This tied the security identity strictly to the executing thread.
+在过去,可以使用 `Thread.CurrentPrincipal` 手动把一个 principal 赋给当前线程的上下文。
+这会把安全身份严格绑定到正在执行的线程上。
 
 ```csharp
 Thread.CurrentPrincipal = new GenericPrincipal(new WindowsIdentity("user"), new[] { "Admin" });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/?t=10)
 
-In modern ASP.NET Core applications, developers rarely need to interact with `Thread.CurrentPrincipal` directly because the framework handles identity propagation automatically.
-The application setup defines how authentication and authorization are handled within the request pipeline, typically configured in `Program.cs`.
+在现代 ASP.NET Core 应用中,开发者很少需要直接与 `Thread.CurrentPrincipal` 打交道,因为框架会自动处理身份的传播。
+应用的配置定义了在请求管道中如何处理身份验证和授权,通常在 `Program.cs` 中配置。
 
 ```csharp
 if (!app.Environment.IsDevelopment())
@@ -215,15 +227,15 @@ app.MapControllerRoute(
 app.Run();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/?t=70)
 
-Within a controller, the `User` property provides access to the `ClaimsPrincipal` (which implements `IPrincipal`).
-This object, along with the `HttpContext`, contains request-specific information that must remain consistent even when the execution context shifts between threads.
+在控制器中,`User` 属性提供对 `ClaimsPrincipal`(它实现了 `IPrincipal`)的访问。
+这个对象与 `HttpContext` 一起,包含请求特定的信息,即使执行上下文在线程之间切换,这些信息也必须保持一致。
 
-In older versions of .NET Framework (prior to version 4.5), switching threads during an asynchronous operation would often result in the loss of the security context.
-However, in modern .NET, the `ExecutionContext` ensures that this data is preserved.
-This can be demonstrated by forcing a thread yield during a sign-in operation using `ConfigureAwaitOptions.ForceYielding`.
-Even if the execution resumes on a different thread, the `HttpContext` and the `User` principal remain intact and authenticated.
+在旧版 .NET Framework(4.5 版本之前)中,在异步操作期间切换线程常常会导致安全上下文丢失。
+然而在现代 .NET 中,`ExecutionContext` 确保这些数据得以保留。
+这一点可以通过在登录操作中使用 `ConfigureAwaitOptions.ForceYielding` 强制让出线程来演示。
+即使执行在另一个线程上恢复,`HttpContext` 和 `User` principal 仍然完好无损,并保持已认证状态。
 
 ```csharp
 public class AccountController : Controller
@@ -258,34 +270,34 @@ public class AccountController : Controller
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/principal-62197167/?t=100)
 
-This automatic propagation of the `IPrincipal` and `HttpContext` via the `ExecutionContext` is a core feature of modern .NET, resolving historical issues where user identity was lost during asynchronous context switches.
+通过 `ExecutionContext` 自动传播 `IPrincipal` 和 `HttpContext`,是现代 .NET 的一项核心特性,它解决了用户身份在异步上下文切换期间丢失的历史问题。
 
 ---
 
 ## 4. ExecutionContext
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/) · 13:33
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/) · 13:33
 
-The ExecutionContext is a fundamental .NET mechanism that enables the propagation of ambient state—such as security principals, culture settings, and AsyncLocal<T> data—across asynchronous operations and thread boundaries.
-While async/await handles this "flow" automatically, developers can manually capture, run, or suppress the context to control how information is shared between threads, ensuring that logical execution state remains consistent even as physical threads change.
+ExecutionContext 是 .NET 的一项基础机制,它使环境状态(例如安全 principal、区域性设置以及 AsyncLocal<T> 数据)能够跨异步操作和线程边界传播。
+虽然 async/await 会自动处理这种"流动(flow)",但开发者也可以手动捕获、运行或抑制该上下文,以控制信息在线程之间如何共享,确保即使物理线程发生变化,逻辑上的执行状态也保持一致。
 
-### Key concepts
+### 核心概念
 
-- **Ambient State Propagation**: Automatically carries information like `CultureInfo.CurrentCulture`, `Thread.CurrentPrincipal`, and `AsyncLocal<T>` across threads.
-- **Automatic Flow**: The `async` and `await` keywords automatically handle the capturing and restoring of the `ExecutionContext` when moving between threads.
-- **Immutability**: The context is immutable once set, which prevents accidental overrides during the execution of a task.
-- **Manual Control**: Developers can use `ExecutionContext.Capture()` and `ExecutionContext.Run()` to manually move context, or `ExecutionContext.SuppressFlow()` to prevent propagation for security or performance reasons.
+- **Ambient State Propagation(环境状态传播)**:自动在线程之间携带 `CultureInfo.CurrentCulture`、`Thread.CurrentPrincipal` 和 `AsyncLocal<T>` 等信息。
+- **Automatic Flow(自动流动)**:`async` 和 `await` 关键字在线程之间切换时,会自动处理 `ExecutionContext` 的捕获与恢复。
+- **Immutability(不可变性)**:上下文一旦设置就是不可变的,这可以防止在任务执行期间被意外覆盖。
+- **Manual Control(手动控制)**:开发者可以使用 `ExecutionContext.Capture()` 和 `ExecutionContext.Run()` 手动转移上下文,或者出于安全或性能原因,使用 `ExecutionContext.SuppressFlow()` 阻止其传播。
 
-### Lesson notes
+### 课程笔记
 
-.NET uses the `ExecutionContext` to ensure that information specific to a logical flow of execution is preserved even when that execution moves between different physical threads.
-This includes security context (e.g., `IPrincipal`), synchronization context (used to return to a specific thread, like the UI thread), and culture information (language settings).
+.NET 使用 `ExecutionContext` 来确保某个逻辑执行流特有的信息得以保留,即使该执行在不同的物理线程之间移动。
+这包括安全上下文(例如 `IPrincipal`)、同步上下文(用于回到特定线程,比如 UI 线程)以及区域性信息(语言设置)。
 
-#### Initializing Ambient State
+#### 初始化环境状态
 
-In the following example, we initialize several values that are managed by the `ExecutionContext`: a specific culture (Spanish), a security principal, and a value stored in an `AsyncLocal<string>`.
+在下面的示例中,我们初始化了几个由 `ExecutionContext` 管理的值:一个特定的区域性(西班牙语)、一个安全 principal,以及一个存储在 `AsyncLocal<string>` 中的值。
 
 ```csharp
 using System.Globalization;
@@ -310,9 +322,9 @@ public static class Program
         PrintThreadValues();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=100)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=100)
 
-The `PrintThreadValues` helper method demonstrates how these values are accessed from the current thread using standard .NET APIs:
+`PrintThreadValues` 辅助方法演示了如何使用标准 .NET API 从当前线程访问这些值:
 
 ```csharp
     static void PrintThreadValues()
@@ -326,13 +338,13 @@ The `PrintThreadValues` helper method demonstrates how these values are accessed
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=190)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=190)
 
-#### Manual Context Manipulation
+#### 手动操作上下文
 
-While `async/await` is the preferred way to handle asynchronous work, manually creating threads demonstrates how the `ExecutionContext` can be captured and applied.
-If a new thread is started without flowing the context, it will use the system's default values.
-However, by using `ExecutionContext.Capture()` and `ExecutionContext.Run()`, we can force a background thread to execute within the context of the main thread.
+虽然 `async/await` 是处理异步工作的首选方式,但手动创建线程可以演示 `ExecutionContext` 是如何被捕获和应用的。
+如果启动一个新线程时没有让上下文流动过去,它将使用系统的默认值。
+然而,通过使用 `ExecutionContext.Capture()` 和 `ExecutionContext.Run()`,我们可以强制后台线程在主线程的上下文中执行。
 
 ```csharp
         var mainThreadExecutionContext = ExecutionContext.Capture() ?? throw new InvalidOperationException("ExecutionContext only null when suppressed");
@@ -358,14 +370,30 @@ However, by using `ExecutionContext.Capture()` and `ExecutionContext.Run()`, we 
         thread.Join();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=250)
 
-In this scenario, even though the code is running on a background thread, the call to `ExecutionContext.Run` restores the Spanish culture and the original `AsyncLocal` value captured from the main thread.
+在这个场景中,尽管代码运行在后台线程上,对 `ExecutionContext.Run` 的调用仍会恢复从主线程捕获的西班牙语区域性和原始的 `AsyncLocal` 值。
 
-#### Automatic Flow with Async/Await
+```text
+ Main thread                         Background thread
+ +-----------------------------+     +--------------------------------+
+ | es-ES                       |     | en-UK                          |
+ | ClaimsPrincipal             |     | DomeTrainPrinciple             |
+ | "Initial Value"             |     | "AsyncLocalData in Thread"     |
+ +-----------------------------+     +--------------------------------+
+        |                                          |
+        | ExecutionContext.Capture()               |
+        v                                          v
+ mainThreadExecutionContext ------> ExecutionContext.Run(...)
+                                     +--------------------------------+
+                                     | es-ES, "Initial Value"         |
+                                     +--------------------------------+
+```
 
-When using `Task.Run` with `await`, .NET automatically flows the `ExecutionContext`.
-This is the standard behavior that developers rely on to ensure that user identity or culture settings persist across asynchronous boundaries.
+#### 使用 Async/Await 自动流动
+
+在使用 `Task.Run` 搭配 `await` 时,.NET 会自动让 `ExecutionContext` 流动。
+这是开发者所依赖的标准行为,用来确保用户身份或区域性设置能够跨越异步边界保持下去。
 
 ```csharp
         await Task.Run(() =>
@@ -375,12 +403,12 @@ This is the standard behavior that developers rely on to ensure that user identi
         });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=550)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=550)
 
-#### Suppressing the Flow
+#### 抑制流动
 
-In some cases, such as when dealing with highly sensitive information or for performance optimization in low-level code, you may want to prevent the `ExecutionContext` from flowing to new threads.
-This is achieved using `ExecutionContext.SuppressFlow()`.
+在某些情况下,例如处理高度敏感的信息时,或者为了在底层代码中进行性能优化,你可能希望阻止 `ExecutionContext` 流向新线程。
+这可以通过 `ExecutionContext.SuppressFlow()` 实现。
 
 ```csharp
         // Prevent async/await from automatically flowing the ExecutionContext
@@ -395,44 +423,44 @@ This is achieved using `ExecutionContext.SuppressFlow()`.
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=610)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/executioncontext-62197168/?t=610)
 
-After suppressing the flow, the background thread will revert to default values (e.g., the OS default culture and a null principal), as it no longer receives the context from the calling thread.
-If needed, flow can be restored using `ExecutionContext.RestoreFlow()`.
+抑制流动之后,后台线程会回退到默认值(例如操作系统默认的区域性和一个为 null 的 principal),因为它不再从调用线程接收上下文。
+如有需要,可以使用 `ExecutionContext.RestoreFlow()` 恢复流动。
 
 ---
 
 ## 5. SynchronizationContext
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/synchronizationcontext-62197169/) · 12:39
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/synchronizationcontext-62197169/) · 12:39
 
-### Summary
+### 总结
 
-The SynchronizationContext is a .NET abstraction that manages the execution of asynchronous code, primarily enabling UI frameworks to marshal execution back to the original calling thread (the UI thread) after an awaited task completes.
-By default, await captures the current context to resume execution on it, but developers can opt out using ConfigureAwait(false), which sets the context to null and allows the continuation to run on any available thread pool thread.
-While critical for traditional UI applications like .NET MAUI or WinForms, modern web frameworks like ASP.NET Core and Blazor do not use a SynchronizationContext, relying instead on request-scoped data or browser event loops.
+SynchronizationContext 是 .NET 中管理异步代码执行的一个抽象,其主要作用是让 UI 框架在被 await 的任务完成后,把执行封送(marshal)回原来的调用线程(UI 线程)。
+默认情况下,await 会捕获当前上下文以便在其上恢复执行,但开发者可以使用 ConfigureAwait(false) 选择不这样做,它会把上下文设为 null,并允许后续代码在任意可用的线程池线程上运行。
+虽然它对 .NET MAUI 或 WinForms 这类传统 UI 应用至关重要,但 ASP.NET Core 和 Blazor 这类现代 Web 框架并不使用 SynchronizationContext,而是依赖请求范围的数据或浏览器事件循环。
 
-### Key concepts
+### 核心概念
 
-* **Context Capture**: The mechanism where `await` stores the current `SynchronizationContext` to resume execution on the same thread.
-* **UI Marshalling**: Using framework-specific implementations (e.g., `UIKitSynchronizationContext` for iOS) to interact with UI elements safely from background tasks.
-* **ConfigureAwait(false)**: A method to bypass context capture, improving performance and avoiding deadlocks by allowing continuations on the thread pool.
-* **HttpContext**: The ASP.NET Core alternative for managing request-scoped state in the absence of a `SynchronizationContext`.
-* **Browser Render Loop**: The mechanism used by Blazor and web browsers to handle UI updates without a dedicated .NET `SynchronizationContext`.
+* **Context Capture(上下文捕获)**:`await` 存储当前 `SynchronizationContext`,以便在同一线程上恢复执行的机制。
+* **UI Marshalling(UI 封送)**:使用框架特定的实现(例如 iOS 上的 `UIKitSynchronizationContext`),从后台任务中安全地与 UI 元素交互。
+* **ConfigureAwait(false)**:一种绕过上下文捕获的方法,通过允许后续代码在线程池上运行来提升性能并避免死锁。
+* **HttpContext**:在没有 `SynchronizationContext` 的情况下,ASP.NET Core 用于管理请求范围状态的替代方案。
+* **Browser Render Loop(浏览器渲染循环)**:Blazor 和 Web 浏览器在没有专门的 .NET `SynchronizationContext` 的情况下处理 UI 更新的机制。
 
-### Lesson notes
+### 课程笔记
 
-The `SynchronizationContext` is the underlying mechanism .NET uses to manage asynchronous code execution and route continuations back to the appropriate thread.
-This is particularly vital in UI frameworks where only the main thread (the UI thread) is permitted to update the user interface.
+`SynchronizationContext` 是 .NET 用来管理异步代码执行、并把后续代码路由回合适线程的底层机制。
+这在 UI 框架中尤为重要,因为在 UI 框架中只有主线程(UI 线程)被允许更新用户界面。
 
-#### Context in UI Frameworks
+#### UI 框架中的上下文
 
-In a UI application, such as a .NET MAUI app, the UI thread typically initiates actions like a "pull to refresh."
-When an asynchronous method reaches an `await` keyword, the current thread is released to remain responsive to the user.
-Under the hood, the .NET runtime captures the `SynchronizationContext` associated with that thread.
-When the task completes, the runtime uses this captured context to marshal the execution back to the original thread.
+在 UI 应用中,例如一个 .NET MAUI 应用,通常由 UI 线程发起"下拉刷新"之类的操作。
+当异步方法执行到 `await` 关键字时,当前线程会被释放,以保持对用户的响应。
+在底层,.NET 运行时会捕获与该线程关联的 `SynchronizationContext`。
+当任务完成时,运行时使用这个捕获到的上下文把执行封送回原来的线程。
 
-In the following example, we track the thread identity before and after an awaited operation to observe this behavior:
+在下面的示例中,我们跟踪被 await 的操作前后的线程身份,以观察这一行为:
 
 ```csharp
 [RelayCommand]
@@ -467,21 +495,35 @@ async Task Refresh(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/synchronizationcontext-62197169/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/synchronizationcontext-62197169/?t=130)
 
-#### Internal Implementation
+#### 内部实现
 
-While the `SynchronizationContext` is a private field within the `Thread` class, it can be inspected during debugging.
-In a .NET MAUI application running on iOS, this field holds an instance of `UIKitSynchronizationContext`.
-This class implements the standard .NET `SynchronizationContext` but uses iOS's `UIKit` under the hood to handle thread marshalling.
+虽然 `SynchronizationContext` 是 `Thread` 类中的一个私有字段,但可以在调试时查看它。
+在运行于 iOS 上的 .NET MAUI 应用中,这个字段保存的是一个 `UIKitSynchronizationContext` 实例。
+这个类实现了标准的 .NET `SynchronizationContext`,但在底层使用 iOS 的 `UIKit` 来处理线程封送。
 
-#### Disabling Context Capture
+#### 禁用上下文捕获
 
-When we use `ConfigureAwait(false)`, we explicitly tell the runtime not to capture the `SynchronizationContext`.
-This effectively sets the context to `null` for the continuation of that method.
-When the awaited task finishes, the runtime sees the `null` context and simply picks any available thread from the thread pool to continue execution.
+当我们使用 `ConfigureAwait(false)` 时,就是明确告诉运行时不要捕获 `SynchronizationContext`。
+这实际上会把该方法后续代码的上下文设为 `null`。
+当被 await 的任务完成时,运行时看到上下文为 `null`,就会直接从线程池中挑选任意一个可用线程来继续执行。
 
-This can also be achieved using the newer `ConfigureAwaitOptions` enum:
+```text
+ UI thread: await ...
+      |
+      +-- default ----------------> capture SynchronizationContext
+      |                               |  task completes
+      |                               v
+      |                             marshal back to UI thread
+      |
+      +-- ConfigureAwait(false) --> context = null
+                                      |  task completes
+                                      v
+                                    any thread pool thread
+```
+
+这也可以使用较新的 `ConfigureAwaitOptions` 枚举来实现:
 
 ```csharp
 await foreach (var story in GetTopStories(storyCount: StoriesConstants.NumberOfStories, token).ConfigureAwait(ConfigureAwaitOptions.None))
@@ -493,16 +535,16 @@ await foreach (var story in GetTopStories(storyCount: StoriesConstants.NumberOfS
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/synchronizationcontext-62197169/?t=415)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/synchronizationcontext-62197169/?t=415)
 
-Both `ConfigureAwait(false)` and `ConfigureAwaitOptions.None` perform the same action: they prevent the runtime from attempting to marshal back to the calling thread, which is a best practice for library code and non-UI logic to avoid performance overhead and potential deadlocks.
+`ConfigureAwait(false)` 和 `ConfigureAwaitOptions.None` 执行的是相同的操作:它们阻止运行时尝试封送回调用线程,这是库代码和非 UI 逻辑的最佳实践,可以避免性能开销和潜在的死锁。
 
-#### Frameworks Without SynchronizationContext
+#### 没有 SynchronizationContext 的框架
 
-Not all .NET frameworks utilize a `SynchronizationContext`:
+并非所有 .NET 框架都使用 `SynchronizationContext`:
 
-*   **ASP.NET Core**: This is the only major UI-adjacent framework that does not have a `SynchronizationContext`. UI updates (HTML/CSS/JS) are rendered on the server and sent to the browser, which handles the actual rendering loop. Instead of a `SynchronizationContext`, ASP.NET Core uses `HttpContext` to manage request-scoped data (headers, cookies, session). This can be accessed via `IHttpContextAccessor` in services.
-*   **Blazor Server**: UI updates are processed on the server and sent to the browser via SignalR. The browser then renders these updates in its own rendering loop, removing the need for a server-side `SynchronizationContext`.
-*   **Blazor WebAssembly**: Everything runs locally on the device within the browser's event loop. The browser manages a render queue for UI components, so standard .NET thread marshalling via `SynchronizationContext` is not required.
+*   **ASP.NET Core**:这是唯一一个没有 `SynchronizationContext` 的主要 UI 相关框架。UI 更新(HTML/CSS/JS)在服务器上渲染后发送到浏览器,由浏览器处理实际的渲染循环。ASP.NET Core 不使用 `SynchronizationContext`,而是使用 `HttpContext` 来管理请求范围的数据(headers、cookies、session)。在服务中可以通过 `IHttpContextAccessor` 访问它。
+*   **Blazor Server**:UI 更新在服务器上处理,并通过 SignalR 发送到浏览器。随后浏览器在自己的渲染循环中渲染这些更新,从而不再需要服务器端的 `SynchronizationContext`。
+*   **Blazor WebAssembly**:所有内容都在设备本地、在浏览器的事件循环中运行。浏览器为 UI 组件管理一个渲染队列,因此不需要通过 `SynchronizationContext` 进行标准的 .NET 线程封送。
 
-In these frameworks, `async`/`await` will always continue on whatever thread is available in the thread pool, as there is no context to capture.
+在这些框架中,`async`/`await` 总是会在线程池中任意可用的线程上继续执行,因为没有可捕获的上下文。
