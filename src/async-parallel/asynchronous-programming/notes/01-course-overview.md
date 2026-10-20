@@ -1,114 +1,104 @@
 # Course overview
 
-> Course: [From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · Chapter 1
-> 3 lessons · ~3:40
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Asynchronous Programming in C#](https://dometrain.com/course/from-zero-to-hero-asynchronous-programming-in-csharp/) · 第 1 章
+> 共 3 课 · 约 3:40
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
----
-
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Welcome](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/welcome-62197104/) | 1:05 | [↓](#1-welcome) |
 | 2 | [What will you learn in this course?](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/what-will-you-learn-in-this-course-62197106/) | 1:46 | [↓](#2-what-will-you-learn-in-this-course) |
 | 3 | [Who is the course for and prerequisites](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/who-is-the-course-for-and-prerequisites-62197107/) | 0:49 | [↓](#3-who-is-the-course-for-and-prerequisites) |
 
----
-
 ## 1. Welcome
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/welcome-62197104/) · 1:05
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/welcome-62197104/) · 1:05
 
-### Summary
+### 总结
 
-This lesson introduces the "From Zero to Hero: Asynchronous Programming in C#" course, presented by Brandon Minnick.
-It sets the stage for a deep dive into the internals of .NET asynchronous programming, leveraging the instructor's decade of experience and extensive background in presenting on this topic at global conferences.
+本课介绍由 Brandon Minnick 主讲的 "From Zero to Hero: Asynchronous Programming in C#" 课程。
+它借助讲师十年的经验以及在全球各地会议上讲授这一主题的丰富背景,为深入探究 .NET 异步编程的内部机制做好铺垫。
 
-### Key concepts
+### 核心概念
 
-- Instructor background in .NET, Xamarin, Microsoft, and AWS.
-- Focus on the internal mechanics of asynchronous programming in C#.
-- Extended format allowing for a more thorough exploration than standard conference sessions.
+- 讲师在 .NET、Xamarin、Microsoft 和 AWS 方面的背景。
+- 聚焦于 C# 异步编程的内部机制。
+- 更长的形式,能够比标准的会议演讲进行更透彻的探讨。
 
-### Lesson notes
+### 课程笔记
 
-Brandon Minnick introduces himself as a C# developer with over a decade of experience in the .NET ecosystem, including roles at Xamarin, Microsoft, and AWS.
-Throughout his career, he has specialized in the internals of asynchronous programming in .NET.
+Brandon Minnick 介绍自己是一名 C# 开发者,在 .NET 生态中拥有十多年经验,曾在 Xamarin、Microsoft 和 AWS 任职。
+在整个职业生涯中,他专注于 .NET 中异步编程的内部机制。
 
-Since 2018, Minnick has delivered numerous conference presentations on async/await.
-However, the constraints of a one-hour talk often limit the depth of information that can be shared.
-This course, hosted on Dometrain, removes those time constraints, allowing for a comprehensive transfer of knowledge regarding how asynchronous programming functions in C#.
-The following modules will detail the specific learning objectives and technical content covered in the curriculum.
-
----
+自 2018 年以来,Minnick 已经做过许多关于 async/await 的会议演讲。
+然而,一小时演讲的限制往往会制约所能分享的信息深度。
+这门托管在 Dometrain 上的课程消除了这些时间限制,从而能够全面地传授关于 C# 中异步编程如何运作的知识。
+接下来的模块将详细介绍课程中具体的学习目标和所涵盖的技术内容。
 
 ## 2. What will you learn in this course?
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/what-will-you-learn-in-this-course-62197106/) · 1:46
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/what-will-you-learn-in-this-course-62197106/) · 1:46
 
-### Summary
+### 总结
 
-This lesson provides an overview of the "From Zero to Hero: Asynchronous Programming in C#" course, outlining the progression from basic async/await usage to deep architectural internals.
-It covers the distinction between parallelism and asynchrony, the compiler's transformation of asynchronous methods into state machines, the creation of custom task-like types, and advanced runtime concepts like execution and synchronization contexts.
+本课概览 "From Zero to Hero: Asynchronous Programming in C#" 课程,勾勒出从基本的 async/await 用法到深层架构内部机制的学习进程。
+它涵盖并行与异步的区别、编译器将异步方法转换为状态机的过程、自定义类 Task 类型的创建,以及执行上下文和同步上下文等高级运行时概念。
 
-### Key concepts
+### 核心概念
 
-*   **Asynchronous vs. Parallel Programming**: Understanding the fundamental differences and how they interact within the .NET ecosystem.
-*   **Compiler-Generated Code**: Analyzing the state machine and structs created by the C# compiler when using the `async` keyword.
-*   **Custom Task Implementation**: Building a custom task-like type to understand the internal mechanisms of the .NET `Task` class.
-*   **Asynchronous Best Practices**: Optimizing code using `ValueTask` and managing context with `ConfigureAwait(false)`.
-*   **Runtime Internals**: Exploring `ExecutionContext`, `SynchronizationContext`, `ThreadStatic`, and `IPrincipal` to understand how state is managed across asynchronous boundaries.
+*   **Asynchronous vs. Parallel Programming(异步编程与并行编程)**:理解两者的根本区别,以及它们在 .NET 生态中如何相互作用。
+*   **Compiler-Generated Code(编译器生成的代码)**:分析使用 `async` 关键字时 C# 编译器创建的状态机和 struct。
+*   **Custom Task Implementation(自定义 Task 实现)**:构建一个自定义的类 Task 类型,以理解 .NET `Task` 类的内部机制。
+*   **Asynchronous Best Practices(异步最佳实践)**:使用 `ValueTask` 优化代码,并用 `ConfigureAwait(false)` 管理上下文。
+*   **Runtime Internals(运行时内部机制)**:探究 `ExecutionContext`、`SynchronizationContext`、`ThreadStatic` 和 `IPrincipal`,以理解状态如何跨越异步边界进行管理。
 
-### Lesson notes
+### 课程笔记
 
-The course begins by establishing a clear distinction between asynchronous programming and parallel programming.
-While these concepts are often used together, they serve different purposes in C# development.
-The curriculum explores how the `async` and `await` keywords facilitate these patterns and how they interact with the underlying thread pool.
+课程首先明确区分异步编程和并行编程。
+虽然这两个概念经常一起使用,但它们在 C# 开发中服务于不同的目的。
+课程内容探讨 `async` 和 `await` 关键字如何促成这些模式,以及它们如何与底层线程池交互。
 
-A significant portion of the course is dedicated to the internals of the C# compiler.
-When a method is marked with the `async` keyword and returns a `Task`, the compiler generates a hidden state machine, typically implemented as a `struct`.
-Understanding this generated code is crucial for mastering how asynchronous execution is managed, how continuations are scheduled, and how local variables are preserved across suspension points.
+课程中相当大的一部分专门讲解 C# 编译器的内部机制。
+当一个方法被标记为 `async` 关键字并返回 `Task` 时,编译器会生成一个隐藏的状态机,它通常实现为一个 `struct`。
+理解这段生成的代码,对于掌握异步执行如何被管理、continuation 如何被调度,以及局部变量如何跨越挂起点得以保留至关重要。
 
-To further solidify understanding of the `Task` class in the .NET runtime, the course involves building a custom task implementation from scratch.
-This exercise demonstrates how the underlying mechanisms of task-based asynchrony function—such as completion sources and awaiters—and shows how to enable `async`/`await` support for custom types by implementing the required patterns.
+为了进一步巩固对 .NET 运行时中 `Task` 类的理解,课程会从零开始构建一个自定义的 task 实现。
+这个练习演示了基于 task 的异步的底层机制(例如 completion source 和 awaiter)如何运作,并展示了如何通过实现所需的模式,为自定义类型启用 `async`/`await` 支持。
 
-The course also covers industry best practices for writing efficient asynchronous code.
-This includes leveraging `ValueTask` for performance-critical paths to reduce heap allocations and using `ConfigureAwait(false)` to manage context switching and prevent potential deadlocks in specific environment types.
+课程还涵盖了编写高效异步代码的行业最佳实践。
+这包括在性能关键路径上利用 `ValueTask` 来减少堆分配,以及使用 `ConfigureAwait(false)` 来管理上下文切换,并在特定类型的环境中防止潜在的死锁。
 
-Finally, the curriculum delves into advanced .NET runtime internals.
-This includes exploring how data and security state are preserved across asynchronous boundaries using `ExecutionContext` and `SynchronizationContext`.
-It also covers the roles of `ThreadStatic` and `IPrincipal` in asynchronous environments to provide a complete picture of how the .NET runtime handles identity and state during context shifts.
-
----
+最后,课程深入探讨高级的 .NET 运行时内部机制。
+这包括探究如何使用 `ExecutionContext` 和 `SynchronizationContext` 在异步边界之间保留数据和安全状态。
+它还涵盖了 `ThreadStatic` 和 `IPrincipal` 在异步环境中的作用,从而完整呈现 .NET 运行时在上下文切换期间如何处理身份和状态。
 
 ## 3. Who is the course for and prerequisites
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/who-is-the-course-for-and-prerequisites-62197107/) · 0:49
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-asynchronous-programming-in-csharp-3002112/who-is-the-course-for-and-prerequisites-62197107/) · 0:49
 
-### Summary
+### 总结
 
-This lesson defines the target audience for the course as advanced C# developers.
-It emphasizes that while the course is open to all, it assumes prior experience with asynchronous programming concepts, specifically the use of the async and await keywords and the Task library, as the curriculum focuses on internal mechanics rather than basic syntax.
+本课将课程的目标受众定义为高级 C# 开发者。
+它强调,虽然课程面向所有人开放,但由于课程内容聚焦于内部机制而非基础语法,它假定学员已有异步编程概念的经验,特别是 async 和 await 关键字以及 Task 库的使用。
 
-### Key concepts
+### 核心概念
 
-* Target audience: Advanced C# developers.
-* Prerequisite knowledge: Practical experience with `async`, `await`, and the `Task` class.
-* Course focus: Internal implementation and "under the hood" mechanics of asynchronous programming.
+* 目标受众:高级 C# 开发者。
+* 前置知识:使用 `async`、`await` 和 `Task` 类的实践经验。
+* 课程重点:异步编程的内部实现和"底层"机制。
 
-### Lesson notes
+### 课程笔记
 
-This course is designed for advanced C# developers.
-The curriculum assumes that students have prior experience writing C# code and are familiar with the Task-based Asynchronous Pattern (TAP), specifically the use of the `async` and `await` keywords.
+本课程是为高级 C# 开发者设计的。
+课程内容假定学员已有编写 C# 代码的经验,并且熟悉基于任务的异步模式(Task-based Asynchronous Pattern,TAP),特别是 `async` 和 `await` 关键字的使用。
 
-The primary objective of this course is to explore the internal mechanics and "under the hood" implementation of asynchronous programming in .NET.
-It is not an introductory guide to basic syntax.
+本课程的主要目标是探究 .NET 中异步编程的内部机制和"底层"实现。
+它不是一份基础语法的入门指南。
 
-For developers new to these concepts, it is recommended to first complete introductory courses covering:
+对于初次接触这些概念的开发者,建议先完成涵盖以下内容的入门课程:
 
-- The `async` and `await` keywords.
-- The `Task` and `Task<T>` classes.
-- Basic parallel programming.
+- `async` 和 `await` 关键字。
+- `Task` 和 `Task<T>` 类。
+- 基础的并行编程。
 
-Gaining practical experience with these fundamentals is essential before proceeding to the deep technical analysis provided in this course.
+在进入本课程提供的深入技术分析之前,获得这些基础知识的实践经验是必不可少的。
