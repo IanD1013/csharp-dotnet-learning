@@ -1,14 +1,12 @@
 # The Parallel class
 
-> Course: [From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · Chapter 4
-> 5 lessons · ~51:34
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · 第 4 章
+> 共 5 课 · 约 51:34
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Parallel.Invoke](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/) | 17:14 | [↓](#1-parallelinvoke) |
 | 2 | [Parallel.For](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/) | 8:27 | [↓](#2-parallelfor) |
@@ -20,28 +18,28 @@
 
 ## 1. Parallel.Invoke
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/) · 17:14
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/) · 17:14
 
-### Summary
+### 总结
 
-Parallel.Invoke is a static method in the System.Threading.Tasks.Parallel class that enables the concurrent execution of multiple Action delegates.
-It is a synchronous, blocking operation, meaning the calling thread is held until all provided actions have finished.
-This method is particularly useful for offloading multiple independent, void-returning operations to the thread pool while providing granular control over concurrency and cancellation through ParallelOptions.
-Compared to Task.WaitAll, Parallel.Invoke offers superior performance through optimizations like task inlining and simplifies error handling by automatically unwrapping AggregateException to throw the specific underlying exception.
+Parallel.Invoke 是 System.Threading.Tasks.Parallel 类中的一个静态方法,可以并发执行多个 Action 委托。
+它是一个同步的阻塞操作,也就是说调用线程会被挂住,直到所有给定的 action 都执行完毕。
+当需要把多个相互独立、返回 void 的操作交给线程池执行,同时又想通过 ParallelOptions 对并发度和取消进行细粒度控制时,这个方法尤其有用。
+与 Task.WaitAll 相比,Parallel.Invoke 通过任务内联(task inlining)等优化提供了更好的性能,并且会自动解包 AggregateException、抛出具体的底层异常,从而简化了错误处理。
 
-### Key concepts
+### 核心概念
 
-- **Parallel Action Execution**: Runs multiple `Action` delegates concurrently.
-- **Blocking Behavior**: The calling thread is blocked at the point of invocation until all actions complete; it is not an asynchronous awaitable call.
-- **ParallelOptions**: Configures execution with a `CancellationToken` and `MaxDegreeOfParallelism`.
-- **MaxDegreeOfParallelism**: Limits the number of concurrent operations to manage CPU and thread pool resources.
-- **Performance Optimizations**: Includes task inlining and reduced overhead for single actions.
-- **Exception Unwrapping**: Automatically handles `AggregateException` to surface the primary exception.
+- **并行执行 Action**:并发运行多个 `Action` 委托。
+- **阻塞行为**:调用线程会在调用处被阻塞,直到所有 action 完成;它不是一个可 await 的异步调用。
+- **ParallelOptions**:通过 `CancellationToken` 和 `MaxDegreeOfParallelism` 配置执行方式。
+- **MaxDegreeOfParallelism**:限制并发操作的数量,以管理 CPU 和线程池资源。
+- **性能优化**:包括任务内联,以及在只有单个 action 时减少开销。
+- **异常解包**:自动处理 `AggregateException`,把主要异常暴露出来。
 
-### Lesson notes
+### 课程笔记
 
-`Parallel.Invoke` is a static method used to execute multiple operations simultaneously.
-A common use case is performing multiple independent I/O operations, such as writing different file streams in parallel.
+`Parallel.Invoke` 是一个用于同时执行多个操作的静态方法。
+一个常见的用例是执行多个相互独立的 I/O 操作,例如并行写入不同的文件流。
 
 ```csharp
 using var dentalRecordsFileStream =
@@ -76,19 +74,19 @@ Action[] actions =
 Parallel.Invoke(options, actions);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=40)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=40)
 
-#### Blocking and UI Threads
+#### 阻塞与 UI 线程
 
-It is critical to understand that `Parallel.Invoke` is a **blocking call**.
-Unlike asynchronous methods, it does not return a `Task` and cannot be awaited.
-When a thread calls `Parallel.Invoke`, it is held at that line of code until all background tasks finish.
-If this occurs on the UI thread (Main thread), the application will become unresponsive to user input, such as scrolling or button clicks, for the duration of the operations.
+关键是要理解 `Parallel.Invoke` 是一个**阻塞调用**。
+与异步方法不同,它不返回 `Task`,也不能被 await。
+当某个线程调用 `Parallel.Invoke` 时,它会停在那一行代码上,直到所有后台任务完成。
+如果这发生在 UI 线程(主线程)上,那么在这些操作执行期间,应用程序将无法响应用户输入,例如滚动或按钮点击。
 
-#### Implementation Example
+#### 实现示例
 
-To demonstrate parallel execution, we can use a `Food` class where the `Cook` method uses `Thread.Sleep` to simulate a blocking workload.
-This is appropriate for `Parallel.Invoke` because the method itself is designed for synchronous actions.
+为了演示并行执行,我们可以使用一个 `Food` 类,其中的 `Cook` 方法使用 `Thread.Sleep` 来模拟阻塞型工作负载。
+这很适合 `Parallel.Invoke`,因为该方法本身就是为同步 action 设计的。
 
 ```csharp
 using System.Diagnostics;
@@ -121,12 +119,12 @@ public class Gravy() : Food(TimeSpan.FromSeconds(1));
 public class Stuffing() : Food(TimeSpan.FromSeconds(2));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=475)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=475)
 
-In the main execution logic, we wrap the call in a `try-catch` block to handle `OperationCanceledException`.
-By setting `MaxDegreeOfParallelism`, we can control how many items are cooked at once.
-For instance, if set to 2, only two items will cook simultaneously, even if four are requested.
-This prevents thread pool exhaustion and CPU overload.
+在主执行逻辑中,我们把调用包在一个 `try-catch` 块里,以处理 `OperationCanceledException`。
+通过设置 `MaxDegreeOfParallelism`,我们可以控制同时烹饪多少道菜。
+例如,如果设为 2,即使请求了四道菜,也只会有两道同时烹饪。
+这可以防止线程池耗尽和 CPU 过载。
 
 ```csharp
 using System.Diagnostics;
@@ -158,14 +156,14 @@ catch (OperationCanceledException)
 Trace.WriteLine("Cooking Complete");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=565)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=565)
 
-#### Parallel.Invoke vs. Task.WaitAll
+#### Parallel.Invoke 与 Task.WaitAll 的对比
 
-`Parallel.Invoke` is often preferred over `Task.WaitAll` for several reasons:
+出于以下几个原因,`Parallel.Invoke` 通常比 `Task.WaitAll` 更受青睐:
 
-1.  **Performance**: It includes logic to run actions "in-line" on the calling thread if it saves resources, and it avoids the overhead of task creation if only a single action is provided.
-2.  **Exception Handling**: `Task.WaitAll` wraps exceptions in an `AggregateException`. To catch a specific error like a cancellation, you would need to inspect the `InnerExceptions` collection. `Parallel.Invoke` simplifies this by unwrapping the aggregate and throwing the actual exception encountered.
+1.  **性能**:如果能节省资源,它包含在调用线程上"内联"运行 action 的逻辑;如果只提供了一个 action,它还会避免创建任务的开销。
+2.  **异常处理**:`Task.WaitAll` 会把异常包装在 `AggregateException` 中。要捕获取消这类特定错误,你需要检查 `InnerExceptions` 集合。`Parallel.Invoke` 通过解包这个聚合异常并抛出实际遇到的异常,简化了这一点。
 
 ```csharp
 try
@@ -178,12 +176,12 @@ catch (AggregateException aggregateException) when (aggregateException.InnerExce
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=925)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=925)
 
-#### Internal Implementation
+#### 内部实现
 
-Under the hood, `Parallel.Invoke` validates the input, creates a defensive copy of the actions, and eventually uses `Task.WaitAll`.
-However, it does so only after applying various performance optimizations and ensuring the cancellation token is checked before work begins.
+在底层,`Parallel.Invoke` 会验证输入、为这些 action 创建一份防御性副本,并最终使用 `Task.WaitAll`。
+不过,它只会在应用了各种性能优化、并确保在工作开始前检查过取消令牌之后才这样做。
 
 ```csharp
 public static void Invoke(ParallelOptions parallelOptions, params Action[] actions)
@@ -206,36 +204,36 @@ public static void Invoke(ParallelOptions parallelOptions, params Action[] actio
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=980)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-invoke-69955981/?t=980)
 
 ---
 
 ## 2. Parallel.For
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/) · 8:27
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/) · 8:27
 
-### Summary
+### 总结
 
-Parallel.For is a blocking method in the Task Parallel Library that executes a for-loop in parallel by distributing iterations across background threads.
-It is configured using ParallelOptions to manage concurrency limits and cancellation.
-Because it blocks the calling thread until all iterations are finished, it is not suitable for use on UI threads without additional asynchronous wrapping.
-The method returns a ParallelLoopResult, which provides information about the loop's completion status and progress.
+Parallel.For 是 Task Parallel Library 中的一个阻塞方法,它把各次迭代分配到后台线程上,从而并行执行一个 for 循环。
+它通过 ParallelOptions 进行配置,以管理并发上限和取消。
+由于它会阻塞调用线程直到所有迭代都完成,如果不额外做异步包装,它不适合在 UI 线程上使用。
+该方法返回一个 ParallelLoopResult,提供关于循环完成状态和进度的信息。
 
-### Key concepts
+### 核心概念
 
-- **Blocking Call**: The method does not return until the entire loop is finished.
-- **Index-Based Action**: The loop body is an Action<int> that receives the current iteration index.
-- **ParallelOptions**: Used to set MaxDegreeOfParallelism and provide a CancellationToken.
-- **Sequential Loop Execution**: Multiple Parallel.For calls execute one after another, though iterations within each call run in parallel.
-- **ParallelLoopResult**: Returns status information, including IsCompleted and LowestBreakIteration.
+- **阻塞调用**:在整个循环结束之前,该方法不会返回。
+- **基于索引的 Action**:循环体是一个 Action<int>,它接收当前迭代的索引。
+- **ParallelOptions**:用于设置 MaxDegreeOfParallelism 并提供 CancellationToken。
+- **循环按顺序执行**:多个 Parallel.For 调用会一个接一个地执行,但每个调用内部的迭代是并行运行的。
+- **ParallelLoopResult**:返回状态信息,包括 IsCompleted 和 LowestBreakIteration。
 
-### Lesson notes
+### 课程笔记
 
-Parallel.For provides a way to execute a loop where each iteration can run in parallel.
-It is a blocking call, meaning the thread that initiates the call will wait until all iterations of the loop have finished.
-This makes it unsuitable for use on a UI thread if the operations are long-running, as it will freeze the interface.
+Parallel.For 提供了一种执行循环的方式,其中每次迭代都可以并行运行。
+它是一个阻塞调用,也就是说,发起调用的线程会一直等待,直到循环的所有迭代都完成。
+因此,如果操作耗时较长,它就不适合在 UI 线程上使用,因为它会让界面卡死。
 
-In a scenario involving processing medical records, Parallel.For can be configured with ParallelOptions to limit the number of concurrent operations.
+在一个处理病历的场景中,可以用 ParallelOptions 配置 Parallel.For,以限制并发操作的数量。
 
 ```csharp
 using var medicalRecordsFileStream =
@@ -257,15 +255,15 @@ Parallel.For(
 );
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=10)
 
-The method takes a starting index (inclusive), an ending index (exclusive), the options, and an action that accepts the current index as an integer.
-For example, if the loop starts at 0 and goes to 100, and the current iteration is 50, the index passed to the action will be 50.
+该方法接收一个起始索引(包含)、一个结束索引(不包含)、选项,以及一个以整数形式接收当前索引的 action。
+例如,如果循环从 0 开始到 100,而当前迭代是第 50 次,那么传给 action 的索引就是 50。
 
-#### Implementation Example: Parallel Cooking
+#### 实现示例:并行烹饪
 
-To demonstrate Parallel.For in a more complex scenario, consider a cooking application.
-The setup involves defining various food items and a cancellation token source.
+为了在更复杂的场景中演示 Parallel.For,设想一个烹饪应用。
+准备工作包括定义各种食物以及一个取消令牌源。
 
 ```csharp
 using System.Diagnostics;
@@ -300,10 +298,10 @@ catch (OperationCanceledException)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=115)
 
-When executing the loop, the MaxDegreeOfParallelism can be adjusted to control how many threads are used simultaneously.
-The action delegate must accept an integer representing the current iteration index.
+执行循环时,可以调整 MaxDegreeOfParallelism 来控制同时使用多少个线程。
+action 委托必须接收一个表示当前迭代索引的整数。
 
 ```csharp
 try
@@ -316,10 +314,10 @@ catch (OperationCanceledException)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=160)
 
-The Food base class and its derivatives handle the simulated cooking time using Thread.Sleep.
-The Cook method prints the current order number and the thread ID to demonstrate parallel execution.
+Food 基类及其派生类使用 Thread.Sleep 来处理模拟的烹饪时间。
+Cook 方法会打印当前的订单号和线程 ID,以展示并行执行。
 
 ```csharp
 using System.Diagnostics;
@@ -352,12 +350,12 @@ public class Gravy() : Food(TimeSpan.FromSeconds(1));
 public class Stuffing() : Food(TimeSpan.FromSeconds(2));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=175)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=175)
 
-#### Sequential Execution of Parallel Loops
+#### 并行循环的顺序执行
 
-Because Parallel.For is a blocking call, if multiple Parallel.For calls are placed one after another, they execute sequentially relative to each other.
-In the following example, all turkey orders must complete before the mashed potatoes begin cooking.
+由于 Parallel.For 是一个阻塞调用,如果把多个 Parallel.For 调用一个接一个地放置,它们彼此之间会按顺序执行。
+在下面的示例中,所有火鸡订单都必须完成,土豆泥才会开始烹饪。
 
 ```csharp
 try
@@ -373,13 +371,13 @@ catch (OperationCanceledException)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=205)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=205)
 
-#### Handling Results
+#### 处理结果
 
-Parallel.For returns a ParallelLoopResult object.
-This can be used to verify if the loop completed all iterations or to find the LowestBreakIteration if the loop was interrupted.
-If a CancellationToken is triggered, the loop will stop and throw an OperationCanceledException.
+Parallel.For 返回一个 ParallelLoopResult 对象。
+它可以用来验证循环是否完成了所有迭代,或者在循环被中断时找出 LowestBreakIteration。
+如果 CancellationToken 被触发,循环会停止并抛出 OperationCanceledException。
 
 ```csharp
 try
@@ -400,37 +398,37 @@ catch (OperationCanceledException)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=430)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-for-69955982/?t=430)
 
 ---
 
 ## 3. Parallel.ForAsync
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/) · 8:24
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/) · 8:24
 
-### Summary
+### 总结
 
-`Parallel.ForAsync` is an asynchronous version of the `Parallel.For` loop that enables non-blocking parallel execution.
-By returning a `Task`, it allows the calling thread to remain available while background operations proceed, making it particularly suitable for UI-bound or high-throughput applications.
-It supports asynchronous delegates and provides better integration with `CancellationToken` for graceful task cancellation compared to its synchronous counterpart.
+`Parallel.ForAsync` 是 `Parallel.For` 循环的异步版本,可以实现非阻塞的并行执行。
+它返回一个 `Task`,因此在后台操作进行期间,调用线程仍然可用,这使它特别适合受 UI 约束或高吞吐量的应用程序。
+与其同步版本相比,它支持异步委托,并能更好地与 `CancellationToken` 集成,从而优雅地取消任务。
 
-### Key concepts
+### 核心概念
 
-- **Non-blocking execution**: Returns a `Task` that can be awaited, releasing the calling thread to the thread pool or UI message loop.
-- **Asynchronous body**: Supports `Func<T, CancellationToken, ValueTask>` allowing the use of `await` inside the loop body.
-- **Cancellation propagation**: Passes a `CancellationToken` directly into each iteration's delegate, allowing asynchronous operations to fail gracefully.
-- **Thread safety**: Prevents UI freezing in desktop or mobile applications by avoiding blocking calls on the main thread.
-- **Task Composition**: Multiple `Parallel.ForAsync` operations can be initiated concurrently and awaited collectively using `Task.WhenAll`.
+- **非阻塞执行**:返回一个可以 await 的 `Task`,把调用线程释放回线程池或 UI 消息循环。
+- **异步循环体**:支持 `Func<T, CancellationToken, ValueTask>`,从而可以在循环体内使用 `await`。
+- **取消传播**:把 `CancellationToken` 直接传入每次迭代的委托,让异步操作可以优雅地失败。
+- **线程安全**:通过避免在主线程上进行阻塞调用,防止桌面或移动应用程序的 UI 卡死。
+- **任务组合**:可以同时发起多个 `Parallel.ForAsync` 操作,并使用 `Task.WhenAll` 统一等待它们。
 
-### Lesson notes
+### 课程笔记
 
-`Parallel.ForAsync` is functionally similar to `Parallel.For` but is designed for asynchronous workflows.
-It utilizes the `ParallelOptions` class to configure `CancellationToken` and `MaxDegreeOfParallelism`.
-The primary advantage of `Parallel.ForAsync` is that it is non-blocking.
-When the `await` keyword is used, the calling thread is returned to the system while the background operations—governed by the degree of parallelism—execute.
+`Parallel.ForAsync` 在功能上与 `Parallel.For` 类似,但它是为异步工作流设计的。
+它使用 `ParallelOptions` 类来配置 `CancellationToken` 和 `MaxDegreeOfParallelism`。
+`Parallel.ForAsync` 的主要优势在于它是非阻塞的。
+使用 `await` 关键字时,调用线程会归还给系统,而后台操作则在并行度的控制下执行。
 
-In the following example, `Parallel.ForAsync` is used to write to a file stream asynchronously.
-The calling thread hits the `await` keyword and is immediately freed, while 101 background actions (with a maximum of 10 running simultaneously) perform the work.
+在下面的示例中,`Parallel.ForAsync` 用于异步写入文件流。
+调用线程遇到 `await` 关键字后立即被释放,而 101 个后台操作(最多 10 个同时运行)负责完成这些工作。
 
 ```csharp
 using var medicalRecordsFileStream =
@@ -452,14 +450,14 @@ await Parallel.ForAsync(
 );
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=10)
 
-A significant difference in `Parallel.ForAsync` is how it handles cancellation.
-The loop body accepts a `CancellationToken` which is the same token passed via `ParallelOptions`.
-This allows the token to be propagated forward into asynchronous methods (like `WriteAsync`), enabling them to handle cancellation gracefully rather than being terminated abruptly.
+`Parallel.ForAsync` 的一个重要区别在于它处理取消的方式。
+循环体接收一个 `CancellationToken`,它与通过 `ParallelOptions` 传入的是同一个令牌。
+这样就可以把令牌继续传递给异步方法(例如 `WriteAsync`),让它们能够优雅地处理取消,而不是被突然终止。
 
-To demonstrate this in a more complex scenario, consider a cooking application.
-The `Food` base class and its derivatives define asynchronous `Cook` methods that simulate work using `Task.Delay`.
+为了在更复杂的场景中演示这一点,设想一个烹饪应用程序。
+`Food` 基类及其派生类定义了异步的 `Cook` 方法,使用 `Task.Delay` 模拟工作。
 
 ```csharp
 using System.Diagnostics;
@@ -492,10 +490,10 @@ public class Gravy() : Food(TimeSpan.FromSeconds(1));
 public class Stuffing() : Food(TimeSpan.FromSeconds(2));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=160)
 
-When executing multiple parallel loops, awaiting them sequentially ensures that one set of tasks completes before the next begins.
-In the following implementation, the turkey must finish cooking before the mashed potatoes start, because each `Parallel.ForAsync` call is awaited individually.
+执行多个并行循环时,依次 await 它们可以确保一组任务完成后下一组才开始。
+在下面的实现中,火鸡必须先烹饪完成,土豆泥才会开始,因为每个 `Parallel.ForAsync` 调用都是单独 await 的。
 
 ```csharp
 using ParallelForAsync;
@@ -534,11 +532,11 @@ catch
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=250)
 
-To run these parallel loops simultaneously, you can capture the `Task` returned by each `Parallel.ForAsync` call without immediately awaiting it.
-By using `Task.WhenAll`, all parallel loops are kicked off at once, and the application waits for the entire set of operations to complete.
-This combines the power of the `Parallel` class with standard asynchronous task composition.
+要让这些并行循环同时运行,可以捕获每个 `Parallel.ForAsync` 调用返回的 `Task`,而不立即 await 它。
+通过使用 `Task.WhenAll`,所有并行循环会一次性全部启动,应用程序则等待整组操作完成。
+这把 `Parallel` 类的能力与标准的异步任务组合结合了起来。
 
 ```csharp
 using System.Diagnostics;
@@ -576,35 +574,35 @@ catch
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=475)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-forasync-69955983/?t=475)
 
 ---
 
 ## 4. Parallel.ForEach
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/) · 11:51
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/) · 11:51
 
-### Summary
+### 总结
 
-Parallel.ForEach is a parallel alternative to the standard foreach loop, designed to iterate over an IEnumerable<T> or any collection that can be iterated.
-Unlike Parallel.For, which requires explicit start and end indices, Parallel.ForEach automatically partitions the provided collection and executes a specified action for each element.
-It is a blocking operation, meaning the calling thread is held until all iterations are finished.
-The method provides a delegate that grants access to the current item, the iteration index, and a ParallelLoopState object, which allows for fine-grained control over the loop's execution, including the ability to break or stop processing.
+Parallel.ForEach 是标准 foreach 循环的并行替代方案,用于遍历 IEnumerable<T> 或任何可遍历的集合。
+Parallel.For 需要显式指定起始和结束索引,而 Parallel.ForEach 则不同,它会自动对传入的集合进行分区,并为每个元素执行指定的操作。
+它是一个阻塞操作,也就是说,调用线程会被一直占住,直到所有迭代都完成。
+该方法提供一个委托,通过它可以访问当前项、迭代索引以及一个 ParallelLoopState 对象,该对象可以对循环的执行进行细粒度控制,包括中断或停止处理的能力。
 
-### Key concepts
+### 核心概念
 
-- Parallel iteration over `IEnumerable<T>` collections.
-- Blocking behavior on the calling thread.
-- Access to the current item, iteration index, and `ParallelLoopState`.
-- Loop control using `state.Break()` and `state.Stop()`.
-- Monitoring execution status via `ParallelLoopResult`.
-- Handling thread-safe operations within the loop body.
+- 对 `IEnumerable<T>` 集合进行并行迭代。
+- 对调用线程的阻塞行为。
+- 访问当前项、迭代索引以及 `ParallelLoopState`。
+- 使用 `state.Break()` 和 `state.Stop()` 控制循环。
+- 通过 `ParallelLoopResult` 监控执行状态。
+- 在循环体内处理线程安全的操作。
 
-### Lesson notes
+### 课程笔记
 
-`Parallel.ForEach` allows for the parallel execution of a loop over a collection, similar to how a standard `foreach` loop operates.
-Instead of specifying a starting and finishing index, a list or an `IEnumerable` is passed to the method.
-`Parallel.ForEach` then executes the provided action multiple times based on the items in the list.
+`Parallel.ForEach` 可以对一个集合并行执行循环,与标准 `foreach` 循环的运作方式类似。
+它不是指定起始索引和结束索引,而是把一个列表或一个 `IEnumerable` 传给该方法。
+随后 `Parallel.ForEach` 会根据列表中的项,多次执行所提供的操作。
 
 ```csharp
 List<Patient> patientList = GetPatients();
@@ -626,18 +624,18 @@ Parallel.ForEach(
         medicalRecordsFileStream.Write(patient.MedicalRecords));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=10)
 
-#### Blocking Behavior
+#### 阻塞行为
 
-`Parallel.ForEach` is a blocking call.
-If the UI thread or any calling thread reaches a `Parallel.ForEach` block, that thread is frozen and held captive until the entire list has been iterated over in parallel.
-Execution only continues once the parallel work is complete.
+`Parallel.ForEach` 是一个阻塞调用。
+如果 UI 线程或任何调用线程执行到一个 `Parallel.ForEach` 代码块,该线程就会被冻结并被一直占住,直到整个列表都被并行遍历完毕。
+只有在并行工作完成之后,执行才会继续。
 
-#### Implementation and Setup
+#### 实现与准备
 
-To demonstrate `Parallel.ForEach`, we can initialize collections using `Enumerable.Range`.
-This is a shorthand for creating an `IEnumerable` and selecting items to instantiate objects.
+为了演示 `Parallel.ForEach`,我们可以使用 `Enumerable.Range` 来初始化集合。
+这是一种简写方式,用来创建一个 `IEnumerable` 并通过选择其中的项来实例化对象。
 
 ```csharp
 const int numOrdersTurkey = 10;
@@ -663,10 +661,10 @@ List<Stuffing> stuffingOrders =
     Enumerable.Range(1, numOrdersStuffing).Select(static _ => new Stuffing()).ToList();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=130)
 
-The loop body receives the current item, the `ParallelLoopState`, and the current index.
-In this example, the `Cook` method is called synchronously because `Parallel.ForEach` is a blocking call and does not natively support `async/await` in this specific overload.
+循环体会接收当前项、`ParallelLoopState` 以及当前索引。
+在这个示例中,`Cook` 方法是同步调用的,因为 `Parallel.ForEach` 是一个阻塞调用,并且在这个特定的重载中并不原生支持 `async/await`。
 
 ```csharp
 try
@@ -682,14 +680,14 @@ catch
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=265)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=265)
 
-#### Controlling Loop State
+#### 控制循环状态
 
-The `ParallelLoopState` object provides methods to interrupt the loop: `Break()` and `Stop()`.
+`ParallelLoopState` 对象提供了两个用于中断循环的方法:`Break()` 和 `Stop()`。
 
-- **Break**: Tells the loop to cease execution of iterations beyond the current iteration at the system's earliest convenience. Iterations with an index lower than the break index will eventually be completed.
-- **Stop**: Tells the loop to cease execution for everything immediately, even if other iterations are currently running.
+- **Break**:告诉循环在系统最早方便的时候,停止执行当前迭代之后的迭代。索引低于中断索引的迭代最终仍会被完成。
+- **Stop**:告诉循环立即停止所有执行,即使其他迭代当前正在运行。
 
 ```csharp
 turkeyResult = Parallel.ForEach(turkeyOrders, options, body: (Turkey turkey, ParallelLoopState state, long index) =>
@@ -701,9 +699,9 @@ turkeyResult = Parallel.ForEach(turkeyOrders, options, body: (Turkey turkey, Par
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=550)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=550)
 
-When using `Stop()`, the loop terminates more aggressively:
+使用 `Stop()` 时,循环会以更激进的方式终止:
 
 ```csharp
 turkeyResult = Parallel.ForEach(turkeyOrders, options, body: (Turkey turkey, ParallelLoopState state, long index) =>
@@ -715,11 +713,11 @@ turkeyResult = Parallel.ForEach(turkeyOrders, options, body: (Turkey turkey, Par
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=595)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=595)
 
-#### Evaluating Results
+#### 评估结果
 
-The `ParallelLoopResult` structure contains information about whether the loop finished and where it was interrupted.
+`ParallelLoopResult` 结构体包含了循环是否已完成以及它在何处被中断的信息。
 
 ```csharp
 public struct ParallelLoopResult
@@ -729,10 +727,10 @@ public struct ParallelLoopResult
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=655)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=655)
 
-If `state.Break()` was never called (e.g., if the loop finished or if `state.Stop()` was used instead), `LowestBreakIteration` will be `null`.
-To ensure a loop finished successfully, check both `IsCompleted` and the `LowestBreakIteration` value.
+如果从未调用过 `state.Break()`(例如循环已经完成,或者改用了 `state.Stop()`),`LowestBreakIteration` 将为 `null`。
+要确保循环已成功完成,需要同时检查 `IsCompleted` 和 `LowestBreakIteration` 的值。
 
 ```csharp
 if (turkeyResult.HasValue
@@ -747,33 +745,33 @@ else
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=400)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreach-69955984/?t=400)
 
 ---
 
 ## 5. Parallel.ForEachAsync
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/) · 5:38
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/) · 5:38
 
-### Summary
+### 总结
 
-`Parallel.ForEachAsync` is an asynchronous version of the `Parallel.ForEach` method that returns a `Task`, allowing for non-blocking parallel execution.
-It is particularly useful in UI-bound applications where maintaining responsiveness is critical, as it allows the calling thread to remain free while background threads handle the parallel workload.
-The method supports `ParallelOptions` for controlling concurrency and cancellation, and its delegate provides a `CancellationToken` to ensure that asynchronous operations within the loop can fail gracefully.
+`Parallel.ForEachAsync` 是 `Parallel.ForEach` 方法的异步版本,它返回一个 `Task`,从而实现非阻塞的并行执行。
+它在需要保持界面响应的 UI 应用中尤其有用,因为它能让调用线程保持空闲,同时由后台线程处理并行工作负载。
+该方法支持用 `ParallelOptions` 控制并发度和取消,它的委托还会提供一个 `CancellationToken`,确保循环内的异步操作能够优雅地失败。
 
-### Key concepts
+### 核心概念
 
-- **Asynchronous Execution**: Returns a `Task` that can be awaited, making it compatible with `async/await` patterns.
-- **Non-blocking**: Prevents the calling thread (e.g., the UI thread) from freezing while parallel work is processed.
-- **ParallelOptions**: Allows configuration of the `CancellationToken` and `MaxDegreeOfParallelism`.
-- **Cancellation Support**: The loop delegate receives a `CancellationToken` to propagate cancellation to internal asynchronous calls.
-- **Task Composition**: Multiple parallel loops can be initiated as tasks and managed collectively using `Task.WhenAll`.
+- **异步执行**:返回一个可以 await 的 `Task`,因此与 `async/await` 模式兼容。
+- **非阻塞**:在处理并行工作时,防止调用线程(例如 UI 线程)被冻结。
+- **ParallelOptions**:允许配置 `CancellationToken` 和 `MaxDegreeOfParallelism`。
+- **取消支持**:循环委托会接收一个 `CancellationToken`,用于把取消传递给内部的异步调用。
+- **任务组合**:可以把多个并行循环作为任务发起,并使用 `Task.WhenAll` 统一管理。
 
-### Lesson notes
+### 课程笔记
 
-`Parallel.ForEachAsync` provides the same parallel iteration capabilities as `Parallel.ForEach` but is designed for asynchronous workflows.
-By returning a `Task`, it allows the application to await the completion of the parallel loop without blocking the execution thread.
-This is especially important for UI applications where blocking the main thread would result in a frozen interface.
+`Parallel.ForEachAsync` 提供与 `Parallel.ForEach` 相同的并行迭代能力,但它是为异步工作流设计的。
+由于返回一个 `Task`,它让应用可以 await 并行循环的完成,而不会阻塞执行线程。
+这对 UI 应用尤其重要,因为阻塞主线程会导致界面冻结。
 
 ```csharp
 List<Patient> patientList = GetPatients();
@@ -795,13 +793,13 @@ await Parallel.ForEachAsync(
         medicalRecordsFileStream.WriteAsync(patient.MedicalRecords, token));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=10)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=10)
 
-In this example, the `WriteAsync` method is passed the `CancellationToken` provided by the `Parallel.ForEachAsync` delegate.
-This ensures that if the loop is canceled or times out, the asynchronous write operation can terminate gracefully.
+在这个示例中,`WriteAsync` 方法接收的是 `Parallel.ForEachAsync` 委托提供的 `CancellationToken`。
+这确保了当循环被取消或超时时,异步写入操作能够优雅地终止。
 
-To demonstrate this in a more complex scenario, consider a food preparation system where different types of food have different cooking times.
-The `Food` base class and its derived types use `Task.Delay` to simulate asynchronous work.
+为了在更复杂的场景中演示这一点,设想一个食物准备系统,其中不同种类的食物有不同的烹饪时间。
+`Food` 基类及其派生类型使用 `Task.Delay` 来模拟异步工作。
 
 ```csharp
 using System.Diagnostics;
@@ -834,10 +832,10 @@ public class Gravy() : Food(TimeSpan.FromSeconds(1));
 public class Stuffing() : Food(TimeSpan.FromSeconds(2));
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=145)
 
-When executing multiple parallel loops, awaiting them sequentially means that the second loop will not start until the first one has completely finished all its parallel iterations.
-While the code within each loop runs in parallel, the loops themselves are processed one after another.
+执行多个并行循环时,如果依次 await 它们,第二个循环要等到第一个循环的所有并行迭代全部完成后才会开始。
+虽然每个循环内部的代码是并行运行的,但这些循环本身是一个接一个处理的。
 
 ```csharp
 try
@@ -859,11 +857,11 @@ finally
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=195)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=195)
 
-To achieve higher throughput, you can initiate each `Parallel.ForEachAsync` call without immediately awaiting it.
-By capturing the returned `Task` for each loop, you can use `Task.WhenAll` to run all the parallel loops simultaneously.
-This allows the system to process turkey, mashed potatoes, gravy, and stuffing orders concurrently across all available threads, subject to the `MaxDegreeOfParallelism` limit.
+为了获得更高的吞吐量,你可以发起每个 `Parallel.ForEachAsync` 调用,而不立即 await 它。
+通过捕获每个循环返回的 `Task`,你可以使用 `Task.WhenAll` 让所有并行循环同时运行。
+这让系统能够在所有可用线程上并发处理火鸡、土豆泥、肉汁和填馅的订单,但受 `MaxDegreeOfParallelism` 限制的约束。
 
 ```csharp
 try
@@ -887,4 +885,4 @@ finally
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=285)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-foreachasync-69955985/?t=285)
