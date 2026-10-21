@@ -1,14 +1,12 @@
 # Course overview
 
-> Course: [From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · Chapter 1
-> 3 lessons · ~2:03
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · 第 1 章
+> 共 3 课 · 约 2:03
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Welcome](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/welcome-69955969/) | 0:38 | [↓](#1-welcome) |
 | 2 | [What will you learn in this course?](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/what-will-you-learn-in-this-course-69955970/) | 0:46 | [↓](#2-what-will-you-learn-in-this-course) |
@@ -18,82 +16,82 @@
 
 ## 1. Welcome
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/welcome-69955969/) · 0:38
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/welcome-69955969/) · 0:38
 
-### Summary
+### 总结
 
-This introductory lesson welcomes students to the "From Zero to Hero: Parallel Programming in C#" course.
-Instructor Brandon Minick, a veteran .NET engineer with experience at Microsoft and Amazon, introduces the course's goal: sharing over a decade of production experience and workshop insights to help developers master parallel programming in C#.
+这节入门课欢迎学员来到 "From Zero to Hero: Parallel Programming in C#" 课程。
+讲师 Brandon Minick 是一位资深 .NET 工程师,曾在 Microsoft 和 Amazon 工作,他介绍了本课程的目标:分享十余年的生产环境经验和工作坊心得,帮助开发者掌握 C# 中的并行编程。
 
-### Key concepts
+### 核心概念
 
-* Instructor background: Senior Software Engineer at Microsoft and Amazon.
-* Course focus: Practical, production-ready parallel programming in C#.
-* Real-world application: Lessons derived from over a decade of production experience and global workshops.
+* 讲师背景:Microsoft 和 Amazon 的高级软件工程师。
+* 课程重点:实用的、可用于生产环境的 C# 并行编程。
+* 实际应用:课程内容源自十余年的生产环境经验和全球工作坊。
 
-### Lesson notes
+### 课程笔记
 
-The course is led by Brandon Minick, a .NET engineer with more than ten years of professional experience, including senior roles at Microsoft and Amazon.
-This course distills a decade of production-level application development, conference presentations, and technical workshops into a comprehensive guide on parallel programming in C#.
+本课程由 Brandon Minick 主讲,他是一位拥有十多年职业经验的 .NET 工程师,曾在 Microsoft 和 Amazon 担任高级职位。
+本课程将十年来的生产级应用开发、会议演讲和技术工作坊经验,提炼为一份关于 C# 并行编程的全面指南。
 
-The curriculum is designed to transition developers from foundational knowledge to expert-level proficiency by focusing on the practical implementation of parallel patterns and techniques used in high-scale environments.
-The knowledge shared throughout these lessons is grounded in real-world experience gained from publishing applications to production and hosting global workshops.
+课程内容的设计目标是带领开发者从基础知识进阶到专家级水平,重点关注在大规模环境中使用的并行模式与技术的实际实现。
+这些课程中分享的知识,都扎根于将应用发布到生产环境以及主持全球工作坊所积累的真实经验。
 
 ---
 
 ## 2. What will you learn in this course?
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/what-will-you-learn-in-this-course-69955970/) · 0:46
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/what-will-you-learn-in-this-course-69955970/) · 0:46
 
-### Summary
+### 总结
 
-This lesson provides a high-level roadmap for the "Parallel Programming in C#" course, outlining the progression from foundational concepts like the distinction between asynchronous and parallel programming to advanced implementation techniques using the Task Parallel Library (TPL), Channels, and Parallel LINQ (PLINQ).
+本课给出了 "Parallel Programming in C#" 课程的整体路线图,概述了从基础概念(例如异步编程与并行编程的区别)到使用任务并行库(Task Parallel Library,TPL)、Channels 和并行 LINQ(Parallel LINQ,PLINQ)的高级实现技术的学习进程。
 
-### Key concepts
+### 核心概念
 
-*   Asynchronous vs. Parallel programming distinctions.
-*   Task Parallel Library (TPL) coordination (Task.WhenAll, Task.WhenAny, Task.WhenEach).
-*   Data parallelism with Parallel.Invoke, Parallel.For, and Parallel.ForEach.
-*   Asynchronous iteration with Parallel.ForEachAsync.
-*   Producer-consumer patterns using Channels.
-*   Parallel LINQ (PLINQ) for declarative data processing.
+*   异步编程与并行编程的区别。
+*   任务并行库(TPL)的协调(Task.WhenAll、Task.WhenAny、Task.WhenEach)。
+*   使用 Parallel.Invoke、Parallel.For 和 Parallel.ForEach 实现数据并行。
+*   使用 Parallel.ForEachAsync 进行异步迭代。
+*   使用 Channels 实现生产者-消费者模式。
+*   使用并行 LINQ(PLINQ)进行声明式数据处理。
 
-### Lesson notes
+### 课程笔记
 
-The course provides a comprehensive guide to mastering parallel programming in C#.
-It starts by clarifying the distinctions between asynchronous and parallel programming models to ensure developers choose the correct approach for their specific performance requirements.
+本课程是一份掌握 C# 并行编程的全面指南。
+它首先厘清异步编程模型与并行编程模型之间的区别,确保开发者能够针对自己特定的性能需求选择正确的方法。
 
-The curriculum then explores the Task Parallel Library (TPL), focusing on task coordination primitives.
-This includes using `Task.WhenAll` to wait for multiple operations to finish, `Task.WhenAny` to respond to the first completed task, and `Task.WhenEach` for processing tasks sequentially as they complete.
+接着,课程会探讨任务并行库(TPL),重点是任务协调原语。
+这包括使用 `Task.WhenAll` 等待多个操作完成、使用 `Task.WhenAny` 响应第一个完成的任务,以及使用 `Task.WhenEach` 在任务完成时逐个依次处理它们。
 
-Moving into data parallelism, the course covers the `Parallel` class and its various methods for executing work across multiple CPU cores.
-Key topics include `Parallel.Invoke` for executing multiple actions in parallel, and loop-based parallelism using `Parallel.For`, `Parallel.ForEach`, and the asynchronous `Parallel.ForEachAsync` for I/O-bound or long-running parallel tasks.
+进入数据并行部分后,课程会介绍 `Parallel` 类及其用于在多个 CPU 核心上执行工作的各种方法。
+关键主题包括用于并行执行多个操作的 `Parallel.Invoke`,以及基于循环的并行:`Parallel.For`、`Parallel.ForEach`,还有适用于 I/O 密集型或长时间运行的并行任务的异步版本 `Parallel.ForEachAsync`。
 
-The final sections of the course delve into advanced patterns, including the use of Channels for high-performance, thread-safe communication between producers and consumers.
-Finally, the course covers Parallel LINQ (PLINQ), demonstrating how to parallelize declarative LINQ queries to optimize data processing pipelines.
+课程的最后几个部分会深入高级模式,包括使用 Channels 在生产者和消费者之间进行高性能、线程安全的通信。
+最后,课程会介绍并行 LINQ(PLINQ),演示如何将声明式 LINQ 查询并行化,以优化数据处理管道。
 
 ---
 
 ## 3. Who is the course for and prerequisites
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/who-is-the-course-for-and-prerequisites-69955971/) · 0:39
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/who-is-the-course-for-and-prerequisites-69955971/) · 0:39
 
-### Summary
+### 总结
 
-This lesson outlines the target audience and technical prerequisites for the 'Parallel Programming in C#' course.
-It is designed for experienced C# developers who possess a strong foundation in asynchronous programming, specifically the async/await pattern and the Task-based asynchronous pattern (TAP).
+本课概述了 'Parallel Programming in C#' 课程的目标受众和技术前置要求。
+本课程面向经验丰富的 C# 开发者,他们需要具备扎实的异步编程基础,特别是 async/await 模式和基于任务的异步模式(Task-based asynchronous pattern,TAP)。
 
-### Key concepts
+### 核心概念
 
-- **Target Audience**: Experienced C# developers.
-- **Prerequisites**: Proficiency with `async`/`await` and the Task-based Asynchronous Pattern (TAP).
-- **Foundational Knowledge**: Understanding of `Task` internals and asynchronous execution flow.
+- **目标受众**:经验丰富的 C# 开发者。
+- **前置要求**:熟练掌握 `async`/`await` 以及基于任务的异步模式(TAP)。
+- **基础知识**:理解 `Task` 的内部机制和异步执行流程。
 
-### Lesson notes
+### 课程笔记
 
-This course is specifically tailored for experienced C# developers who are already proficient in asynchronous programming using the `async` and `await` keywords.
-A deep understanding of how `Task` objects and the underlying asynchronous state machine function is essential for success in this curriculum.
+本课程专门面向那些已经熟练使用 `async` 和 `await` 关键字进行异步编程的资深 C# 开发者。
+深入理解 `Task` 对象以及底层异步状态机的运作方式,是学好本课程内容的关键。
 
-For developers who are not yet experts in these areas, it is recommended to first master the fundamentals of asynchronous programming.
-This includes learning about the `Task` class, the mechanics of `async`/`await`, and how these components operate internally.
-This course builds directly upon those foundations, applying asynchronous concepts to the specialized domain of parallel programming in C#.
+对于尚未精通这些领域的开发者,建议先掌握异步编程的基础知识。
+这包括学习 `Task` 类、`async`/`await` 的工作机制,以及这些组件在内部是如何运作的。
+本课程直接建立在这些基础之上,将异步概念应用到 C# 并行编程这一专门领域。
