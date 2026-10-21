@@ -1,14 +1,12 @@
 # Parallel programming
 
-> Course: [From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · Chapter 2
-> 5 lessons · ~58:20
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · 第 2 章
+> 共 5 课 · 约 58:20
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Parallel vs Asynchronous](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-vs-asynchronous-69955972/) | 1:18 | [↓](#1-parallel-vs-asynchronous) |
 | 2 | [Introduction to Asynchronous Programming](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/) | 15:17 | [↓](#2-introduction-to-asynchronous-programming) |
@@ -20,59 +18,59 @@
 
 ## 1. Parallel vs Asynchronous
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-vs-asynchronous-69955972/) · 1:18
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/parallel-vs-asynchronous-69955972/) · 1:18
 
-### Summary
+### 总结
 
-This lesson introduces the distinction between asynchronous and parallel programming in C#.
-It establishes the prerequisite knowledge required for the course, specifically focusing on the Task-based Asynchronous Pattern (TAP), the mechanics of the async-await state machine, and the proper application of asynchronous best practices.
+本课介绍 C# 中异步编程与并行编程之间的区别。
+它确立了本课程所需的先修知识,重点是基于任务的异步模式(Task-based Asynchronous Pattern,TAP)、async-await 状态机的运作机制,以及异步最佳实践的正确应用。
 
-### Key concepts
+### 核心概念
 
-* The distinction between asynchronous and parallel programming.
-* The role of Task and Task<T> in C#.
-* Compiler-level transformations of async and await code.
-* Asynchronous best practices and the use of ConfigureAwait(false).
+* 异步编程与并行编程之间的区别。
+* Task 和 Task<T> 在 C# 中的作用。
+* 编译器层面对 async 和 await 代码的转换。
+* 异步最佳实践以及 ConfigureAwait(false) 的使用。
 
-### Lesson notes
+### 课程笔记
 
-This lesson provides an introduction to parallel programming by distinguishing it from asynchronous programming.
-While both are central to concurrency in C#, they address different execution scenarios.
+本课通过把并行编程与异步编程区分开来,对并行编程做一个入门介绍。
+虽然两者都是 C# 并发的核心,但它们针对的是不同的执行场景。
 
-A prerequisite for this course is a firm understanding of asynchronous programming in C#, specifically the Task-based Asynchronous Pattern (TAP).
-Key topics that form the basis for parallel implementation include:
+本课程的一个先修条件是扎实理解 C# 中的异步编程,特别是基于任务的异步模式(TAP)。
+构成并行实现基础的关键主题包括:
 
-* **Tasks**: The fundamental units of work represented by Task and Task<T>.
-* **Async-Await Mechanics**: How the C# compiler modifies code to implement the async and await state machine.
-* **Best Practices**: Standard patterns for implementing asynchronous logic.
-* **ConfigureAwait**: The use of ConfigureAwait(false) to manage how continuations are handled by the task scheduler.
+* **Tasks**:由 Task 和 Task<T> 表示的基本工作单元。
+* **Async-Await Mechanics(Async-Await 机制)**:C# 编译器如何修改代码来实现 async 和 await 状态机。
+* **Best Practices(最佳实践)**:实现异步逻辑的标准模式。
+* **ConfigureAwait**:使用 ConfigureAwait(false) 来管理任务调度器如何处理后续操作(continuation)。
 
 ---
 
 ## 2. Introduction to Asynchronous Programming
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/) · 15:17
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/) · 15:17
 
-### Summary
+### 总结
 
-Asynchronous programming in C# centers on the Task class, which represents an operation that will complete in the future.
-This lesson introduces the fundamental concepts of tasks, including their execution on background threads, the lifecycle states defined by the TaskStatus enum, and the three possible completion outcomes: success, faulting due to exceptions, or cancellation via tokens.
-By monitoring properties like IsCompleted and Status, developers can track the progress of background operations without blocking the main execution thread, ensuring applications remain responsive during long-running tasks.
+C# 中的异步编程以 Task 类为中心,它表示一个将在未来完成的操作。
+本课介绍任务的基本概念,包括任务在后台线程上的执行、由 TaskStatus 枚举定义的生命周期状态,以及三种可能的完成结果:成功、因异常而出错(faulted),或通过令牌取消。
+通过监视 IsCompleted 和 Status 这样的属性,开发者可以在不阻塞主执行线程的情况下跟踪后台操作的进度,确保应用在长时间运行的任务期间保持响应。
 
-### Key concepts
+### 核心概念
 
-*   The `Task` class as a representation of code that executes asynchronously.
-*   Task outcomes: Successful completion, Faulted (exceptions), or Canceled.
-*   The `TaskStatus` enum and the eight distinct states in a task's lifecycle.
-*   Using `Task.Run` to offload work to the .NET thread pool.
-*   Monitoring task state using properties such as `IsCompleted`, `IsFaulted`, and `IsCanceled`.
-*   The role of `CancellationTokenSource` and `CancellationToken` in managing task termination.
+*   `Task` 类作为异步执行代码的一种表示。
+*   任务的结果:成功完成、Faulted(异常)或 Canceled。
+*   `TaskStatus` 枚举以及任务生命周期中的八种不同状态。
+*   使用 `Task.Run` 把工作卸载到 .NET 线程池。
+*   使用 `IsCompleted`、`IsFaulted` 和 `IsCanceled` 等属性监视任务状态。
+*   `CancellationTokenSource` 和 `CancellationToken` 在管理任务终止中的作用。
 
-### Lesson notes
+### 课程笔记
 
-Asynchronous programming allows code to execute on a background thread, preventing the main or UI thread from freezing during long-running operations.
-In C#, a `Task` is essentially a promise of work that will finish later.
-Once a task is initiated, its progress can be monitored through several boolean properties.
+异步编程允许代码在后台线程上执行,防止主线程或 UI 线程在长时间运行的操作期间卡死。
+在 C# 中,`Task` 本质上是对稍后会完成的工作的一个承诺。
+任务一旦启动,就可以通过几个布尔属性来监视它的进度。
 
 ```csharp
 var task = Task.Run(() => SimulateLongRunningFunction(CancellationToken.None));
@@ -83,17 +81,17 @@ Trace.WriteLine($"Is the Task faulted? {task.IsFaulted}");
 Trace.WriteLine($"Is the Task canceled? {task.IsCanceled}");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=25)
 
-A completed task always results in one of three outcomes:
+一个已完成的任务总会得到三种结果之一:
 
-1.  **Successful Completion**: The task finished its work without errors or cancellation.
-2.  **Faulted**: An unhandled exception occurred within the task.
-3.  **Canceled**: The task was stopped early via a `CancellationToken`.
+1.  **Successful Completion(成功完成)**:任务完成了它的工作,没有出错,也没有被取消。
+2.  **Faulted(出错)**:任务内部发生了未处理的异常。
+3.  **Canceled(已取消)**:任务通过 `CancellationToken` 被提前停止。
 
-#### Task States
+#### 任务状态
 
-While there are three final outcomes, a task can move through eight different states during its lifecycle, defined by the `TaskStatus` enum.
+虽然最终结果只有三种,但任务在其生命周期中可以经历八种不同的状态,这些状态由 `TaskStatus` 枚举定义。
 
 ```csharp
 public enum TaskStatus
@@ -117,19 +115,19 @@ public enum TaskStatus
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=130)
 
-Key states include:
+关键状态包括:
 
-*   **Created**: The state after the task constructor has exited but before the task is scheduled.
-*   **WaitingToRun**: The task is scheduled with the `TaskScheduler` and is waiting for a background thread to become available.
-*   **WaitingForActivation**: The task is waiting for a dependent operation (common when using `ContinueWith` or `TaskCompletionSource`).
-*   **Running**: The code inside the task is currently executing.
+*   **Created**:任务构造函数已经退出、但任务尚未被调度时的状态。
+*   **WaitingToRun**:任务已经在 `TaskScheduler` 中排定,正在等待某个后台线程变为可用。
+*   **WaitingForActivation**:任务正在等待一个它所依赖的操作(在使用 `ContinueWith` 或 `TaskCompletionSource` 时很常见)。
+*   **Running**:任务内部的代码当前正在执行。
 
-#### Monitoring Task Execution
+#### 监视任务执行
 
-In a typical scenario, `Task.Run` is used to offload a function to a background thread.
-Because the main thread continues execution immediately, checking the task status milliseconds after creation often reveals the task is in the `WaitingToRun` state, as the .NET runtime requires a small amount of overhead to locate and assign a background thread.
+在一个典型场景中,`Task.Run` 被用来把一个函数卸载到后台线程。
+由于主线程会立即继续执行,在创建任务几毫秒后检查其状态,往往会发现任务处于 `WaitingToRun` 状态,因为 .NET 运行时需要少量开销来找到并分配一个后台线程。
 
 ```csharp
 using System.Diagnostics;
@@ -168,12 +166,12 @@ void SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=385)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=385)
 
-#### Handling Faults and Cancellation
+#### 处理出错与取消
 
-If an exception is thrown inside the task, the task immediately stops and sets its `IsFaulted` property to `true`.
-When the task is eventually awaited, this exception is re-thrown to the developer.
+如果任务内部抛出了异常,任务会立即停止,并把它的 `IsFaulted` 属性设为 `true`。
+当这个任务最终被 await 时,该异常会被重新抛给开发者。
 
 ```csharp
 void SimulateLongRunningFunction(CancellationToken token)
@@ -189,14 +187,14 @@ void SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=610)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=610)
 
-Cancellation is managed using a `CancellationTokenSource`.
-If a token is canceled (e.g., by setting a `TimeSpan.Zero` delay), the task should transition to the `Canceled` state.
-However, simply throwing an `OperationCanceledException` inside the method may sometimes result in a `Faulted` state if the task itself was not initialized with the token.
+取消是通过 `CancellationTokenSource` 来管理的。
+如果令牌被取消(例如设置一个 `TimeSpan.Zero` 的延迟),任务就应当转换到 `Canceled` 状态。
+然而,如果任务本身没有用该令牌初始化,仅仅在方法内部抛出 `OperationCanceledException`,有时可能会得到 `Faulted` 状态。
 
-To ensure the .NET runtime correctly identifies a task as canceled, the `CancellationToken` must be passed directly into the `Task.Run` method as well as the function it executes.
-This allows the runtime to check the token status before the task even begins or during its execution.
+为了确保 .NET 运行时正确地把任务识别为已取消,必须把 `CancellationToken` 直接传入 `Task.Run` 方法,同时也传入它所执行的函数。
+这让运行时能够在任务开始之前或在其执行期间检查令牌的状态。
 
 ```csharp
 using System.Diagnostics;
@@ -235,44 +233,44 @@ void SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=850)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-asynchronous-programming-69955973/?t=850)
 
 ---
 
 ## 3. Introduction to async / await
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/) · 14:15
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/) · 14:15
 
-### Summary
+### 总结
 
-This lesson introduces the async and await keywords in C#, explaining how they transform methods into state machines to handle asynchronous operations without blocking threads.
-By transitioning from blocking calls like Thread.Sleep to non-blocking alternatives like Task.Delay, developers can prevent thread pool exhaustion and ensure that applications remain responsive, particularly in UI-heavy or high-volume API environments.
-The discussion further highlights how these keywords simplify development by allowing standard try-catch blocks to handle exceptions from faulted tasks and demonstrates the implementation of task cancellation using CancellationToken to maintain efficient resource management.
+本课介绍 C# 中的 async 和 await 关键字,解释它们如何把方法转换为状态机,从而在不阻塞线程的情况下处理异步操作。
+通过从 Thread.Sleep 这样的阻塞调用转向 Task.Delay 这样的非阻塞替代方案,开发者可以防止线程池耗尽,并确保应用保持响应,尤其是在 UI 密集或高流量 API 的环境中。
+讨论还进一步强调了这些关键字如何简化开发,让标准的 try-catch 块就能处理出错任务的异常,并演示了如何使用 CancellationToken 实现任务取消,以保持高效的资源管理。
 
-### Key concepts
+### 核心概念
 
-- async and await keywords
+- async 和 await 关键字
 - IAsyncStateMachine
-- Blocking vs. Non-blocking calls
-- Thread Pool starvation
-- UI Thread responsiveness
-- Task-based Asynchronous Pattern (TAP)
-- Thread Pool Exhaustion
-- Non-blocking Await
-- Exception Propagation
-- Task Faulting
-- Asynchronous Cancellation
+- 阻塞调用与非阻塞调用
+- 线程池饥饿(Thread Pool starvation)
+- UI 线程的响应性
+- 基于任务的异步模式(TAP)
+- 线程池耗尽(Thread Pool Exhaustion)
+- 非阻塞的 Await
+- 异常传播
+- 任务出错(Task Faulting)
+- 异步取消
 
-### Lesson notes
+### 课程笔记
 
-#### The Async and Await Keywords
+#### Async 和 Await 关键字
 
-In C#, `async` and `await` are the primary keywords used to manage asynchronous operations.
-The `await` keyword allows the program to pause the execution of a method until a specific task has completed.
-The `async` keyword is used in the method signature to enable the use of `await` within that method.
+在 C# 中,`async` 和 `await` 是用来管理异步操作的主要关键字。
+`await` 关键字让程序可以暂停一个方法的执行,直到某个特定任务完成。
+`async` 关键字用在方法签名中,以便在该方法内部使用 `await`。
 
-Under the hood, the .NET compiler transforms a method marked with `async` into an `IAsyncStateMachine`.
-This state machine manages the execution flow, allowing the thread to be released back to the thread pool while waiting for an operation to finish, and then resuming execution once the task is complete.
+在底层,.NET 编译器会把标记为 `async` 的方法转换为一个 `IAsyncStateMachine`。
+这个状态机管理执行流程,让线程在等待操作完成期间被释放回线程池,并在任务完成后恢复执行。
 
 ```csharp
 async Task SimulateLongRunningFunction(CancellationToken token)
@@ -285,16 +283,16 @@ async Task SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=55)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=55)
 
-#### The Problem with Blocking Calls
+#### 阻塞调用的问题
 
-Using `Thread.Sleep` is considered a "locking" or blocking call.
-When a thread calls `Thread.Sleep`, it is locked and cannot perform any other work until the timer expires.
-In a high-scale environment, such as a web API serving thousands of users, this leads to inefficiency.
-Even on powerful servers, locking threads prevents the .NET thread pool from utilizing those threads for other incoming requests.
+使用 `Thread.Sleep` 被视为一种“锁定”调用,也就是阻塞调用。
+当一个线程调用 `Thread.Sleep` 时,它会被锁定,在计时器到期之前无法执行任何其他工作。
+在高规模的环境中,例如一个为成千上万用户提供服务的 Web API,这会导致效率低下。
+即使在性能强大的服务器上,锁定线程也会让 .NET 线程池无法把这些线程用于其他传入的请求。
 
-In the following example, the main thread (Thread 1) is locked for three seconds, rendering it unavailable to the system:
+在下面的示例中,主线程(Thread 1)被锁定了三秒钟,在此期间系统无法使用它:
 
 ```csharp
 using System.Diagnostics;
@@ -330,30 +328,30 @@ void SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=115)
 
-#### Transitioning to Non-blocking Code
+#### 转向非阻塞代码
 
-To optimize the code, `Thread.Sleep` should be replaced with `await`.
-When you `await` a task, the code execution pauses until that specific task is finished, rather than waiting for an arbitrary amount of time.
-This eliminates wasted CPU cycles.
-For instance, if a task completes in two seconds but you used `Thread.Sleep` for three seconds, you would burn a full second of unnecessary CPU time.
+为了优化代码,应当用 `await` 替换 `Thread.Sleep`。
+当你 `await` 一个任务时,代码执行会暂停到这个特定任务完成为止,而不是等待一段随意设定的时间。
+这消除了被浪费的 CPU 周期。
+例如,如果一个任务在两秒内完成,而你用 `Thread.Sleep` 等了三秒,你就会白白消耗整整一秒不必要的 CPU 时间。
 
 ```csharp
 // Replacing Thread.Sleep(3) with a non-blocking await
 await task;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=220)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=220)
 
-#### Benefits of Non-blocking Await
+#### 非阻塞 Await 的好处
 
-Using `await` provides two primary benefits:
+使用 `await` 带来两个主要好处:
 
-1.  **Efficiency**: The .NET runtime notifies the code to resume exactly when the task completes, avoiding unnecessary delays.
-2.  **Responsiveness**: The calling thread is not blocked. This is critical for UI-based applications (Desktop, Mobile, or Web), where Thread 1 is typically the UI thread. If the UI thread is blocked by `Thread.Sleep`, the application freezes and cannot interact with the user or redraw the screen. Using `await` frees the UI thread to remain responsive while the background task runs.
+1.  **Efficiency(效率)**:.NET 运行时恰好在任务完成时通知代码恢复执行,避免了不必要的延迟。
+2.  **Responsiveness(响应性)**:调用线程不会被阻塞。这对基于 UI 的应用(桌面、移动或 Web)至关重要,在这些应用中 Thread 1 通常就是 UI 线程。如果 UI 线程被 `Thread.Sleep` 阻塞,应用就会卡死,无法与用户交互,也无法重绘屏幕。使用 `await` 可以释放 UI 线程,让它在后台任务运行期间保持响应。
 
-As a best practice, methods using the `async` keyword should return a `Task` (or `Task<T>`) rather than `void` to avoid the dangers associated with `async void` methods.
+作为最佳实践,使用 `async` 关键字的方法应当返回 `Task`(或 `Task<T>`)而不是 `void`,以避免与 `async void` 方法相关的危险。
 
 ```csharp
 using System.Diagnostics;
@@ -395,19 +393,19 @@ async Task SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=385)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=385)
 
-#### Thread Pool Efficiency and Responsiveness
+#### 线程池效率与响应性
 
-Unlike `Thread.Sleep`, which is a blocking call that locks the current thread, the `await` keyword is non-blocking.
-When a program encounters an `await` on a task (such as `Task.Delay`), the executing thread is released.
-If it is a UI thread, it returns to the message loop to keep the interface responsive.
-If it is a background thread, it returns to the thread pool to be used by other operations.
+`Thread.Sleep` 是一个会锁定当前线程的阻塞调用,而 `await` 关键字与之不同,它是非阻塞的。
+当程序遇到对某个任务(例如 `Task.Delay`)的 `await` 时,正在执行的线程会被释放。
+如果它是 UI 线程,它会回到消息循环,让界面保持响应。
+如果它是后台线程,它会回到线程池,供其他操作使用。
 
-This mechanism is critical for preventing **thread pool exhaustion**.
-In a high-traffic API receiving thousands of calls per second, using blocking calls would eventually consume all available threads in the pool.
-Once the pool is exhausted, the server cannot process new requests.
-By using `async` and `await`, threads are freed during I/O-bound or delayed operations, allowing a smaller number of threads to handle a much larger volume of concurrent work.
+这一机制对于防止**线程池耗尽**至关重要。
+在一个每秒接收数千次调用的高流量 API 中,使用阻塞调用最终会耗光池中所有可用的线程。
+一旦线程池耗尽,服务器就无法处理新的请求。
+通过使用 `async` 和 `await`,线程在 I/O 密集型或延迟操作期间被释放,从而让较少数量的线程就能处理大得多的并发工作量。
 
 ```csharp
 using System.Diagnostics;
@@ -443,16 +441,16 @@ async Task SimulateLongRunningFunction(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=445)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=445)
 
-#### Exception Handling with Await
+#### 使用 Await 处理异常
 
-A significant advantage of the `await` keyword is how it handles exceptions.
-If a task enters a faulted state (i.e., an exception was thrown inside the task), the `await` keyword will automatically re-throw that exception at the point of the await.
+`await` 关键字的一大优势在于它处理异常的方式。
+如果一个任务进入出错状态(即任务内部抛出了异常),`await` 关键字会自动在 await 所在的位置重新抛出该异常。
 
-Without `await`, a developer would need to manually check the `Task.IsFaulted` property and inspect the `Task.Exception` property.
-With `await`, you can wrap the call in a standard `try-catch` block.
-This ensures that exceptions occurring on background threads are properly propagated to the calling context, preventing the application from silently failing or crashing without logs.
+如果没有 `await`,开发者就需要手动检查 `Task.IsFaulted` 属性,并查看 `Task.Exception` 属性。
+有了 `await`,你可以把调用包在一个标准的 `try-catch` 块中。
+这确保了发生在后台线程上的异常能被正确地传播到调用上下文,防止应用悄无声息地失败,或者在没有日志的情况下崩溃。
 
 ```csharp
 Trace.WriteLine($"Is the Task completed? {task.IsCompleted}");
@@ -478,13 +476,13 @@ Trace.WriteLine("Program Completed");
 return;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=670)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=670)
 
-#### Task Cancellation
+#### 任务取消
 
-Asynchronous tasks should respect cancellation tokens to allow for clean shutdowns or user-initiated cancellations.
-By passing a `CancellationToken` to `Task.Run` and internal methods like `Task.Delay`, the .NET runtime becomes aware of the cancellation request.
-If a token is already expired (e.g., created with `TimeSpan.Zero`), the task will transition to the `Canceled` state immediately, throwing an `OperationCanceledException` when awaited.
+异步任务应当遵从取消令牌,以便实现干净的关闭或由用户发起的取消。
+通过把 `CancellationToken` 传给 `Task.Run` 以及 `Task.Delay` 这样的内部方法,.NET 运行时就能感知到取消请求。
+如果令牌已经过期(例如用 `TimeSpan.Zero` 创建),任务会立即转换到 `Canceled` 状态,并在被 await 时抛出 `OperationCanceledException`。
 
 ```csharp
 var cancellationTokenSource = new CancellationTokenSource(TimeSpan.Zero);
@@ -505,37 +503,37 @@ catch (Exception e)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=835)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-async-await-69955974/?t=835)
 
 ---
 
 ## 4. Introduction to Parallel Programming
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/) · 4:14
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/) · 4:14
 
-### Summary
+### 总结
 
-Parallel programming in .NET involves executing multiple tasks concurrently, typically by leveraging background threads.
-Unlike sequential execution, tasks can begin running as soon as they are initiated, allowing the application to perform multiple operations—such as API requests or long-running computations—simultaneously.
-The await keyword is then used to synchronize these tasks, ensuring they finish and any exceptions are properly handled before the program continues.
+.NET 中的并行编程是指并发地执行多个任务,通常借助后台线程来实现。
+与顺序执行不同,任务一经发起就可以开始运行,使应用程序能够同时执行多个操作,例如 API 请求或长时间运行的计算。
+随后使用 await 关键字来同步这些任务,确保它们在程序继续之前已经完成,并且任何异常都得到妥善处理。
 
-### Key concepts
+### 核心概念
 
-*   **Concurrency**: Running multiple tasks at the same time, often on different background threads.
-*   **Task Scheduling**: The .NET runtime automatically schedules tasks to run on background threads as soon as they are created.
-*   **Immediate Execution**: Tasks start running upon invocation (e.g., via `GetAsync` or `Task.Run`), not when they are awaited.
-*   **Exception Propagation**: Awaiting a task is required to re-throw exceptions that occurred during background execution, allowing for graceful error handling.
-*   **Thread Management**: The .NET task scheduler manages the assignment of tasks to available threads, which involves a small amount of initialization overhead.
+*   **Concurrency(并发)**:同时运行多个任务,通常位于不同的后台线程上。
+*   **Task Scheduling(任务调度)**:.NET 运行时会在任务创建后立即自动调度它们在后台线程上运行。
+*   **Immediate Execution(立即执行)**:任务在调用时(例如通过 `GetAsync` 或 `Task.Run`)就开始运行,而不是在被 await 时。
+*   **Exception Propagation(异常传播)**:必须 await 任务,才能重新抛出后台执行期间发生的异常,从而得以优雅地处理错误。
+*   **Thread Management(线程管理)**:.NET 任务调度器负责把任务分配给可用线程,这会带来少量的初始化开销。
 
-### Lesson notes
+### 课程笔记
 
-Parallel programming builds upon the foundations of asynchronous programming, utilizing tasks, threads, and the `async/await` pattern.
-At its core, it allows two or more tasks to run concurrently on background threads.
+并行编程建立在异步编程的基础之上,利用任务、线程以及 `async/await` 模式。
+其核心在于,它允许两个或更多任务在后台线程上并发运行。
 
-#### Concurrent API Requests
+#### 并发 API 请求
 
-A common use case for parallel programming is making multiple network requests simultaneously.
-In the following example, an `HttpClient` is used to fetch blog posts and authors from a website.
+并行编程的一个常见用例是同时发起多个网络请求。
+在下面的示例中,使用一个 `HttpClient` 从网站获取博客文章和作者。
 
 ```csharp
 var client = new HttpClient();
@@ -547,17 +545,17 @@ await getPostsTask;
 await getAuthorsTask;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/?t=25)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/?t=25)
 
-In .NET, tasks are scheduled and begin running on background threads as soon as they are created.
-In this example, `getPostsTask` and `getAuthorsTask` both begin their network operations immediately after their respective `GetAsync` calls.
-The `await` keyword is used later to ensure both tasks complete before the code proceeds.
-Furthermore, `await` ensures that if an exception occurs during the background operation (such as a lost network connection), that exception is re-thrown at the point of the await so it can be handled.
+在 .NET 中,任务一经创建就会被调度,并开始在后台线程上运行。
+在这个示例中,`getPostsTask` 和 `getAuthorsTask` 都在各自的 `GetAsync` 调用之后立即开始它们的网络操作。
+随后使用 `await` 关键字来确保这两个任务在代码继续执行之前完成。
+此外,`await` 还确保如果后台操作期间发生异常(例如网络连接断开),该异常会在 await 处被重新抛出,以便对其进行处理。
 
-#### Task Execution and Threading
+#### 任务执行与线程
 
-When using `Task.Run`, the .NET task scheduler picks up the task and assigns it to a thread.
-While there is a minor overhead for task initialization and scheduling, for most purposes, the tasks start running immediately upon invocation.
+使用 `Task.Run` 时,.NET 任务调度器会接收该任务并把它分配给一个线程。
+虽然任务的初始化和调度存在少量开销,但在大多数情况下,任务在调用时就会立即开始运行。
 
 ```csharp
 using System.Diagnostics;
@@ -582,9 +580,9 @@ async Task SimulateLongRunningFunction(string name, CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/?t=145)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/?t=145)
 
-When executing this code, the main program starts on one thread (e.g., Thread 1), while the background tasks are assigned to different threads (e.g., Thread 6 and Thread 8) by the scheduler.
+执行这段代码时,主程序在一个线程上启动(例如 Thread 1),而后台任务则由调度器分配到不同的线程上(例如 Thread 6 和 Thread 8)。
 
 ```plaintext
 Program Started on Thread 1
@@ -602,38 +600,38 @@ Exited Thread 2194953
 Exited Thread 2194971
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/?t=230)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-parallel-programming-69955975/?t=230)
 
-This demonstrates parallel execution where multiple operations progress at the same time on distinct threads, eventually synchronizing back to the main execution flow via `await`.
+这展示了并行执行:多个操作在不同的线程上同时推进,最终通过 `await` 同步回主执行流程。
 
 ---
 
 ## 5. Deadlocks and Race Conditions
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/) · 23:16
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/) · 23:16
 
-### Summary
+### 总结
 
-Deadlocks and race conditions are common challenges in parallel programming that occur when multiple threads interact with shared resources or depend on each other's completion.
-A deadlock arises from circular dependencies where threads wait indefinitely for one another, while a race condition occurs when concurrent access to a variable leads to unpredictable results.
-C# provides several mechanisms to mitigate these issues, including the lock keyword for synchronous code, SemaphoreSlim for asynchronous scenarios, Interlocked for high-performance atomic operations, and Lazy<T> for thread-safe singleton initialization.
+死锁和竞态条件是并行编程中常见的难题,它们发生在多个线程与共享资源交互或依赖彼此完成的时候。
+死锁源于循环依赖,线程会无限期地相互等待;而竞态条件则发生在对某个变量的并发访问导致不可预测结果的时候。
+C# 提供了多种机制来缓解这些问题,包括用于同步代码的 lock 关键字、用于异步场景的 SemaphoreSlim、用于高性能原子操作的 Interlocked,以及用于线程安全单例初始化的 Lazy<T>。
 
-### Key concepts
+### 核心概念
 
-- **Deadlock**: A situation where two or more threads are blocked indefinitely, each waiting for the other to release a resource.
-- **Race Condition**: An anomaly where the output of a process is unexpectedly dependent on the sequence or timing of other events, typically when multiple threads modify shared state.
-- **Locking**: Synchronous mutual exclusion that prevents multiple threads from entering a code block simultaneously.
-- **SemaphoreSlim**: A lightweight alternative to Semaphore that supports async/await, allowing threads to return to the pool while waiting.
-- **Interlocked**: A class providing atomic operations for variables shared by multiple threads, offering high-performance locking for specific value types.
-- **Lazy<T>**: A wrapper for thread-safe, deferred initialization of objects, commonly used in singleton patterns.
+- **Deadlock(死锁)**:两个或多个线程被无限期阻塞、各自等待对方释放资源的情况。
+- **Race Condition(竞态条件)**:一种异常情况,进程的输出意外地依赖于其他事件的顺序或时机,通常发生在多个线程修改共享状态的时候。
+- **Locking(加锁)**:同步的互斥机制,防止多个线程同时进入同一个代码块。
+- **SemaphoreSlim**:Semaphore 的轻量级替代方案,支持 async/await,允许线程在等待时返回线程池。
+- **Interlocked**:一个为多个线程共享的变量提供原子操作的类,为特定值类型提供高性能的加锁方式。
+- **Lazy<T>**:用于对对象进行线程安全的延迟初始化的包装器,常用于单例模式。
 
-### Lesson notes
+### 课程笔记
 
-#### Deadlocks and Circular Dependencies
+#### 死锁与循环依赖
 
-A deadlock occurs when multiple threads are waiting for each other to finish before continuing.
-This often happens due to circular references.
-For example, if `backgroundTask1` awaits the completion of `backgroundTask2`, while `backgroundTask2` is simultaneously awaiting `backgroundTask1`, neither can ever complete.
+当多个线程都在等待彼此完成才能继续时,就会发生死锁。
+这通常是由循环引用造成的。
+例如,如果 `backgroundTask1` 在 await `backgroundTask2` 完成,而 `backgroundTask2` 同时又在 await `backgroundTask1`,那么两者都永远无法完成。
 
 ```csharp
 backgroundTask1 =
@@ -651,15 +649,23 @@ async Task SimulateLongRunningFunction(Task otherLongRunningFunction, Cancellati
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=70)
 
-To avoid deadlocks, developers must ensure that tasks do not have circular dependencies where they wait on each other to perform the same operation.
+```text
+        await
+backgroundTask1 ------> backgroundTask2
+       ^                       |
+       |         await         |
+       +-----------------------+
+```
 
-#### Race Conditions
+为了避免死锁,开发者必须确保任务之间不存在相互等待对方来执行同一操作的循环依赖。
 
-Race conditions occur when multiple threads access and modify the same code or variable at the same time.
-Code that appears safe in a single-threaded context can fail in parallel execution.
-In the following example, a loop calls an update method rapidly without awaiting the result, allowing multiple threads to overwrite a shared field.
+#### 竞态条件
+
+当多个线程同时访问并修改同一段代码或同一个变量时,就会出现竞态条件。
+在单线程环境下看似安全的代码,在并行执行时可能会出错。
+在下面的示例中,一个循环快速地调用一个更新方法而不 await 其结果,从而让多个线程得以覆盖同一个共享字段。
 
 ```csharp
 for (int i = 0; i < 100; i++)
@@ -681,15 +687,15 @@ public async Task UpdateResult(bool result)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=160)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=160)
 
-When this logic is executed in parallel, one thread may change the value of `_result` after another thread has set it but before that first thread performs its validation check.
+当这段逻辑并行执行时,一个线程可能会在另一个线程设置了 `_result` 之后、但在那个线程执行校验检查之前,修改 `_result` 的值。
 
-#### Synchronous Locking
+#### 同步加锁
 
-The `lock` statement can be used to ensure that only one thread enters a specific block of code at a time.
-When a thread encounters a lock, it acquires a mutual exclusion object.
-If another thread attempts to enter the same lock, it is blocked until the first thread exits.
+`lock` 语句可以用来确保同一时间只有一个线程进入某个特定的代码块。
+当一个线程遇到 lock 时,它会获取一个互斥对象。
+如果另一个线程试图进入同一个 lock,它就会被阻塞,直到第一个线程退出。
 
 ```csharp
 async Task SimulateLongRunningFunction(string name, bool setResult, CancellationToken token)
@@ -712,16 +718,16 @@ async Task SimulateLongRunningFunction(string name, bool setResult, Cancellation
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=580)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=580)
 
-While effective, the standard `lock` is a blocking call.
-The calling thread cannot return to the thread pool while waiting for the lock to be released.
+标准的 `lock` 虽然有效,但它是一个阻塞调用。
+在等待锁被释放期间,调用线程无法返回线程池。
 
-#### Asynchronous Locking with SemaphoreSlim
+#### 使用 SemaphoreSlim 进行异步加锁
 
-For asynchronous code, `SemaphoreSlim` is the preferred mechanism.
-By initializing it with a count of `(1, 1)`, it acts as an asynchronous lock.
-The `WaitAsync` method allows the calling thread to return to the thread pool if the semaphore is currently held by another thread, making it more efficient than a synchronous lock.
+对于异步代码,`SemaphoreSlim` 是首选机制。
+用 `(1, 1)` 的计数初始化它,它就相当于一个异步锁。
+如果信号量当前被另一个线程持有,`WaitAsync` 方法允许调用线程返回线程池,这使它比同步锁更高效。
 
 ```csharp
 async Task SimulateLongRunningFunction(string name, bool setResult, CancellationToken token)
@@ -751,12 +757,12 @@ async Task SimulateLongRunningFunction(string name, bool setResult, Cancellation
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=820)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=820)
 
-#### High-Performance Atomic Operations
+#### 高性能原子操作
 
-The `Interlocked` class provides the highest performance for locking when working with specific value types like `int`, `long`, `uint`, and `ulong`.
-It performs atomic operations without the overhead of thread switching or blocking.
+在处理 `int`、`long`、`uint` 和 `ulong` 等特定值类型时,`Interlocked` 类提供了性能最高的加锁方式。
+它执行原子操作,没有线程切换或阻塞的开销。
 
 ```csharp
 async Task SimulateLongRunningFunction(string name, int setNumber, CancellationToken token)
@@ -771,15 +777,15 @@ async Task SimulateLongRunningFunction(string name, int setNumber, CancellationT
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=1120)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=1120)
 
-In this example, `CompareExchange` compares the current value of `number` at its memory address.
-If it matches the expected value, it updates it to `setNumber` atomically.
+在这个示例中,`CompareExchange` 会比较 `number` 在其内存地址上的当前值。
+如果它与预期值相符,就以原子方式把它更新为 `setNumber`。
 
-#### Thread-Safe Singletons with Lazy<T>
+#### 使用 Lazy<T> 实现线程安全的单例
 
-When implementing the Singleton pattern, race conditions can occur if two threads attempt to initialize the instance for the first time simultaneously.
-Using `Lazy<T>` ensures that the initialization function only runs once and is completely thread-safe.
+在实现单例模式时,如果两个线程同时尝试首次初始化实例,就可能出现竞态条件。
+使用 `Lazy<T>` 可以确保初始化函数只运行一次,并且完全线程安全。
 
 ```csharp
 public class Database
@@ -796,4 +802,4 @@ public class Database
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=1330)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/deadlocks-and-race-conditions-69955976/?t=1330)
