@@ -1,14 +1,12 @@
 # Concurrent Collections
 
-> Course: [From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · Chapter 5
-> 2 lessons · ~24:10
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程:[From Zero to Hero: Parallel Programming in C#](https://dometrain.com/course/from-zero-to-hero-parallel-programming-in-csharp/) · 第 5 章
+> 共 2 课 · 约 24:10
+> 来源:Dometrain。由课程文档翻译整理;每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Introduction to Concurrent Collections](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/) | 8:41 | [↓](#1-introduction-to-concurrent-collections) |
 | 2 | [Improving Performance of a Mobile App](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/) | 15:29 | [↓](#2-improving-performance-of-a-mobile-app) |
@@ -17,33 +15,33 @@
 
 ## 1. Introduction to Concurrent Collections
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/) · 8:41
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/) · 8:41
 
-Concurrent collections provide a thread-safe way to manage data in multi-threaded environments.
-They allow multiple threads to read from and write to a collection simultaneously without the risk of race conditions or data corruption, eliminating the need for manual lock management in many common scenarios.
+并发集合提供了一种在多线程环境中以线程安全方式管理数据的手段。
+它们允许多个线程同时读写同一个集合,而不会有竞态条件或数据损坏的风险,从而在许多常见场景中免去了手动管理锁的需要。
 
-### Key concepts
+### 核心概念
 
-*   **Thread Safety**: Collections designed for concurrent access without manual synchronization.
-*   **ConcurrentBag<T>**: An unordered collection of objects that allows duplicates and is optimized for scenarios where the same thread both produces and consumes data.
-*   **ConcurrentStack<T>**: A lock-free, thread-safe Last-In-First-Out (LIFO) collection.
-*   **ConcurrentQueue<T>**: A lock-free, thread-safe First-In-First-Out (FIFO) collection.
-*   **ConcurrentDictionary<TKey, TValue>**: A thread-safe collection of key-value pairs featuring lock-free reads and granular, per-key locking for writes.
-*   **Lock-Free Operations**: Many concurrent collections utilize `Interlocked` methods under the hood to avoid expensive thread synchronization and context switching.
+*   **Thread Safety(线程安全)**:为并发访问而设计、无需手动同步的集合。
+*   **ConcurrentBag<T>**:一种无序的对象集合,允许重复项,并针对同一线程既生产又消费数据的场景做了优化。
+*   **ConcurrentStack<T>**:一种无锁、线程安全的后进先出(LIFO)集合。
+*   **ConcurrentQueue<T>**:一种无锁、线程安全的先进先出(FIFO)集合。
+*   **ConcurrentDictionary<TKey, TValue>**:一种线程安全的键值对集合,读取无锁,写入则采用按键划分的细粒度锁。
+*   **Lock-Free Operations(无锁操作)**:许多并发集合在底层使用 `Interlocked` 方法,以避免代价高昂的线程同步和上下文切换。
 
-### Lesson notes
+### 课程笔记
 
-#### Legacy Collections and Async Compatibility
+#### 旧式集合与异步兼容性
 
-While `BlockingCollection<T>` is a thread-safe collection, it is generally avoided in modern .NET development.
-It was introduced before the `async/await` pattern and relies on blocking calls that do not release the calling thread.
-For modern asynchronous workflows, System.Threading.Channels is the preferred alternative.
+虽然 `BlockingCollection<T>` 是一个线程安全的集合,但在现代 .NET 开发中通常会避免使用它。
+它是在 `async/await` 模式出现之前引入的,依赖的是不会释放调用线程的阻塞调用。
+对于现代的异步工作流,System.Threading.Channels 是首选的替代方案。
 
 #### ConcurrentBag<T>
 
-`ConcurrentBag<T>` is an unordered collection found in the `System.Collections.Concurrent` namespace.
-It serves as a thread-safe replacement for `IEnumerable<T>` or `List<T>` when the order of items is not important.
-Unlike a Set, a Bag allows duplicate items.
+`ConcurrentBag<T>` 是位于 `System.Collections.Concurrent` 命名空间中的一种无序集合。
+当元素的顺序不重要时,它可以作为 `IEnumerable<T>` 或 `List<T>` 的线程安全替代品。
+与 Set 不同,Bag 允许重复的元素。
 
 ```csharp
 ConcurrentBag<StockSymbolModel> stockSymbolBag = [];
@@ -58,17 +56,17 @@ Parallel.ForEach(_stockSymbols, pair =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=130)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=130)
 
-`ConcurrentBag` is optimized for performance through thread-local storage.
-It performs best when the same thread that writes an item is also the one that reads or removes it.
-If items are frequently added on one thread and removed on another, the performance benefits diminish, making it one of the less frequently used concurrent collections.
+`ConcurrentBag` 通过线程本地存储来优化性能。
+当写入某个元素的线程同时也是读取或移除它的线程时,它的性能最好。
+如果元素经常在一个线程上添加、在另一个线程上移除,性能优势就会减弱,这也使它成为较少使用的并发集合之一。
 
 #### ConcurrentStack<T>
 
-`ConcurrentStack<T>` replaces the standard `Stack<T>` for multi-threaded LIFO (Last-In-First-Out) operations.
-It is completely lock-free, utilizing `Interlocked.Exchange` under the hood to manage the stack pointer without requiring traditional locks.
-This makes operations like `Push`, `Pop`, and `TryPeek` highly efficient.
+`ConcurrentStack<T>` 在多线程的 LIFO(后进先出)操作中取代标准的 `Stack<T>`。
+它是完全无锁的,在底层利用 `Interlocked.Exchange` 来管理栈指针,而不需要传统的锁。
+这使得 `Push`、`Pop` 和 `TryPeek` 等操作非常高效。
 
 ```csharp
 ConcurrentStack<StockSymbolModel> stockSymbolStack = [];
@@ -83,14 +81,14 @@ Parallel.ForEach(_stockSymbols, pair =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=250)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=250)
 
-Stacks are ideal for scenarios where only the most recently added item is relevant, such as managing a call stack.
+栈非常适合只有最近添加的元素才有意义的场景,例如管理调用栈。
 
 #### ConcurrentQueue<T>
 
-`ConcurrentQueue<T>` is the thread-safe equivalent of `Queue<T>`, providing FIFO (First-In-First-Out) behavior.
-Like the concurrent stack, it is lock-free and uses `Interlocked` operations to avoid thread switching and synchronization overhead.
+`ConcurrentQueue<T>` 是 `Queue<T>` 的线程安全等价物,提供 FIFO(先进先出)行为。
+与并发栈一样,它也是无锁的,并使用 `Interlocked` 操作来避免线程切换和同步开销。
 
 ```csharp
 ConcurrentQueue<StockSymbolModel> stockSymbolQueue = [];
@@ -105,17 +103,27 @@ if(stockSymbolQueue.TryDequeue(out var oldestStockSymbolModel))
     Trace.WriteLine($"This stock symbol was the oldest item in the Queue: {oldestStockSymbolModel.Symbol}");
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=310)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=310)
 
 #### ConcurrentDictionary<TKey, TValue>
 
-`ConcurrentDictionary<TKey, TValue>` provides a thread-safe implementation of a key-value store.
-It is highly optimized for concurrent access:
+`ConcurrentDictionary<TKey, TValue>` 提供了键值存储的线程安全实现。
+它针对并发访问做了高度优化:
 
-*   **Reads**: Completely lock-free.
-*   **Writes**: Uses fine-grained locking where every key has its own lock. Multiple threads can write to different keys simultaneously without interference. Locking only occurs if multiple threads attempt to write to the exact same key at the same time.
+*   **读取**:完全无锁。
+*   **写入**:使用细粒度锁,每个键都有自己的锁。多个线程可以同时写入不同的键而互不干扰。只有当多个线程同时尝试写入完全相同的键时,才会发生加锁。
 
-A powerful feature of this collection is the `AddOrUpdate` method, which atomically handles both the insertion of new keys and the modification of existing ones using delegate factories.
+```text
+  写入不同的键: 互不干扰
+    线程 1 --> [键 1 的锁] --> 键 1
+    线程 2 --> [键 2 的锁] --> 键 2
+
+  同时写入同一个键: 才会加锁
+    线程 1 --> [键 1 的锁] --> 键 1
+    线程 2 --> [键 1 的锁] (等待)
+```
+
+该集合的一个强大特性是 `AddOrUpdate` 方法,它借助委托工厂,以原子方式同时处理新键的插入和已有键的修改。
 
 ```csharp
 ConcurrentDictionary<string, StockQuoteModel> stockQuoteDictionary = [];
@@ -130,31 +138,31 @@ Parallel.ForEach(_stockSymbols, pair =>
 });
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=490)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/introduction-to-concurrent-collections-69957397/?t=490)
 
 ---
 
 ## 2. Improving Performance of a Mobile App
 
-> [Watch the lesson](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/) · 15:29
+> [观看本课](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/) · 15:29
 
-### Summary
+### 总结
 
-This lesson demonstrates how to optimize a real-world .NET MAUI mobile application by replacing standard collections with concurrent versions and implementing thread synchronization.
-By refactoring a stock tracking application, it illustrates the practical application of `ConcurrentDictionary`, `ConcurrentBag`, and `SemaphoreSlim` to resolve race conditions and improve performance when handling high-frequency API updates across multiple background threads.
+本课演示如何优化一个真实的 .NET MAUI 移动应用:用并发版本替换标准集合,并实现线程同步。
+通过重构一个股票跟踪应用,本课展示了 `ConcurrentDictionary`、`ConcurrentBag` 和 `SemaphoreSlim` 的实际应用,用来解决竞态条件,并在跨多个后台线程处理高频 API 更新时提升性能。
 
-### Key concepts
+### 核心概念
 
-- Identifying thread-safety issues in shared state when using `Parallel.ForEachAsync`.
-- Using `ConcurrentDictionary.AddOrUpdate` for atomic read-modify-write operations based on data timestamps.
-- Implementing `SemaphoreSlim` to protect non-thread-safe resources, such as `Timer` instances, from concurrent access during state changes.
-- Leveraging `Parallel.ForEach` with `ConcurrentBag` for parallel data processing in scenarios where asynchronous calls are not feasible (e.g., within property getters).
-- Managing API rate limits by synchronizing background threads to pause and resume data retrieval.
+- 识别在使用 `Parallel.ForEachAsync` 时共享状态中的线程安全问题。
+- 使用 `ConcurrentDictionary.AddOrUpdate`,基于数据时间戳执行原子的读-改-写操作。
+- 实现 `SemaphoreSlim`,在状态变化期间保护非线程安全的资源(例如 `Timer` 实例)免受并发访问。
+- 在无法进行异步调用的场景中(例如在属性 getter 内部),借助 `Parallel.ForEach` 配合 `ConcurrentBag` 进行并行数据处理。
+- 通过同步后台线程来暂停和恢复数据获取,从而应对 API 速率限制。
 
-### Lesson notes
+### 课程笔记
 
-The StockWatch application retrieves stock quotes every two seconds using a timer.
-The `DashboardViewModel` manages this process, initializing a timer that triggers the `UpdateStockPrices` method.
+StockWatch 应用使用一个计时器,每两秒获取一次股票报价。
+`DashboardViewModel` 负责管理这一过程,它初始化一个计时器来触发 `UpdateStockPrices` 方法。
 
 ```csharp
 Timer CreateGetStockDataTimer()
@@ -170,10 +178,10 @@ Timer CreateGetStockDataTimer()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=70)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=70)
 
-The `UpdateStockPrices` method uses `Parallel.ForEachAsync` to fetch data for multiple stock symbols simultaneously.
-This approach spins up multiple background threads to perform non-blocking API calls.
+`UpdateStockPrices` 方法使用 `Parallel.ForEachAsync` 同时为多个股票代码获取数据。
+这种做法会启动多个后台线程来执行非阻塞的 API 调用。
 
 ```csharp
 async Task UpdateStockPrices(CancellationToken token)
@@ -189,20 +197,33 @@ async Task UpdateStockPrices(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=115)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=115)
 
-Initially, the application used a standard `Dictionary<string, StockQuoteModel>` for `_latestStockQuotes`.
-Because `Parallel.ForEachAsync` allows multiple threads to write to this dictionary while the UI thread reads from it, it must be replaced with a `ConcurrentDictionary` to ensure thread safety.
+```text
+Timer (每 2 秒)
+  |
+  v
+UpdateStockPrices
+  |
+  v
+Parallel.ForEachAsync(_stockSymbols.Keys)
+  |-- 后台线程 --> UpdateStockPrice(symbol, token)
+  |-- 后台线程 --> UpdateStockPrice(symbol, token)
+  '-- 后台线程 --> UpdateStockPrice(symbol, token)
+```
+
+最初,应用为 `_latestStockQuotes` 使用的是标准的 `Dictionary<string, StockQuoteModel>`。
+由于 `Parallel.ForEachAsync` 允许多个线程写入这个字典,而 UI 线程同时在读取它,因此必须把它替换为 `ConcurrentDictionary` 以确保线程安全。
 
 ```csharp
 readonly ConcurrentDictionary<string, StockQuoteModel> _latestStockQuotes = new();
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=370)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=370)
 
-The `ConcurrentDictionary` allows for more efficient updates using the `AddOrUpdate` method.
-This method takes a key, an "add" factory, and an "update" factory.
-The update factory compares the timestamp of the new quote with the existing one to ensure only the most recent data is preserved, preventing older API responses from overwriting newer data.
+`ConcurrentDictionary` 可以借助 `AddOrUpdate` 方法实现更高效的更新。
+该方法接收一个键、一个"添加"工厂和一个"更新"工厂。
+更新工厂会比较新报价与已有报价的时间戳,确保只保留最新的数据,防止较旧的 API 响应覆盖较新的数据。
 
 ```csharp
 async Task UpdateStockPrice(string symbol, CancellationToken token)
@@ -223,20 +244,20 @@ async Task UpdateStockPrice(string symbol, CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=505)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=505)
 
-A race condition exists in the `StartRetrievingStockData` and `StopRetrievingStockData` methods.
-These methods are called when the API returns a "Too Many Requests" (429) error.
-Since multiple parallel threads might hit this error simultaneously, they could all attempt to dispose of or re-initialize the `_getStockDataTimer` at the same time.
-To resolve this, a `SemaphoreSlim` is introduced to ensure only one thread can modify the timer state at a time.
+`StartRetrievingStockData` 和 `StopRetrievingStockData` 方法中存在一个竞态条件。
+当 API 返回"Too Many Requests"(429)错误时,会调用这两个方法。
+由于多个并行线程可能同时遇到这个错误,它们可能会在同一时间尝试释放或重新初始化 `_getStockDataTimer`。
+为了解决这个问题,引入了一个 `SemaphoreSlim`,确保同一时间只有一个线程能修改计时器的状态。
 
 ```csharp
 readonly SemaphoreSlim _retrievingStockDataRaceConditionSemaphoreSlim = new(1, 1);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=670)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=670)
 
-The implementation uses a `try-finally` block to ensure the semaphore is released even if an exception occurs during disposal or initialization, preventing potential deadlocks.
+该实现使用 `try-finally` 块,确保即使在释放或初始化过程中发生异常,信号量也会被释放,从而避免潜在的死锁。
 
 ```csharp
 async ValueTask StopRetrievingStockData(CancellationToken token)
@@ -263,11 +284,11 @@ async ValueTask StopRetrievingStockData(CancellationToken token)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=745)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=745)
 
-Finally, the `GetStockSymbols` method, which prepares data for the UI, is optimized.
-While `Parallel.ForEach` is a blocking call, it is used here because the method is called by a read-only property where `async/await` is not an option.
-By using `Parallel.ForEach` with a `ConcurrentBag` to collect the results, the application processes the stock list in parallel before ordering the final list for the UI.
+最后,对为 UI 准备数据的 `GetStockSymbols` 方法进行了优化。
+虽然 `Parallel.ForEach` 是一个阻塞调用,但这里仍然使用它,因为该方法是由一个只读属性调用的,而在那里无法使用 `async/await`。
+通过使用 `Parallel.ForEach` 配合 `ConcurrentBag` 来收集结果,应用会先并行处理股票列表,然后再为 UI 对最终列表进行排序。
 
 ```csharp
 IReadOnlyList<StockSymbolModel> GetStockSymbols()
@@ -294,4 +315,4 @@ IReadOnlyList<StockSymbolModel> GetStockSymbols()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=880)
+[▶ 观看](https://dometrain.com/take/course/from-zero-to-hero-parallel-programming-in-csharp-3256093/improving-performance-of-a-mobile-app-69957398/?t=880)
