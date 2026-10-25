@@ -1,14 +1,12 @@
 # Value Types vs. Reference Types
 
-> Course: [Mastering: C#](https://dometrain.com/course/mastering-csharp/) · Chapter 3
-> 12 lessons · ~21:27
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程：[Mastering: C#](https://dometrain.com/course/mastering-csharp/) · 第 3 章
+> 共 12 课 · 约 21:27
+> 来源：Dometrain。由课程文档翻译整理；每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Module Overview](https://dometrain.com/take/course/mastering-csharp-3256129/module-overview-69958834/) | 1:24 | [↓](#1-module-overview) |
 | 2 | [Overview](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958835/) | 0:56 | [↓](#2-overview) |
@@ -27,107 +25,107 @@
 
 ## 1. Module Overview
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/module-overview-69958834/) · 1:24
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/module-overview-69958834/) · 1:24
 
-### Summary
+### 总结
 
-The C# type system serves as the foundation for application semantics, influencing identity, mutability, and equality regardless of whether an object-oriented or functional approach is used.
-Beyond logic, types significantly impact performance through memory allocation patterns and object layout.
-Mastery of the type system is essential for utilizing modern language features like records and pattern matching, which are built upon fundamental concepts of value-based equality and type-based querying.
+C# 类型系统是应用语义的基础，无论采用面向对象还是函数式的方式，它都会影响标识（identity）、可变性和相等性。
+除了逻辑之外，类型还会通过内存分配模式和对象布局显著影响性能。
+要用好 record 和模式匹配等现代语言特性，就必须掌握类型系统，因为这些特性建立在基于值的相等性和基于类型的查询这两个基本概念之上。
 
-### Key concepts
+### 核心概念
 
-- **Application Semantics**: Types define how data flows and how the system behaves across different programming paradigms.
-- **Performance Impact**: The choice between reference and value types affects allocations, copying semantics, and object layout.
-- **Domain Modeling**: Records, tuples, and union types allow for precise modeling of the domain, leading to clearer APIs.
-- **Modern Language Features**: Features like records and pattern matching are direct extensions of core type system principles.
-- **Value-based Equality**: The fundamental concept underlying the behavior of record types.
+- **应用语义**：类型定义了数据如何流动，以及系统在不同编程范式下的行为方式。
+- **性能影响**：在引用类型和值类型之间的选择会影响分配、复制语义和对象布局。
+- **领域建模**：record、元组和联合类型（union types）可以对领域进行精确建模，从而带来更清晰的 API。
+- **现代语言特性**：record 和模式匹配等特性是类型系统核心原则的直接延伸。
+- **基于值的相等性**：这是 record 类型行为背后的基本概念。
 
-### Lesson notes
+### 课程笔记
 
-The type system is the cornerstone of any C# application, defining the fundamental semantics whether the architecture is object-oriented (utilizing classes and structs) or functional (utilizing records and pure functions).
-Types govern critical aspects of software behavior, including identity, mutability, and equality.
-These definitions determine how data flows through a system and whether that system behaves correctly.
+类型系统是任何 C# 应用的基石，无论架构是面向对象的（使用 class 和 struct）还是函数式的（使用 record 和纯函数），它都定义了基本语义。
+类型支配着软件行为的关键方面，包括标识、可变性和相等性。
+这些定义决定了数据如何在系统中流动，以及系统的行为是否正确。
 
-Beyond logical behavior, types have a direct impact on application performance.
-The distinction between reference types and value types determines memory allocation patterns, copying semantics, and object layout.
-Precise domain modeling is achieved through the use of records, tuples, and union types, which clarify API intent and reduce ambiguity.
-Poorly defined types lead to unclear APIs, whereas well-defined types make developer intent obvious.
+除了逻辑行为之外，类型还会直接影响应用的性能。
+引用类型和值类型之间的区别决定了内存分配模式、复制语义和对象布局。
+通过使用 record、元组和联合类型可以实现精确的领域建模，它们能让 API 的意图更清晰并减少歧义。
+定义不佳的类型会导致 API 不清晰，而定义良好的类型会让开发者的意图一目了然。
 
-Understanding the type system is a prerequisite for mastering modern C# features.
-For example, records are not a "magical" abstraction; they are reference types that implement value-based equality and controlled immutability.
-If the concept of value-based equality is understood, the behavior of records becomes intuitive.
-Similarly, pattern matching is not merely a syntax feature but a way to query the type system regarding a value's type, nullability, and member state.
-When viewed as a method for asking questions about the type system, pattern matching becomes easier to reason about, read, and implement.
+理解类型系统是掌握现代 C# 特性的前提。
+例如，record 并不是一种"神奇"的抽象；它们是实现了基于值的相等性和受控不可变性的引用类型。
+如果理解了基于值的相等性这一概念，record 的行为就会变得直观。
+同样，模式匹配不只是一种语法特性，而是一种就某个值的类型、可空性和成员状态向类型系统发起查询的方式。
+当把模式匹配看作向类型系统提问的方法时，它就更容易推理、阅读和实现。
 
 ---
 
 ## 2. Overview
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958835/) · 0:56
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958835/) · 0:56
 
-### Summary
+### 总结
 
-This lesson introduces the fundamental distinctions between value types and reference types in C#, moving beyond the simple stack vs. heap distinction to explore storage, copy, and equality semantics.
-It categorizes C# types into reference, value, and pointer types, establishing a framework for understanding how these classifications affect memory allocation, performance, and application logic.
+本课介绍 C# 中值类型与引用类型之间的根本区别，超越简单的栈与堆之分，探讨存储、复制和相等性语义。
+它把 C# 类型分为引用类型、值类型和指针类型，建立起一个框架，用于理解这些分类如何影响内存分配、性能和应用逻辑。
 
-### Key concepts
+### 核心概念
 
-- **Type Categories**: C# types are divided into reference types, value types, and pointer types.
-- **Reference Types**: Includes classes, records, arrays, objects, and delegates.
-- **Value Types**: Includes structs, record structs, enums, and primitive types (which are aliases for structs).
-- **Storage Semantics**: Concerns where the data lives in memory and the physical layout of the object or structure.
-- **Copy Semantics**: Defines what is copied during an assignment operation (the reference vs. the actual data).
-- **Equality Semantics**: Determines the default behavior for comparing instances (identity vs. value-based equality).
+- **类型类别**：C# 类型分为引用类型、值类型和指针类型。
+- **引用类型**：包括 class、record、数组、object 和委托。
+- **值类型**：包括 struct、record struct、枚举和基元类型（它们是 struct 的别名）。
+- **存储语义**：关注数据在内存中位于何处，以及对象或结构的物理布局。
+- **复制语义**：定义赋值操作时复制的是什么（引用还是实际数据）。
+- **相等性语义**：决定比较实例时的默认行为（标识相等还是基于值的相等）。
 
-### Lesson notes
+### 课程笔记
 
-C# types are categorized into three primary groups: reference types, value types, and pointer types.
-Pointer types are primarily utilized in unmanaged contexts and are not as widely used in standard application development as the other two categories.
+C# 类型分为三大类：引用类型、值类型和指针类型。
+指针类型主要用于非托管上下文，在常规应用开发中不像另外两类那样广泛使用。
 
-#### Type Classification
+#### 类型分类
 
-Types are classified based on how they are handled by the runtime and stored in memory:
-- **Reference Types**: These consist of classes, records, arrays, objects, and delegates. Variables of these types store a reference to the data rather than the data itself.
-- **Value Types**: These consist of structs, record structs, enums, and primitive types. In C#, primitive types (like `int` or `bool`) are implemented as aliases for structs. Variables of these types contain the actual data.
+类型根据运行时处理它们的方式以及它们在内存中的存储方式进行分类：
+- **引用类型**：包括 class、record、数组、object 和委托。这些类型的变量存储的是对数据的引用，而不是数据本身。
+- **值类型**：包括 struct、record struct、枚举和基元类型。在 C# 中，基元类型（如 `int` 或 `bool`）被实现为 struct 的别名。这些类型的变量包含实际的数据。
 
-#### The Three Pillars of Comparison
+#### 比较的三大支柱
 
-To fully understand the differences between these types, they must be analyzed from three distinct angles:
+要完全理解这些类型之间的区别，必须从三个不同的角度来分析它们：
 
-1. **Storage Semantics**: This refers to where the data lives in memory. This includes the allocation patterns for types—for instance, how an array of structs results in a single contiguous allocation, whereas an array of classes involves multiple allocations (one for the array itself and one for each instance). This also covers object layout, including object headers and reference slots.
+1. **存储语义**：指数据在内存中位于何处。这包括类型的分配模式，例如 struct 数组如何只产生一次连续的分配，而 class 数组则涉及多次分配（数组本身一次，每个实例各一次）。这还涵盖对象布局，包括对象头和引用槽。
 
-2. **Copy Semantics**: This defines the behavior of the assignment operator. For reference types, an assignment copies the reference, meaning both the original and the new variable point to the same instance in memory. For value types, the assignment copies the actual content, resulting in two independent copies of the data.
+2. **复制语义**：定义赋值运算符的行为。对于引用类型，赋值复制的是引用，这意味着原变量和新变量都指向内存中的同一个实例。对于值类型，赋值复制的是实际内容，从而得到两份相互独立的数据副本。
 
-3. **Equality Semantics**: This defines how equality is evaluated by default. Reference types typically use reference identity (checking if two variables point to the same memory address). Value types use value equality, checking if the underlying data is identical. This also encompasses how these defaults can be overridden and the performance implications of default equality checks (such as the overhead of reflection in certain struct equality scenarios).
+3. **相等性语义**：定义默认如何判断相等。引用类型通常使用引用标识（检查两个变量是否指向同一个内存地址）。值类型使用值相等，检查底层数据是否相同。这还包括如何重写这些默认行为，以及默认相等性检查的性能影响（例如在某些 struct 相等性场景中反射带来的开销）。
 
-These distinctions have significant impacts on performance, particularly regarding iteration costs and the "shuffle effect."
-The memory layout of value types allows for more efficient cache usage and hardware prefetching, whereas the indirection and potential memory fragmentation of reference types can lead to higher dereference costs.
+这些区别对性能有显著影响，尤其是在迭代成本和"洗牌效应"（shuffle effect）方面。
+值类型的内存布局可以更高效地利用缓存和硬件预取，而引用类型的间接寻址以及可能出现的内存碎片会导致更高的解引用成本。
 
 ---
 
 ## 3. Storage Model: Inline vs. Indirection
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/storage-model-inline-vs-indirection-69958836/) · 2:49
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/storage-model-inline-vs-indirection-69958836/) · 2:49
 
-### Summary
+### 总结
 
-The storage model of C# types is defined by the distinction between inline storage and indirection.
-Value types (structs) are stored inline, meaning their data is contained directly within the variable's memory slot or the parent object.
-Reference types (classes) utilize indirection, where the variable holds a reference (pointer) to an object allocated on the managed heap.
-While value types are often associated with the stack and reference types with the heap, the actual storage location is determined by the context—such as whether a value type is a field within a class or if a reference type is subject to stack allocation optimizations in modern runtimes.
+C# 类型的存储模型由内联存储与间接寻址之间的区别来定义。
+值类型（struct）以内联方式存储，这意味着它们的数据直接包含在变量的内存槽或父对象之中。
+引用类型（class）使用间接寻址，变量持有一个指向托管堆上所分配对象的引用（指针）。
+虽然值类型常常与栈相关联、引用类型常常与堆相关联，但实际的存储位置由上下文决定，例如值类型是否是某个 class 中的字段，或者在现代运行时中引用类型是否适用栈分配优化。
 
-### Key concepts
+### 核心概念
 
-- **Inline Storage**: Value types store their data directly where the variable is declared.
-- **Indirection**: Reference types store a pointer to data located elsewhere (typically the managed heap).
-- **Context-Dependent Allocation**: The storage location (stack vs. heap) is determined by the context of the declaration, not just the type itself.
-- **Array Layout**: Arrays of value types store data contiguously, while arrays of reference types store a collection of references to separate heap objects.
+- **内联存储**：值类型把数据直接存储在变量声明的位置。
+- **间接寻址**：引用类型存储一个指向别处数据（通常是托管堆）的指针。
+- **依赖上下文的分配**：存储位置（栈还是堆）由声明所处的上下文决定，而不仅仅由类型本身决定。
+- **数组布局**：值类型数组连续地存储数据，而引用类型数组存储的是一组指向各个独立堆对象的引用。
 
-### Lesson notes
+### 课程笔记
 
-The fundamental difference between value types and reference types is their storage semantics.
-To illustrate this, consider a `Point` struct and a `PointRef` class, both containing `X` and `Y` integer properties.
+值类型与引用类型之间的根本区别在于它们的存储语义。
+为了说明这一点，考虑一个 `Point` struct 和一个 `PointRef` class，二者都包含整型属性 `X` 和 `Y`。
 
 ```csharp
 public struct Point(int x, int y)
@@ -156,27 +154,45 @@ static void Main(string[] args)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/storage-model-inline-vs-indirection-69958836/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/storage-model-inline-vs-indirection-69958836/?t=10)
 
-In this scenario, if we pause execution after initializing `c`, the memory layout reveals distinct behaviors:
-- `p1` (a value type) is stored directly on the stack.
-- `p2` (a reference type) results in a reference on the stack pointing to an instance on the managed heap.
-- `c` (a reference type) is also a reference on the stack pointing to a heap-allocated object.
+在这个场景中，如果在初始化 `c` 之后暂停执行，内存布局会呈现出不同的行为：
+- `p1`（值类型）直接存储在栈上。
+- `p2`（引用类型）在栈上产生一个引用，指向托管堆上的一个实例。
+- `c`（引用类型）同样是栈上的一个引用，指向一个在堆上分配的对象。
 
-Inside the instance of `c`, the storage of its fields depends on their types.
-The `P1` property (a `Point` struct) is stored **inline** within the memory allocated for the `c` object.
-Conversely, the `P2` property (a `PointRef` class) stores a reference that points to the same `PointRef` instance already referenced by the stack.
+在 `c` 的实例内部，其字段的存储方式取决于字段的类型。
+`P1` 属性（一个 `Point` struct）以**内联**方式存储在为 `c` 对象分配的内存中。
+相反，`P2` 属性（一个 `PointRef` class）存储的是一个引用，它指向栈上已经引用的同一个 `PointRef` 实例。
 
-It is important to note that the type itself does not strictly determine the storage location; the context does.
-Value types are not always on the stack; they can be embedded within heap-allocated objects (like `P1` inside `c`).
-Similarly, modern runtimes may perform stack allocation for reference types in specific scenarios.
+```text
+  Stack                     Managed heap
++--------------+
+| p1  X = 1    |
+|     Y = 2    |          +---------------------+
++--------------+          | PointRef            |
+| p2  (ref) ---+--------->|   X = 3             |
++--------------+          |   Y = 4             |
+| c   (ref) ---+---+      +---------------------+
++--------------+   |                 ^
+                   |                 |
+                   |      +----------+----------+
+                   +----->| C                   |
+                          |   P1: X = 1, Y = 2  |  (inline)
+                          |   P2: (ref) --------+
+                          +---------------------+
+```
 
-#### Array Allocation and Performance
+需要注意的是，类型本身并不能严格决定存储位置；决定它的是上下文。
+值类型并不总是在栈上；它们可以嵌入到在堆上分配的对象中（例如 `c` 中的 `P1`）。
+同样，现代运行时在特定场景下可能会对引用类型执行栈分配。
 
-The storage model significantly impacts how arrays are allocated in memory.
-An array of reference types stores references to objects.
-If you allocate an array of 10 classes, the runtime performs 11 allocations: one for the array itself and ten for the individual objects.
-An array of value types, however, stores the data inline within the array's memory block, requiring only a single allocation.
+#### 数组分配与性能
+
+存储模型会显著影响数组在内存中的分配方式。
+引用类型数组存储的是对象的引用。
+如果分配一个包含 10 个 class 的数组，运行时会执行 11 次分配：数组本身一次，10 个独立对象各一次。
+然而，值类型数组会把数据内联存储在数组的内存块中，只需要一次分配。
 
 ```csharp
 [Benchmark]
@@ -202,36 +218,36 @@ public Point[] CreateArrayOfPoints()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/storage-model-inline-vs-indirection-69958836/?t=115)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/storage-model-inline-vs-indirection-69958836/?t=115)
 
-While these benchmarks highlight the structural differences in allocation, they should be used to build a mental model of memory layout rather than as a sole basis for performance optimization.
-Performance is a complex topic requiring end-to-end analysis.
+虽然这些基准测试突显了分配方式上的结构差异，但它们应当用来建立内存布局的心智模型，而不是作为性能优化的唯一依据。
+性能是一个复杂的话题，需要端到端的分析。
 
 ---
 
 ## 4. Exploring Storage
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-storage-69958837/) · 1:03
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-storage-69958837/) · 1:03
 
-### Summary
+### 总结
 
-This lesson explores the storage models of value types and reference types by analyzing array allocations.
-It demonstrates that reference type arrays store pointers to heap-allocated objects, requiring multiple allocations, whereas value type arrays store data inline within the array itself, requiring only a single allocation.
-This distinction is a key factor in understanding memory layout and allocation behavior in C#.
+本课通过分析数组分配来探讨值类型和引用类型的存储模型。
+它演示了引用类型数组存储的是指向堆上已分配对象的指针，需要多次分配；而值类型数组把数据内联存储在数组本身之中，只需要一次分配。
+这一区别是理解 C# 中内存布局和分配行为的关键因素。
 
-### Key concepts
+### 核心概念
 
-- **Reference Type Storage**: Arrays of classes store references to instances allocated on the managed heap.
-- **Value Type Storage**: Arrays of structs store data inline within the array's memory block.
-- **Allocation Overhead**: Creating an array of N reference types results in N+1 allocations, while an array of N value types results in a single allocation.
-- **Mental Model**: Benchmarking these allocations helps visualize the difference in memory layout between structs and classes.
+- **引用类型存储**：class 数组存储的是指向托管堆上已分配实例的引用。
+- **值类型存储**：struct 数组把数据内联存储在数组的内存块中。
+- **分配开销**：创建一个包含 N 个引用类型的数组会产生 N+1 次分配，而包含 N 个值类型的数组只产生一次分配。
+- **心智模型**：对这些分配进行基准测试，有助于直观地看到 struct 与 class 在内存布局上的差异。
 
-### Lesson notes
+### 课程笔记
 
-The storage model of C# types can be understood by comparing how arrays of structs and classes are allocated.
-This comparison serves as a mental model for understanding memory layout rather than a direct performance comparison, as performance is a complex topic involving end-to-end analysis.
+通过比较 struct 数组和 class 数组的分配方式，可以理解 C# 类型的存储模型。
+这种比较是用来理解内存布局的心智模型，而不是直接的性能比较，因为性能是一个涉及端到端分析的复杂话题。
 
-Consider the following definitions for a coordinate point:
+考虑以下这些表示坐标点的定义：
 
 ```csharp
 public struct Point(int x, int y)
@@ -247,9 +263,9 @@ public class PointRef(int x, int y)
 }
 ```
 
-When creating an array of reference types (`PointRef`), the array stores references to instances allocated on the managed heap.
-For an array of size 10, this results in 11 total allocations: one for the array itself and ten for the individual objects.
-In contrast, an array of value types (`Point`) stores the data inline.
+创建引用类型（`PointRef`）数组时，数组存储的是指向托管堆上已分配实例的引用。
+对于大小为 10 的数组，这总共会产生 11 次分配：数组本身一次，10 个独立对象各一次。
+相比之下，值类型（`Point`）数组以内联方式存储数据。
 
 ```csharp
 [Benchmark]
@@ -275,36 +291,51 @@ public Point[] CreateArrayOfPoints()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-storage-69958837/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-storage-69958837/?t=10)
 
-In the `CreateArrayOfPointRefs` method, the runtime performs an allocation for each element in the array.
-However, in the `CreateArrayOfPoints` method, the `Point` struct values are stored inline within the array's memory.
-This results in a single allocation for the entire array, regardless of the number of elements.
-This storage model provides better data locality and reduces the pressure on the managed heap.
+在 `CreateArrayOfPointRefs` 方法中，运行时会为数组中的每个元素执行一次分配。
+然而，在 `CreateArrayOfPoints` 方法中，`Point` struct 的值内联存储在数组的内存中。
+无论元素有多少，这都只会为整个数组产生一次分配。
+这种存储模型提供了更好的数据局部性，并减轻了托管堆的压力。
+
+```text
+PointRef[]  (1 + 10 = 11 allocations)
++-----+-----+-----+-----+
+| ref | ref | ref | ... |   array
++--+--+--+--+--+--+-----+
+   |     |     |
+   v     v     v
+ [PointRef] [PointRef] [PointRef] ...   separate heap objects
+
+Point[]  (1 allocation)
++-------+-------+-------+-----+
+| X | Y | X | Y | X | Y | ... |   values inline in the array
++-------+-------+-------+-----+
+```
 
 ---
 
 ## 5. Analyzing Storage Model with Benchmarks
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-storage-model-with-benchmarks-69958838/) · 1:58
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-storage-model-with-benchmarks-69958838/) · 1:58
 
-### Summary
+### 总结
 
-This lesson explores the memory storage models of value types versus reference types by analyzing benchmark results.
-It quantifies the allocation overhead of heap-allocated objects, including headers and padding, and compares the memory footprint of an array of structs against an array of classes to illustrate the efficiency of value types for small data structures.
+本课通过分析基准测试结果来探讨值类型与引用类型的内存存储模型。
+它量化了堆上分配对象的分配开销（包括对象头和填充），并比较 struct 数组与 class 数组的内存占用，以说明值类型用于小型数据结构时的效率。
 
-### Key concepts
+### 核心概念
 
-* Memory overhead of heap-allocated objects (16-byte header).
-* Array structure overhead, including length fields and padding.
-* Reference size (8 bytes on 64-bit systems) vs. inline value storage.
-* Memory allocation analysis using BenchmarkDotNet.
-* Impact of object layout on application performance.
+* 堆上分配对象的内存开销（16 字节的对象头）。
+* 数组结构的开销，包括长度字段和填充。
+* 引用大小（64 位系统上为 8 字节）与内联值存储的对比。
+* 使用 BenchmarkDotNet 进行内存分配分析。
+* 对象布局对应用性能的影响。
 
-### Lesson notes
+### 课程笔记
 
-To understand the practical implications of the storage models for value types and reference types, we utilize a benchmark that compares the allocation of arrays containing `Point` (a struct) and `PointRef` (a class).
-The benchmark is executed in Release mode to ensure accurate performance and memory metrics.
+为了理解值类型和引用类型存储模型的实际影响，我们使用一个基准测试来比较分别包含 `Point`（struct）和 `PointRef`（class）的数组的分配情况。
+该基准测试在 Release 模式下运行，以确保性能和内存指标准确。
 
 ```csharp
 using BenchmarkDotNet.Attributes;
@@ -365,56 +396,62 @@ namespace ArrayAllocationBenchmarks
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-storage-model-with-benchmarks-69958838/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-storage-model-with-benchmarks-69958838/?t=10)
 
-#### Memory Analysis of Reference Types
+#### 引用类型的内存分析
 
-When allocating an array of classes (`PointRef[]`), the memory consumption is significantly higher due to multiple layers of overhead:
-1. **Object Header**: Every heap-allocated object has a 16-byte overhead.
-2. **Array Structure**: An array includes a length field and padding (typically 4 bytes each).
-3. **References**: Each element in the array is a reference (8 bytes on 64-bit systems) pointing to an object elsewhere on the heap.
-4. **Instance Overhead**: Each `PointRef` instance on the heap also incurs the 16-byte object header in addition to its two 4-byte integer fields (`X` and `Y`), totaling 24 bytes per instance.
+分配 class 数组（`PointRef[]`）时，由于存在多层开销，内存消耗要高得多：
+1. **对象头**：每个在堆上分配的对象都有 16 字节的开销。
+2. **数组结构**：数组包含一个长度字段和填充（通常各 4 字节）。
+3. **引用**：数组中的每个元素都是一个引用（64 位系统上为 8 字节），指向堆上别处的一个对象。
+4. **实例开销**：堆上的每个 `PointRef` 实例除了两个 4 字节的整型字段（`X` 和 `Y`）之外，同样要承担 16 字节的对象头，每个实例共计 24 字节。
 
-For an array of 10 `PointRef` instances, the array itself consumes approximately 108 bytes.
-The 10 instances of `PointRef` consume 240 bytes (10 * 24).
-Theoretically, this results in approximately 344 bytes of allocation, though benchmarks may show slight variations (e.g., 345 bytes) due to rounding errors.
+对于包含 10 个 `PointRef` 实例的数组，数组本身大约占用 108 字节。
+10 个 `PointRef` 实例占用 240 字节（10 * 24）。
+理论上，这会产生大约 344 字节的分配，不过由于舍入误差，基准测试可能会显示出细微的差异（例如 345 字节）。
 
-#### Memory Analysis of Value Types
+```text
+PointRef[10] array: header 16 | length 4 | padding 4 | 10 x ref (8 each)
+PointRef instance:  header 16 | X 4 | Y 4                     = 24 bytes
+                    10 instances x 24                         = 240 bytes
+```
 
-In contrast, an array of structs (`Point[]`) is much more efficient.
-Because value types are stored inline within the array:
-1. There are no separate heap allocations for each element.
-2. There are no 8-byte references stored in the array; the data itself resides directly in the array's memory block.
-3. The total size is simply the array overhead (108 bytes for a size of 10) with no extra per-element heap overhead.
+#### 值类型的内存分析
 
-This comparison demonstrates that for small data structures, the overhead of using classes can be substantial.
-While this may not always be a performance bottleneck, benchmarking is essential to determine the impact on specific applications.
-Tools like the "Object Layout Inspector" can be used to further investigate how the Common Language Runtime (CLR) lays out objects in memory.
+相比之下，struct 数组（`Point[]`）要高效得多。
+因为值类型以内联方式存储在数组中：
+1. 不会为每个元素单独进行堆分配。
+2. 数组中不存储 8 字节的引用；数据本身直接位于数组的内存块中。
+3. 总大小就是数组的开销（大小为 10 时为 108 字节），没有额外的逐元素堆开销。
+
+这一比较表明，对于小型数据结构，使用 class 的开销可能相当可观。
+虽然这未必总会成为性能瓶颈，但要确定它对特定应用的影响，基准测试是必不可少的。
+可以使用 "Object Layout Inspector" 之类的工具进一步研究公共语言运行时（CLR）如何在内存中布局对象。
 
 ---
 
 ## 6. Inspecting Type Layout (part 2)
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/inspecting-type-layout-part-2-69958839/) · 1:06
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/inspecting-type-layout-part-2-69958839/) · 1:06
 
-### Summary
+### 总结
 
-This lesson demonstrates how to use the ObjectLayoutInspector NuGet package to visualize the memory layout of C# types at runtime.
-By comparing a struct and a class, it highlights the overhead of reference types—specifically the object header and method table pointer—and illustrates how arrays of value types store data inline whereas arrays of reference types store pointers to separate heap allocations.
+本课演示如何使用 ObjectLayoutInspector NuGet 包在运行时可视化 C# 类型的内存布局。
+通过比较一个 struct 和一个 class，本课突显了引用类型的开销（具体来说是对象头和方法表指针），并说明值类型数组以内联方式存储数据，而引用类型数组存储的是指向各个独立堆分配的指针。
 
-### Key concepts
+### 核心概念
 
-*   **ObjectLayoutInspector**: A NuGet package used to inspect the physical memory layout of objects and types at runtime.
-*   **TypeLayout.PrintLayout<T>()**: An API call used to print the memory layout of a specific type.
-*   **ArrayLayout.PrintLayout(instance)**: An API call used to print the memory layout of a specific array instance, allowing for inspection of element storage.
-*   **Reference Type Overhead**: Every class instance includes an Object Header and a Method Table Pointer used by the CLR.
-*   **Value Type Efficiency**: Structs have zero overhead and store their fields directly without additional metadata pointers.
-*   **Array Storage Models**: Struct arrays store elements contiguously in memory; class arrays store a contiguous block of references to objects located elsewhere on the heap.
+*   **ObjectLayoutInspector**：一个 NuGet 包，用于在运行时检查对象和类型的物理内存布局。
+*   **TypeLayout.PrintLayout<T>()**：一个 API 调用，用于打印特定类型的内存布局。
+*   **ArrayLayout.PrintLayout(instance)**：一个 API 调用，用于打印特定数组实例的内存布局，从而可以检查元素的存储方式。
+*   **引用类型开销**：每个 class 实例都包含 CLR 使用的对象头（Object Header）和方法表指针（Method Table Pointer）。
+*   **值类型效率**：struct 没有任何开销，直接存储其字段，没有额外的元数据指针。
+*   **数组存储模型**：struct 数组在内存中连续地存储元素；class 数组存储的是一块连续的引用，这些引用指向位于堆上别处的对象。
 
-### Lesson notes
+### 课程笔记
 
-To use the object layout inspector, you must add the `ObjectLayoutInspector` NuGet package to your project.
-This tool provides a simple API to visualize how the Common Language Runtime (CLR) organizes data in memory.
+要使用对象布局检查器，必须把 `ObjectLayoutInspector` NuGet 包添加到项目中。
+这个工具提供了一个简单的 API，用于可视化公共语言运行时（CLR）如何在内存中组织数据。
 
 ```xml
 <Project Sdk="Microsoft.NET.Sdk">
@@ -435,8 +472,8 @@ This tool provides a simple API to visualize how the Common Language Runtime (CL
 </Project>
 ```
 
-The following implementation compares a struct (`Point`) and a class (`PointRef`) along with their respective array representations.
-You use `TypeLayout.PrintLayout` for the struct and class types, and `ArrayLayout.PrintLayout` for array instances to see the actual layout for a specific number of elements.
+下面的实现比较了一个 struct（`Point`）和一个 class（`PointRef`），以及它们各自的数组表示。
+对 struct 和 class 类型使用 `TypeLayout.PrintLayout`，对数组实例使用 `ArrayLayout.PrintLayout`，以查看特定元素数量下的实际布局。
 
 ```csharp
 using ObjectLayoutInspector;
@@ -482,57 +519,67 @@ namespace StorageModelExplained
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/inspecting-type-layout-part-2-69958839/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/inspecting-type-layout-part-2-69958839/?t=10)
 
-#### Runtime Layout Observations
+#### 运行时布局观察
 
-##### Struct vs. Class Layout
+##### Struct 与 Class 的布局
 
-When inspecting the `Point` struct at runtime, it shows zero overhead; the fields are packed directly.
-In contrast, the `PointRef` class includes two extra fields that the CLR uses for bookkeeping purposes:
-1.  **Object Header**: Used for synchronization and other internal metadata.
-2.  **Method Table Pointer**: Points to the type's method table.
+在运行时检查 `Point` struct 时，它显示没有任何开销；字段直接紧密排列。
+相比之下，`PointRef` class 包含两个 CLR 用于内部管理的额外字段：
+1.  **对象头**：用于同步以及其他内部元数据。
+2.  **方法表指针**：指向该类型的方法表。
 
-Following these metadata fields, the class contains the same two integer fields as the struct.
+在这些元数据字段之后，class 包含与 struct 相同的两个整型字段。
 
-##### Array Layouts
+```text
+Point (struct)          PointRef (class)
++--------+              +----------------------+
+| X      |              | Object Header        |
+| Y      |              | Method Table Pointer |
++--------+              | X                    |
+                        | Y                    |
+                        +----------------------+
+```
 
-Arrays of both types share the same initial overhead: an object header, a method table pointer, and a length field (with associated padding).
-However, the storage of elements differs significantly:
+##### 数组布局
 
-*   **Array of Structs (`Point[]`)**: The `Point` instances themselves are stored directly within the array's memory block.
-*   **Array of Class References (`PointRef[]`)**: Instead of storing the values, the array stores references (pointers) to the `PointRef` instances.
+两种类型的数组具有相同的初始开销：一个对象头、一个方法表指针和一个长度字段（以及相关的填充）。
+然而，元素的存储方式有显著不同：
 
-While the total size of the array objects themselves may appear identical in the inspector, the reference type implementation requires the array itself plus ten additional heap-allocated objects.
-The struct array stores all data within a single allocation.
+*   **struct 数组（`Point[]`）**：`Point` 实例本身直接存储在数组的内存块中。
+*   **class 引用数组（`PointRef[]`）**：数组存储的不是值，而是指向 `PointRef` 实例的引用（指针）。
+
+虽然在检查器中数组对象本身的总大小可能看起来相同，但引用类型的实现除了数组本身之外，还需要另外十个在堆上分配的对象。
+struct 数组则把所有数据存储在一次分配之中。
 
 ---
 
 ## 7. Exploring Access Patterns with Benchmarks
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-access-patterns-with-benchmarks-69958840/) · 1:00
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-access-patterns-with-benchmarks-69958840/) · 1:00
 
-### Summary
+### 总结
 
-This comparison examines the performance implications of accessing arrays of value types (structs) versus reference types (classes).
-It focuses on the impact of memory indirection and cache locality, demonstrating how the physical layout of data in memory affects iteration speed across different array sizes and access patterns.
+这一比较考察访问值类型（struct）数组与引用类型（class）数组时的性能影响。
+它关注内存间接寻址和缓存局部性的影响，演示数据在内存中的物理布局如何在不同的数组大小和访问模式下影响迭代速度。
 
-### Key concepts
+### 核心概念
 
-- **Memory Indirection**: Reference type arrays store pointers, requiring an extra hop to access heap-allocated data.
-- **Direct Access**: Value type arrays store data inline, allowing the CPU to access fields directly within the array's memory block.
-- **Cache Locality**: Contiguous memory layouts are more cache-friendly, enabling better hardware prefetching.
-- **Access Patterns**: The performance gap between structs and classes is influenced by array size and whether access is sequential or randomized.
-- **Mental Model**: Performance is determined by how the data layout interacts with the CPU's memory hierarchy.
+- **内存间接寻址**：引用类型数组存储的是指针，需要额外跳转一次才能访问堆上分配的数据。
+- **直接访问**：值类型数组以内联方式存储数据，使 CPU 可以直接在数组的内存块中访问字段。
+- **缓存局部性**：连续的内存布局对缓存更友好，能实现更好的硬件预取。
+- **访问模式**：struct 与 class 之间的性能差距受数组大小以及访问是顺序的还是随机的影响。
+- **心智模型**：性能取决于数据布局如何与 CPU 的内存层次结构相互作用。
 
-### Lesson notes
+### 课程笔记
 
-Following the allocation of arrays for both value types and reference types, the comparison examines the performance characteristics of consuming that data.
-The primary distinction lies in how the CPU accesses the underlying values.
-For an array of reference types (`PointRef`), the array contains pointers to objects on the heap, necessitating an extra layer of indirection.
-In contrast, an array of value types (`Point`) stores the data contiguously within the array itself, allowing for direct access.
+在为值类型和引用类型分别分配数组之后，这一比较考察消费这些数据时的性能特征。
+主要区别在于 CPU 访问底层值的方式。
+对于引用类型（`PointRef`）数组，数组包含指向堆上对象的指针，因此需要额外一层间接寻址。
+相比之下，值类型（`Point`）数组把数据连续地存储在数组本身之中，从而可以直接访问。
 
-The following benchmarks compare these two access patterns by iterating through the arrays and summing the `X` property of each element:
+下面的基准测试通过遍历数组并累加每个元素的 `X` 属性来比较这两种访问模式：
 
 ```csharp
 [Benchmark]
@@ -558,37 +605,37 @@ public int ConsumeArrayOfPoints()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-access-patterns-with-benchmarks-69958840/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-access-patterns-with-benchmarks-69958840/?t=10)
 
-The performance impact of indirection is influenced by several factors, including array size and the physical layout of the objects in memory.
-While sequential allocation may keep objects relatively close together, any shuffling of references or increase in data volume can lead to cache-hostile access patterns.
-Understanding this mental model is crucial for predicting how different data structures will perform under various workloads, as direct access to contiguous memory typically allows the hardware prefetcher to operate more effectively than patterns involving multiple layers of indirection.
+间接寻址对性能的影响受多个因素左右，包括数组大小以及对象在内存中的物理布局。
+虽然顺序分配可能会让对象彼此保持相对靠近，但任何对引用的打乱或数据量的增加都可能导致对缓存不友好的访问模式。
+理解这一心智模型对于预测不同数据结构在各种工作负载下的表现至关重要，因为直接访问连续内存通常比涉及多层间接寻址的模式更能让硬件预取器有效工作。
 
 ---
 
 ## 8. Analyzing Access Patterns Benchmark Results
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/) · 3:16
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/) · 3:16
 
-### Summary
+### 总结
 
-This lesson analyzes benchmark results comparing array access for value types (structs) and reference types (classes).
-While initial sequential benchmarks show comparable performance, this is often due to the "clean" nature of benchmarks where objects are allocated contiguously.
-By introducing a randomized access pattern (shuffling), the benchmark reveals the true cost of indirection.
-For large datasets that exceed the L1 cache, value types can perform up to 10 times faster than reference types because they avoid repeated main memory lookups caused by scattered heap references.
+本课分析比较值类型（struct）与引用类型（class）数组访问的基准测试结果。
+虽然最初的顺序访问基准测试显示两者性能相当，但这往往是由于基准测试环境"干净"，对象是连续分配的。
+通过引入随机化的访问模式（打乱），基准测试揭示了间接寻址的真实成本。
+对于超出 L1 缓存的大型数据集，值类型的性能最多可比引用类型快 10 倍，因为它们避免了由分散的堆引用造成的反复主存查找。
 
-### Key concepts
+### 核心概念
 
-- **Memory Locality**: Value types stored in an array are contiguous in memory, whereas reference types are pointers to potentially scattered heap locations.
-- **Hardware Prefetcher**: Modern CPUs can predict and pre-load sequential data, which can mask the performance penalty of reference indirection in simple benchmarks.
-- **Cache Levels**: Small datasets (e.g., 100 items) often reside entirely in the L1 cache, resulting in identical performance for both types.
-- **Indirection Overhead**: The performance cost of following a reference to a memory address, which becomes significant when data is not "hot" in the cache.
-- **Benchmark Realism**: Shuffling references simulates real-world application behavior where objects are rarely allocated in a perfectly contiguous block.
+- **内存局部性**：存储在数组中的值类型在内存中是连续的，而引用类型是指向可能分散在各处的堆位置的指针。
+- **硬件预取器**：现代 CPU 可以预测并预先加载顺序数据，这在简单的基准测试中可能会掩盖引用间接寻址的性能损失。
+- **缓存层级**：小型数据集（例如 100 个元素）往往完全驻留在 L1 缓存中，因此两种类型的性能完全相同。
+- **间接寻址开销**：沿着引用访问某个内存地址的性能成本，当数据在缓存中不"热"时，这一成本会变得显著。
+- **基准测试的真实性**：打乱引用可以模拟真实应用的行为，因为在真实应用中对象很少会被分配在一个完全连续的块中。
 
-### Lesson notes
+### 课程笔记
 
-The initial benchmark compares iterating over an array of `Point` (struct) versus `PointRef` (class).
-In a sequential access pattern, the performance difference for 1,000,000 items is only about 60%, which might seem surprisingly low given the theoretical overhead of reference types.
+最初的基准测试比较遍历 `Point`（struct）数组与 `PointRef`（class）数组。
+在顺序访问模式下，对于 1,000,000 个元素，性能差异只有大约 60%，考虑到引用类型理论上的开销，这可能显得出奇地低。
 
 ```csharp
 [Benchmark]
@@ -614,11 +661,11 @@ public int ConsumeArrayOfPoints()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=10)
 
-This comparable performance occurs because the benchmark allocates all instances in a `GlobalSetup` method.
-In this isolated environment, the reference objects are allocated one after another, meaning they sit very close to each other in memory.
-This allows the CPU's hardware prefetcher to optimize the access pattern, masking the cost of indirection.
+之所以性能相当，是因为该基准测试在 `GlobalSetup` 方法中分配了所有实例。
+在这种隔离的环境中，引用对象是一个接一个地分配的，这意味着它们在内存中彼此非常靠近。
+这使 CPU 的硬件预取器能够优化访问模式，从而掩盖了间接寻址的成本。
 
 ```csharp
 [GlobalSetup]
@@ -636,11 +683,11 @@ public void Setup()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=55)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=55)
 
-In a real-world application, memory is fragmented, and references are rarely sequential.
-To simulate this, a `RandomizedAccess` benchmark is introduced using a `Shuffle` parameter.
-When `Shuffle` is true, the array of references is populated by sampling from a large pool of objects at random positions, defeating the hardware prefetcher and isolating the cost of indirection from the allocation order.
+在真实应用中，内存是碎片化的，引用很少是顺序排列的。
+为了模拟这一点，引入了一个使用 `Shuffle` 参数的 `RandomizedAccess` 基准测试。
+当 `Shuffle` 为 true 时，引用数组通过在一个大型对象池中随机位置采样来填充，从而让硬件预取器失效，并把间接寻址的成本与分配顺序隔离开来。
 
 ```csharp
 [ShortRunJob]
@@ -668,12 +715,12 @@ public class RandomizedAccess
     private PointRef[] _pointRefs = [];
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=70)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=70)
 
-The results of the randomized benchmark reveal the impact of cache locality and indirection:
-1. **100 items**: There are no differences between accessing classes and structs because the data is "hot" in the L1 cache, which is extremely fast.
-2. **10,000 items**: Structs are approximately 2x faster. The data set no longer fits in L1, but the CPU still manages some prefetching.
-3. **1,000,000 items (Shuffled)**: The performance difference is substantial, reaching almost 10x. Shuffling forces the CPU to hit main memory repeatedly for each reference, whereas the struct array remains contiguous and cache-friendly regardless of the shuffle.
+随机化基准测试的结果揭示了缓存局部性和间接寻址的影响：
+1. **100 个元素**：访问 class 和 struct 之间没有差异，因为数据在 L1 缓存中是"热"的，而 L1 缓存极其快速。
+2. **10,000 个元素**：struct 大约快 2 倍。数据集已经无法放进 L1，但 CPU 仍然能进行一定程度的预取。
+3. **1,000,000 个元素（打乱）**：性能差异相当大，接近 10 倍。打乱迫使 CPU 为每个引用反复访问主存，而 struct 数组无论是否打乱都保持连续且对缓存友好。
 
 ```csharp
         _pointRefs = new PointRef[Size];
@@ -694,33 +741,45 @@ The results of the randomized benchmark reveal the impact of cache locality and 
     }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=90)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-access-patterns-benchmark-results-69958841/?t=90)
 
-This confirms that while simple benchmarks can be misleading, the cost of indirection is real.
-Accessing an array of values is theoretically and practically faster when the data access pattern is not perfectly sequential.
+```text
+Shuffle = false                     Shuffle = true
+_pointRefs                          _pointRefs
+[0] [1] [2] [3] ...                 [0] [1] [2] [3] ...
+ |   |   |   |                       |   |   |   |
+ v   v   v   v                       |   |   |   +-------------+
+pool (adjacent entries)              |   +---|-----------+     |
+[0] [1] [2] [3] ...                  v       v           v     v
+                                    pool (random positions, PoolSize)
+                                    [..] ... [..] ... [..] ... [..]
+```
+
+这证实了，虽然简单的基准测试可能具有误导性，但间接寻址的成本是真实存在的。
+当数据访问模式并非完全顺序时，访问值数组在理论上和实践中都更快。
 
 ---
 
 ## 9. Copy Semantics: Assignment
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-assignment-69958842/) · 1:25
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-assignment-69958842/) · 1:25
 
-### Summary
+### 总结
 
-This lesson explains the fundamental differences in copy semantics between value types and reference types during assignment.
-It demonstrates that while assignment always copies a value, the result differs: reference types create an alias to the same memory instance, whereas value types create an entirely independent copy of the data.
+本课解释值类型与引用类型在赋值时复制语义上的根本区别。
+它演示了，虽然赋值总是复制一个值，但结果却不同：引用类型会创建指向同一内存实例的别名，而值类型会创建一份完全独立的数据副本。
 
-### Key concepts
+### 核心概念
 
-- Reference type assignment (aliasing).
-- Value type assignment (independent copying).
-- Mutation behavior in shared instances vs. local copies.
-- The definition of "value" in different contexts (data vs. pointer).
+- 引用类型赋值（别名）。
+- 值类型赋值（独立复制）。
+- 共享实例与本地副本中的修改行为。
+- 不同上下文中"值"的定义（数据还是指针）。
 
-### Lesson notes
+### 课程笔记
 
-Copy semantics is a critical aspect that differentiates reference types from value types in C#.
-The following code demonstrates how assignment affects variables of both types:
+复制语义是 C# 中区分引用类型和值类型的一个关键方面。
+下面的代码演示了赋值如何影响这两种类型的变量：
 
 ```csharp
 public struct Point
@@ -752,55 +811,63 @@ p4.X++;
 p4.Y++;
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-assignment-69958842/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-assignment-69958842/?t=10)
 
-When a reference type variable is assigned to another (e.g., `p2 = p1`), the system creates an alias.
-Both `p1` and `p2` point to the exact same instance in memory.
-Consequently, any mutation performed on `p2` is immediately visible when accessing the instance through `p1` because they share the same underlying data.
+当把一个引用类型变量赋值给另一个变量时（例如 `p2 = p1`），系统会创建一个别名。
+`p1` 和 `p2` 都指向内存中完全相同的实例。
+因此，对 `p2` 执行的任何修改，在通过 `p1` 访问该实例时都会立即可见，因为它们共享同一份底层数据。
 
-In contrast, the assignment of value types (e.g., `p4 = p3`) results in a bitwise copy of the data.
-`p4` becomes a separate instance containing the same values as `p3` at the moment of assignment.
-Because they are independent, mutating `p4` has no effect on the state of `p3`.
+相反，值类型的赋值（例如 `p4 = p3`）会对数据进行按位复制。
+`p4` 成为一个独立的实例，包含与赋值那一刻 `p3` 相同的值。
+因为它们彼此独立，修改 `p4` 对 `p3` 的状态没有任何影响。
 
-While it is common to use the stack and heap as a mental model—where value types live on the stack and reference types on the heap—this is an educational simplification.
-In reality, the .NET runtime may optimize storage by inlining data or using CPU registers.
+```text
+p2 = p1  (reference type)          p4 = p3  (value type)
 
-The fundamental rule to remember is that the assignment operator always copies the "value."
-The distinction lies in what constitutes that value:
-- For a **struct**, the value is the actual data stored within the object.
-- For a **class**, the value is the reference (or pointer) to the instance.
+p1 --+                             p3: X = 3, Y = 4
+     +--> PointRef { X, Y }        p4: X = 3, Y = 4   (separate copy)
+p2 --+
+```
 
-By copying the reference, the assignment operation creates two variables that point to the same location in memory, which is why reference types exhibit aliasing behavior.
+虽然常常把栈和堆当作心智模型（值类型位于栈上，引用类型位于堆上），但这是一种教学上的简化。
+实际上，.NET 运行时可能会通过内联数据或使用 CPU 寄存器来优化存储。
+
+需要记住的基本规则是：赋值运算符总是复制"值"。
+区别在于这个值由什么构成：
+- 对于 **struct**，值就是存储在对象中的实际数据。
+- 对于 **class**，值是指向实例的引用（或指针）。
+
+通过复制引用，赋值操作创建了两个指向同一内存位置的变量，这就是引用类型表现出别名行为的原因。
 
 ---
 
 ## 10. Copy Semantics: Parameter Passing
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/) · 3:27
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/) · 3:27
 
-### Summary
+### 总结
 
-C# parameter passing defaults to copy semantics, where the behavior depends on whether the type is a value type or a reference type.
-While value types result in a copy of the underlying data, reference types result in a copy of the reference to a shared object.
-Developers can use aliases—ref, out, in, and ref readonly—to pass parameters by reference, each with specific rules regarding mutability and the ability to accept r-values.
+C# 的参数传递默认采用复制语义，其行为取决于类型是值类型还是引用类型。
+值类型会复制底层数据，而引用类型会复制指向共享对象的引用。
+开发者可以使用别名（ref、out、in 和 ref readonly）按引用传递参数，每一种在可变性以及能否接受右值（r-value）方面都有特定的规则。
 
-### Key concepts
+### 核心概念
 
-- Default parameter passing uses copy semantics.
-- Value types (structs) copy the data; reference types (classes) copy the reference.
-- Mutable aliases: `ref` and `out` (where `out` must be assigned by the callee).
-- Read-only aliases: `in` and `ref readonly`.
-- `in` parameters allow r-values (literals or new instances), whereas `ref` and `ref readonly` have stricter requirements.
-- Passing a class by `ref` allows the callee to reassign the caller's reference to a new instance.
+- 默认的参数传递使用复制语义。
+- 值类型（struct）复制数据；引用类型（class）复制引用。
+- 可变别名：`ref` 和 `out`（其中 `out` 必须由被调用方赋值）。
+- 只读别名：`in` 和 `ref readonly`。
+- `in` 参数允许右值（字面量或新实例），而 `ref` 和 `ref readonly` 的要求更严格。
+- 按 `ref` 传递 class 时，被调用方可以把调用方的引用重新赋值为一个新实例。
 
-### Lesson notes
+### 课程笔记
 
-#### Copy vs. Alias
+#### 复制与别名
 
-By default, C# copies the value of a parameter when passing it to a method.
-The nature of this copy depends on the type:
-- **Value Types (structs):** The entire data structure is copied. Mutating the parameter inside the method only affects the local copy.
-- **Reference Types (classes):** The reference (the memory address) is copied. Both the caller and the callee point to the same shared object, so mutating the object's properties inside the method affects the original instance.
+默认情况下，C# 在把参数传给方法时会复制参数的值。
+这种复制的性质取决于类型：
+- **值类型（struct）**：整个数据结构被复制。在方法内部修改参数只会影响本地副本。
+- **引用类型（class）**：引用（内存地址）被复制。调用方和被调用方都指向同一个共享对象，因此在方法内部修改对象的属性会影响原始实例。
 
 ```csharp
 var p1  = new Point    { X = 1, Y = 1 };
@@ -820,14 +887,14 @@ static void PassByValue(Point v1, PointRef v2)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/?t=55)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/?t=55)
 
-#### Mutable Aliases: ref and out
+#### 可变别名：ref 和 out
 
-Passing by reference creates an alias to the original variable.
-C# provides two primary mutable aliases:
-- **ref:** Allows the method to both read and mutate the original variable. For structs, this means the actual instance can be modified. For classes, the method can even reassign the reference to point to a completely different instance.
-- **out:** Similar to `ref`, but the callee is required to assign a value to the parameter before the method returns.
+按引用传递会为原始变量创建一个别名。
+C# 提供了两种主要的可变别名：
+- **ref**：允许方法既读取又修改原始变量。对于 struct，这意味着可以修改真正的实例。对于 class，方法甚至可以把引用重新赋值，使其指向一个完全不同的实例。
+- **out**：与 `ref` 类似，但被调用方必须在方法返回之前给参数赋值。
 
 ```csharp
 var p  = new Point    { X = 1, Y = 1 };
@@ -843,15 +910,15 @@ static void PassByRef(ref Point a1, ref PointRef a2)
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/?t=100)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/?t=100)
 
-#### Read-only Aliases: in and ref readonly
+#### 只读别名：in 和 ref readonly
 
-Read-only aliases optimize performance, primarily for large structs, by avoiding copies while preventing mutation. 
-- **in:** A read-only alias that allows r-values (e.g., `new Point()`). If an r-value is passed, the compiler may create a temporary variable.
-- **ref readonly:** A read-only alias with stricter usage constraints. It typically requires an l-value (a variable) and will produce a warning if an r-value is passed directly.
+只读别名通过避免复制同时防止修改来优化性能，主要针对大型 struct。
+- **in**：一种允许右值（例如 `new Point()`）的只读别名。如果传入的是右值，编译器可能会创建一个临时变量。
+- **ref readonly**：一种使用约束更严格的只读别名。它通常要求左值（l-value，即一个变量），如果直接传入右值会产生警告。
 
-Neither `in` nor `ref readonly` allows the callee to reassign the parameter or mutate its fields (for structs).
+`in` 和 `ref readonly` 都不允许被调用方重新给参数赋值或修改其字段（对于 struct 而言）。
 
 ```csharp
 static void PassByRefVariants(in Point i, ref Point r, ref readonly Point rr)
@@ -870,11 +937,11 @@ var p = new Point { X = 1, Y = 2 };
 PassByRefVariants(i: new Point(), r: ref p, rr: ref p);
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/?t=145)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/copy-semantics-parameter-passing-69958843/?t=145)
 
-Note that using `in` with mutable structs can lead to the creation of defensive copies, a topic covered in later modules.
+注意，对可变 struct 使用 `in` 可能会导致创建防御性副本，这一话题将在后续模块中介绍。
 
-#### Supporting Types
+#### 辅助类型
 
 ```csharp
 public struct Point
@@ -894,43 +961,51 @@ public class PointRef
 
 ## 11. Equality Semantics
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/equality-semantics-69958844/) · 1:15
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/equality-semantics-69958844/) · 1:15
 
-Equality in C# is a key differentiator between value types and reference types.
-Understanding how the runtime compares instances is essential for implementing correct logic and maintaining performance.
+相等性是 C# 中区分值类型和引用类型的一个关键点。
+理解运行时如何比较实例，对于实现正确的逻辑和保持性能至关重要。
 
-### Key concepts
+### 核心概念
 
-- **Value-Based Equality**: Structs are compared based on the values of their fields and properties. If the content matches, the instances are considered equal.
-- **Reference-Based Equality**: Classes use reference-based equality by default, meaning they are only equal if they point to the same memory address.
-- **Operator Constraints**: The equality operator (`==`) is not automatically defined for structs; it must be explicitly overloaded by the developer.
-- **Boxing and ReferenceEquals**: Using `object.ReferenceEquals` on structs leads to boxing, which creates new object instances and causes the method to return `false` even when comparing a struct to itself.
-- **Performance**: While structs provide default equality, overriding `Equals` and `GetHashCode` is recommended to avoid the performance overhead of the default reflection-based implementation.
+- **基于值的相等性**：struct 根据其字段和属性的值进行比较。如果内容一致，这些实例就被视为相等。
+- **基于引用的相等性**：class 默认使用基于引用的相等性，这意味着只有当它们指向同一个内存地址时才相等。
+- **运算符约束**：相等运算符（`==`）不会自动为 struct 定义；必须由开发者显式重载。
+- **装箱与 ReferenceEquals**：对 struct 使用 `object.ReferenceEquals` 会导致装箱，从而创建新的对象实例，使该方法即使在把一个 struct 与它自身比较时也返回 `false`。
+- **性能**：虽然 struct 提供了默认的相等性，但建议重写 `Equals` 和 `GetHashCode`，以避免默认的基于反射的实现带来的性能开销。
 
-### Lesson notes
+### 课程笔记
 
-#### Value Type Equality
+#### 值类型的相等性
 
-Structs are values, which means their equality is determined by the content of the instance.
-If you have two different instances of a struct with identical property values, the `Equals` method will return `true`.
-However, unlike reference types, the compiler does not emit a default implementation for the equality operator (`==`) for structs.
-If you wish to use `==` with a struct, you must define the operator explicitly.
+struct 是值，这意味着它们的相等性由实例的内容决定。
+如果有两个不同的 struct 实例，它们的属性值完全相同，`Equals` 方法会返回 `true`。
+然而，与引用类型不同，编译器不会为 struct 生成相等运算符（`==`）的默认实现。
+如果希望对 struct 使用 `==`，必须显式定义该运算符。
 
-It is important to avoid using `object.ReferenceEquals` with structs.
-Because this method accepts arguments of type `object`, passing a struct causes it to be boxed.
-Even if you pass the same struct instance into both parameters, each is boxed into a separate object on the heap, and the method will return `false`.
+需要注意避免对 struct 使用 `object.ReferenceEquals`。
+因为该方法接受 `object` 类型的参数，传入 struct 会导致它被装箱。
+即使把同一个 struct 实例传给两个参数，每个参数也会被装箱成堆上的一个独立对象，该方法会返回 `false`。
 
-When a struct instance is mutated, its equality status changes relative to other instances.
-If two structs were previously equal and one is modified, the `Equals` method will then return `false`.
+```text
+object.ReferenceEquals(s1, s1)
 
-#### Reference Type Equality
+s1 --box--> [object #1 on heap] --+
+                                  +--> different objects -> False
+s1 --box--> [object #2 on heap] --+
+```
 
-Classes utilize reference semantics by default.
-Even if two separate class instances contain the exact same data, they are not considered equal because they reside at different locations in memory.
-In the default state for classes, the `Equals` method, the equality operator (`==`), and `object.ReferenceEquals` all perform the same check: they verify if the variables point to the same instance.
+当一个 struct 实例被修改时，它相对于其他实例的相等状态会发生变化。
+如果两个 struct 之前相等，而其中一个被修改了，那么 `Equals` 方法随后就会返回 `false`。
 
-If you assign one reference variable to another (e.g., `r2 = r1`), they both point to the same instance in memory.
-At this point, both the equality operator and `ReferenceEquals` will return `true`.
+#### 引用类型的相等性
+
+class 默认使用引用语义。
+即使两个独立的 class 实例包含完全相同的数据，它们也不被视为相等，因为它们位于内存中的不同位置。
+在 class 的默认状态下，`Equals` 方法、相等运算符（`==`）和 `object.ReferenceEquals` 执行的都是同一种检查：验证变量是否指向同一个实例。
+
+如果把一个引用变量赋值给另一个变量（例如 `r2 = r1`），它们都会指向内存中的同一个实例。
+此时，相等运算符和 `ReferenceEquals` 都会返回 `true`。
 
 ```csharp
 var s1 = new Point { X = 1, Y = 1 };
@@ -974,43 +1049,43 @@ public class PointRef
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/equality-semantics-69958844/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/equality-semantics-69958844/?t=10)
 
-While the default behavior for classes is reference equality, this can be changed by overriding `Equals`, `GetHashCode`, and the equality operators to implement value-based semantics.
-Later topics in the course will explore `records`, which provide value-based equality by default for reference types, as well as the specific performance impacts of not overriding equality members in structs.
+虽然 class 的默认行为是引用相等，但可以通过重写 `Equals`、`GetHashCode` 和相等运算符来实现基于值的语义，从而改变这一行为。
+课程后续的主题将探讨 `records`（它为引用类型默认提供基于值的相等性），以及在 struct 中不重写相等性成员所带来的具体性能影响。
 
 ---
 
 ## 12. Summary
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/) · 1:48
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/) · 1:48
 
-### Summary
+### 总结
 
-The fundamental difference between value types and reference types is defined by three semantic perspectives—storage model, copy behavior, and equality—rather than the common misconception of stack versus heap allocation.
-While value types represent data directly and are copied by value, reference types represent an indirection to data and are copied by reference.
-The actual physical location of data (stack or heap) is an implementation detail of the runtime that depends on the execution context, such as within async methods or modern compiler optimizations.
+值类型与引用类型之间的根本区别由三个语义视角来定义（存储模型、复制行为和相等性），而不是常见误解中的栈分配与堆分配之分。
+值类型直接表示数据并按值复制，而引用类型表示对数据的间接引用并按引用复制。
+数据的实际物理位置（栈或堆）是运行时的实现细节，取决于执行上下文，例如是否位于 async 方法中，或者现代编译器的优化。
 
-### Key concepts
+### 核心概念
 
-*   **Semantic Model**: Value types store data inline; reference types store a reference to the data (indirection).
-*   **Copy Semantics**: Assigning a value type duplicates the data; assigning a reference type duplicates the reference to the same instance.
-*   **Equality Semantics**: Value types use value-based equality by default; reference types use referential equality by default.
-*   **Implementation Details**: Stack vs. heap allocation is not a fixed rule but depends on the runtime context (e.g., iterators, async methods, or escape analysis).
+*   **语义模型**：值类型以内联方式存储数据；引用类型存储对数据的引用（间接寻址）。
+*   **复制语义**：对值类型赋值会复制数据；对引用类型赋值会复制指向同一实例的引用。
+*   **相等性语义**：值类型默认使用基于值的相等性；引用类型默认使用引用相等性。
+*   **实现细节**：栈分配与堆分配并不是固定规则，而是取决于运行时上下文（例如迭代器、async 方法或逃逸分析）。
 
-### Lesson notes
+### 课程笔记
 
-#### The Three Perspectives of Type Differences
+#### 类型差异的三个视角
 
-It is a common misconception that the primary difference between value types and reference types is that value types live on the stack and reference types live on the heap.
-This is an implementation detail rather than a fundamental definition.
-Instead, the differences should be viewed through three specific perspectives: the semantic model, copy semantics, and equality semantics.
+一个常见的误解是，值类型与引用类型的主要区别在于值类型位于栈上、引用类型位于堆上。
+这是一个实现细节，而不是根本性的定义。
+相反，应当通过三个具体视角来看待这些差异：语义模型、复制语义和相等性语义。
 
-##### 1. Semantic Model (Storage)
+##### 1. 语义模型（存储）
 
-Value types represent data directly and are stored inline.
-In contrast, reference types represent a reference to data, providing one level of indirection.
-This is evident in how types like `struct` and `class` are defined and laid out in memory.
+值类型直接表示数据，并以内联方式存储。
+相比之下，引用类型表示对数据的引用，提供了一层间接寻址。
+这一点从 `struct` 和 `class` 等类型的定义方式以及它们在内存中的布局方式就可以看出来。
 
 ```csharp
 public struct Point
@@ -1026,13 +1101,13 @@ public class PointRef
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=21)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=21)
 
-##### 2. Copy Semantics
+##### 2. 复制语义
 
-Copy semantics define what happens when a variable is assigned to another or passed to a method.
-For value types, copying duplicates the actual data.
-For reference types, copying duplicates the reference, resulting in two variables pointing to the same instance in memory.
+复制语义定义了把变量赋值给另一个变量或传给方法时会发生什么。
+对于值类型，复制会复制实际数据。
+对于引用类型，复制会复制引用，从而得到两个指向内存中同一实例的变量。
 
 ```csharp
 static void Step1_PassByValue()
@@ -1055,10 +1130,10 @@ static void Step1_PassByValue()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=30)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=30)
 
-Passing variables by reference (`ref`) also differs.
-In both cases, it creates an alias, but for reference types, using `ref` allows a method to change where the original variable points.
+按引用（`ref`）传递变量时也有所不同。
+在两种情况下它都会创建一个别名，但对于引用类型，使用 `ref` 可以让方法改变原始变量所指向的位置。
 
 ```csharp
 static void Step2_PassByRef()
@@ -1077,12 +1152,12 @@ static void Step2_PassByRef()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=48)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=48)
 
-##### 3. Equality Semantics
+##### 3. 相等性语义
 
-By default, value types use value semantics for equality.
-Reference types use referential equality, where two variables are only considered equal if they point to the exact same instance.
+默认情况下，值类型在相等性上使用值语义。
+引用类型使用引用相等性，只有当两个变量指向完全相同的实例时，它们才被视为相等。
 
 ```csharp
 static void Step7_StructEquality()
@@ -1104,20 +1179,20 @@ static void Step8_ClassEquality()
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=64)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/summary-69958845/?t=64)
 
-#### Stack vs. Heap as an Implementation Detail
+#### 栈与堆只是实现细节
 
-Allocation depends entirely on the context and the runtime.
-It is incorrect to assume value types are always on the stack and reference types are always on the heap:
-*   **Value types on the heap**: Local variables of a value type can be stored on the heap if they are part of an iterator block or an `async` method.
-*   **Reference types on the stack**: Modern runtimes can perform escape analysis and allocate reference types on the stack if they do not leave the local scope.
+分配完全取决于上下文和运行时。
+认为值类型总是在栈上、引用类型总是在堆上是不正确的：
+*   **位于堆上的值类型**：如果值类型的局部变量属于迭代器块或 `async` 方法的一部分，它们可以存储在堆上。
+*   **位于栈上的引用类型**：现代运行时可以执行逃逸分析，如果引用类型没有离开局部作用域，就可以把它们分配在栈上。
 
-While the physical location of data can impact performance, it is not the fundamental differentiator between the two type systems.
+虽然数据的物理位置可能会影响性能，但它并不是这两种类型体系之间的根本区别。
 
 ---
 
-## Running the demo
+## 运行 Demo
 
 ```bash
 cd src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Demos
@@ -1133,4 +1208,4 @@ dotnet run -c Release -- --filter *ArrayAccessBenchmark*
 dotnet run -c Release -- --filter *RandomizedAccess*
 ```
 
-The benchmarks need Release and take several minutes, since `RandomizedAccess` builds a 1,000,000-object pool for each parameter combination.
+基准测试需要 Release 模式，并且要运行好几分钟，因为 `RandomizedAccess` 会为每种参数组合构建一个包含 1,000,000 个对象的对象池。
