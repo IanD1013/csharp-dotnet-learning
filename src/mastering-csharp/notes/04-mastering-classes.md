@@ -1,14 +1,12 @@
 # Mastering Classes
 
-> Course: [Mastering: C#](https://dometrain.com/course/mastering-csharp/) · Chapter 4
-> 9 lessons · ~10:42
-> Source: Dometrain. Assembled from the lesson documents; every section links to its lesson.
+> 课程：[Mastering: C#](https://dometrain.com/course/mastering-csharp/) · 第 4 章
+> 共 9 课 · 约 10:42
+> 来源：Dometrain。由课程文档翻译整理；每一节都链接到对应课程。
 
 ---
 
-## Lesson index
-
-| # | Lesson | Length | Section |
+| # | 课程 | 时长 | 小节 |
 | --- | --- | --- | --- |
 | 1 | [Overview](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/) | 0:30 | [↓](#1-overview) |
 | 2 | [Object Initialization](https://dometrain.com/take/course/mastering-csharp-3256129/object-initialization-69958847/) | 0:24 | [↓](#2-object-initialization) |
@@ -24,27 +22,27 @@
 
 ## 1. Overview
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/) · 0:30
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/) · 0:30
 
-This lesson introduces advanced topics in C# class management, focusing on the nuances of object construction.
-It explores the specific execution order of field initializers and constructors in inheritance hierarchies, the risks associated with virtual method dispatch during object creation, and the mechanics of the `new()` generic constraint.
-Additionally, it examines performance considerations for object instantiation, particularly when targeting older frameworks.
+本课介绍 C# 类管理中的进阶主题，重点关注对象构造的细微之处。
+它探讨继承层次结构中字段初始化器与构造函数的具体执行顺序、在对象创建期间进行虚方法分派所带来的风险，以及 `new()` 泛型约束的工作机制。
+此外，它还会考察对象实例化的性能问题，尤其是在面向较旧框架时。
 
-### Key concepts
+### 核心概念
 
-- Object initialization order in inheritance hierarchies.
-- Hazards of virtual dispatch on partially constructed objects.
-- The `new()` generic constraint and its compilation behavior.
-- Exception handling differences between direct construction and generic constraints.
-- Performance optimization using custom activators and expression trees.
+- 继承层次结构中的对象初始化顺序。
+- 在部分构造的对象上进行虚分派的危险。
+- `new()` 泛型约束及其编译行为。
+- 直接构造与泛型约束在异常处理上的差异。
+- 使用自定义激活器（activator）和表达式树进行性能优化。
 
-### Lesson notes
+### 课程笔记
 
 #### Object Initialization Order
 
-Understanding the precise order of execution during object construction is critical for avoiding bugs in complex hierarchies.
-In C#, when a derived class is instantiated, the execution follows a specific sequence: derived field initializers run first, followed by base field initializers, then the base constructor body, and finally the derived constructor body.
-This order ensures that fields are initialized before constructor bodies execute, but it also means that a base constructor runs before the derived constructor body has had a chance to execute its logic.
+理解对象构造期间精确的执行顺序，对于在复杂层次结构中避免 bug 至关重要。
+在 C# 中，当实例化一个派生类时，执行遵循特定的顺序：先运行派生类的字段初始化器，接着是基类的字段初始化器，然后是基类构造函数体，最后是派生类构造函数体。
+这一顺序确保了字段在构造函数体执行之前完成初始化，但也意味着基类构造函数会在派生类构造函数体有机会执行其逻辑之前运行。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -79,13 +77,13 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=9)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=9)
 
 #### Virtual Calls in Constructors
 
-Calling virtual members from a constructor is a dangerous pattern in C#.
-Because of the initialization order, a virtual call in a base constructor will dispatch to the derived class's override.
-However, since the base constructor executes before the derived constructor body, the derived implementation of the virtual method may attempt to access fields or state that have not yet been fully initialized, leading to unpredictable behavior or `NullReferenceException`.
+在构造函数中调用虚成员是 C# 中一种危险的模式。
+由于初始化顺序的原因，基类构造函数中的虚调用会被分派到派生类的重写方法上。
+然而，由于基类构造函数在派生类构造函数体之前执行，虚方法的派生类实现可能会尝试访问尚未完全初始化的字段或状态，从而导致不可预测的行为或 `NullReferenceException`。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -129,13 +127,13 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=15)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=15)
 
 #### The new() Constraint and Generic Instantiation
 
-The `where T : new()` constraint allows for the instantiation of generic types.
-Historically, on .NET Framework, this constraint was implemented using `Activator.CreateInstance`, which incurred a performance penalty and wrapped any exceptions thrown by the constructor in a `TargetInvocationException`.
-In modern .NET, the JIT compiler can often optimize this into a direct constructor call, significantly improving performance and simplifying exception handling.
+`where T : new()` 约束使泛型类型可以被实例化。
+历史上，在 .NET Framework 中，这一约束是通过 `Activator.CreateInstance` 实现的，这会带来性能损失，并把构造函数抛出的任何异常包装在 `TargetInvocationException` 中。
+在现代 .NET 中，JIT 编译器通常可以把它优化为直接的构造函数调用，从而显著提升性能并简化异常处理。
 
 ```csharp
 using System.Linq.Expressions;
@@ -166,12 +164,12 @@ static class Factory
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=19)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=19)
 
 #### Custom Activators for Performance
 
-When targeting older frameworks or requiring specialized instantiation logic, a custom activator using compiled expression trees can be used.
-By caching a compiled `Func<T>`, developers can achieve performance near that of a direct constructor call, bypassing the overhead of `Activator.CreateInstance` while maintaining clean exception propagation.
+在面向较旧框架或需要专门的实例化逻辑时，可以使用基于编译表达式树的自定义激活器。
+通过缓存一个编译好的 `Func<T>`，开发者可以获得接近直接调用构造函数的性能，绕过 `Activator.CreateInstance` 的开销，同时保持干净的异常传播。
 
 ```csharp
 public static class CachedFactory<T> where T : new()
@@ -186,33 +184,33 @@ public static class CustomActivator
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=24)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/overview-69958846/?t=24)
 
 ---
 
 ## 2. Object Initialization
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/object-initialization-69958847/) · 0:24
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/object-initialization-69958847/) · 0:24
 
-### Summary
+### 总结
 
-This lesson examines the execution order of field initializers and constructors within a C# inheritance hierarchy.
-By observing a base and derived class that both utilize field-like initialization, the lesson clarifies the sequence in which the runtime prepares an object, ensuring fields are properly set up before constructor logic executes.
+本课考察 C# 继承层次结构中字段初始化器和构造函数的执行顺序。
+通过观察一个都使用类字段式初始化（field-like initialization）的基类和派生类，本课阐明了运行时准备对象的顺序，确保字段在构造函数逻辑执行之前已正确设置。
 
-### Key concepts
+### 核心概念
 
-- **Field-like initialization**: Initializing fields at their declaration point rather than inside a constructor.
-- **Initialization order**: The specific sequence of field and constructor execution in inheritance.
-- **Base vs. Derived execution**: How the runtime traverses the class hierarchy during instantiation.
-- **Tracing execution**: Using `[CallerMemberName]` to monitor the initialization lifecycle.
+- **类字段式初始化**：在字段的声明处而不是在构造函数内部初始化字段。
+- **初始化顺序**：继承中字段与构造函数执行的特定顺序。
+- **Base 与 Derived 的执行**：运行时在实例化期间如何遍历类层次结构。
+- **追踪执行**：使用 `[CallerMemberName]` 监视初始化的生命周期。
 
-### Lesson notes
+### 课程笔记
 
-In C#, when a class inherits from another, the order in which fields are initialized and constructors are executed is strictly defined.
-This lesson presents a scenario involving a `Base` class and a `Derived` class to determine this sequence.
+在 C# 中，当一个类继承自另一个类时，字段初始化和构造函数执行的顺序是严格定义的。
+本课给出一个涉及 `Base` 类和 `Derived` 类的场景来确定这一顺序。
 
-Both classes utilize field-like initialization, where a field is assigned a value at its declaration point.
-To track the execution, a static helper method `Init` is used, which leverages the `CallerMemberName` attribute to identify which field is being processed.
+两个类都使用类字段式初始化，即在字段的声明处为其赋值。
+为了追踪执行过程，使用了一个静态辅助方法 `Init`，它借助 `CallerMemberName` 特性来识别当前正在处理的是哪个字段。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -247,36 +245,36 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/object-initialization-69958847/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/object-initialization-69958847/?t=10)
 
-When `new Derived()` is called, the runtime must determine the sequence for field initializers and constructors across the hierarchy.
-The core technical question is whether initialization proceeds from base to derived, derived to base, or a combination of both.
-This sequence is essential for ensuring that fields are initialized before they are accessed within any constructor in the chain.
-The provided code serves as a test harness to observe this behavior through console output.
+当调用 `new Derived()` 时，运行时必须确定整个层次结构中字段初始化器和构造函数的执行顺序。
+核心的技术问题是：初始化是从基类到派生类、从派生类到基类，还是两者的某种组合。
+这一顺序对于确保字段在链中任何构造函数访问它们之前完成初始化至关重要。
+所提供的代码充当一个测试工具（test harness），通过控制台输出来观察这一行为。
 
 ---
 
 ## 3. Analyzing Object Construction Order
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-object-construction-order-69958848/) · 1:34
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-object-construction-order-69958848/) · 1:34
 
-### Summary
+### 总结
 
-This lesson analyzes the precise execution order of field initializers and constructors when a derived class is instantiated in C#.
-It demonstrates that field initialization for the derived class occurs before the base class's field initialization and constructor body.
-By examining the lowered C# code, the lesson explains how the compiler injects field initializers at the beginning of the constructor body, preceding the call to the base constructor, to ensure that object invariants are established before any logic is executed.
+本课分析在 C# 中实例化派生类时，字段初始化器和构造函数的精确执行顺序。
+它演示了派生类的字段初始化发生在基类的字段初始化和构造函数体之前。
+通过考察降级（lowered）后的 C# 代码，本课解释了编译器如何把字段初始化器注入到构造函数体的开头、位于对基类构造函数的调用之前，以确保在执行任何逻辑之前就建立起对象不变式。
 
-### Key concepts
+### 核心概念
 
-- **Execution Sequence**: The order is (1) Derived field initializers, (2) Base field initializers, (3) Base constructor body, and (4) Derived constructor body.
-- **Compiler Lowering**: Field initializers are not just syntactical sugar; the compiler explicitly moves this code to the top of the constructor method.
-- **Base Call Timing**: The derived class's field initializers run before the `base()` constructor call is executed.
-- **Object Invariants**: Early field initialization ensures that fields are populated and observable in a valid state throughout the construction process.
+- **执行顺序**：顺序是 (1) Derived 字段初始化器，(2) Base 字段初始化器，(3) Base 构造函数体，以及 (4) Derived 构造函数体。
+- **编译器降级**：字段初始化器不只是语法糖；编译器会显式地把这段代码移动到构造函数方法的顶部。
+- **基类调用时机**：派生类的字段初始化器在 `base()` 构造函数调用执行之前运行。
+- **对象不变式**：提前进行字段初始化可确保字段在整个构造过程中都已被填充，并且可以以有效状态被观察到。
 
-### Lesson notes
+### 课程笔记
 
-The lesson begins by examining a standard inheritance hierarchy where a `Derived` class inherits from a `Base` class.
-Both classes contain field initializers and constructors that log their execution to the console.
+本课首先考察一个标准的继承层次结构，其中 `Derived` 类继承自 `Base` 类。
+两个类都包含字段初始化器和构造函数，它们会把自己的执行情况记录到控制台。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -310,17 +308,17 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-object-construction-order-69958848/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-object-construction-order-69958848/?t=10)
 
-While it might be intuitive to assume the base class is initialized first, the actual execution order is different.
-When creating an instance of the `Derived` class, the sequence is:
-1. Derived field initialization.
-2. Base field initialization.
-3. Base constructor body execution.
-4. Derived constructor body execution.
+虽然直觉上可能会认为基类先被初始化，但实际的执行顺序并非如此。
+创建 `Derived` 类的实例时，顺序是：
+1. Derived 字段初始化。
+2. Base 字段初始化。
+3. Base 构造函数体执行。
+4. Derived 构造函数体执行。
 
-This behavior is visible when looking at the "lowered" C# code (the code generated by the compiler).
-The compiler takes the field initializers and injects them at the very top of the constructor body, even before the call to the base constructor (`base..ctor()`). 
+查看"降级"后的 C# 代码（即编译器生成的代码）时，就能看到这一行为。
+编译器把字段初始化器取出，注入到构造函数体的最顶部，甚至在对基类构造函数的调用（`base..ctor()`）之前。
 
 ```csharp
 internal class Derived : Base
@@ -338,45 +336,55 @@ internal class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-object-construction-order-69958848/?t=40)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/analyzing-object-construction-order-69958848/?t=40)
 
-This order remains consistent regardless of whether the fields are marked as `readonly`.
-The primary purpose of this early initialization is to establish object invariants.
-By initializing fields before any constructor logic runs, C# ensures that fields are in a valid, observable state as soon as the object begins its lifecycle.
-This becomes particularly important when considering more complex scenarios, such as virtual method calls within a constructor.
+无论字段是否被标记为 `readonly`，这一顺序都保持不变。
+这种提前初始化的主要目的是建立对象不变式。
+通过在任何构造函数逻辑运行之前初始化字段，C# 确保了对象一开始其生命周期，字段就处于有效、可观察的状态。
+在考虑更复杂的场景时，例如在构造函数中调用虚方法，这一点就变得尤为重要。
 
 ---
 
 ## 4. Virtual Calls in the Base class Constructor
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/virtual-calls-in-the-base-class-constructor-69958849/) · 1:53
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/virtual-calls-in-the-base-class-constructor-69958849/) · 1:53
 
-### Summary
+### 总结
 
-Calling virtual methods from a base class constructor is a dangerous practice in C# due to the specific order of object initialization.
-While field initializers in a derived class are executed before the base class constructor runs, the derived class's constructor body is executed only after the base class constructor has completed.
-If a base constructor invokes a virtual method that is overridden in a derived class, that override will execute before the derived constructor body has run.
-If the overridden method relies on state initialized within the derived constructor body, the application will likely encounter a NullReferenceException or operate on a partially constructed instance.
+由于对象初始化的特定顺序，在 C# 中从基类构造函数调用虚方法是一种危险的做法。
+虽然派生类中的字段初始化器在基类构造函数运行之前执行，但派生类的构造函数体只有在基类构造函数完成之后才会执行。
+如果基类构造函数调用了一个在派生类中被重写的虚方法，那么该重写方法会在派生类构造函数体运行之前执行。
+如果被重写的方法依赖于在派生类构造函数体内初始化的状态，应用很可能会遇到 NullReferenceException，或者在一个部分构造的实例上进行操作。
 
-### Key concepts
+### 核心概念
 
-- **Initialization Order**: Field initializers run from most-derived to base, followed by constructor bodies running from base to most-derived.
-- **Virtual Dispatch in Constructors**: C# dispatches virtual calls to the most-derived implementation even if that type's constructor has not yet executed.
-- **Partially Constructed Objects**: The state where a base class is fully initialized but the derived class's constructor logic has not yet run.
-- **Fragility of Field vs. Constructor Initialization**: Code that appears safe when using field initializers can break if refactored to use constructor-body initialization.
+- **初始化顺序**：字段初始化器从最派生类向基类运行，随后构造函数体从基类向最派生类运行。
+- **构造函数中的虚分派**：即使最派生类型的构造函数尚未执行，C# 也会把虚调用分派到该类型的实现。
+- **部分构造的对象**：基类已完全初始化、但派生类的构造函数逻辑尚未运行的状态。
+- **字段初始化与构造函数初始化的脆弱性**：使用字段初始化器时看似安全的代码，如果被重构为在构造函数体中初始化，就可能出错。
 
-### Lesson notes
+### 课程笔记
 
-In C#, the order of execution during object instantiation is critical when dealing with inheritance.
-When a new instance of a derived class is created, the runtime follows a specific sequence: it first executes the field initializers for the derived class, then the field initializers for the base class, and finally the constructor bodies starting from the base class down to the derived class.
+在 C# 中，处理继承时，对象实例化期间的执行顺序至关重要。
+创建派生类的新实例时，运行时遵循特定的顺序：先执行派生类的字段初始化器，然后执行基类的字段初始化器，最后从基类开始、向下到派生类依次执行构造函数体。
 
-This order creates a significant hazard when a base class constructor calls a virtual method.
-Because C# uses virtual dispatch, the call is routed to the implementation in the derived class, even though the derived class's constructor body has not yet executed.
+```text
+new Derived()
+  |
+  v
+Derived field initializers ---> Base field initializers
+                                          |
+                                          v
+Derived constructor body   <--- Base constructor body
+```
+
+当基类构造函数调用虚方法时，这一顺序会造成重大隐患。
+由于 C# 使用虚分派，即使派生类的构造函数体尚未执行，调用也会被路由到派生类中的实现。
 
 #### Scenario 1: Field-Like Initialization
 
-In the following example, the derived class uses field-like initialization.
-Because field initializers run before any constructor bodies, the `_derivedField` is already populated when the base constructor calls `ReportState()`.
+在下面的示例中，派生类使用类字段式初始化。
+由于字段初始化器在任何构造函数体之前运行，当基类构造函数调用 `ReportState()` 时，`_derivedField` 已经被填充。
 
 ```csharp
 class Base
@@ -416,15 +424,15 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/virtual-calls-in-the-base-class-constructor-69958849/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/virtual-calls-in-the-base-class-constructor-69958849/?t=10)
 
-In this case, the code runs without error because `_derivedField` is initialized during the field-initialization phase, which occurs before the `Base` constructor body is entered.
-The output shows the derived field length is 25 because the string "initialized:_derivedField" is 25 characters long.
+在这种情况下，代码运行时不会出错，因为 `_derivedField` 是在字段初始化阶段初始化的，而该阶段发生在进入 `Base` 构造函数体之前。
+输出显示派生字段的长度为 25，因为字符串 "initialized:_derivedField" 的长度是 25 个字符。
 
 #### Scenario 2: Constructor-Body Initialization
 
-The danger becomes apparent if the initialization logic is moved from the field level into the constructor body.
-This is a common refactoring, but it fundamentally changes the execution order.
+如果把初始化逻辑从字段级别移到构造函数体中，危险就显现出来了。
+这是一种常见的重构，但它从根本上改变了执行顺序。
 
 ```csharp
 class Derived : Base
@@ -443,48 +451,48 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/virtual-calls-in-the-base-class-constructor-69958849/?t=40)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/virtual-calls-in-the-base-class-constructor-69958849/?t=40)
 
-When this version of the code runs, it results in a `NullReferenceException`.
-The execution flow follows these steps:
-1. The `Derived` constructor is called.
-2. Field-like initializers for the `Derived` class are executed (none in this case).
-3. The `Base` class constructor is called.
-4. The `Base` field initializers are executed.
-5. The `Base` constructor body begins execution.
-6. The `Base` constructor calls the virtual method `ReportState()`.
-7. Virtual dispatch sends the call to `Derived.ReportState()`.
-8. `Derived.ReportState()` attempts to access `_derivedField.Length`.
-9. Since the `Derived` constructor body (where `_derivedField` is assigned) has not yet run, `_derivedField` is still `null`, causing the crash.
+运行这一版本的代码时，会导致 `NullReferenceException`。
+执行流程遵循以下步骤：
+1. 调用 `Derived` 构造函数。
+2. 执行 `Derived` 类的类字段式初始化器（本例中没有）。
+3. 调用 `Base` 类的构造函数。
+4. 执行 `Base` 的字段初始化器。
+5. `Base` 构造函数体开始执行。
+6. `Base` 构造函数调用虚方法 `ReportState()`。
+7. 虚分派把调用发送到 `Derived.ReportState()`。
+8. `Derived.ReportState()` 尝试访问 `_derivedField.Length`。
+9. 由于 `Derived` 构造函数体（`_derivedField` 在其中被赋值）尚未运行，`_derivedField` 仍然是 `null`，从而导致崩溃。
 
 #### Conclusion
 
-Calling virtual methods from a constructor is extremely fragile.
-It forces the derived class to handle calls while it is in a partially constructed state, where its invariants may not yet be established.
-To maintain code stability, virtual calls should be avoided within constructors.
-Developers should utilize static analysis tools and IDE analyzers to detect and prevent this pattern in their codebases.
+在构造函数中调用虚方法是极其脆弱的。
+它迫使派生类在处于部分构造状态时处理调用，而此时它的不变式可能尚未建立。
+为了保持代码的稳定性，应避免在构造函数中进行虚调用。
+开发者应借助静态分析工具和 IDE 分析器，在其代码库中检测并防止这种模式。
 
 ---
 
 ## 5. Using Analyzers to Avoid Making Virtual Calls in Base Constructors
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/using-analyzers-to-avoid-making-virtual-calls-in-base-constructors-69958850/) · 0:36
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/using-analyzers-to-avoid-making-virtual-calls-in-base-constructors-69958850/) · 0:36
 
-Analyzers provide a mechanism to catch the "virtual call in constructor" hazard automatically.
-The simplest way to enable these rules is by adding the relevant configuration to an `.editorconfig` file.
-Once enabled, the analyzer provides immediate feedback through warnings in the IDE and during the compilation process.
+分析器提供了一种自动捕获"构造函数中的虚调用"这一隐患的机制。
+启用这些规则最简单的方法是把相关配置添加到 `.editorconfig` 文件中。
+一旦启用，分析器就会在 IDE 中以及编译过程中通过警告提供即时反馈。
 
-### Key concepts
+### 核心概念
 
-- Enabling analyzers via `.editorconfig`.
-- IDE and build-time warnings for virtual calls in constructors.
-- Breaking the build using "Treat Warnings as Errors" to prevent unsafe check-ins.
-- Suppressing warnings with descriptive intent when the behavior is intentional.
+- 通过 `.editorconfig` 启用分析器。
+- 针对构造函数中虚调用的 IDE 警告和构建时警告。
+- 使用"将警告视为错误"（Treat Warnings as Errors）让构建失败，以防止不安全的代码签入。
+- 当该行为是有意为之时，带着描述性的意图说明来抑制警告。
 
-### Lesson notes
+### 课程笔记
 
-If a project is configured to treat warnings as errors, any instance of a virtual call in a constructor will prevent a successful build, ensuring that such code cannot be checked into source control.
-The following example demonstrates the scenario that triggers these analyzer warnings, where the `Base` constructor invokes the virtual `ReportState` method:
+如果项目被配置为将警告视为错误，那么构造函数中任何一处虚调用都会导致构建无法成功，从而确保这类代码无法被签入源代码管理。
+下面的示例演示了触发这些分析器警告的场景，其中 `Base` 构造函数调用了虚方法 `ReportState`：
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -525,38 +533,38 @@ public class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/using-analyzers-to-avoid-making-virtual-calls-in-base-constructors-69958850/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/using-analyzers-to-avoid-making-virtual-calls-in-base-constructors-69958850/?t=10)
 
-In rare cases where calling a virtual method from a base constructor is intentional and the risks are understood, the warning can be suppressed.
-However, suppression should always be accompanied by a descriptive message explaining the developer's intent.
-Even with suppression, developers must remain extremely cautious to ensure that the overridden methods in derived classes do not attempt to access state that has not yet been initialized by the derived constructor.
+在少数情况下，如果从基类构造函数调用虚方法是有意为之，并且风险已被理解，那么可以抑制该警告。
+不过，抑制警告时应始终附上一条描述性的消息，说明开发者的意图。
+即使抑制了警告，开发者也必须保持极度谨慎，确保派生类中被重写的方法不会尝试访问尚未由派生类构造函数初始化的状态。
 
 ---
 
 ## 6. A Custom Factory Method and Error Handling
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/a-custom-factory-method-and-error-handling-69958851/) · 0:28
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/a-custom-factory-method-and-error-handling-69958851/) · 0:28
 
-### Summary
+### 总结
 
-This lesson explores the nuances of object instantiation using the generic `new()` constraint versus custom factory methods.
-It specifically examines how exceptions thrown within a constructor are handled when an object is created via a generic factory, highlighting potential pitfalls where exceptions may be wrapped in a `TargetInvocationException`.
-The lesson also introduces a high-performance alternative using expression-compiled factories, which provide direct exception propagation and better execution speed by caching compiled delegates.
+本课探讨使用泛型 `new()` 约束与使用自定义工厂方法进行对象实例化之间的细微差别。
+它专门考察通过泛型工厂创建对象时，构造函数内部抛出的异常是如何被处理的，并指出异常可能被包装在 `TargetInvocationException` 中这一潜在陷阱。
+本课还介绍了一种使用表达式编译工厂的高性能替代方案，它通过缓存编译好的委托，提供直接的异常传播和更好的执行速度。
 
-### Key concepts
+### 核心概念
 
-- Generic `new()` constraint behavior
-- Exception wrapping in `TargetInvocationException` during reflection-based instantiation
-- Performance overhead of the `new()` constraint on older frameworks
-- Custom factory implementation using `Expression.Lambda` and `Expression.New`
-- Caching compiled delegates in static generic classes for efficiency
+- 泛型 `new()` 约束的行为
+- 基于反射的实例化过程中，异常被包装在 `TargetInvocationException` 中
+- 在较旧框架上 `new()` 约束的性能开销
+- 使用 `Expression.Lambda` 和 `Expression.New` 实现自定义工厂
+- 为提高效率，在静态泛型类中缓存编译好的委托
 
-### Lesson notes
+### 课程笔记
 
-When implementing generic factory methods, the `new()` constraint is the standard way to ensure a type has a parameterless constructor.
-However, this approach has implications for error handling and performance.
+在实现泛型工厂方法时，`new()` 约束是确保类型具有无参构造函数的标准方式。
+然而，这种做法会对错误处理和性能产生影响。
 
-Consider a scenario where a class constructor throws an exception:
+考虑一个类的构造函数抛出异常的场景：
 
 ```csharp
 try
@@ -587,14 +595,14 @@ static class Factory
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/a-custom-factory-method-and-error-handling-69958851/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/a-custom-factory-method-and-error-handling-69958851/?t=10)
 
-In the example above, `MyClass` throws an `InvalidOperationException`.
-While the `try-catch` block specifically looks for this exception, the `new()` constraint can behave unexpectedly.
-In some environments, specifically when the constraint is implemented via reflection (such as on .NET Framework), the `InvalidOperationException` may be wrapped inside a `TargetInvocationException`.
-This would cause the specific `catch (InvalidOperationException)` block to be bypassed, with the exception instead being caught by the general `Exception` block.
+在上面的示例中，`MyClass` 抛出了 `InvalidOperationException`。
+虽然 `try-catch` 块专门捕获这个异常，但 `new()` 约束的行为可能出乎意料。
+在某些环境中，特别是当该约束通过反射实现时（例如在 .NET Framework 上），`InvalidOperationException` 可能会被包装在 `TargetInvocationException` 内部。
+这会导致专门的 `catch (InvalidOperationException)` 块被绕过，异常转而被通用的 `Exception` 块捕获。
 
-To provide more predictable exception propagation and improved performance, a custom factory can be implemented using expression trees:
+为了提供更可预测的异常传播和更好的性能，可以使用表达式树实现一个自定义工厂：
 
 ```csharp
 using System.Linq.Expressions;
@@ -611,39 +619,50 @@ static class CustomActivator
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/a-custom-factory-method-and-error-handling-69958851/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/a-custom-factory-method-and-error-handling-69958851/?t=10)
 
-The `CustomActivator` uses `Expression.Lambda` to compile a factory delegate for the type `T`.
-This approach offers two primary advantages:
+`CustomActivator` 使用 `Expression.Lambda` 为类型 `T` 编译一个工厂委托。
+这种做法有两个主要优势：
 
-1. **Exception Handling**: Exceptions thrown by the constructor surface directly to the caller, rather than being wrapped in a `TargetInvocationException`.
-2. **Performance**: This method is significantly faster than the `new()` constraint on platforms where the constraint relies on `Activator.CreateInstance`. By caching the compiled delegate in a static generic `Cache<T>` class, the overhead of compilation is only incurred once per type.
+1. **异常处理**：构造函数抛出的异常会直接传递到调用方，而不是被包装在 `TargetInvocationException` 中。
+2. **性能**：在约束依赖 `Activator.CreateInstance` 的平台上，这种方法比 `new()` 约束快得多。通过把编译好的委托缓存在静态泛型类 `Cache<T>` 中，每个类型只会产生一次编译开销。
+
+```text
+CustomActivator.CreateInstance<T>()
+  |
+  v
+Cache<T>.Factory    (static readonly Func<T>, compiled once per T)
+  |
+  |  Expression.Lambda<Func<T>>(Expression.New(typeof(T))).Compile()
+  v
+T                   (exceptions surface directly to the caller)
+```
 
 ---
 
 ## 7. Exploring a Custom Factory Method Behavior at Runtime
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/) · 1:45
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/) · 1:45
 
-### Summary
+### 总结
 
-This lesson explores the runtime behavior of the C# new() generic constraint, revealing how its underlying implementation can lead to a 'leaky abstraction' during exception handling.
-Because the compiler implements the new() constraint using reflection-based Activator.CreateInstance, any exception thrown by a constructor is wrapped in a TargetInvocationException, making error handling difficult and less descriptive.
-To resolve this, the lesson demonstrates how to implement a CustomActivator using Expression Trees to compile a direct delegate for object instantiation, which preserves the original exception type and improves performance on legacy frameworks.
+本课探讨 C# new() 泛型约束的运行时行为，揭示其底层实现如何在异常处理时导致"抽象泄漏"（leaky abstraction）。
+由于编译器使用基于反射的 Activator.CreateInstance 来实现 new() 约束，构造函数抛出的任何异常都会被包装在 TargetInvocationException 中，使错误处理变得困难且描述性更差。
+为了解决这个问题，本课演示了如何使用表达式树实现一个 CustomActivator，为对象实例化编译出一个直接的委托，从而保留原始的异常类型，并提升在旧版框架上的性能。
 
-### Key concepts
+### 核心概念
 
-- **Leaky Abstraction**: The `new()` constraint implementation details (reflection) surface to the developer through unexpected exception types.
-- **TargetInvocationException**: The wrapper exception thrown by reflection when the invoked member (the constructor) throws an exception.
-- **Activator.CreateInstance**: The underlying mechanism used by the C# compiler for the `new()` constraint.
-- **Expression Trees**: A technique for lightweight code generation at runtime to create efficient delegates.
-- **Custom Activator**: A pattern using cached, compiled expressions to replace the default `new()` behavior for better performance and error handling.
+- **抽象泄漏**：`new()` 约束的实现细节（反射）通过意料之外的异常类型暴露给开发者。
+- **TargetInvocationException**：当被调用的成员（构造函数）抛出异常时，由反射抛出的包装异常。
+- **Activator.CreateInstance**：C# 编译器为 `new()` 约束使用的底层机制。
+- **表达式树**：一种在运行时进行轻量级代码生成、以创建高效委托的技术。
+- **自定义激活器**：一种使用缓存的编译表达式来替代默认 `new()` 行为的模式，以获得更好的性能和错误处理。
 
-### Lesson notes
+### 课程笔记
 
-When a class constructor throws an exception, we typically expect to catch that specific exception type.
-However, when an instance is created through a factory method using the `new()` generic constraint, the behavior changes unexpectedly at runtime.
-Instead of catching the specific exception, the application often hits a generic fallback handler because the original exception is wrapped.
+当一个类的构造函数抛出异常时，我们通常期望能捕获到那个具体的异常类型。
+然而，当实例是通过使用 `new()` 泛型约束的工厂方法创建时，其行为在运行时会出乎意料地改变。
+应用往往不会捕获到那个具体的异常，而是落入通用的兜底处理程序，因为原始异常被包装了。
 
 ```csharp
 try
@@ -672,21 +691,36 @@ static class Factory
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/?t=10)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/?t=10)
 
-In the example above, even though `MyClass` throws an `InvalidOperationException`, the specific `catch` block is bypassed.
-The error message received is often undescriptive, stating only that an "exception has been thrown by the target of the invocation."
-This makes debugging significantly harder in production environments where logs may only capture the top-level exception.
+在上面的示例中，尽管 `MyClass` 抛出的是 `InvalidOperationException`，专门的 `catch` 块却被绕过了。
+收到的错误消息往往缺乏描述性，只说明"调用的目标引发了异常"（exception has been thrown by the target of the invocation）。
+在日志可能只记录顶层异常的生产环境中，这会让调试变得困难得多。
 
-This behavior occurs because the `new()` constraint is a leaky abstraction.
-Examining the compiled code with an IL viewer reveals that the `new()` constraint is compiled to use `Activator.CreateInstance`.
-This implementation detail dates back to C# 2.0.
-When an operation is called via reflection and fails, the runtime wraps the actual exception in a `TargetInvocationException`.
-This behavior persists in modern .NET to avoid breaking changes for codebases that rely on catching the wrapper exception.
+```text
+Factory.Create<MyClass>()
+  |  new() constraint --> Activator.CreateInstance
+  v
+MyClass() throws InvalidOperationException
+  |
+  v
+TargetInvocationException
+  +-- InnerException: InvalidOperationException
+  |
+  v
+catch (InvalidOperationException)   bypassed
+catch (Exception)                   hit
+```
 
-To solve this for application code, we can implement a custom activator using Expression Trees (introduced in C# 3.0).
-This allows for lightweight code generation where we compile an expression into a delegate.
-This delegate can then be used instead of the default `new()` behavior.
+出现这种行为，是因为 `new()` 约束是一个抽象泄漏。
+用 IL 查看器检查编译后的代码可以发现，`new()` 约束被编译为使用 `Activator.CreateInstance`。
+这一实现细节可以追溯到 C# 2.0。
+当通过反射调用的操作失败时，运行时会把实际的异常包装在 `TargetInvocationException` 中。
+这一行为在现代 .NET 中依然保留，以避免对依赖捕获该包装异常的代码库造成破坏性变更。
+
+为了在应用代码中解决这个问题，我们可以使用表达式树（在 C# 3.0 中引入）实现一个自定义激活器。
+这样就能进行轻量级的代码生成，把一个表达式编译成委托。
+随后就可以用这个委托来代替默认的 `new()` 行为。
 
 ```csharp
 static class Factory
@@ -714,10 +748,10 @@ static class CustomActivator
 #endregion
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/?t=85)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/?t=85)
 
-By updating the `Factory` to use the `CustomActivator`, the application no longer wraps exceptions.
-When the constructor throws an `InvalidOperationException`, it is surfaced directly to the caller, allowing the specific `catch` block to handle the error properly.
+把 `Factory` 更新为使用 `CustomActivator` 之后，应用就不再包装异常了。
+当构造函数抛出 `InvalidOperationException` 时，它会直接传递到调用方，使专门的 `catch` 块能够正确地处理该错误。
 
 ```csharp
 try
@@ -743,34 +777,34 @@ sealed class MyClass
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/?t=100)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/exploring-a-custom-factory-method-behavior-at-runtime-69958852/?t=100)
 
 ---
 
 ## 8. Benchmarking the new() Constraint
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/benchmarking-the-new-constraint-69958853/) · 1:46
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/benchmarking-the-new-constraint-69958853/) · 1:46
 
-### Summary
+### 总结
 
-This lesson evaluates the performance of the new() constraint compared to other object instantiation methods across different .NET runtimes.
-While .NET 10 shows nearly zero overhead for the new() constraint, .NET Framework 4.8 reveals a 20x performance penalty compared to direct constructor calls.
-The lesson demonstrates that manual IL generation can provide a 10x performance improvement over the new() constraint on legacy frameworks, explaining why high-performance libraries like Entity Framework and Newtonsoft.Json utilize custom IL-based factories.
+本课评估 new() 约束与其他对象实例化方法在不同 .NET 运行时上的性能对比。
+在 .NET 10 上，new() 约束几乎没有开销，而在 .NET Framework 4.8 上，它与直接调用构造函数相比有 20 倍的性能损失。
+本课演示了在旧版框架上，手动生成 IL 可以比 new() 约束带来 10 倍的性能提升，这也解释了为什么 Entity Framework 和 Newtonsoft.Json 等高性能库会使用基于 IL 的自定义工厂。
 
-### Key concepts
+### 核心概念
 
-- Performance disparity of the new() constraint between .NET 10 and .NET Framework 4.8.
-- The relationship between the new() constraint and Activator.CreateInstance.
-- Optimization of language features in modern .NET runtimes.
-- Performance benefits of manual IL generation for object creation in legacy environments.
-- Implementation of custom factories using Expression Trees and DynamicMethod.
+- new() 约束在 .NET 10 与 .NET Framework 4.8 之间的性能差距。
+- new() 约束与 Activator.CreateInstance 之间的关系。
+- 现代 .NET 运行时中对语言特性的优化。
+- 在旧版环境中手动生成 IL 来创建对象的性能优势。
+- 使用表达式树和 DynamicMethod 实现自定义工厂。
 
-### Lesson notes
+### 课程笔记
 
-The performance of the new() constraint presents a significant challenge, particularly when targeting older frameworks.
-While modern runtimes like .NET 10 have optimized these language features to have almost zero overhead, legacy frameworks still incur a heavy cost.
+new() 约束的性能是一个重大挑战，尤其是在面向较旧框架时。
+虽然 .NET 10 等现代运行时已经对这些语言特性进行了优化，使其几乎没有开销，但旧版框架仍然要付出高昂的代价。
 
-To measure this, a benchmark compares several instantiation strategies: direct constructor calls (the baseline), delegates, Activator.CreateInstance (which the compiler generates for the new() constraint), custom activators using expression trees, and manual IL generation.
+为了测量这一点，一个基准测试比较了几种实例化策略：直接调用构造函数（基线）、委托、Activator.CreateInstance（编译器为 new() 约束生成的就是它）、使用表达式树的自定义激活器，以及手动生成 IL。
 
 ```csharp
 [MemoryDiagnoser]
@@ -822,17 +856,17 @@ public static class CustomActivator
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/benchmarking-the-new-constraint-69958853/?t=25)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/benchmarking-the-new-constraint-69958853/?t=25)
 
-In .NET 10, all instantiation methods perform comparably, indicating that the overhead of the new() constraint has been virtually eliminated.
-In this context, the primary motivation for using a custom activator would be to address exception handling behavior, as the new() constraint continues to wrap exceptions in a TargetInvocationException for backward compatibility.
+在 .NET 10 上，所有实例化方法的表现都相当，这表明 new() 约束的开销实际上已被消除。
+在这种情况下，使用自定义激活器的主要动机将是解决异常处理行为的问题，因为出于向后兼容的考虑，new() 约束仍然会把异常包装在 TargetInvocationException 中。
 
-In contrast, .NET Framework 4.8 shows a 20x performance difference between direct instantiation and the new() constraint.
-While expression-based custom activators offer some improvement, they remain slower than regular delegates due to security constraints and legacy overhead.
+相比之下，.NET Framework 4.8 上直接实例化与 new() 约束之间存在 20 倍的性能差异。
+虽然基于表达式的自定义激活器带来了一些改进，但由于安全约束和遗留开销，它们仍然比普通委托慢。
 
-The most efficient approach for legacy frameworks is manual IL generation.
-Although complex and rarely used in standard application code, an IL-based implementation provides a 10x performance improvement over the new() constraint.
-This level of optimization is a game-changer for performance-critical libraries such as Entity Framework or Newtonsoft.Json, which frequently create large numbers of objects.
+对于旧版框架，最高效的做法是手动生成 IL。
+虽然它很复杂，在标准应用代码中也很少使用，但基于 IL 的实现比 new() 约束带来了 10 倍的性能提升。
+对于 Entity Framework 或 Newtonsoft.Json 这类会频繁创建大量对象、对性能要求极高的库来说，这种程度的优化是颠覆性的。
 
 ```csharp
 public static class EmittedFactory<T> where T : new()
@@ -874,38 +908,38 @@ public static class DynamicModuleLambdaCompiler
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/benchmarking-the-new-constraint-69958853/?t=79)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/benchmarking-the-new-constraint-69958853/?t=79)
 
 ---
 
 ## 9. Conclusion
 
-> [Watch the lesson](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/) · 1:46
+> [观看本课](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/) · 1:46
 
-### Summary
+### 总结
 
-This lesson concludes the module on mastering classes by recapping the nuances of object construction and the internal mechanics of the new() constraint.
-It emphasizes the specific execution order where field initializers run before base constructors, the hazards of virtual method calls within constructors that can expose partially initialized state, and the performance and exception-handling trade-offs of the new() generic constraint.
-The lesson highlights that while .NET Core has optimized the new() constraint, .NET Framework applications may require custom IL-based or expression-compiled factories to avoid significant performance penalties and exception wrapping.
+本课为"掌握类"这一模块作结，回顾了对象构造的细微之处以及 new() 约束的内部机制。
+它强调了字段初始化器先于基类构造函数运行这一特定执行顺序、在构造函数中调用虚方法可能暴露部分初始化状态的危险，以及 new() 泛型约束在性能和异常处理上的取舍。
+本课指出，虽然 .NET Core 已经优化了 new() 约束，但 .NET Framework 应用可能需要基于 IL 或基于表达式编译的自定义工厂，以避免显著的性能损失和异常包装。
 
-### Key concepts
+### 核心概念
 
-* **Construction Order**: Field initializers execute before the base class constructor, which in turn executes before the derived class constructor body.
-* **Virtual Call Hazard**: Calling virtual methods in a constructor dispatches to the most derived type, potentially accessing fields before the derived constructor has initialized them.
-* **Static Analysis**: Rule CA2214 should be enabled to prevent virtual member calls in constructors.
-* **new() Constraint Internals**: The compiler implements the `new()` constraint using `Activator.CreateInstance`.
-* **Exception Handling**: Exceptions thrown during object creation via the `new()` constraint are wrapped in a `TargetInvocationException`.
-* **Performance**: The `new()` constraint is highly optimized in .NET Core but can be up to 22x slower than direct construction in .NET Framework.
-* **Custom Factories**: Expression-compiled or IL-emitted factories can resolve performance and exception-wrapping issues.
+* **构造顺序**：字段初始化器在基类构造函数之前执行，而基类构造函数又在派生类构造函数体之前执行。
+* **虚调用隐患**：在构造函数中调用虚方法会分派到最派生的类型，可能在派生类构造函数初始化字段之前就访问这些字段。
+* **静态分析**：应启用规则 CA2214，以防止在构造函数中调用虚成员。
+* **new() 约束的内部机制**：编译器使用 `Activator.CreateInstance` 来实现 `new()` 约束。
+* **异常处理**：通过 `new()` 约束创建对象期间抛出的异常会被包装在 `TargetInvocationException` 中。
+* **性能**：`new()` 约束在 .NET Core 中经过了高度优化，但在 .NET Framework 中可能比直接构造慢多达 22 倍。
+* **自定义工厂**：基于表达式编译或 IL 发射（IL-emitted）的工厂可以解决性能和异常包装问题。
 
-### Lesson notes
+### 课程笔记
 
 #### Construction Semantics and Field Initializers
 
-In C#, the construction of a derived class follows a specific sequence.
-Field initializers are executed first, even before the base class constructor is called.
-This behavior is independent of whether the field is redundant or not.
-Once field initializers have run, the base class constructor executes, followed finally by the body of the derived class constructor.
+在 C# 中，派生类的构造遵循特定的顺序。
+字段初始化器最先执行，甚至在调用基类构造函数之前。
+这一行为与字段是否冗余无关。
+字段初始化器运行完毕后，基类构造函数执行，最后是派生类构造函数体。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -940,14 +974,14 @@ class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=5)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=5)
 
 #### The Virtual Call Hazard
 
-A significant risk in class design is calling a virtual method from a base constructor.
-Because C# dispatches virtual calls to the most derived type, the derived implementation of the method will execute before the derived constructor's body has run.
-If the derived method relies on fields initialized in its constructor, it will observe the object in a partial, potentially invalid state.
-To mitigate this, developers should enable static analysis tool CA2214 to avoid virtual calls in constructors.
+类设计中的一个重大风险是从基类构造函数调用虚方法。
+由于 C# 会把虚调用分派到最派生的类型，该方法的派生类实现会在派生类构造函数体运行之前执行。
+如果派生类方法依赖于在其构造函数中初始化的字段，它就会观察到一个处于部分构造、可能无效状态的对象。
+为了缓解这一问题，开发者应启用静态分析规则 CA2214，以避免在构造函数中进行虚调用。
 
 ```csharp
 using System.Runtime.CompilerServices;
@@ -989,16 +1023,16 @@ public class Derived : Base
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=34)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=34)
 
 #### The new() Constraint and Performance
 
-Under the hood, the compiler translates the `new()` generic constraint into a call to `Activator.CreateInstance`.
-This has two primary consequences.
-First, for historical reasons, any exception thrown during construction is wrapped in a `TargetInvocationException`.
-Second, while performance in .NET Core is excellent, in .NET Framework the overhead of `Activator` can make construction up to 22 times slower than direct instantiation.
+在底层，编译器把 `new()` 泛型约束翻译为对 `Activator.CreateInstance` 的调用。
+这会带来两个主要后果。
+第一，出于历史原因，构造期间抛出的任何异常都会被包装在 `TargetInvocationException` 中。
+第二，虽然在 .NET Core 中性能非常出色，但在 .NET Framework 中，`Activator` 的开销可能使构造比直接实例化慢多达 22 倍。
 
-To address these issues, a `CustomActivator` using expression trees can be used to cache a compiled factory, which allows exceptions to surface directly and improves performance on older runtimes.
+为了解决这些问题，可以使用一个基于表达式树的 `CustomActivator` 来缓存编译好的工厂，这样异常可以直接传递出来，并能提升在较旧运行时上的性能。
 
 ```csharp
 using System.Linq.Expressions;
@@ -1021,9 +1055,9 @@ static class CustomActivator
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=65)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=65)
 
-For scenarios requiring maximum performance, especially in legacy environments, IL-based co-generation using `DynamicMethod` can be employed to generate a factory that mimics the performance of a direct constructor call.
+对于需要极致性能的场景，尤其是在旧版环境中，可以使用 `DynamicMethod` 进行基于 IL 的代码生成，从而生成一个性能接近直接调用构造函数的工厂。
 
 ```csharp
 using System.Reflection.Emit;
@@ -1062,4 +1096,4 @@ public static class DynamicModuleLambdaCompiler
 }
 ```
 
-[▶ Watch](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=93)
+[▶ 观看](https://dometrain.com/take/course/mastering-csharp-3256129/conclusion-69958854/?t=93)
