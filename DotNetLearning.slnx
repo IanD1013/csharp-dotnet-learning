@@ -39,6 +39,13 @@
     <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Frontend/DockerForDevelopers.DemoApp.Frontend.csproj" />
     <Project Path="src/docker/docker-for-developers/demo-app/DockerForDevelopers.DemoApp.Tests/DockerForDevelopers.DemoApp.Tests.csproj" />
   </Folder>
+  <Folder Name="/src/domain-driven-design/" />
+  <Folder Name="/src/domain-driven-design/getting-started/" />
+  <Folder Name="/src/domain-driven-design/getting-started/code/" />
+  <Folder Name="/src/domain-driven-design/getting-started/code/section3/">
+    <Project Path="src/domain-driven-design/getting-started/code/section3/DomeGym.Section3.Domain.UnitTests/DomeGym.Section3.Domain.UnitTests.csproj" />
+    <Project Path="src/domain-driven-design/getting-started/code/section3/DomeGym.Section3.Domain/DomeGym.Section3.Domain.csproj" />
+  </Folder>
   <Folder Name="/src/mastering-csharp/" />
   <Folder Name="/src/mastering-csharp/03-value-types-vs-reference-types/">
     <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Benchmarks/MasteringCSharp.ValueVsReference.Benchmarks.csproj" />
