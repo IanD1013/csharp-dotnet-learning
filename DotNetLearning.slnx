@@ -46,6 +46,11 @@
     <Project Path="src/domain-driven-design/getting-started/code/section3/DomeGym.Section3.Domain.UnitTests/DomeGym.Section3.Domain.UnitTests.csproj" />
     <Project Path="src/domain-driven-design/getting-started/code/section3/DomeGym.Section3.Domain/DomeGym.Section3.Domain.csproj" />
   </Folder>
+  <Folder Name="/src/domain-driven-design/getting-started/code/section4/">
+    <Project Path="src/domain-driven-design/getting-started/code/section4/DomeGym.Section4.Application/DomeGym.Section4.Application.csproj" />
+    <Project Path="src/domain-driven-design/getting-started/code/section4/DomeGym.Section4.Domain.UnitTests/DomeGym.Section4.Domain.UnitTests.csproj" />
+    <Project Path="src/domain-driven-design/getting-started/code/section4/DomeGym.Section4.Domain/DomeGym.Section4.Domain.csproj" />
+  </Folder>
   <Folder Name="/src/mastering-csharp/" />
   <Folder Name="/src/mastering-csharp/03-value-types-vs-reference-types/">
     <Project Path="src/mastering-csharp/03-value-types-vs-reference-types/MasteringCSharp.ValueVsReference.Benchmarks/MasteringCSharp.ValueVsReference.Benchmarks.csproj" />

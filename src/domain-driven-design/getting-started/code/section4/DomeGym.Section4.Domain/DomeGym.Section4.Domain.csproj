@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.SmartEnum" />
+    <PackageReference Include="ErrorOr" />
+  </ItemGroup>
+
+</Project>

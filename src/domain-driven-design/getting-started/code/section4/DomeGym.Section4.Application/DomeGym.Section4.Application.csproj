@@ -1,0 +1,9 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomeGym.Section4.Domain\DomeGym.Section4.Domain.csproj" />
+  </ItemGroup>
+
+</Project>
