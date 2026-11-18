@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+  <PropertyGroup>
+    <!-- CA1711 bans the 'EventHandler' suffix; <DomainEvent>Handler is the MediatR notification handler convention. -->
+    <NoWarn>$(NoWarn);CA1711</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="MediatR" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DomeGym.Section5.Domain\DomeGym.Section5.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

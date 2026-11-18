@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!-- TargetFramework, Nullable and ImplicitUsings come from src/Directory.Build.props. -->
+
+  <ItemGroup>
+    <PackageReference Include="Ardalis.SmartEnum" />
+    <PackageReference Include="ErrorOr" />
+    <!-- Only the INotification marker, so the domain does not depend on the MediatR runtime. -->
+    <PackageReference Include="MediatR.Contracts" />
+  </ItemGroup>
+
+</Project>

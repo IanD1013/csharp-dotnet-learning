@@ -1,0 +1,144 @@
+@host = http://localhost:5051
+
+# Profiles are unique per user, so change this to start a fresh flow
+# (or delete DomeGym.db, which is recreated from the migrations on startup).
+@userId = 6f1c3a8e-2b4d-4e7f-9a1b-3c5d7e9f1a2b
+
+### Create admin profile
+# @name createAdmin
+POST {{host}}/users/{{userId}}/profiles
+Content-Type: application/json
+
+{
+    "profileType": "Admin"
+}
+
+### Create trainer profile
+# @name createTrainer
+POST {{host}}/users/{{userId}}/profiles
+Content-Type: application/json
+
+{
+    "profileType": "Trainer"
+}
+
+### Create participant profile
+# @name createParticipant
+POST {{host}}/users/{{userId}}/profiles
+Content-Type: application/json
+
+{
+    "profileType": "Participant"
+}
+
+### List profiles
+GET {{host}}/users/{{userId}}/profiles
+
+### Get admin profile
+# @name getAdmin
+GET {{host}}/users/{{userId}}/profiles/Admin
+
+@adminId = {{getAdmin.response.body.$.id}}
+
+### Create subscription
+# Admin.SetSubscription raises SubscriptionSetEvent; its handler saves the
+# subscription after this response has been sent.
+# @name createSubscription
+POST {{host}}/subscriptions
+Content-Type: application/json
+
+{
+    "subscriptionType": "Free",
+    "adminId": "{{adminId}}"
+}
+
+@subscriptionId = {{createSubscription.response.body.$.id}}
+
+### List subscriptions (contains the subscription saved by the domain event handler)
+GET {{host}}/subscriptions
+
+# Section 5 only implements SubscriptionSetEvent. Creating a gym, room or session
+# updates the parent aggregate but does not save the new aggregate yet; the course
+# adds those domain events in section 6. The requests below are kept for reference.
+
+### Create gym
+# @name createGym
+POST {{host}}/subscriptions/{{subscriptionId}}/gyms
+Content-Type: application/json
+
+{
+    "name": "Amiko's gym"
+}
+
+@gymId = {{createGym.response.body.$.id}}
+
+### List gyms
+GET {{host}}/subscriptions/{{subscriptionId}}/gyms
+
+### Get gym
+GET {{host}}/subscriptions/{{subscriptionId}}/gyms/{{gymId}}
+
+### Add trainer to gym
+POST {{host}}/subscriptions/{{subscriptionId}}/gyms/{{gymId}}/trainers
+Content-Type: application/json
+
+{
+    "trainerId": "{{createTrainer.response.body.$.id}}"
+}
+
+### List gym sessions
+GET {{host}}/subscriptions/{{subscriptionId}}/gyms/{{gymId}}/sessions?startDateTime=2026-12-01T00:00:00&endDateTime=2026-12-31T23:59:59&categories=Functional
+
+### Create room
+# @name createRoom
+POST {{host}}/gyms/{{gymId}}/rooms
+Content-Type: application/json
+
+{
+    "name": "Amiko's room"
+}
+
+@roomId = {{createRoom.response.body.$.id}}
+
+### List rooms
+GET {{host}}/gyms/{{gymId}}/rooms
+
+### Get room
+GET {{host}}/gyms/{{gymId}}/rooms/{{roomId}}
+
+### Create session
+# @name createSession
+POST {{host}}/rooms/{{roomId}}/sessions
+Content-Type: application/json
+
+{
+    "name": "Lior's Functional Training",
+    "description": "A full-body functional training session.",
+    "maxParticipants": 3,
+    "trainerId": "{{createTrainer.response.body.$.id}}",
+    "startDateTime": "2026-12-03T12:00:00",
+    "endDateTime": "2026-12-03T13:00:00",
+    "categories": ["Functional"]
+}
+
+@sessionId = {{createSession.response.body.$.id}}
+
+### Get session
+GET {{host}}/rooms/{{roomId}}/sessions/{{sessionId}}
+
+### Create reservation
+POST {{host}}/sessions/{{sessionId}}/reservations
+Content-Type: application/json
+
+{
+    "participantId": "{{createParticipant.response.body.$.id}}"
+}
+
+### List participant sessions
+GET {{host}}/participants/{{createParticipant.response.body.$.id}}/sessions?startDateTime=2026-12-01T00:00:00&endDateTime=2026-12-31T23:59:59
+
+### Cancel reservation
+DELETE {{host}}/participants/{{createParticipant.response.body.$.id}}/sessions/{{sessionId}}/reservation
+
+### Delete room
+DELETE {{host}}/gyms/{{gymId}}/rooms/{{roomId}}
